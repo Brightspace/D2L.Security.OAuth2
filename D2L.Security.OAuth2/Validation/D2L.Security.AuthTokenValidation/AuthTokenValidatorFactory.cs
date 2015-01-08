@@ -2,10 +2,10 @@
 
 namespace D2L.Security.AuthTokenValidation {
 
-	public sealed class AuthTokenCheckerFactory : IAuthTokenCheckerFactory {
+	public sealed class AuthTokenValidatorFactory : IAuthTokenValidatorFactory {
 
-		public IAuthTokenChecker Create() {
-			return new AuthTokenChecker(
+		public IAuthTokenValidator Create() {
+			return new AuthTokenValidator(
 				new AuthServerPublicKeyProvider()
 				);
 		}

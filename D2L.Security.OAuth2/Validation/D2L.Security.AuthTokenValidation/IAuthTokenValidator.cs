@@ -2,7 +2,7 @@
 
 namespace D2L.Security.AuthTokenValidation {
 
-	public interface IAuthTokenChecker {
+	public interface IAuthTokenValidator {
 
 		Principal VerifyAndDecode( HttpRequest request );
 		Principal VerifyAndDecode( string jwt );

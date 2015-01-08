@@ -8,11 +8,11 @@ using Newtonsoft.Json;
 
 namespace D2L.Security.AuthTokenValidation.Default {
 
-	internal sealed class AuthTokenChecker : IAuthTokenChecker {
+	internal sealed class AuthTokenValidator : IAuthTokenValidator {
 
 		private readonly IAuthServerPublicKeyProvider m_authServerPublicKeyProvider;
 
-		public AuthTokenChecker(
+		public AuthTokenValidator(
 			IAuthServerPublicKeyProvider authServerPublicKeyProvider
 			) {
 			m_authServerPublicKeyProvider = authServerPublicKeyProvider;

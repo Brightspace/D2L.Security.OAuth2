@@ -52,12 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthorizationException.cs" />
-    <Compile Include="AuthTokenCheckerFactory.cs" />
+    <Compile Include="AuthTokenValidatorFactory.cs" />
     <Compile Include="Default\AuthServerPublicKeyProvider.cs" />
-    <Compile Include="Default\AuthTokenChecker.cs" />
+    <Compile Include="Default\AuthTokenValidator.cs" />
     <Compile Include="IAuthServerPublicKeyProvider.cs" />
-    <Compile Include="IAuthTokenChecker.cs" />
-    <Compile Include="IAuthTokenCheckerFactory.cs" />
+    <Compile Include="IAuthTokenValidator.cs" />
+    <Compile Include="IAuthTokenValidatorFactory.cs" />
     <Compile Include="Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
