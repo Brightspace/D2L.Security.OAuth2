@@ -1,0 +1,4 @@
+*.suo
+*.swp
+BrowserAuthTokens/bin/*
+BrowserAuthTokens/obj/*
