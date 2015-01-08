@@ -10,24 +10,26 @@ using Microsoft.IdentityModel.Protocols;
 namespace D2L.Security.AuthTokenValidation.PublicKeys.Implementations {
 	class DefaultPublicKeyProvider {
 
+		// DISPOSE
+		private readonly HttpClient _httpClient;
 		private readonly HttpMessageHandler _backchannelHttpHandler;
+
 		private readonly ConfigurationManager<OpenIdConnectConfiguration> _configurationManager;
 
-		private string _issuer;
-		private IEnumerable<SecurityToken> _tokens;
+		public string _issuer;
+		public IEnumerable<SecurityToken> _tokens;
 
-		public DefaultPublicKeyProvider( 
-			string authority,
-			HttpMessageHandler backchannelHttpHandler
-			) {
+		public DefaultPublicKeyProvider( string authority ) {
 
 			authority = FormatAuthority( authority );
 
-			_backchannelHttpHandler = backchannelHttpHandler ?? new WebRequestHandler();
+			_backchannelHttpHandler = new WebRequestHandler();
+			_httpClient = new HttpClient( _backchannelHttpHandler );
 
-			_configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>( authority, new HttpClient( _backchannelHttpHandler ) );
+			_configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>( authority, _httpClient );
+			RetrieveMetadata();
 		}
-
+		
 		private string FormatAuthority( string authority ) {
 			if( !authority.EndsWith( "/" ) ) {
 				authority += "/";
