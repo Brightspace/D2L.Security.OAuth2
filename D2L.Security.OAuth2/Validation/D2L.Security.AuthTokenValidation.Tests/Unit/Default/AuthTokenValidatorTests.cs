@@ -17,7 +17,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 
 			//byte[] bytes = new byte[ key.Length * sizeof(char) ];
 			//Buffer.BlockCopy( key.ToCharArray(), 0, bytes, 0, bytes.Length );
-			
+			//CngKey.
 			//CngKey cngKey = CngKey.Import( bytes, new CngKeyBlobFormat() )
 
 			//Mock<IAuthServerPublicKeyProvider> keyProviderMock = new Mock<IAuthServerPublicKeyProvider>();
