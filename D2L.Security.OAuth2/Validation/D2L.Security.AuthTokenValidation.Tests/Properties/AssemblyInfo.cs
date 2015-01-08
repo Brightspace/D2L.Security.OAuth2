@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("D2L.Security.TokenValidation.Tests")]
+[assembly: AssemblyTitle("D2L.Security.AuthTokenValidation.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Desire2Learn")]
-[assembly: AssemblyProduct("D2L.Security.TokenValidation.Tests")]
+[assembly: AssemblyProduct("D2L.Security.AuthTokenValidation.Tests")]
 [assembly: AssemblyCopyright("Copyright © Desire2Learn 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
