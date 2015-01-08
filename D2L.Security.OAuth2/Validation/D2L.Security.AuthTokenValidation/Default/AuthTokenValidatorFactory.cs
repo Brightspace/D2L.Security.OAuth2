@@ -1,7 +1,6 @@
 ﻿using System;
-using D2L.Security.AuthTokenValidation.Default;
 
-namespace D2L.Security.AuthTokenValidation {
+namespace D2L.Security.AuthTokenValidation.Default {
 
 	public sealed class AuthTokenValidatorFactory : IAuthTokenValidatorFactory {
 
