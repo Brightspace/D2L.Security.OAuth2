@@ -55,6 +55,7 @@
     <Compile Include="AuthTokenValidatorFactory.cs" />
     <Compile Include="Default\AuthServerPublicKeyProvider.cs" />
     <Compile Include="Default\AuthTokenValidator.cs" />
+    <Compile Include="FriendAssemblies.cs" />
     <Compile Include="IAuthServerPublicKeyProvider.cs" />
     <Compile Include="IAuthTokenValidator.cs" />
     <Compile Include="IAuthTokenValidatorFactory.cs" />

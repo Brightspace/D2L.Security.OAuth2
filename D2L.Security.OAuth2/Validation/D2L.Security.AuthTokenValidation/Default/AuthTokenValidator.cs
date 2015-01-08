@@ -18,7 +18,9 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			m_authServerPublicKeyProvider = authServerPublicKeyProvider;
 		}
 
-		public Principal VerifyAndDecode( HttpRequest request ) {
+		Principal IAuthTokenValidator.VerifyAndDecode( HttpRequest request ) {
+
+			IAuthTokenValidator @this = this;
 
 			string tokenFromCookie = GetTokenFromCookie( request );
 			string tokenFromAuthHeader = GetTokenFromAuthHeader( request );
@@ -27,10 +29,10 @@ namespace D2L.Security.AuthTokenValidation.Default {
 				throw new AuthorizationException( "Token cannot be provided in header and cookie" );
 			}
 
-			return VerifyAndDecode( tokenFromCookie ?? tokenFromAuthHeader );
+			return @this.VerifyAndDecode( tokenFromCookie ?? tokenFromAuthHeader );
 		}
 
-		public Principal VerifyAndDecode( string jwt ) {
+		Principal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
 
 			const int HEADER_INDEX = 0;
 			const int PAYLOAD_INDEX = 1;
@@ -51,7 +53,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return GetPrincipal( payload );
 		}
 
-		private static string GetTokenFromCookie( HttpRequest request ) {
+		internal static string GetTokenFromCookie( HttpRequest request ) {
 
 			HttpCookie cookie = request.Cookies.Get( "d2lApi" );
 			string authToken = null;
@@ -61,7 +63,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return authToken;
 		}
 
-		private static string GetTokenFromAuthHeader( HttpRequest request ) {
+		internal static string GetTokenFromAuthHeader( HttpRequest request ) {
 
 			const string AUTH_HEADER_VALUE_PREFIX = "Bearer ";
 			string authorization = request.Headers.Get( "Authorization" );
@@ -72,7 +74,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return authToken;
 		}
 
-		private string[] GetTokenParts( string jwt ) {
+		internal string[] GetTokenParts( string jwt ) {
 
 			string[] parts = jwt.Split( '.' );
 			if( parts.Length != 3 ) {
@@ -81,7 +83,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return parts;
 		}
 
-		private static string UnencodeBase64Url( string b64 ) {
+		internal static string UnencodeBase64Url( string b64 ) {
 			string result = b64
 				.Replace( '-', '+' )
 				.Replace( '_', '/' )
@@ -92,7 +94,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return result;
 		}
 
-		private void VerifyHeader( string headerJson ) {
+		internal void VerifyHeader( string headerJson ) {
 			JwtHeader header = JsonConvert.DeserializeObject<JwtHeader>( headerJson );
 
 			if( header.Alg != "RS256" ) {
@@ -103,7 +105,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			}
 		}
 
-		private void VerifySignature( byte[] payloadBytes, byte[] signature ) {
+		internal void VerifySignature( byte[] payloadBytes, byte[] signature ) {
 
 			using( ECDsaCng signer = new ECDsaCng( m_authServerPublicKeyProvider.Get() ) ) {
 				if( !signer.VerifyData( payloadBytes, signature ) ) {
@@ -112,7 +114,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			}
 		}
 
-		private Principal GetPrincipal( string payload ) {
+		internal Principal GetPrincipal( string payload ) {
 
 			Principal principal = JsonConvert.DeserializeObject<Principal>( payload );
 
