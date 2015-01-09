@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -45,7 +46,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 			byte[] payloadBytes = Encoding.UTF8.GetBytes( UnencodeBase64Url( parts[ PAYLOAD_INDEX ] ) );
 			byte[] signature = Encoding.UTF8.GetBytes( parts[ SIGNATURE_INDEX ] );
-
+			
 			VerifySignature( payloadBytes, signature );
 
 			string payload = Encoding.UTF8.GetString( payloadBytes );
@@ -74,16 +75,22 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return authToken;
 		}
 
-		internal string[] GetTokenParts( string jwt ) {
+		internal static string[] GetTokenParts( string jwt ) {
 
 			string[] parts = jwt.Split( '.' );
 			if( parts.Length != 3 ) {
 				throw new AuthorizationException( "Invalid token format" );
 			}
+			
+			if ( parts.Any( part => part == string.Empty ) ) {
+				throw new AuthorizationException( "Empty JWT segment" );
+			}
+
 			return parts;
 		}
 
 		internal static string UnencodeBase64Url( string b64 ) {
+
 			string result = b64
 				.Replace( '-', '+' )
 				.Replace( '_', '/' )
@@ -94,7 +101,8 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return result;
 		}
 
-		internal void VerifyHeader( string headerJson ) {
+		internal static void VerifyHeader( string headerJson ) {
+
 			JwtHeader header = JsonConvert.DeserializeObject<JwtHeader>( headerJson );
 
 			if( header.Alg != "RS256" ) {
@@ -114,7 +122,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			}
 		}
 
-		internal Principal GetPrincipal( string payload ) {
+		internal static Principal GetPrincipal( string payload ) {
 
 			Principal principal = JsonConvert.DeserializeObject<Principal>( payload );
 
