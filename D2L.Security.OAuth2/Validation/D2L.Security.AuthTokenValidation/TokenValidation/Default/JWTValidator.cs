@@ -1,4 +1,7 @@
-﻿using System;
+﻿using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.ServiceModel.Security;
 using D2L.Security.AuthTokenValidation.PublicKeys;
 
 namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
@@ -11,20 +14,42 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 		}
 
 		bool IJWTValidator.TryValidate( string jwt, out IClaimsPrincipal claimsPrincipal ) {
-			bool result = false;
-			claimsPrincipal = null;
 
 			try {
-				result = TryValidateWorker( jwt, out claimsPrincipal );
+				claimsPrincipal = ValidateWorker( jwt );
 			} catch {
-
+				claimsPrincipal = null;
+				return false;
 			}
 
-			return result;
+			return true;
 		}
 
-		private bool TryValidateWorker( string jwt, out IClaimsPrincipal claimsPrincipal ) {
-			throw new NotImplementedException();
+		private IClaimsPrincipal ValidateWorker( string jwt ) {
+
+			SecurityTokenHandlerConfiguration tokenHandlerConfiguration = 
+				new SecurityTokenHandlerConfiguration();
+			tokenHandlerConfiguration.CertificateValidationMode = X509CertificateValidationMode.None;
+			tokenHandlerConfiguration.CertificateValidator = X509CertificateValidator.None;
+			
+			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+			tokenHandler.Configuration = tokenHandlerConfiguration;
+
+			IPublicKey key = m_keyProvider.Create();
+
+			TokenValidationParameters parameters = new TokenValidationParameters();
+			parameters.ValidIssuer = key.Issuer;
+			parameters.IssuerSigningKey = key.SecurityKey;
+			parameters.ValidateLifetime = true;
+			parameters.ValidateAudience = false;
+			parameters.ValidateIssuer = true;
+			parameters.ValidateIssuerSigningKey = true;
+
+			SecurityToken securityToken;
+			ClaimsPrincipal principal = tokenHandler.ValidateToken( jwt, parameters, out securityToken );
+
+			IClaimsPrincipal claimsPrincipal = new ClaimsPrincipalToIClaimsPrincipalAdapter( principal );
+			return claimsPrincipal;
 		}
 	}
 }

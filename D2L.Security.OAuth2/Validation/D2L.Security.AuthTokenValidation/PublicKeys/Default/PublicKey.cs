@@ -8,12 +8,12 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 		private readonly SecurityKey m_securityKey;
 		private readonly string m_issuer;
 
-		internal PublicKey( SecurityToken token, string issuer ) {
-			m_securityKey = ExtractKeyFrom( token );
+		internal PublicKey( SecurityToken securityToken, string issuer ) {
+			m_securityKey = ExtractKeyFrom( securityToken );
 			m_issuer = issuer;
 		}
 
-		SecurityKey IPublicKey.Key {
+		SecurityKey IPublicKey.SecurityKey {
 			get { return m_securityKey; }
 		}
 

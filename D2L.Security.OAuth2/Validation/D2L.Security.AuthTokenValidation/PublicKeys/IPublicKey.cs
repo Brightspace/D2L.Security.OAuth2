@@ -6,7 +6,7 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys {
 	/// Used to decrypt tokens
 	/// </summary>
 	interface IPublicKey {
-		SecurityKey Key { get; }
+		SecurityKey SecurityKey { get; }
 		string Issuer { get; }
 	}
 }
