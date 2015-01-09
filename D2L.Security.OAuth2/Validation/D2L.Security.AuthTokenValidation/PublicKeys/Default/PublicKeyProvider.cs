@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using D2L.Security.AuthTokenValidation.Utilities;
 using Microsoft.IdentityModel.Protocols;
 
@@ -25,8 +24,8 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			}
 		}
 
-		Task<IPublicKey> IPublicKeyProvider.Fetch() {
-			throw new NotImplementedException();
+		IPublicKey IPublicKeyProvider.Create() {
+			return m_key;
 		}
 
 		void IDisposable.Dispose() {
