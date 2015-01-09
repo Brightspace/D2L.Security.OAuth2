@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using D2L.Security.AuthTokenValidation.PublicKeys.Implementations;
+using D2L.Security.AuthTokenValidation.PublicKeys.Default;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Integration {

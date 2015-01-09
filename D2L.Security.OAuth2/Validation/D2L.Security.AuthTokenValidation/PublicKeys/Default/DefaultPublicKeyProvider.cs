@@ -10,7 +10,7 @@ using System.ServiceModel.Security;
 using D2L.Security.AuthTokenValidation.Utilities;
 using Microsoft.IdentityModel.Protocols;
 
-namespace D2L.Security.AuthTokenValidation.PublicKeys.Implementations {
+namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 	class DefaultPublicKeyProvider {
 
 		// DISPOSE
@@ -50,10 +50,10 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Implementations {
 
 		public void Decode2( string jwt ) {
 
-			JwtSecurityTokenHandler tokenDecoder = new JwtSecurityTokenHandler();
-			JwtSecurityToken securityToken = (JwtSecurityToken)tokenDecoder.ReadToken( jwt );
-			
-			var handler = new JwtSecurityTokenHandler {
+			//JwtSecurityTokenHandler tokenDecoder = new JwtSecurityTokenHandler();
+			//JwtSecurityToken securityToken = (JwtSecurityToken)tokenDecoder.ReadToken( jwt );
+
+			JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler {
 				Configuration =
 					new SecurityTokenHandlerConfiguration {
 						CertificateValidationMode = X509CertificateValidationMode.None,
@@ -66,7 +66,9 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Implementations {
 				//IssuerSigningKey = _token.SecurityKeys.First(),
 				IssuerSigningKey = new InMemorySymmetricSecurityKey( new byte[] { 1, 3, 3, 7 } ),
 				ValidateLifetime = false,
-				ValidateAudience = false
+				ValidateAudience = false,
+				ValidateIssuer = true,
+				ValidateIssuerSigningKey = true
 			};
 
 			SecurityToken jwtToken;
