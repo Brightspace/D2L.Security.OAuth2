@@ -11,19 +11,16 @@ using Microsoft.IdentityModel.Protocols;
 namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
-		private readonly string m_authority;
-
-		public string _issuer;
-		public SecurityToken _token;
+		private readonly IPublicKey m_key;
 
 		internal PublicKeyProvider( string authority ) {
-			m_authority = authority;
+			authority = FormatAuthority( authority );
 
-			string _authority = FormatAuthority( authority );
-
-			using( HttpMessageHandler _backchannelHttpHandler = new WebRequestHandler() ) {
-				using( HttpClient _httpClient = new HttpClient( _backchannelHttpHandler ) ) {
-					RetrieveCertificate( new ConfigurationManager<OpenIdConnectConfiguration>( _authority, _httpClient ) );
+			using( HttpMessageHandler httpMessageHandler = new WebRequestHandler() ) {
+				using( HttpClient httpClient = new HttpClient( httpMessageHandler ) ) {
+					ConfigurationManager<OpenIdConnectConfiguration> configManager =
+						new ConfigurationManager<OpenIdConnectConfiguration>( authority, httpClient );
+					m_key = RetrieveKey( configManager );
 				}
 			}
 		}
@@ -44,7 +41,7 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			return authority;
 		}
 
-		private X509SecurityToken JsonWebKeyToToken( JsonWebKey jsonWebKey ) {
+		private X509SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
 
 			IList<string> x5cEntries = jsonWebKey.X5c;
 			if( x5cEntries.Count != 1 ) {
@@ -57,17 +54,19 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			return token;
 		}
 
-		private void RetrieveCertificate( ConfigurationManager<OpenIdConnectConfiguration> _configurationManager ) {
+		private IPublicKey RetrieveKey( ConfigurationManager<OpenIdConnectConfiguration> _configurationManager ) {
 			OpenIdConnectConfiguration result = 
 				AsyncHelper.RunSync<OpenIdConnectConfiguration>( async () => await _configurationManager.GetConfigurationAsync() );
 
-			int jsonWebKeyCount = result.JsonWebKeySet.Keys.Count;
-			if( jsonWebKeyCount != 1 ) {
-				throw new Exception( string.Format( "Expected one json web key and found {0}", jsonWebKeyCount ) );
+			IList<JsonWebKey> jsonWebKeys = result.JsonWebKeySet.Keys;
+			if( jsonWebKeys.Count != 1 ) {
+				throw new Exception( string.Format( "Expected one json web key and found {0}", jsonWebKeys.Count ) );
 			}
 
-			_issuer = result.Issuer;
-			_token = JsonWebKeyToToken( result.JsonWebKeySet.Keys.First() );
+			SecurityToken securityToken = JsonWebKeyToSecurityToken( jsonWebKeys[0] );
+			string issuer = result.Issuer;
+
+			return new PublicKey( securityToken, issuer );
 		}
 	}
 }
