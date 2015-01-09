@@ -2,12 +2,16 @@
 using System.Security.Claims;
 using System.Security.Principal;
 
-namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
+namespace D2L.Security.AuthTokenValidation.TokenValidation {
+
+	/// <summary>
+	/// Exposes methods of a ClaimsPrincipal via an interface
+	/// </summary>
 	internal sealed class ClaimsPrincipalToIClaimsPrincipalAdapter : IClaimsPrincipal {
 		
 		private readonly ClaimsPrincipal m_inner;
 		
-		public ClaimsPrincipalToIClaimsPrincipalAdapter( ClaimsPrincipal inner ) {
+		internal ClaimsPrincipalToIClaimsPrincipalAdapter( ClaimsPrincipal inner ) {
 			m_inner = inner;
 		}
 

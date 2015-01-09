@@ -63,14 +63,20 @@
     <Compile Include="IAuthServerPublicKeyProvider.cs" />
     <Compile Include="IAuthTokenValidator.cs" />
     <Compile Include="IAuthTokenValidatorFactory.cs" />
-    <Compile Include="TokenValidation\Default\ClaimsPrincipalToIClaimsPrincipalAdapter.cs" />
+    <Compile Include="IDisposableExtensions.cs" />
+    <Compile Include="PublicKeys\Default\PublicKey.cs" />
+    <Compile Include="PublicKeys\Default\PublicKeyProvider.cs" />
+    <Compile Include="PublicKeys\IPublicKeyProvider.cs" />
+    <Compile Include="PublicKeys\PublicKeyProviderFactory.cs" />
+    <Compile Include="TokenValidation\ClaimsPrincipalToIClaimsPrincipalAdapter.cs" />
+    <Compile Include="TokenValidation\Default\JWTValidator.cs" />
     <Compile Include="TokenValidation\IClaimsPrincipal.cs" />
     <Compile Include="TokenValidation\IJWTValidator.cs" />
     <Compile Include="Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicKeys\Default\DefaultPublicKeyProvider.cs" />
     <Compile Include="PublicKeys\IPublicKey.cs" />
-    <Compile Include="PublicKeys\IPublicKeyProvider.cs" />
+    <Compile Include="TokenValidation\JWTValidatorFactory.cs" />
     <Compile Include="Utilities\AsyncHelper.cs" />
   </ItemGroup>
   <ItemGroup>
