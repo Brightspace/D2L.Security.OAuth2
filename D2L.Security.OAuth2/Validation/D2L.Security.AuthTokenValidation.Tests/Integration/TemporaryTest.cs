@@ -25,11 +25,5 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration {
 
 			Assert.IsTrue( validator.TryValidate( jwt, out claimsPrincipal ) );
 		}
-
-		[Explicit]
-		[Test]
-		public void CanDownloadCert() {
-			IPublicKeyProvider provider = PublicKeyProviderFactory.Create( AUTH_SERVER );
-		}
 	}
 }

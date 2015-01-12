@@ -2,42 +2,23 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
-using System.Net.Http;
 using System.Security.Cryptography.X509Certificates;
-using D2L.Security.AuthTokenValidation.Utilities;
+using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations;
 using Microsoft.IdentityModel.Protocols;
 
 namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
-		private readonly IPublicKey m_key;
+		private readonly IOpenIdConfigurationFetcher m_configurationFetcher;
 
-		internal PublicKeyProvider( string authority ) {
-			authority = FormatAuthority( authority );
-
-			using( HttpMessageHandler httpMessageHandler = new WebRequestHandler() ) {
-				using( HttpClient httpClient = new HttpClient( httpMessageHandler ) ) {
-					ConfigurationManager<OpenIdConnectConfiguration> configManager =
-						new ConfigurationManager<OpenIdConnectConfiguration>( authority, httpClient );
-					m_key = RetrieveKey( configManager );
-				}
-			}
+		internal PublicKeyProvider( IOpenIdConfigurationFetcher configurationFetcher ) {
+			m_configurationFetcher = configurationFetcher;
 		}
 
 		IPublicKey IPublicKeyProvider.Create() {
-			return m_key;
-		}
-
-		void IDisposable.Dispose() {
-			throw new NotImplementedException();
-		}
-
-		private string FormatAuthority( string authority ) {
-			if( !authority.EndsWith( "/" ) ) {
-				authority += "/";
-			}
-			authority += ".well-known/openid-configuration";
-			return authority;
+			OpenIdConnectConfiguration openIdKey = m_configurationFetcher.Fetch();
+			IPublicKey key = ParseOpenIdKey( openIdKey );
+			return key;
 		}
 
 		private X509SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
@@ -53,17 +34,14 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			return token;
 		}
 
-		private IPublicKey RetrieveKey( ConfigurationManager<OpenIdConnectConfiguration> _configurationManager ) {
-			OpenIdConnectConfiguration result = 
-				AsyncHelper.RunSync<OpenIdConnectConfiguration>( async () => await _configurationManager.GetConfigurationAsync() );
-
-			IList<JsonWebKey> jsonWebKeys = result.JsonWebKeySet.Keys;
+		private IPublicKey ParseOpenIdKey( OpenIdConnectConfiguration configuration ) {
+			IList<JsonWebKey> jsonWebKeys = configuration.JsonWebKeySet.Keys;
 			if( jsonWebKeys.Count != 1 ) {
 				throw new Exception( string.Format( "Expected one json web key and found {0}", jsonWebKeys.Count ) );
 			}
 
 			SecurityToken securityToken = JsonWebKeyToSecurityToken( jsonWebKeys[0] );
-			string issuer = result.Issuer;
+			string issuer = configuration.Issuer;
 
 			return new PublicKey( securityToken, issuer );
 		}

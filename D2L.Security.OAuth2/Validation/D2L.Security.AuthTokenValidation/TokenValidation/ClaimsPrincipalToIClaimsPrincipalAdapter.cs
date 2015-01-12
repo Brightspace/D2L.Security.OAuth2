@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Principal;
 
 namespace D2L.Security.AuthTokenValidation.TokenValidation {
 
@@ -13,14 +12,6 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation {
 		
 		internal ClaimsPrincipalToIClaimsPrincipalAdapter( ClaimsPrincipal inner ) {
 			m_inner = inner;
-		}
-
-		IIdentity IPrincipal.Identity {
-			get { return m_inner.Identity; }
-		}
-
-		bool IPrincipal.IsInRole( string role ) {
-			return m_inner.IsInRole( role );
 		}
 
 		IEnumerable<Claim> IClaimsPrincipal.Claims {
