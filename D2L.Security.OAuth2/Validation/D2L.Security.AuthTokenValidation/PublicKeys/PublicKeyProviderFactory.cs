@@ -3,10 +3,17 @@
 namespace D2L.Security.AuthTokenValidation.PublicKeys {
 	internal static class PublicKeyProviderFactory {
 
-		private const string AUTHORITY = "https://phwinsl01.proddev.d2l:44333/core/";
-		private static readonly IPublicKeyProvider Instance = new PublicKeyProvider( AUTHORITY );
+		private static object Lock = new object();
+		private static IPublicKeyProvider Instance;
 
-		internal static IPublicKeyProvider Create() {
+		internal static IPublicKeyProvider Create( string authority ) {
+			if( Instance == null ) {
+				lock( Lock ) {
+					if( Instance == null ) {
+						Instance = new PublicKeyProvider( authority );
+					}
+				}
+			}
 			return Instance;
 		}
 	}
