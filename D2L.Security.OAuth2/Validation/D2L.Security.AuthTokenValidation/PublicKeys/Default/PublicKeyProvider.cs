@@ -21,19 +21,6 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			return key;
 		}
 
-		private X509SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
-
-			IList<string> x5cEntries = jsonWebKey.X5c;
-			if( x5cEntries.Count != 1 ) {
-				throw new Exception( string.Format( "Expected one x5c entry and found {0}", x5cEntries.Count ) );
-			}
-
-			byte[] payload = Convert.FromBase64String( x5cEntries.First() );
-			X509Certificate2 certificate = new X509Certificate2( payload );
-			X509SecurityToken token = new X509SecurityToken( certificate );
-			return token;
-		}
-
 		private IPublicKey ParseOpenIdKey( OpenIdConnectConfiguration configuration ) {
 			IList<JsonWebKey> jsonWebKeys = configuration.JsonWebKeySet.Keys;
 			if( jsonWebKeys.Count != 1 ) {
@@ -44,6 +31,24 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			string issuer = configuration.Issuer;
 
 			return new PublicKey( securityToken, issuer );
+		}
+
+		private X509SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
+			const string ACCEPTED_KEY_TYPE = "RSA";
+
+			if( jsonWebKey.Kty != ACCEPTED_KEY_TYPE ) {
+				throw new Exception( string.Format( "Expected key type to be {0} but found {1}", ACCEPTED_KEY_TYPE, jsonWebKey.Kty ) );
+			}
+
+			IList<string> x5cEntries = jsonWebKey.X5c;
+			if( x5cEntries.Count != 1 ) {
+				throw new Exception( string.Format( "Expected one x5c entry and found {0}", x5cEntries.Count ) );
+			}
+
+			byte[] payload = Convert.FromBase64String( x5cEntries.First() );
+			X509Certificate2 certificate = new X509Certificate2( payload );
+			X509SecurityToken token = new X509SecurityToken( certificate );
+			return token;
 		}
 	}
 }
