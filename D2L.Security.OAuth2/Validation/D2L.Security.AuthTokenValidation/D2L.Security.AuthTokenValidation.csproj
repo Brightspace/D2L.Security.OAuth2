@@ -71,6 +71,7 @@
     <Compile Include="PublicKeys\OpenIdConfigurations\IOpenIdConfigurationFetcher.cs" />
     <Compile Include="PublicKeys\PublicKeyProviderFactory.cs" />
     <Compile Include="TokenValidation\ClaimsPrincipalToIClaimsPrincipalAdapter.cs" />
+    <Compile Include="TokenValidation\Default\Helper.cs" />
     <Compile Include="TokenValidation\Default\JWTValidator.cs" />
     <Compile Include="TokenValidation\IClaimsPrincipal.cs" />
     <Compile Include="TokenValidation\IJWTValidator.cs" />
