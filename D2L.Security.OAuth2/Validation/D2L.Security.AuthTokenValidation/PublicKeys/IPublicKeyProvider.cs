@@ -1,7 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
 
 namespace D2L.Security.AuthTokenValidation.PublicKeys {
-	interface IPublicKeyProvider {
-		Task<IPublicKey> Fetch();
+	
+	interface IPublicKeyProvider : IDisposable {
+		IPublicKey Create();
 	}
 }
