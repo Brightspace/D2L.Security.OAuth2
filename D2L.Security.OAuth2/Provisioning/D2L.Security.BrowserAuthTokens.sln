@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserAuthTokens", "BrowserAuthTokens\BrowserAuthTokens.csproj", "{8E4E6959-EFC8-48F3-9479-A58B23C96C8C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.BrowserAuthTokens", "D2L.Security.BrowserAuthTokens\D2L.Security.BrowserAuthTokens.csproj", "{8E4E6959-EFC8-48F3-9479-A58B23C96C8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
