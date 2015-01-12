@@ -15,7 +15,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 
 			JwtSecurityTokenHandler tokenHandler = Helper.CreateTokenHandler();
 
-			IPublicKey key = m_keyProvider.Create();
+			IPublicKey key = m_keyProvider.Get();
 			TokenValidationParameters validationParameters =
 				Helper.CreateValidationParameters( key.Issuer, key.SecurityKey );
 
