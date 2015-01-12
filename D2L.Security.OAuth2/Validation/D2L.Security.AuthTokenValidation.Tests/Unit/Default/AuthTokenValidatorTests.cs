@@ -118,27 +118,31 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 			Assert.Throws<AuthorizationException>( () => m_authTokenValidator.VerifyAndDecode( httpRequest ) );
 		}
 
-		[Test]
-		public void VerifyAndDecode_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => m_authTokenValidator.VerifyAndDecode( "AB.CD.EF.GH" ) );
-		}
-
-		[Test]
-		public void VerifyAndDecode_JwtHasFewerThanThreeSegments_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => m_authTokenValidator.VerifyAndDecode( "AB.CD" ) );
-		}
-
-		[Test]
-		public void VerifyAndDecode_JwtIsEmpty_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => m_authTokenValidator.VerifyAndDecode( string.Empty ) );
-		}
-
-		[Test]
-		public void VerifyAndDecode_JwtHasEmptySegment_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => m_authTokenValidator.VerifyAndDecode( "AB..CD" ) );
-		}
-
 		#endregion VerifyAndDecode Tests
+
+		#region GetTokenParts Tests
+
+		[Test]
+		public void GetTokenParts_FourSegments_ExpectException() {
+			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD.EF.GH" ) );
+		}
+
+		[Test]
+		public void GetTokenParts_JwtHasFewerThanThreeSegments_ExpectException() {
+			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD" ) );
+		}
+
+		[Test]
+		public void GetTokenParts_JwtIsEmpty_ExpectException() {
+			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( string.Empty ) );
+		}
+
+		[Test]
+		public void GetTokenParts_JwtHasEmptySegment_ExpectException() {
+			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB..CD" ) );
+		}
+
+		#endregion GetTokenParts Tests
 
 		private string MakeJwtHeader( string algorithm, string type ) {
 			return string.Format( "{{ \"alg\": \"{0}\", \"typ\": \"{1}\"}}", algorithm, type );
