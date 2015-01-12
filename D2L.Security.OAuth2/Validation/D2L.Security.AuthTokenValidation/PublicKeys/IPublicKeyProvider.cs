@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace D2L.Security.AuthTokenValidation.PublicKeys {
+﻿namespace D2L.Security.AuthTokenValidation.PublicKeys {
 	
 	interface IPublicKeyProvider {
-		IPublicKey Create();
+		IPublicKey Get();
 	}
 }

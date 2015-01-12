@@ -15,7 +15,7 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			m_configurationFetcher = configurationFetcher;
 		}
 
-		IPublicKey IPublicKeyProvider.Create() {
+		IPublicKey IPublicKeyProvider.Get() {
 			OpenIdConnectConfiguration openIdKey = m_configurationFetcher.Fetch();
 			IPublicKey key = ParseOpenIdKey( openIdKey );
 			return key;

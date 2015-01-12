@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using D2L.Security.AuthTokenValidation.TokenValidation;
 using Newtonsoft.Json;
 
 namespace D2L.Security.AuthTokenValidation.Default {
 
 	internal sealed class AuthTokenValidator : IAuthTokenValidator {
 
-		private readonly IAuthServerPublicKeyProvider m_authServerPublicKeyProvider;
+		private readonly IJWTValidator m_validator;
 
 		public AuthTokenValidator(
-			IAuthServerPublicKeyProvider authServerPublicKeyProvider
+			IJWTValidator validator
 			) {
-			m_authServerPublicKeyProvider = authServerPublicKeyProvider;
+			m_validator = validator;
 		}
 
 		Principal IAuthTokenValidator.VerifyAndDecode( HttpRequest request ) {
@@ -47,11 +46,8 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			byte[] payloadBytes = Encoding.UTF8.GetBytes( UnencodeBase64Url( parts[ PAYLOAD_INDEX ] ) );
 			byte[] signature = Encoding.UTF8.GetBytes( parts[ SIGNATURE_INDEX ] );
 			
-			VerifySignature( payloadBytes, signature );
-
-			string payload = Encoding.UTF8.GetString( payloadBytes );
-
-			return GetPrincipal( payload );
+			IClaimsPrincipal claimsPrincipal = m_validator.Validate( jwt );
+			return GetPrincipal( claimsPrincipal );
 		}
 
 		internal static string GetTokenFromCookie( HttpRequest request ) {
@@ -113,23 +109,14 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			}
 		}
 
-		internal void VerifySignature( byte[] payloadBytes, byte[] signature ) {
+		internal static Principal GetPrincipal( IClaimsPrincipal claimsPrincipal ) {
 
-			using( ECDsaCng signer = new ECDsaCng( m_authServerPublicKeyProvider.Get() ) ) {
-				if( !signer.VerifyData( payloadBytes, signature ) ) {
-					throw new AuthorizationException( "Signature comparison failed" );
-				}
-			}
-		}
-
-		internal static Principal GetPrincipal( string payload ) {
-
-			Principal principal = JsonConvert.DeserializeObject<Principal>( payload );
-
-			HashSet<string> scopes = principal.Scopes ?? new HashSet<string>();
-			if( principal.IsBrowserUser ) {
-				scopes.Add( "*" );
-			}
+			Principal principal = new Principal(
+				-1337,
+				"DUMMY TENANT ID!!",
+				"DUMMY XSRF TOKEN!!",
+				null
+				);
 
 			return principal;
 		}
