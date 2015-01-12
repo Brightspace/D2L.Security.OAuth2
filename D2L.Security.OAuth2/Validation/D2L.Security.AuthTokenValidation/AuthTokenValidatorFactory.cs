@@ -1,11 +1,12 @@
 ﻿using System;
+using D2L.Security.AuthTokenValidation.Default;
 using D2L.Security.AuthTokenValidation.TokenValidation;
 
-namespace D2L.Security.AuthTokenValidation.Default {
+namespace D2L.Security.AuthTokenValidation {
 
-	public sealed class AuthTokenValidatorFactory : IAuthTokenValidatorFactory {
+	public static class AuthTokenValidatorFactory {
 
-		public IAuthTokenValidator Create(
+		public static IAuthTokenValidator Create(
 			Uri authServiceEndpoint
 			) {
 
