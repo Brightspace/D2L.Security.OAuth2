@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens;
 
 namespace D2L.Security.AuthTokenValidation.PublicKeys {
 	
 	/// <summary>
-	/// Used to decrypt a JWT
+	/// Used to decrypt tokens
 	/// </summary>
 	interface IPublicKey {
-		string Contents { get; }
+		SecurityKey SecurityKey { get; }
+		string Issuer { get; }
 	}
 }
