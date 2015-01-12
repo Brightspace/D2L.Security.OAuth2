@@ -5,19 +5,19 @@ using System.Threading.Tasks;
 namespace D2L.Security.AuthTokenValidation.Utilities {
 	internal static class AsyncHelper {
 
-		private static readonly TaskFactory _myTaskFactory = new TaskFactory( 
+		private static readonly TaskFactory MyTaskFactory = new TaskFactory( 
 			CancellationToken.None, 
 			TaskCreationOptions.None, 
 			TaskContinuationOptions.None, 
 			TaskScheduler.Default 
 			);
 
-		public static void RunSync( Func<Task> func ) {
-			_myTaskFactory.StartNew( func ).Unwrap().GetAwaiter().GetResult();
+		internal static void RunSync( Func<Task> func ) {
+			MyTaskFactory.StartNew( func ).Unwrap().GetAwaiter().GetResult();
 		}
 
-		public static TResult RunSync<TResult>( Func<Task<TResult>> func ) {
-			return _myTaskFactory.StartNew( func ).Unwrap().GetAwaiter().GetResult();
+		internal static TResult RunSync<TResult>( Func<Task<TResult>> func ) {
+			return MyTaskFactory.StartNew( func ).Unwrap().GetAwaiter().GetResult();
 		}
 	}
 }
