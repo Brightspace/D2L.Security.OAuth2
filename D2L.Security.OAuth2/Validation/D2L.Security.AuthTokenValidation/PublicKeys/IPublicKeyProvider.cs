@@ -2,7 +2,7 @@
 
 namespace D2L.Security.AuthTokenValidation.PublicKeys {
 	
-	interface IPublicKeyProvider : IDisposable {
+	interface IPublicKeyProvider {
 		IPublicKey Create();
 	}
 }

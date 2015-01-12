@@ -1,4 +1,6 @@
 ﻿using D2L.Security.AuthTokenValidation.PublicKeys.Default;
+using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations;
+using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Default;
 
 namespace D2L.Security.AuthTokenValidation.PublicKeys {
 	internal static class PublicKeyProviderFactory {
@@ -10,7 +12,8 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys {
 			if( Instance == null ) {
 				lock( Lock ) {
 					if( Instance == null ) {
-						Instance = new PublicKeyProvider( authority );
+						IOpenIdConfigurationFetcher openIdFetcher = new OpenIdConfigurationFetcher( authority );
+						Instance = new PublicKeyProvider( openIdFetcher );
 					}
 				}
 			}
