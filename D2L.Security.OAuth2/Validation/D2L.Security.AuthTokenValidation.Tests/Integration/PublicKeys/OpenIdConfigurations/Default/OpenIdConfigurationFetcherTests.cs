@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations;
+using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Default;
+using D2L.Security.AuthTokenValidation.Tests.Utilities;
+using Microsoft.IdentityModel.Protocols;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Integration.PublicKeys.OpenIdConfigurations.Default {
@@ -12,12 +12,19 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.PublicKeys.OpenIdCo
 
 		[Test]
 		public void Fetch_Success() {
-			Assert.Inconclusive();
+			IOpenIdConfigurationFetcher fetcher = 
+				new OpenIdConfigurationFetcher( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL );
+
+			OpenIdConnectConfiguration configuration = fetcher.Fetch();
+			Assert.AreEqual( TestUrls.ISSUER_URL, configuration.Issuer );
 		}
 
 		[Test]
 		public void Fetch_InvalidUrl_Throws() {
-			Assert.Inconclusive();
+			string badUrl = TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL + "somedummyurlfragment/";
+			IOpenIdConfigurationFetcher fetcher = new OpenIdConfigurationFetcher( badUrl );
+
+			Assert.Throws<InvalidOperationException>( () => fetcher.Fetch() );
 		}
 	}
 }
