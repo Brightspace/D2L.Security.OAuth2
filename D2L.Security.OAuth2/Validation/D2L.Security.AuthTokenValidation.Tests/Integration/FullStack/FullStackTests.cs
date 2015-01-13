@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using D2L.Security.AuthTokenValidation.Tests.Utilities;
 using D2L.Security.AuthTokenValidation.TokenValidation;
 using NUnit.Framework;
@@ -15,17 +11,19 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 		[Test]
 		public void Validate_Success() {
 
+			string expectedScope = TestCredentials.LOReSScopes.MANAGE;
+
 			string jwt = AuthServerInvoker.AuthenticateAndGetJWT(
-				LOReSManager.CLIENT_ID,
-				LOReSManager.SECRET,
-				LOReSScopes.MANAGE
+				TestCredentials.LOReSManager.CLIENT_ID,
+				TestCredentials.LOReSManager.SECRET,
+				expectedScope
 				);
 
-			IJWTValidator validator = JWTValidatorFactory.Create( AuthServerInvoker.AUTH_SERVER );
+			IJWTValidator validator = JWTValidatorFactory.Create( AuthServerInvoker.AUTHORITY_URL );
 			IClaimsPrincipal claimsPrincipal = validator.Validate( jwt );
 
 			Assert.IsTrue(
-				ContainsScopeValue( claimsPrincipal, LOReSScopes.MANAGE )
+				ContainsScopeValue( claimsPrincipal, expectedScope )
 				);
 		}
 

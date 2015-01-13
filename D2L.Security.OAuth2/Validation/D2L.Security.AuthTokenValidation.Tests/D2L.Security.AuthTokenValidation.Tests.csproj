@@ -71,6 +71,7 @@
     <Compile Include="Unit\PublicKeys\Default\PublicKeyTests.cs" />
     <Compile Include="Unit\TokenValidation\Default\JWTValidatorTests.cs" />
     <Compile Include="Utilities\AuthServerInvoker.cs" />
+    <Compile Include="Utilities\TestCredentials.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
