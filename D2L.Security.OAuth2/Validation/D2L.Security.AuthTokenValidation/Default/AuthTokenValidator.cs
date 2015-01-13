@@ -26,7 +26,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			string tokenFromAuthHeader = GetTokenFromAuthHeader( request );
 
 			if( tokenFromCookie != null && tokenFromAuthHeader != null ) {
-				throw new AuthorizationException( "Token cannot be provided in header and cookie" );
+				throw new AuthorizationException( "Token cannot be provided in the header and cookie" );
 			}
 
 			return @this.VerifyAndDecode( tokenFromCookie ?? tokenFromAuthHeader );
@@ -35,17 +35,12 @@ namespace D2L.Security.AuthTokenValidation.Default {
 		Principal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
 
 			const int HEADER_INDEX = 0;
-			const int PAYLOAD_INDEX = 1;
-			const int SIGNATURE_INDEX = 2;
 
 			string[] parts = GetTokenParts( jwt );
 
 			string headerJson = UnencodeBase64Url( parts[ HEADER_INDEX ] );
 			VerifyHeader( headerJson );
 
-			byte[] payloadBytes = Encoding.UTF8.GetBytes( UnencodeBase64Url( parts[ PAYLOAD_INDEX ] ) );
-			byte[] signature = Encoding.UTF8.GetBytes( parts[ SIGNATURE_INDEX ] );
-			
 			IClaimsPrincipal claimsPrincipal = m_validator.Validate( jwt );
 			return GetPrincipal( claimsPrincipal );
 		}
