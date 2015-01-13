@@ -24,7 +24,7 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 		private IPublicKey ParseOpenIdKey( OpenIdConnectConfiguration configuration ) {
 			IList<JsonWebKey> jsonWebKeys = configuration.JsonWebKeySet.Keys;
 			if( jsonWebKeys.Count != 1 ) {
-				throw new Exception( string.Format( "Expected one json web key and found {0}", jsonWebKeys.Count ) );
+				throw new Exception( string.Format( "Expected one json web key but got {0}", jsonWebKeys.Count ) );
 			}
 
 			SecurityToken securityToken = JsonWebKeyToSecurityToken( jsonWebKeys[0] );
@@ -37,12 +37,12 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			const string ACCEPTED_KEY_TYPE = "RSA";
 
 			if( jsonWebKey.Kty != ACCEPTED_KEY_TYPE ) {
-				throw new Exception( string.Format( "Expected key type to be {0} but found {1}", ACCEPTED_KEY_TYPE, jsonWebKey.Kty ) );
+				throw new Exception( string.Format( "Expected key type to be {0} but was {1}", ACCEPTED_KEY_TYPE, jsonWebKey.Kty ) );
 			}
 
 			IList<string> x5cEntries = jsonWebKey.X5c;
 			if( x5cEntries.Count != 1 ) {
-				throw new Exception( string.Format( "Expected one x5c entry and found {0}", x5cEntries.Count ) );
+				throw new Exception( string.Format( "Expected one x5c entry but got {0}", x5cEntries.Count ) );
 			}
 
 			byte[] payload = Convert.FromBase64String( x5cEntries.First() );
