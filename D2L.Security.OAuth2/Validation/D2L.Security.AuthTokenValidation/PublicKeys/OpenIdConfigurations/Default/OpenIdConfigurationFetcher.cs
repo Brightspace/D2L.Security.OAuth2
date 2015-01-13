@@ -12,14 +12,14 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Defau
 		}
 
 		OpenIdConnectConfiguration IOpenIdConfigurationFetcher.Fetch() {
-			OpenIdConnectConfiguration result = null;
+			OpenIdConnectConfiguration result;
 
 			using( HttpMessageHandler httpMessageHandler = new WebRequestHandler() ) {
 				using( HttpClient httpClient = new HttpClient( httpMessageHandler ) ) {
 					ConfigurationManager<OpenIdConnectConfiguration> configManager =
 						new ConfigurationManager<OpenIdConnectConfiguration>( m_authority, httpClient );
 					
-					result = AsyncHelper.RunSync<OpenIdConnectConfiguration>( 
+					result = AsyncHelper.RunSync( 
 						async () => await configManager.GetConfigurationAsync() 
 						);
 				}
