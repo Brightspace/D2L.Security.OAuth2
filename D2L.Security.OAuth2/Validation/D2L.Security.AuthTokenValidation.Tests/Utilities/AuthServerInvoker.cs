@@ -7,13 +7,9 @@ using System.Web;
 namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 
 	internal static class AuthServerInvoker {
-
-		private static readonly string AUTH_TOKEN_PROVISIONING_URL = "https://phwinsl01.proddev.d2l:44333/core/connect/token";
-
-		internal static readonly string AUTHORITY_URL = "https://phwinsl01.proddev.d2l:44333/core/";
 		
 		public static string AuthenticateAndGetJWT( string clientId, string clientSecret, string scope ) {
-			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( AUTH_TOKEN_PROVISIONING_URL );
+			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( TestUrls.AUTH_TOKEN_PROVISIONING_URL );
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
 

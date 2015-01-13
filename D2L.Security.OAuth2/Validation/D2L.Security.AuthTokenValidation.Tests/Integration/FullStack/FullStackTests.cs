@@ -19,7 +19,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 				expectedScope
 				);
 
-			IJWTValidator validator = JWTValidatorFactory.Create( AuthServerInvoker.AUTHORITY_URL );
+			IJWTValidator validator = JWTValidatorFactory.Create( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL );
 			IClaimsPrincipal claimsPrincipal = validator.Validate( jwt );
 
 			Assert.IsTrue(
