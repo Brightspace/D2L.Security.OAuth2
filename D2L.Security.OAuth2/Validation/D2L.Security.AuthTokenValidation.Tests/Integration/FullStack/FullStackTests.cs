@@ -28,7 +28,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 		}
 
 		private bool ContainsScopeValue( IClaimsPrincipal claimsPrincipal, string scopeValue ) {
-			string scopeValueFromClaim = claimsPrincipal.Claims.Where( x => x.Type == "scope" ).First().Value;
+			string scopeValueFromClaim = claimsPrincipal.Claims.First( x => x.Type == "scope" ).Value;
 			return scopeValue == scopeValueFromClaim;
 		}
 	}

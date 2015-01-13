@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Security.Principal;
 
-namespace D2L.Security.AuthTokenValidation {
+namespace D2L.Security.AuthTokenValidation.Default {
 
-	public sealed class Principal {
+	internal sealed class Principal : IGenericPrincipal {
 
 		public Principal(
 			long userId,
@@ -35,6 +36,14 @@ namespace D2L.Security.AuthTokenValidation {
 			if( !HasScope( scope ) ) {
 				throw new AuthorizationException( string.Format( "Not authorized for scope '{0}'", scope ) );
 			}
+		}
+
+		public bool IsInRole( string role ) {
+			throw new System.NotImplementedException();
+		}
+
+		public IIdentity Identity {
+			get { throw new System.NotImplementedException(); }
 		}
 	}
 }
