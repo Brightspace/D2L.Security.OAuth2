@@ -41,8 +41,8 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			string headerJson = UnencodeBase64Url( parts[ HEADER_INDEX ] );
 			VerifyHeader( headerJson );
 
-			IClaimsPrincipal claimsPrincipal = m_validator.Validate( jwt );
-			return GetPrincipal( claimsPrincipal );
+			IValidatedJWT validatedJWT = m_validator.Validate( jwt );
+			return GetPrincipal( validatedJWT );
 		}
 
 		internal static string GetTokenFromCookie( HttpRequest request ) {
@@ -104,7 +104,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			}
 		}
 
-		internal static Principal GetPrincipal( IClaimsPrincipal claimsPrincipal ) {
+		internal static Principal GetPrincipal( IValidatedJWT validatedJWT ) {
 
 			Principal principal = new Principal(
 				-1337,
