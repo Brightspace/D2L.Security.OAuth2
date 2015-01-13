@@ -11,37 +11,37 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 	internal sealed class JWTValidatorTests {
 
 		[Test]
-		public void RSA_ValidIssuer_NonExpiredToken_Success() {
+		public void Validate_RSA_ValidIssuer_NonExpiredToken_Success() {
 			Assert.Inconclusive();
 		}
 
 		[Test]
-		public void RSA_ValidIssuer_ExpiredToken_Failure() {
+		public void Validate_RSA_ValidIssuer_ExpiredToken_Failure() {
 			Assert.Inconclusive();
 		}
 
 		[Test]
-		public void RSA_InvalidIssuer_NonExpiredToken_Failure() {
+		public void Validate_RSA_InvalidIssuer_NonExpiredToken_Failure() {
 			Assert.Inconclusive();
 		}
 
 		[Test]
-		public void NonRSA_ValidIssuer_NonExpiredToken_Failure() {
+		public void Validate_NonRSA_ValidIssuer_NonExpiredToken_Failure() {
 			Assert.Inconclusive();
 		}
 
 		[Test]
-		public void NonRSA_InvalidIssuer_NonExpiredToken_Failure() {
+		public void Validate_NonRSA_InvalidIssuer_NonExpiredToken_Failure() {
 			Assert.Inconclusive();
 		}
 
 		[Test]
-		public void RSA_InvalidIssuer_ExpiredToken_Failure() {
+		public void Validate_RSA_InvalidIssuer_ExpiredToken_Failure() {
 			Assert.Inconclusive();
 		}
 
 		[Test]
-		public void NonRSA_InvalidIssuer_ExpiredToken_Failure() {
+		public void Validate_NonRSA_InvalidIssuer_ExpiredToken_Failure() {
 			Assert.Inconclusive();
 		}
 	}
