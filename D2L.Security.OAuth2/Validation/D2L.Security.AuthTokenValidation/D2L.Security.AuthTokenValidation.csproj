@@ -55,6 +55,7 @@
     <Compile Include="Default\AuthTokenValidator.cs" />
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="IAuthTokenValidator.cs" />
+    <Compile Include="IGenericPrincipal.cs" />
     <Compile Include="PublicKeys\Default\PublicKey.cs" />
     <Compile Include="PublicKeys\Default\PublicKeyProvider.cs" />
     <Compile Include="PublicKeys\IPublicKeyProvider.cs" />
@@ -66,7 +67,7 @@
     <Compile Include="TokenValidation\Default\JWTValidator.cs" />
     <Compile Include="TokenValidation\IClaimsPrincipal.cs" />
     <Compile Include="TokenValidation\IJWTValidator.cs" />
-    <Compile Include="Principal.cs" />
+    <Compile Include="Default\Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicKeys\IPublicKey.cs" />
     <Compile Include="TokenValidation\JWTValidatorFactory.cs" />

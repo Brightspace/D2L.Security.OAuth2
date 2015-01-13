@@ -18,7 +18,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			m_validator = validator;
 		}
 
-		Principal IAuthTokenValidator.VerifyAndDecode( HttpRequest request ) {
+		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( HttpRequest request ) {
 
 			IAuthTokenValidator @this = this;
 
@@ -32,7 +32,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return @this.VerifyAndDecode( tokenFromCookie ?? tokenFromAuthHeader );
 		}
 
-		Principal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
+		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
 
 			const int HEADER_INDEX = 0;
 
