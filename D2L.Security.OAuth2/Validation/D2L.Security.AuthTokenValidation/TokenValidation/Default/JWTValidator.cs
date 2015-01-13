@@ -7,6 +7,8 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 	internal sealed class JWTValidator : IJWTValidator {
 
 		private const string ALLOWED_SIGNATURE_ALGORITHM = "RS256";
+		private const string ALLOWED_TOKEN_TYPE = "JWT";
+
 		private readonly IPublicKeyProvider m_keyProvider;
 
 		internal JWTValidator( IPublicKeyProvider keyProvider ) {
@@ -43,6 +45,16 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 					"Expected signature algorithm {0} but was {1}",
 					ALLOWED_SIGNATURE_ALGORITHM,
 					jwtSecurityToken.SignatureAlgorithm
+					);
+				throw new Exception( message );
+			}
+
+			string tokenType = jwtSecurityToken.Header.Typ;
+			if( tokenType != ALLOWED_TOKEN_TYPE ) {
+				string message = string.Format(
+					"Expected token type {0} but was {1}",
+					ALLOWED_TOKEN_TYPE,
+					tokenType
 					);
 				throw new Exception( message );
 			}
