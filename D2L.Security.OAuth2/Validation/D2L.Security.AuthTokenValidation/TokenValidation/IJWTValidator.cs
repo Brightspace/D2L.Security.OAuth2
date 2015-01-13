@@ -4,6 +4,6 @@
 	/// Entry point into validating a JWT
 	/// </summary>
 	interface IJWTValidator {
-		IClaimsPrincipal Validate( string jwt );
+		IValidatedJWT Validate( string jwt );
 	}
 }

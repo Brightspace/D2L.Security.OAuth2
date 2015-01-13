@@ -13,7 +13,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 			m_keyProvider = keyProvider;
 		}
 
-		IClaimsPrincipal IJWTValidator.Validate( string jwt ) {
+		IValidatedJWT IJWTValidator.Validate( string jwt ) {
 
 			JwtSecurityTokenHandler tokenHandler = Helper.CreateTokenHandler();
 
@@ -47,8 +47,8 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 				throw new Exception( message );
 			}
 
-			IClaimsPrincipal claimsPrincipal = new ClaimsPrincipalToIClaimsPrincipalAdapter( principal );
-			return claimsPrincipal;
+			IValidatedJWT validatedJWT = new ValidatedJWT( jwtSecurityToken );
+			return validatedJWT;
 		}
 	}
 }

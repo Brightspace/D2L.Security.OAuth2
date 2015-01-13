@@ -20,15 +20,15 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 				);
 
 			IJWTValidator validator = JWTValidatorFactory.Create( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL );
-			IClaimsPrincipal claimsPrincipal = validator.Validate( jwt );
+			IValidatedJWT validatedJWT = validator.Validate( jwt );
 
 			Assert.IsTrue(
-				ContainsScopeValue( claimsPrincipal, expectedScope )
+				ContainsScopeValue( validatedJWT, expectedScope )
 				);
 		}
 
-		private bool ContainsScopeValue( IClaimsPrincipal claimsPrincipal, string scopeValue ) {
-			string scopeValueFromClaim = claimsPrincipal.Claims.First( x => x.Type == "scope" ).Value;
+		private bool ContainsScopeValue( IValidatedJWT validatedJWT, string scopeValue ) {
+			string scopeValueFromClaim = validatedJWT.Claims.First( x => x.Type == "scope" ).Value;
 			return scopeValue == scopeValueFromClaim;
 		}
 	}
