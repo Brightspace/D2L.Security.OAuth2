@@ -61,7 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\JWTValidator\JWTValidatorTests.cs" />
+    <Compile Include="Integration\FullStack\FullStackTests.cs" />
     <Compile Include="Integration\PublicKeys\OpenIdConfigurations\Default\OpenIdConfigurationFetcherTests.cs" />
     <Compile Include="Unit\Default\AuthTokenValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
