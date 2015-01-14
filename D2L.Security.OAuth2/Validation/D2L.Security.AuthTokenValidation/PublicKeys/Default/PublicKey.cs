@@ -9,6 +9,15 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 		private readonly string m_issuer;
 
 		internal PublicKey( SecurityToken securityToken, string issuer ) {
+
+			if( securityToken == null ) {
+				throw new ArgumentException( "Cannot be null", "securityToken" );
+			}
+
+			if( issuer == null ) {
+				throw new ArgumentException( "Cannot be null", "issuer" );
+			}
+
 			m_securityKey = ExtractKeyFrom( securityToken );
 			m_issuer = issuer;
 		}
@@ -23,6 +32,10 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 
 		private SecurityKey ExtractKeyFrom( SecurityToken securityToken ) {
 			ReadOnlyCollection<SecurityKey> securityKeys = securityToken.SecurityKeys;
+
+			if( securityKeys == null ) {
+				throw new ArgumentException( "Cannot be null", "securityToken.SecurityKeys" );
+			}
 
 			if( securityKeys.Count != 1 ) {
 				throw new Exception( string.Format( "Expected one security key but got {0}", securityKeys.Count ) );

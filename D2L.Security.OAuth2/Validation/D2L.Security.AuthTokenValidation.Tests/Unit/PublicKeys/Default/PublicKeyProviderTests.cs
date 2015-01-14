@@ -53,6 +53,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.PublicKeys.Default {
 		private IPublicKeyProvider MakePublicKeyProvider( string keysJson ) {
 			OpenIdConnectConfiguration configuration = new OpenIdConnectConfiguration();
 			configuration.JsonWebKeySet = new JsonWebKeySet( keysJson );
+			configuration.Issuer = "dummyissuer";
 
 			Mock<IOpenIdConfigurationFetcher> fetcherMock = new Mock<IOpenIdConfigurationFetcher>();
 			fetcherMock.Setup( x => x.Fetch() ).Returns( configuration );
