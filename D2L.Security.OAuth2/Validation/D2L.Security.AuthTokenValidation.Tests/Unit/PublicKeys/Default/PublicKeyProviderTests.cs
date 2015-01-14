@@ -29,5 +29,10 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.PublicKeys.Default {
 		public void Get_WrongX5CEntryCount_Throws() {
 			Assert.Inconclusive();
 		}
+
+		[Test]
+		public void Get_WrongJsonWebKeyType_Throws() {
+			Assert.Inconclusive();
+		}
 	}
 }

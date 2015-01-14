@@ -19,5 +19,20 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.PublicKeys.Default {
 		public void Constructor_WrongNumberOfSecurityKeys_Throws() {
 			Assert.Inconclusive();
 		}
+
+		[Test]
+		public void Constructor_NullSecurityToken_Throws() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void Constructor_NullIssuer_Throws() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void Constructor_SecurityKeysCollectionNull_Throws() {
+			Assert.Inconclusive();
+		}
 	}
 }
