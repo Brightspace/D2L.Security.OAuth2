@@ -34,6 +34,10 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
 
+			if( jwt == null ) {
+				throw new AuthorizationException( "No token specified" );
+			}
+
 			const int HEADER_INDEX = 0;
 
 			string[] parts = GetTokenParts( jwt );
