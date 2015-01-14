@@ -21,8 +21,8 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 			get { return m_issuer; }
 		}
 
-		private SecurityKey ExtractKeyFrom( SecurityToken token ) {
-			ReadOnlyCollection<SecurityKey> securityKeys = token.SecurityKeys;
+		private SecurityKey ExtractKeyFrom( SecurityToken securityToken ) {
+			ReadOnlyCollection<SecurityKey> securityKeys = securityToken.SecurityKeys;
 
 			if( securityKeys.Count != 1 ) {
 				throw new Exception( string.Format( "Expected one security key but got {0}", securityKeys.Count ) );

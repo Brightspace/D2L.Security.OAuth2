@@ -32,7 +32,7 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 
 			return new PublicKey( securityToken, issuer );
 		}
-		 
+
 		private X509SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
 			const string ACCEPTED_KEY_TYPE = "RSA";
 
