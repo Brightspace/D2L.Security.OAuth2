@@ -73,7 +73,7 @@
     <Compile Include="Utilities\AuthServerInvoker.cs" />
     <Compile Include="Utilities\TestCredentials.cs" />
     <Compile Include="Utilities\TestUrls.cs" />
-    <Compile Include="Utilities\TokenProvider.cs" />
+    <Compile Include="Utilities\TestTokenProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

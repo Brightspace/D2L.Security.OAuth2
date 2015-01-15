@@ -3,18 +3,10 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
-	internal static class TokenProvider {
+	internal static class TestTokenProvider {
 
-		public static RSAParameters GetMeAKey() {
-			using( var rsa = new RSACryptoServiceProvider( 2048 ) ) {
-				rsa.PersistKeyInCsp = false;
-				RSAParameters rsaKeys = rsa.ExportParameters( true );
-				return rsaKeys;
-			}
-		}
-
-		public static string MakeJwt( string alg, string typ, string payload, RSAParameters rsaKeys ) {
-			var header = new StringBuilder( "{" );
+		internal static string MakeJwt( string alg, string typ, string payload, RSAParameters rsaKeys ) {
+			StringBuilder header = new StringBuilder( "{" );
 			if( alg != null ) {
 				header.Append( "\"alg\":\"" );
 				header.Append( alg );
@@ -32,17 +24,27 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 
 			byte[] signature;
 
-			using( var rsa = new RSACryptoServiceProvider() ) {
+			using( RSACryptoServiceProvider rsa = new RSACryptoServiceProvider() ) {
 				rsa.ImportParameters( rsaKeys );
 				signature = rsa.SignData( Encoding.UTF8.GetBytes( payload ), CryptoConfig.MapNameToOID( "SHA256" ) );
 			}
 
-			var jwt = String.Format( "{0}.{1}.{2}",
-						Base64Url( header.ToString() ),
-						Base64Url( payload ),
-						Base64Url( signature ) );
+			string jwt = String.Format( 
+				"{0}.{1}.{2}",
+				Base64Url( header.ToString() ),
+				Base64Url( payload ),
+				Base64Url( signature ) 
+				);
 
 			return jwt;
+		}
+
+		internal static RSAParameters CreateRSAKey() {
+			using( RSACryptoServiceProvider rsa = new RSACryptoServiceProvider( 2048 ) ) {
+				rsa.PersistKeyInCsp = false;
+				RSAParameters rsaKeys = rsa.ExportParameters( true );
+				return rsaKeys;
+			}
 		}
 
 		private static string Base64Url( string s ) {
@@ -50,10 +52,11 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 		}
 
 		private static string Base64Url( byte[] s ) {
-			return Convert.ToBase64String( s )
-						.Replace( '+', '-' )
-						.Replace( '/', '_' )
-						.Trim( '=' );
+			return Convert
+				.ToBase64String( s )
+				.Replace( '+', '-' )
+				.Replace( '/', '_' )
+				.Trim( '=' );
 		}
 
 	}
