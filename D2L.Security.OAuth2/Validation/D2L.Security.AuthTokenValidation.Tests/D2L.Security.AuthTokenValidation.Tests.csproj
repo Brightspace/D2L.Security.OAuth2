@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Integration\FullStack\FullStackTests.cs" />
     <Compile Include="Integration\PublicKeys\OpenIdConfigurations\Default\OpenIdConfigurationFetcherTests.cs" />
+    <Compile Include="Integration\TokenValidation\TokenValidationTests.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Unit\Default\AuthTokenValidatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

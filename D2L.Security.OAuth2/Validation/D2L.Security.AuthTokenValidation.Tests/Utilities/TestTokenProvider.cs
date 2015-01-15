@@ -5,7 +5,7 @@ using System.Text;
 namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 	internal static class TestTokenProvider {
 
-		internal static string MakeJwt( string alg, string typ, string payload, RSAParameters rsaKeys ) {
+		private static string MakeHeader( string alg, string typ ) {
 			StringBuilder header = new StringBuilder( "{" );
 			if( alg != null ) {
 				header.Append( "\"alg\":\"" );
@@ -22,11 +22,18 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			}
 			header.Append( '}' );
 
-			byte[] signature;
+			return header.ToString();
+		}
 
-			using( RSACryptoServiceProvider rsa = new RSACryptoServiceProvider() ) {
-				rsa.ImportParameters( rsaKeys );
-				signature = rsa.SignData( Encoding.UTF8.GetBytes( payload ), CryptoConfig.MapNameToOID( "SHA256" ) );
+		internal static string MakeJwt( string alg, string typ, string payload, RSAParameters rsaParams ) {
+			string header = MakeHeader( alg, typ );
+
+			byte[] signature;
+			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider() ) {
+				rsaService.ImportParameters( rsaParams );
+				byte[] payloadBytes = Encoding.UTF8.GetBytes( payload );
+				string oid = CryptoConfig.MapNameToOID( "SHA256" );
+				signature = rsaService.SignData( Encoding.UTF8.GetBytes(Base64Url(header) + "." + Base64Url(payload)), oid );
 			}
 
 			string jwt = String.Format( 
@@ -39,11 +46,11 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			return jwt;
 		}
 
-		internal static RSAParameters CreateRSAKey() {
-			using( RSACryptoServiceProvider rsa = new RSACryptoServiceProvider( 2048 ) ) {
-				rsa.PersistKeyInCsp = false;
-				RSAParameters rsaKeys = rsa.ExportParameters( true );
-				return rsaKeys;
+		internal static RSAParameters CreateRSAParams() {
+			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
+				rsaService.PersistKeyInCsp = false;
+				RSAParameters rsaParams = rsaService.ExportParameters( true );
+				return rsaParams;
 			}
 		}
 

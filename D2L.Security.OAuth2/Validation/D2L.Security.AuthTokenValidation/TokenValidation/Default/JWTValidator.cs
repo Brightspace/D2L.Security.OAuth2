@@ -33,19 +33,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 
 			SecurityToken securityToken;
 			ClaimsPrincipal principal = m_tokenHandler.ValidateToken( jwt, validationParameters, out securityToken );
-
-			//Type source = securityToken.GetType();
-			//Type target = typeof( JwtSecurityToken );
 			
-			//if( !target.IsAssignableFrom( source ) ) {
-			//	string message = string.Format(
-			//		"Expected to deserialize token to {0} but was {1}",
-			//		target.AssemblyQualifiedName,
-			//		source.AssemblyQualifiedName
-			//		);
-			//	throw new Exception( message );
-			//}
-
 			JwtSecurityToken jwtSecurityToken = (JwtSecurityToken)securityToken;
 
 			if( jwtSecurityToken.SignatureAlgorithm != ALLOWED_SIGNATURE_ALGORITHM ) {
