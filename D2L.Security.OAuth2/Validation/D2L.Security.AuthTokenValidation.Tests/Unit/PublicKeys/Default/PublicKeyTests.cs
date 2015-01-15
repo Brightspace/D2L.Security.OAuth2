@@ -40,7 +40,8 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.PublicKeys.Default {
 
 		[Test]
 		public void Constructor_NullSecurityToken_Throws() {
-			Assert.Throws<ArgumentException>( () => new PublicKey( null, "dummyissuer" ) );
+			SecurityToken securityToken = null;
+			Assert.Throws<ArgumentException>( () => new PublicKey( securityToken, "dummyissuer" ) );
 		}
 
 		[Test]

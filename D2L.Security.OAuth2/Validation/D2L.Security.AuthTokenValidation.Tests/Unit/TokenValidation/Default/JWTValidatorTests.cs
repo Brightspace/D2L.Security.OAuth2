@@ -20,7 +20,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 				"RS256",
 				"JWT",
 				"{}",
-				TestTokenProvider.CreateRSAKey()
+				TestTokenProvider.CreateRSAParams()
 				);
 			IJWTValidator validator = MakeValidator( jwt );
 			Assert.DoesNotThrow( () => validator.Validate( jwt ) );
@@ -32,7 +32,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 				"INVALIDALGORITHM",
 				"JWT",
 				"{}",
-				TestTokenProvider.CreateRSAKey()
+				TestTokenProvider.CreateRSAParams()
 				);
 			IJWTValidator validator = MakeValidator( jwt );
 			Assert.Throws<InvalidTokenTypeException>( () => validator.Validate( jwt ) );
@@ -45,7 +45,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 				"RS256",
 				"INVALIDTYPE",
 				"{}",
-				TestTokenProvider.CreateRSAKey()
+				TestTokenProvider.CreateRSAParams()
 				);
 			Assert.Throws<ArgumentException>( () => new JwtSecurityToken( jwt ) );
 		}
@@ -57,7 +57,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 				"RS256",
 				"JWT",
 				"{}",
-				TestTokenProvider.CreateRSAKey()
+				TestTokenProvider.CreateRSAParams()
 				);
 
 			IJWTValidator validator = MakeValidator( securityTokenMock.Object );

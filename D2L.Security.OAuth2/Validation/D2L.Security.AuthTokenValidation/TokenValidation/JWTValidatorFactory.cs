@@ -17,7 +17,6 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation {
 
 			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 			tokenHandler.Configuration = tokenHandlerConfiguration;
-
 			
 			IJWTValidator validator = new JWTValidator( keyProvider, tokenHandler );
 			return validator;
