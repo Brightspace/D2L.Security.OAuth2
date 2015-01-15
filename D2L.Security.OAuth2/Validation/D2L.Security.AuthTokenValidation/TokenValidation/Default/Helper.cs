@@ -1,6 +1,4 @@
-﻿using System.IdentityModel.Selectors;
-using System.IdentityModel.Tokens;
-using System.ServiceModel.Security;
+﻿using System.IdentityModel.Tokens;
 
 namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 	internal static class Helper {
@@ -21,18 +19,6 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 			parameters.ValidateActor = false;
 
 			return parameters;
-		}
-
-		internal static JwtSecurityTokenHandler CreateTokenHandler() {
-			SecurityTokenHandlerConfiguration tokenHandlerConfiguration =
-				new SecurityTokenHandlerConfiguration();
-			tokenHandlerConfiguration.CertificateValidationMode = X509CertificateValidationMode.None;
-			tokenHandlerConfiguration.CertificateValidator = X509CertificateValidator.None;
-
-			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-			tokenHandler.Configuration = tokenHandlerConfiguration;
-
-			return tokenHandler;
 		}
 	}
 }
