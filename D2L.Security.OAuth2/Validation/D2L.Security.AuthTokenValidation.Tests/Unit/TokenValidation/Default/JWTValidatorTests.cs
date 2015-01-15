@@ -16,18 +16,23 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 
 		[Test]
 		public void Validate_Success() {
-			string jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlA5NmNVbnoxQWcxaWhnRjQ3c0EtWmU4VGxxQSIsImtpZCI6IlA5NmNVbnoxQWcxaWhnRjQ3c0EtWmU4VGxxQSJ9.eyJjbGllbnRfaWQiOiJsb3Jlc19tYW5hZ2VyX2NsaWVudCIsInNjb3BlIjoiaHR0cHM6Ly9hcGkuYnJpZ2h0c3BhY2UuY29tL2F1dGgvbG9yZXMubWFuYWdlIiwiaXNzIjoiaHR0cHM6Ly9hcGkuZDJsLmNvbS9hdXRoIiwiYXVkIjoiaHR0cHM6Ly9hcGkuZDJsLmNvbS9hdXRoL3Jlc291cmNlcyIsImV4cCI6MTQyMTI3MDExMiwibmJmIjoxNDIxMjY2NTEyfQ.mvx8lLbS_AxMEpFGW_KrZ7fTq1O0KbvHPVS5igDk8gDF_TdrlyuyRcpYGtdWqt4YVDg5reJDTvF_4tg9lHQB78mrKrib_d1bbqt2eRvqHA8Q5vo6y_1OyrOWnUByH0RC7fROCJBojpUF72oJGAl4DrwabVmK-oqU-7_jVGLJVAWEMixoiH3lsjGzLZvJadi3RSa7ZmDU37j6eWblo-VHT_f1kDD3ESKLRR6-oQjJrUK-CUNzHrNGLF60LvV1HW1DOQgdCrwPLKJHE0LobBm5skMNgxHYwIXTmFuQGeoebA35hNQYLySrw8F10K2V1xGZrIIc9HLHQYcfjAPfCM4Kmw";
+			string jwt = TestTokenProvider.MakeJwt(
+				"RS256",
+				"JWT",
+				"{}",
+				TestTokenProvider.CreateRSAKey()
+				);
 			IJWTValidator validator = MakeValidator( jwt );
 			Assert.DoesNotThrow( () => validator.Validate( jwt ) );
 		}
 
 		[Test]
 		public void Validate_InvalidAlgorithm_Failure() {
-			string jwt = TokenProvider.MakeJwt(
+			string jwt = TestTokenProvider.MakeJwt(
 				"INVALIDALGORITHM",
 				"JWT",
 				"{}",
-				TokenProvider.GetMeAKey()
+				TestTokenProvider.CreateRSAKey()
 				);
 			IJWTValidator validator = MakeValidator( jwt );
 			Assert.Throws<InvalidTokenTypeException>( () => validator.Validate( jwt ) );
@@ -36,11 +41,11 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 		[Ignore("To be translated into an integration test")]
 		[Test]
 		public void Validate_InvalidTokenType_Failure() {
-			string jwt = TokenProvider.MakeJwt(
+			string jwt = TestTokenProvider.MakeJwt(
 				"RS256",
 				"INVALIDTYPE",
 				"{}",
-				TokenProvider.GetMeAKey()
+				TestTokenProvider.CreateRSAKey()
 				);
 			Assert.Throws<ArgumentException>( () => new JwtSecurityToken( jwt ) );
 		}
@@ -48,11 +53,11 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 		[Test]
 		public void Validate_InvalidDotNetSecurityTokenType_Failure() {
 			Mock<SecurityToken> securityTokenMock = new Mock<SecurityToken>();
-			string jwt = TokenProvider.MakeJwt(
+			string jwt = TestTokenProvider.MakeJwt(
 				"RS256",
 				"JWT",
 				"{}",
-				TokenProvider.GetMeAKey()
+				TestTokenProvider.CreateRSAKey()
 				);
 
 			IJWTValidator validator = MakeValidator( securityTokenMock.Object );
