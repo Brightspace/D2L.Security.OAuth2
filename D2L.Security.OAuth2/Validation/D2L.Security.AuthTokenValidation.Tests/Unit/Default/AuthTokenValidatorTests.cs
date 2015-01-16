@@ -85,32 +85,6 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 
 		#endregion VerifyAndDecode Tests
 
-		#region GetTokenParts Tests
-
-		// ============== make into integration tests ====================
-		//[Test]
-		//public void GetTokenParts_FourSegments_ExpectException() {
-		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD.EF.GH" ) );
-		//}
-
-		//[Test]
-		//public void GetTokenParts_JwtHasFewerThanThreeSegments_ExpectException() {
-		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD" ) );
-		//}
-
-		//[Test]
-		//public void GetTokenParts_JwtIsEmpty_ExpectException() {
-		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( string.Empty ) );
-		//}
-
-		//[Test]
-		//public void GetTokenParts_JwtHasEmptySegment_ExpectException() {
-		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB..CD" ) );
-		//}
-		// ============== END make into integration tests ====================
-
-		#endregion GetTokenParts Tests
-
 		private HttpRequest CreateHttpRequest() {
 			return new HttpRequest( null, "http://www.google.ca", null );
 		}
