@@ -124,9 +124,56 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 		}
 
 		[Test]
+		public void EmptyHeader_Failure() {
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			int indexOfFirstDot = jwt.IndexOf( '.' );
+			jwt = jwt.Substring( indexOfFirstDot );
+
+			Assertions.ExceptionStemsFrom<ArgumentException>(
+				() => m_validator.Validate( jwt )
+				);
+		}
+
+		[Test]
 		public void EmptyPayload_Failure() {
 			string payload = string.Empty;
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+
+			Assertions.ExceptionStemsFrom<ArgumentException>(
+				() => m_validator.Validate( jwt )
+				);
+		}
+
+		[Test]
+		public void EmptySignature_Failure() {
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			int indexOfLastDot = jwt.LastIndexOf( '.' );
+			jwt = jwt.Substring( 0, indexOfLastDot + 1 );
+
+			Assertions.ExceptionStemsFrom<SecurityTokenValidationException>(
+				() => m_validator.Validate( jwt )
+				);
+		}
+
+		[Test]
+		public void TooFewJWTSegments_Failure() {
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			int indexOfLastDot = jwt.LastIndexOf( '.' );
+			jwt = jwt.Substring( 0, indexOfLastDot );
+
+			Assertions.ExceptionStemsFrom<ArgumentException>(
+				() => m_validator.Validate( jwt )
+				);
+		}
+
+		[Test]
+		public void TooManyJWTSegments_Failure() {
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			jwt += ".asdf";
 
 			Assertions.ExceptionStemsFrom<ArgumentException>(
 				() => m_validator.Validate( jwt )
