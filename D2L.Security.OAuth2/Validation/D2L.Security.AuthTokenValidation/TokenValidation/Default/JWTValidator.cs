@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using D2L.Security.AuthTokenValidation.PublicKeys;
@@ -23,8 +24,8 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 
 		IValidatedJWT IJWTValidator.Validate( string jwt ) {
 
-			if( jwt == null ) {
-				throw new ArgumentException( "Cannot be null", jwt );
+			if( String.IsNullOrEmpty( jwt ) ) {
+				throw new ArgumentException( "Cannot be null or empty", jwt );
 			}
 
 			IPublicKey key = m_keyProvider.Get();
