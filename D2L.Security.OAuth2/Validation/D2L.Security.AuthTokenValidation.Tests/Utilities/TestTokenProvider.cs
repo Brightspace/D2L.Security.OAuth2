@@ -5,25 +5,7 @@ using System.Text;
 namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 	internal static class TestTokenProvider {
 
-		private static string MakeHeader( string alg, string typ ) {
-			StringBuilder header = new StringBuilder( "{" );
-			if( alg != null ) {
-				header.Append( "\"alg\":\"" );
-				header.Append( alg );
-				header.Append( "\"" );
-			}
-			if( typ != null ) {
-				if( alg != null ) {
-					header.Append( ',' );
-				}
-				header.Append( "\"typ\":\"" );
-				header.Append( typ );
-				header.Append( "\"" );
-			}
-			header.Append( '}' );
-
-			return header.ToString();
-		}
+		private static readonly DateTime UNIX_EPOCH_BEGINNING = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
 		internal static string MakeJwt( string algorithm, string tokenType, string payload, RSAParameters rsaParams ) {
 			string header = MakeHeader( algorithm, tokenType );
@@ -49,12 +31,53 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			return jwt;
 		}
 
+		internal static string MakePayload( string issuer, string scope, TimeSpan expiryFromNow ) {
+			long expiryInSeconds = GetSecondsRelativeToNow( expiryFromNow );
+
+			StringBuilder payloadBuilder = new StringBuilder( "{\"client_id\":\"lores_manager_client\",\"scope\":\"" );
+			payloadBuilder.Append( scope );
+			payloadBuilder.Append( "\",\"iss\":\"" );
+			payloadBuilder.Append( issuer );
+			payloadBuilder.Append( "\",\"aud\":\"https://api.d2l.com/auth/resources\",\"exp\":" );
+			payloadBuilder.Append( expiryInSeconds );
+			payloadBuilder.Append( ",\"nbf\":1421352874}" );
+
+			return payloadBuilder.ToString();
+		}
+
 		internal static RSAParameters CreateRSAParams() {
 			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
 				rsaService.PersistKeyInCsp = false;
 				RSAParameters rsaParams = rsaService.ExportParameters( true );
 				return rsaParams;
 			}
+		}
+
+		private static long GetSecondsRelativeToNow( TimeSpan delta ) {
+			DateTime expiryTime = DateTime.UtcNow + delta;
+			TimeSpan timeToExpireSinceUnixEpoch = expiryTime - UNIX_EPOCH_BEGINNING;
+			long seconds = (long)timeToExpireSinceUnixEpoch.TotalSeconds;
+			return seconds;
+		}
+
+		private static string MakeHeader( string alg, string typ ) {
+			StringBuilder header = new StringBuilder( "{" );
+			if( alg != null ) {
+				header.Append( "\"alg\":\"" );
+				header.Append( alg );
+				header.Append( "\"" );
+			}
+			if( typ != null ) {
+				if( alg != null ) {
+					header.Append( ',' );
+				}
+				header.Append( "\"typ\":\"" );
+				header.Append( typ );
+				header.Append( "\"" );
+			}
+			header.Append( '}' );
+
+			return header.ToString();
 		}
 
 		private static string Base64Url( string s ) {
