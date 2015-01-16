@@ -15,41 +15,6 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 
 		private readonly IAuthTokenValidator m_authTokenValidator = new AuthTokenValidator( null );
 
-		#region VerifyHeader Tests
-
-		[Test]
-		public void VerifyHeader_ValidHeader_Succeeds() {
-
-			string jwtHeader = MakeJwtHeader( "RS256", "JWT" );
-
-			AuthTokenValidator.VerifyHeader( jwtHeader );
-
-			Assert.Pass();
-		}
-
-		[Test]
-		public void VerifyHeader_WrongAlgorithm_Exception() {
-
-			string jwtHeader = MakeJwtHeader( "ABCDE", "JWT" );
-			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.VerifyHeader( jwtHeader ) );
-		}
-
-		[Test]
-		public void VerifyHeader_WrongType_Exception() {
-
-			string jwtHeader = MakeJwtHeader( "RS256", "ABC" );
-			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.VerifyHeader( jwtHeader ) );
-		}
-
-		[Test]
-		public void VerifyHeader_WrongTypeAndAlgorithm_Exception() {
-
-			string jwtHeader = MakeJwtHeader( "ABCDE", "ABC" );
-			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.VerifyHeader( jwtHeader ) );
-		}
-
-		#endregion VerifyHeader Tests
-
 		#region Token Fetching Tests
 
 		[Test]
@@ -122,31 +87,29 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 
 		#region GetTokenParts Tests
 
-		[Test]
-		public void GetTokenParts_FourSegments_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD.EF.GH" ) );
-		}
+		// ============== make into integration tests ====================
+		//[Test]
+		//public void GetTokenParts_FourSegments_ExpectException() {
+		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD.EF.GH" ) );
+		//}
 
-		[Test]
-		public void GetTokenParts_JwtHasFewerThanThreeSegments_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD" ) );
-		}
+		//[Test]
+		//public void GetTokenParts_JwtHasFewerThanThreeSegments_ExpectException() {
+		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB.CD" ) );
+		//}
 
-		[Test]
-		public void GetTokenParts_JwtIsEmpty_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( string.Empty ) );
-		}
+		//[Test]
+		//public void GetTokenParts_JwtIsEmpty_ExpectException() {
+		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( string.Empty ) );
+		//}
 
-		[Test]
-		public void GetTokenParts_JwtHasEmptySegment_ExpectException() {
-			Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB..CD" ) );
-		}
+		//[Test]
+		//public void GetTokenParts_JwtHasEmptySegment_ExpectException() {
+		//	Assert.Throws<AuthorizationException>( () => AuthTokenValidator.GetTokenParts( "AB..CD" ) );
+		//}
+		// ============== END make into integration tests ====================
 
 		#endregion GetTokenParts Tests
-
-		private string MakeJwtHeader( string algorithm, string type ) {
-			return string.Format( "{{ \"alg\": \"{0}\", \"typ\": \"{1}\"}}", algorithm, type );
-		}
 
 		private HttpRequest CreateHttpRequest() {
 			return new HttpRequest( null, "http://www.google.ca", null );
