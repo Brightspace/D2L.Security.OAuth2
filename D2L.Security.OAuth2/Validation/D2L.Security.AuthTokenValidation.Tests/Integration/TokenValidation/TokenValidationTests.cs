@@ -14,7 +14,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 	[TestFixture]
 	internal sealed class TokenValidationTests {
 
-		private const string SCOPE = "https://api.brightspace.com/auth/lores.manage";
+		private const string SCOPE = TestCredentials.LOReSScopes.MANAGE;
 		private const string VALID_ISSUER = "https://api.d2l.com/auth";
 		private const string VALID_ALGORITHM = "RS256";
 		private const string VALID_TOKEN_TYPE = "JWT";
@@ -42,11 +42,18 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 
 		[Test]
 		public void Valid_Success() {
-			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			DateTime expiry = DateTime.UtcNow + TimeSpan.FromMinutes( 15 );
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, expiry );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 
 			IValidatedJWT validatedToken = m_validator.Validate( jwt );
 			Assertions.ContainsScopeValue( validatedToken, SCOPE );
+
+			// Unix time ignores milliseconds, so we have a tolerance of 999 milliseconds
+			TimeSpan delta = expiry - validatedToken.Expiry;
+			TimeSpan baseline = TimeSpan.FromMilliseconds( 999 );
+
+			Assert.LessOrEqual( delta, baseline );
 		}
 
 		[Test]
