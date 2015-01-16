@@ -25,15 +25,18 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			return header.ToString();
 		}
 
-		internal static string MakeJwt( string alg, string typ, string payload, RSAParameters rsaParams ) {
-			string header = MakeHeader( alg, typ );
+		internal static string MakeJwt( string algorithm, string tokenType, string payload, RSAParameters rsaParams ) {
+			string header = MakeHeader( algorithm, tokenType );
 
 			byte[] signature;
 			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider() ) {
 				rsaService.ImportParameters( rsaParams );
 				byte[] payloadBytes = Encoding.UTF8.GetBytes( payload );
 				string oid = CryptoConfig.MapNameToOID( "SHA256" );
-				signature = rsaService.SignData( Encoding.UTF8.GetBytes(Base64Url(header) + "." + Base64Url(payload)), oid );
+
+				string base64UrlHeader = Base64Url( header );
+				string base64UrlPayload = Base64Url( payload );
+				signature = rsaService.SignData( Encoding.UTF8.GetBytes( base64UrlHeader + "." + base64UrlPayload ), oid );
 			}
 
 			string jwt = String.Format( 

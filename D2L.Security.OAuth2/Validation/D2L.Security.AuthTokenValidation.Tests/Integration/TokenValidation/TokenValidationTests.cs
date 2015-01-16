@@ -18,56 +18,41 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 	[TestFixture]
 	internal sealed class TokenValidationTests {
 
+		private static readonly DateTime UNIX_EPOCH_BEGINNING = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 		private const string ISSUER = "https://api.d2l.com/auth";
+		private const string SCOPE = "https://api.brightspace.com/auth/lores.manage";
+		private const string VALID_ALGORITHM = "RS256";
+		private const string VALID_TOKEN_TYPE = "JWT";
 
 		[Test]
 		public void Valid_Success() {
+			IValidatedJWT validatedToken;
 			RSAParameters rsaParams = TestTokenProvider.CreateRSAParams();
-			RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider();
-			rsaService.ImportParameters( rsaParams );
 
-			RsaKeyIdentifierClause clause = new RsaKeyIdentifierClause( rsaService );
+			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider() ) {
+				rsaService.ImportParameters( rsaParams );
 
-			RsaSecurityToken securityToken = new RsaSecurityToken( rsaService );
+				RsaKeyIdentifierClause clause = new RsaKeyIdentifierClause( rsaService );
+				RsaSecurityToken securityToken = new RsaSecurityToken( rsaService );
 
-			SecurityKey key = clause.CreateKey();
-			
+				IPublicKey publicKey = new PublicKey( securityToken, ISSUER );
+				Mock<IPublicKeyProvider> publicKeyProviderMock = new Mock<IPublicKeyProvider>();
+				publicKeyProviderMock.Setup( x => x.Get() ).Returns( publicKey );
 
-			IPublicKey publicKey = new PublicKey( securityToken, ISSUER );
-			Mock<IPublicKeyProvider> publicKeyProviderMock = new Mock<IPublicKeyProvider>();
-			publicKeyProviderMock.Setup( x => x.Get() ).Returns( publicKey );
+				ISecurityTokenValidator tokenHandler = JWTHelper.CreateTokenHandler();
 
-			SecurityTokenHandlerConfiguration tokenHandlerConfiguration =
-				new SecurityTokenHandlerConfiguration();
-			tokenHandlerConfiguration.CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.None;
-			tokenHandlerConfiguration.CertificateValidator = System.IdentityModel.Selectors.X509CertificateValidator.None;
+				IJWTValidator validator = new JWTValidator(
+					publicKeyProviderMock.Object,
+					tokenHandler
+					);
 
-			JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
-			tokenHandler.Configuration = tokenHandlerConfiguration;
+				string payload = MakePayload( ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+				string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, rsaParams );
 
+				validatedToken = validator.Validate( jwt );
+			}
 
-			IJWTValidator validator = new JWTValidator(
-				publicKeyProviderMock.Object,
-				tokenHandler
-				);
-
-			//string payload = "{}";
-			string payload = "{\"client_id\":\"lores_manager_client\",\"scope\":\"https://api.brightspace.com/auth/lores.manage\",\"iss\":\"https://api.d2l.com/auth\",\"aud\":\"https://api.d2l.com/auth/resources\",\"exp\":1421356474,\"nbf\":1421352874}";
-			string jwt = TestTokenProvider.MakeJwt( "RS256", "JWT", payload, rsaParams );
-
-			IValidatedJWT validatedToken = validator.Validate( jwt );
-
-			//X509AsymmetricSecurityKey key2 = new X509AsymmetricSecurityKey()
-			
-			//byte[] rawX5c = null;
-			//System.Security.Cryptography.X509Certificates.X509Certificate2 certificate =
-			//	new System.Security.Cryptography.X509Certificates.X509Certificate2( rawX5c );
-			//X509SecurityToken securityToken = new X509SecurityToken( certificate );
-			//IPublicKey publicKey = new PublicKey( securityToken, ISSUER );
-
-			rsaService.Dispose();
-
-			Assert.Inconclusive();
+			Assertions.ContainsScopeValue( validatedToken, SCOPE );
 		}
 
 		[Test]
@@ -108,6 +93,27 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 		[Test]
 		public void MalformedJson_Failure() {
 			Assert.Inconclusive();
+		}
+
+		private long GetSecondsRelativeToNow( TimeSpan delta ) {
+			DateTime expiryTime = DateTime.UtcNow + delta;
+			TimeSpan timeToExpireSinceUnixEpoch = expiryTime - UNIX_EPOCH_BEGINNING;
+			long seconds = (long)timeToExpireSinceUnixEpoch.TotalSeconds;
+			return seconds;
+		}
+
+		private string MakePayload( string issuer, string scope, TimeSpan expiryFromNow ) {
+			long expiryInSeconds = GetSecondsRelativeToNow( expiryFromNow );
+
+			StringBuilder payloadBuilder = new StringBuilder( "{\"client_id\":\"lores_manager_client\",\"scope\":\"" );
+			payloadBuilder.Append( scope );
+			payloadBuilder.Append( "\",\"iss\":\"" );
+			payloadBuilder.Append( issuer );
+			payloadBuilder.Append( "\",\"aud\":\"https://api.d2l.com/auth/resources\",\"exp\":" );
+			payloadBuilder.Append( expiryInSeconds );
+			payloadBuilder.Append( ",\"nbf\":1421352874}" );
+
+			return payloadBuilder.ToString();
 		}
 	}
 }

@@ -63,7 +63,7 @@
     <Compile Include="PublicKeys\OpenIdConfigurations\IOpenIdConfigurationFetcher.cs" />
     <Compile Include="PublicKeys\PublicKeyProviderFactory.cs" />
     <Compile Include="TokenValidation\Default\ValidatedJWT.cs" />
-    <Compile Include="TokenValidation\Default\Helper.cs" />
+    <Compile Include="TokenValidation\Default\JWTHelper.cs" />
     <Compile Include="TokenValidation\Default\JWTValidator.cs" />
     <Compile Include="TokenValidation\Exceptions\InvalidTokenTypeException.cs" />
     <Compile Include="TokenValidation\IValidatedJWT.cs" />
