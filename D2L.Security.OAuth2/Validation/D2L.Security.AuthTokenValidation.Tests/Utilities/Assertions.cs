@@ -28,7 +28,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 				while( e.InnerException != null ) {
 					e = e.InnerException;
 				}
-				Assert.IsTrue( typeof( T ) == e.GetType() );
+				Assert.AreEqual( typeof( T ), e.GetType() );
 			}
 		}
 	}

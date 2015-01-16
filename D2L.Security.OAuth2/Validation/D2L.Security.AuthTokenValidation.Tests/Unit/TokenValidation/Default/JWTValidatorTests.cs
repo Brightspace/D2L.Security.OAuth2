@@ -37,19 +37,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 			IJWTValidator validator = MakeValidator( jwt );
 			Assert.Throws<InvalidTokenTypeException>( () => validator.Validate( jwt ) );
 		}
-
-		[Ignore("To be translated into an integration test")]
-		[Test]
-		public void Validate_InvalidTokenType_Failure() {
-			string jwt = TestTokenProvider.MakeJwt(
-				"RS256",
-				"INVALIDTYPE",
-				"{}",
-				TestTokenProvider.CreateRSAParams()
-				);
-			Assert.Throws<ArgumentException>( () => new JwtSecurityToken( jwt ) );
-		}
-
+		
 		[Test]
 		public void Validate_InvalidDotNetSecurityTokenType_Failure() {
 			Mock<SecurityToken> securityTokenMock = new Mock<SecurityToken>();
