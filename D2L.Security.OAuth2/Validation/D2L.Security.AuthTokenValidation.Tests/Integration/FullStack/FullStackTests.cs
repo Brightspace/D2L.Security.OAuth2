@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using D2L.Security.AuthTokenValidation.Tests.Utilities;
+﻿using D2L.Security.AuthTokenValidation.Tests.Utilities;
 using D2L.Security.AuthTokenValidation.TokenValidation;
 using NUnit.Framework;
 
@@ -22,14 +21,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 			IJWTValidator validator = JWTValidatorFactory.Create( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL );
 			IValidatedJWT validatedJWT = validator.Validate( jwt );
 
-			Assert.IsTrue(
-				ContainsScopeValue( validatedJWT, expectedScope )
-				);
-		}
-
-		private bool ContainsScopeValue( IValidatedJWT validatedJWT, string scopeValue ) {
-			string scopeValueFromClaim = validatedJWT.Claims.First( x => x.Type == "scope" ).Value;
-			return scopeValue == scopeValueFromClaim;
+			Assertions.ContainsScopeValue( validatedJWT, expectedScope );
 		}
 	}
 }

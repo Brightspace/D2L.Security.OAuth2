@@ -29,7 +29,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 
 			IPublicKey key = m_keyProvider.Get();
 			TokenValidationParameters validationParameters =
-				Helper.CreateValidationParameters( key.Issuer, key.SecurityKey );
+				JWTHelper.CreateValidationParameters( key.Issuer, key.SecurityKey );
 
 			SecurityToken securityToken;
 			ClaimsPrincipal principal = m_tokenHandler.ValidateToken( jwt, validationParameters, out securityToken );

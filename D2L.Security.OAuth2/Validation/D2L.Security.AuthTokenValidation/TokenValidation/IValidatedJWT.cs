@@ -9,6 +9,10 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation {
 	/// </summary>
 	interface IValidatedJWT {
 		IEnumerable<Claim> Claims { get; }
+
+		/// <summary>
+		/// Expiry in UTC standard time
+		/// </summary>
 		DateTime Expiry { get; }
 	}
 }
