@@ -31,9 +31,18 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			return jwt;
 		}
 
-		internal static string MakePayload( string issuer, string scope, TimeSpan expiryFromNow ) {
-			long expiryInSeconds = GetSecondsRelativeToNow( expiryFromNow );
+		internal static string MakePayload( string issuer, string scope, DateTime expiry ) {
+			long expiryInSeconds = GetSecondsRelativeToUnixEpoch( expiry );
+			return MakePayload( issuer, scope, expiryInSeconds );
+		}
 
+		internal static string MakePayload( string issuer, string scope, TimeSpan expiryFromNow ) {
+			DateTime expiry = DateTime.UtcNow + expiryFromNow;
+			long expiryInSeconds = GetSecondsRelativeToUnixEpoch( expiry );
+			return MakePayload( issuer, scope, expiryInSeconds );
+		}
+
+		private static string MakePayload( string issuer, string scope, long expiryInSeconds ) {
 			StringBuilder payloadBuilder = new StringBuilder( "{\"client_id\":\"lores_manager_client\",\"scope\":\"" );
 			payloadBuilder.Append( scope );
 			payloadBuilder.Append( "\",\"iss\":\"" );
@@ -53,9 +62,8 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			}
 		}
 
-		private static long GetSecondsRelativeToNow( TimeSpan delta ) {
-			DateTime expiryTime = DateTime.UtcNow + delta;
-			TimeSpan timeToExpireSinceUnixEpoch = expiryTime - UNIX_EPOCH_BEGINNING;
+		private static long GetSecondsRelativeToUnixEpoch( DateTime expiry ) {
+			TimeSpan timeToExpireSinceUnixEpoch = expiry - UNIX_EPOCH_BEGINNING;
 			long seconds = (long)timeToExpireSinceUnixEpoch.TotalSeconds;
 			return seconds;
 		}
