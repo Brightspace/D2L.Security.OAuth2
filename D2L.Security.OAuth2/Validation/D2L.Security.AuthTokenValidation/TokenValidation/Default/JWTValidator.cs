@@ -45,17 +45,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 					);
 				throw new InvalidTokenTypeException( message );
 			}
-
-			string tokenType = jwtSecurityToken.Header.Typ;
-			if( tokenType != ALLOWED_TOKEN_TYPE ) {
-				string message = string.Format(
-					"Expected token type {0} but was {1}",
-					ALLOWED_TOKEN_TYPE,
-					tokenType
-					);
-				throw new Exception( message );
-			}
-
+			
 			IValidatedJWT validatedJWT = new ValidatedJWT( jwtSecurityToken );
 			return validatedJWT;
 		}

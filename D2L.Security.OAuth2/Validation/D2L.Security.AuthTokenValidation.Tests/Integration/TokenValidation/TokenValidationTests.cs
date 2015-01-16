@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
-using System.Reflection;
 using System.Security.Cryptography;
 using D2L.Security.AuthTokenValidation.PublicKeys;
 using D2L.Security.AuthTokenValidation.PublicKeys.Default;
@@ -15,8 +14,8 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 	[TestFixture]
 	internal sealed class TokenValidationTests {
 
-		private const string ISSUER = "https://api.d2l.com/auth";
 		private const string SCOPE = "https://api.brightspace.com/auth/lores.manage";
+		private const string VALID_ISSUER = "https://api.d2l.com/auth";
 		private const string VALID_ALGORITHM = "RS256";
 		private const string VALID_TOKEN_TYPE = "JWT";
 
@@ -43,7 +42,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 
 		[Test]
 		public void Valid_Success() {
-			string payload = TestTokenProvider.MakePayload( ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 
 			IValidatedJWT validatedToken = m_validator.Validate( jwt );
@@ -52,7 +51,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 
 		[Test]
 		public void Expired_Failure() {
-			string payload = TestTokenProvider.MakePayload( ISSUER, SCOPE, TimeSpan.FromMinutes( -15 ) );
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( -15 ) );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<SecurityTokenExpiredException>(
@@ -62,7 +61,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 
 		[Test]
 		public void InvalidAlgorithm_Failure() {
-			string payload = TestTokenProvider.MakePayload( ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
 			string jwt = TestTokenProvider.MakeJwt( "invalidalgorithm", VALID_TOKEN_TYPE, payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<CryptographicException>( 
@@ -72,7 +71,12 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 
 		[Test]
 		public void InvalidTokenType_Failure() {
-			Assert.Inconclusive();
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, "invalidtokentype", payload, m_rsaParameters );
+
+			Assertions.ExceptionStemsFrom<SecurityTokenException>(
+				() => m_validator.Validate( jwt )
+				);
 		}
 
 		[Test]
@@ -107,13 +111,12 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 				);
 		}
 
-		[TestCase( 1 )]
-		[TestCase( 10 )]
-		public void TruncatedJWT_Failure( int numCharsToTruncate ) {
-			string payload = TestTokenProvider.MakePayload( ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+		[Test]
+		public void TruncatedJWT_Failure() {
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
-			// remove beginning
-			jwt = jwt.Substring( numCharsToTruncate );
+			// remove beginning to malform
+			jwt = jwt.Substring( 1 );
 
 			Assertions.ExceptionStemsFrom<ArgumentException>(
 				() => m_validator.Validate( jwt )
@@ -132,22 +135,21 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 
 		[Test]
 		public void MalformedJson_Failure() {
-			string payload = TestTokenProvider.MakePayload( ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
+			// remove beginning to malform
+			payload = payload.Substring( 1 );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
-			// remove beginning
-			jwt = jwt.Substring( 1 );
 
-			//Assertions.ExceptionStemsFrom<ArgumentException>(
-			//	() => m_validator.Validate( jwt )
-			//	);
-			Assert.Inconclusive();
+			Assertions.ExceptionStemsFrom<ArgumentException>(
+				() => m_validator.Validate( jwt )
+				);
 		}
 
 		private void InitializeValidator() {
 			RsaKeyIdentifierClause clause = new RsaKeyIdentifierClause( m_cryptoServiceProvider );
 			RsaSecurityToken securityToken = new RsaSecurityToken( m_cryptoServiceProvider );
 
-			IPublicKey publicKey = new PublicKey( securityToken, ISSUER );
+			IPublicKey publicKey = new PublicKey( securityToken, VALID_ISSUER );
 			Mock<IPublicKeyProvider> publicKeyProviderMock = new Mock<IPublicKeyProvider>();
 			publicKeyProviderMock.Setup( x => x.Get() ).Returns( publicKey );
 
