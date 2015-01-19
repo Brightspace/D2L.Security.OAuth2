@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using D2L.Security.AuthTokenValidation.PublicKeys;

@@ -10,7 +10,7 @@ namespace D2L.Security.AuthTokenValidation {
 			Uri authServiceEndpoint
 			) {
 
-			IJWTValidator validator = JWTValidatorFactory.Create( authServiceEndpoint.ToString() );
+			IJWTValidator validator = JWTValidatorFactory.Create( authServiceEndpoint );
 
 			return new AuthTokenValidator(
 				validator

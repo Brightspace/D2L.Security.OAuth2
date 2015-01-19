@@ -9,7 +9,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 	internal static class AuthServerInvoker {
 		
 		public static string AuthenticateAndGetJWT( string clientId, string clientSecret, string scope ) {
-			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( TestUrls.AUTH_TOKEN_PROVISIONING_URL );
+			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( TestUris.AUTH_TOKEN_PROVISIONING_URI );
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
 

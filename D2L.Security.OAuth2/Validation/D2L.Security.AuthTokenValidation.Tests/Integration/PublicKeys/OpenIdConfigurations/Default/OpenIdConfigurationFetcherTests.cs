@@ -13,15 +13,15 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.PublicKeys.OpenIdCo
 		[Test]
 		public void Fetch_Success() {
 			IOpenIdConfigurationFetcher fetcher = 
-				new OpenIdConfigurationFetcher( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL );
+				new OpenIdConfigurationFetcher( TestUris.TOKEN_VERIFICATION_AUTHORITY_URI );
 
 			OpenIdConnectConfiguration configuration = fetcher.Fetch();
-			Assert.AreEqual( TestUrls.ISSUER_URL, configuration.Issuer );
+			Assert.AreEqual( TestUris.ISSUER_URL, configuration.Issuer );
 		}
 
 		[Test]
 		public void Fetch_InvalidUrl_Throws() {
-			string badUrl = TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL + "somedummyurlfragment/";
+			Uri badUrl = new Uri( TestUris.TOKEN_VERIFICATION_AUTHORITY_URI, "somedummyurlfragment/" );
 			IOpenIdConfigurationFetcher fetcher = new OpenIdConfigurationFetcher( badUrl );
 
 			Assert.Throws<InvalidOperationException>( () => fetcher.Fetch() );
