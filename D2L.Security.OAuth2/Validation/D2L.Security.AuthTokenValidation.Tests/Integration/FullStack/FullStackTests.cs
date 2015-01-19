@@ -1,5 +1,4 @@
-﻿using System;
-using D2L.Security.AuthTokenValidation.Tests.Utilities;
+﻿using D2L.Security.AuthTokenValidation.Tests.Utilities;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
