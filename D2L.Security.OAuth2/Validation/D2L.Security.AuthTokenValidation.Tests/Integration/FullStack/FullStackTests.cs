@@ -1,5 +1,5 @@
-﻿using D2L.Security.AuthTokenValidation.Tests.Utilities;
-using D2L.Security.AuthTokenValidation.TokenValidation;
+﻿using System;
+using D2L.Security.AuthTokenValidation.Tests.Utilities;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
@@ -8,8 +8,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 	internal sealed class FullStackTests {
 
 		[Test]
-		public void Validate_Success() {
-
+		public void IAuthTokenValidator_VerifyAndDecode_Success() {
 			string expectedScope = TestCredentials.LOReSScopes.MANAGE;
 
 			string jwt = AuthServerInvoker.AuthenticateAndGetJWT(
@@ -18,10 +17,19 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 				expectedScope
 				);
 
-			IJWTValidator validator = JWTValidatorFactory.Create( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL );
-			IValidatedJWT validatedJWT = validator.Validate( jwt );
+			IAuthTokenValidator validator = AuthTokenValidatorFactory.Create(
+				new Uri( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL )
+				);
 
-			Assertions.ContainsScopeValue( validatedJWT, expectedScope );
+			IGenericPrincipal principal = validator.VerifyAndDecode( jwt );
+			Assert.AreEqual( 1, principal.Scopes.Count );
+			Assert.DoesNotThrow( () => principal.AssertScope( expectedScope ) );
+		}
+
+		[Ignore( "Implement only if the HttpContext-based overload is kept." )]
+		[Test]
+		public void IAuthTokenValidator_VerifyAndDecode_HttpContext_Success() {
+			Assert.Inconclusive();
 		}
 	}
 }

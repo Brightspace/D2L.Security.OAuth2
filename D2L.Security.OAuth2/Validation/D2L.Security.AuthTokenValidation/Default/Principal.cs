@@ -29,7 +29,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 		public bool IsBrowserUser { get { return XsrfToken != null; } }
 
 		public bool HasScope( string scope ) {
-			return Scopes.Contains( "*" ) || Scopes.Contains( scope );
+			return Scopes.Contains( scope );
 		}
 
 		public void AssertScope( string scope ) {

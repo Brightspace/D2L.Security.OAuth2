@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using D2L.Security.AuthTokenValidation.TokenValidation;
 
 namespace D2L.Security.AuthTokenValidation.Default {
@@ -55,11 +57,19 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 		internal static Principal GetPrincipal( IValidatedJWT validatedJWT ) {
 
+			string scopeClaimValue = validatedJWT.Claims
+				.Where( x => x.Type == "scope" )
+				.Select( x => x.Value )
+				.First();
+			HashSet<string> scopes = new HashSet<string>( 
+				scopeClaimValue.Split( ',' )
+				);
+
 			Principal principal = new Principal(
 				-1337,
 				"DUMMY TENANT ID!!",
 				"DUMMY XSRF TOKEN!!",
-				null
+				scopes
 				);
 
 			return principal;
