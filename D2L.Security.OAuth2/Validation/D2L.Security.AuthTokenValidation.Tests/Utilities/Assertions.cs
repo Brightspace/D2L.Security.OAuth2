@@ -31,5 +31,18 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 				Assert.AreEqual( typeof( T ), e.GetType() );
 			}
 		}
+
+		/// <summary>
+		/// Asserts that the specified action will throw an exception
+		/// </summary>
+		/// <param name="action">Action to perform</param>
+		internal static void Throws( Action action ) {
+			try {
+				action();
+			} catch {
+				Assert.Pass();
+			}
+			Assert.Fail( "Expected an exception to be thrown but none was." );
+		}
 	}
 }

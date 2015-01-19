@@ -11,11 +11,7 @@ namespace D2L.Security.AuthTokenValidation.Utilities {
 			TaskContinuationOptions.None, 
 			TaskScheduler.Default 
 			);
-
-		internal static void RunSync( Func<Task> func ) {
-			MyTaskFactory.StartNew( func ).Unwrap().GetAwaiter().GetResult();
-		}
-
+		
 		internal static TResult RunSync<TResult>( Func<Task<TResult>> func ) {
 			return MyTaskFactory.StartNew( func ).Unwrap().GetAwaiter().GetResult();
 		}
