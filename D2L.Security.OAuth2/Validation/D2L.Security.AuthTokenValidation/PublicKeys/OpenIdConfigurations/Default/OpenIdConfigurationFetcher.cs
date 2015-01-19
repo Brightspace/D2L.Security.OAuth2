@@ -1,14 +1,15 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using D2L.Security.AuthTokenValidation.Utilities;
 using Microsoft.IdentityModel.Protocols;
 
 namespace D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Default {
 	internal sealed class OpenIdConfigurationFetcher : IOpenIdConfigurationFetcher {
 
-		private readonly string m_authority;
+		private readonly Uri m_authority;
 
-		internal OpenIdConfigurationFetcher( string authority ) {
-			m_authority = FormatAuthority( authority );
+		internal OpenIdConfigurationFetcher( Uri authority ) {
+			m_authority = new Uri( authority, ".well-known/openid-configuration" );
 		}
 
 		OpenIdConnectConfiguration IOpenIdConfigurationFetcher.Fetch() {
@@ -17,7 +18,7 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Defau
 			using( HttpMessageHandler httpMessageHandler = new WebRequestHandler() ) {
 				using( HttpClient httpClient = new HttpClient( httpMessageHandler ) ) {
 					ConfigurationManager<OpenIdConnectConfiguration> configManager =
-						new ConfigurationManager<OpenIdConnectConfiguration>( m_authority, httpClient );
+						new ConfigurationManager<OpenIdConnectConfiguration>( m_authority.ToString(), httpClient );
 					
 					result = AsyncHelper.RunSync( 
 						async () => await configManager.GetConfigurationAsync() 
@@ -26,14 +27,6 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Defau
 			}
 
 			return result;
-		}
-
-		private string FormatAuthority( string authority ) {
-			if( !authority.EndsWith( "/" ) ) {
-				authority += "/";
-			}
-			authority += ".well-known/openid-configuration";
-			return authority;
 		}
 	}
 }

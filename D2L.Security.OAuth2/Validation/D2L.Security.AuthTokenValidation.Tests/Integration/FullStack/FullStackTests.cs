@@ -18,7 +18,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 				);
 
 			IAuthTokenValidator validator = AuthTokenValidatorFactory.Create(
-				new Uri( TestUrls.TOKEN_VERIFICATION_AUTHORITY_URL )
+				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI
 				);
 
 			IGenericPrincipal principal = validator.VerifyAndDecode( jwt );
