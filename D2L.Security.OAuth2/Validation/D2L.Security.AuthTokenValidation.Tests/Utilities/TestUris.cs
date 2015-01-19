@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 	internal static class TestUris {
 
