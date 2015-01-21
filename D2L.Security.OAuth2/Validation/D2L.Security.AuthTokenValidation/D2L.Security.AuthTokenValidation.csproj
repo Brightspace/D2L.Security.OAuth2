@@ -59,6 +59,7 @@
     <Compile Include="PublicKeys\OpenIdConfigurations\Default\OpenIdConfigurationFetcher.cs" />
     <Compile Include="PublicKeys\OpenIdConfigurations\IOpenIdConfigurationFetcher.cs" />
     <Compile Include="PublicKeys\PublicKeyProviderFactory.cs" />
+    <Compile Include="TokenExpiredException.cs" />
     <Compile Include="TokenValidation\Default\ValidatedJWT.cs" />
     <Compile Include="TokenValidation\Default\JWTHelper.cs" />
     <Compile Include="TokenValidation\Default\JWTValidator.cs" />

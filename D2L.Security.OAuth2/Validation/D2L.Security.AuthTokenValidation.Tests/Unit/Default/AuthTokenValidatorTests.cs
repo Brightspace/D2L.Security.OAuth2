@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
+using System.IdentityModel.Tokens;
 using System.Reflection;
 using System.Web;
 using D2L.Security.AuthTokenValidation.Default;
+using D2L.Security.AuthTokenValidation.Tests.Utilities;
+using D2L.Security.AuthTokenValidation.TokenValidation;
+using Moq;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
@@ -44,7 +48,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 		public void GetTokenFromAuthHeader_AuthHeaderPresent_HeaderMatchesExpected() {
 
 			HttpRequest httpRequest = CreateHttpRequest();
-			AddAuthHeader( httpRequest, string.Format( "Bearer {0}", TOKEN_STUB ) );
+			HttpRequestBuilder.AddAuthHeader( httpRequest, string.Format( "Bearer {0}", TOKEN_STUB ) );
 
 			string token = AuthTokenValidator.GetTokenFromAuthHeader( httpRequest );
 			Assert.AreEqual( TOKEN_STUB, token );
@@ -63,7 +67,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 		public void GetTokenFromAuthHeader_InvalidTokenPrefix_NullReturned() {
 
 			HttpRequest httpRequest = CreateHttpRequest();
-			AddAuthHeader( httpRequest, string.Format( "NOT_BEARER {0}", TOKEN_STUB ) );
+			HttpRequestBuilder.AddAuthHeader( httpRequest, string.Format( "NOT_BEARER {0}", TOKEN_STUB ) );
 
 			string token = AuthTokenValidator.GetTokenFromAuthHeader( httpRequest );
 			Assert.Null( token );
@@ -77,32 +81,73 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 		public void VerifyAndDecode_AuthTokenInBothHeaderAndCookie_ExpectException() {
 
 			HttpRequest httpRequest = CreateHttpRequest();
-			AddAuthHeader( httpRequest, string.Format( "Bearer {0}", TOKEN_STUB ) );
+			HttpRequestBuilder.AddAuthHeader( httpRequest, string.Format( "Bearer {0}", TOKEN_STUB ) );
 			httpRequest.Cookies.Add( new HttpCookie( "d2lApi", TOKEN_STUB ) );
 
 			Assert.Throws<AuthorizationException>( () => m_authTokenValidator.VerifyAndDecode( httpRequest ) );
+		}
+
+		[Test]
+		public void VerifyAndDecode_String_Expired_ExpectAuthorizationException() {
+			ArgumentException innerException = new ArgumentException();
+			IAuthTokenValidator validator = MakeValidatorWhichThrows( innerException );
+
+			Assertions.ThrowsWithInner<AuthorizationException>(
+				() => validator.VerifyAndDecode( string.Empty ),
+				innerException
+				);
+		}
+
+		[Test]
+		public void VerifyAndDecode_String_Expired_ExpectTokenExpiredException() {
+			SecurityTokenExpiredException innerException = new SecurityTokenExpiredException();
+			IAuthTokenValidator validator = MakeValidatorWhichThrows( innerException );
+
+			Assertions.ThrowsWithInner<TokenExpiredException>(
+				() => validator.VerifyAndDecode( string.Empty ),
+				innerException
+				);
+		}
+
+		[Test]
+		public void VerifyAndDecode_HttpRequest_Expired_ExpectAuthorizationException() {
+			HttpRequest httpRequest = CreateHttpRequest();
+			httpRequest.Cookies.Add( new HttpCookie( "d2lApi", TOKEN_STUB ) );
+
+			ArgumentException innerException = new ArgumentException();
+			IAuthTokenValidator validator = MakeValidatorWhichThrows( innerException );
+
+			Assertions.ThrowsWithInner<AuthorizationException>(
+				() => validator.VerifyAndDecode( httpRequest ),
+				innerException
+				);
+		}
+
+		[Test]
+		public void VerifyAndDecode_HttpRequest_Expired_ExpectTokenExpiredException() {
+			HttpRequest httpRequest = CreateHttpRequest();
+			httpRequest.Cookies.Add( new HttpCookie( "d2lApi", TOKEN_STUB ) );
+
+			SecurityTokenExpiredException innerException = new SecurityTokenExpiredException();
+			IAuthTokenValidator validator = MakeValidatorWhichThrows( innerException );
+
+			Assertions.ThrowsWithInner<TokenExpiredException>(
+				() => validator.VerifyAndDecode( string.Empty ),
+				innerException
+				);
+		}
+
+		private IAuthTokenValidator MakeValidatorWhichThrows( Exception innerException ) {
+			Mock<IJWTValidator> jwtValidator = new Mock<IJWTValidator>();
+			jwtValidator.Setup( x => x.Validate( It.IsAny<string>() ) ).Throws( innerException );
+			IAuthTokenValidator validator = new AuthTokenValidator( jwtValidator.Object );
+			return validator;
 		}
 
 		#endregion VerifyAndDecode Tests
 
 		private HttpRequest CreateHttpRequest() {
 			return new HttpRequest( null, "http://www.google.ca", null );
-		}
-
-		private void AddAuthHeader( HttpRequest httpRequest, string authHeaderValue ) {
-
-			// A hack for modifying http headers in an HttpRequest: http://stackoverflow.com/a/13307238
-			NameValueCollection headers = httpRequest.Headers;
-			Type headerCollectionType = headers.GetType();
-			ArrayList item = new ArrayList();
-
-			const BindingFlags flags = BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance;
-
-			headerCollectionType.InvokeMember( "MakeReadWrite", flags, null, headers, null );
-			headerCollectionType.InvokeMember( "InvalidateCachedArrays", flags, null, headers, null );
-			item.Add( authHeaderValue );
-			headerCollectionType.InvokeMember( "BaseAdd", flags, null, headers, new object[] { "Authorization", item } );
-			headerCollectionType.InvokeMember( "MakeReadOnly", flags, null, headers, null );
 		}
 	}
 }
