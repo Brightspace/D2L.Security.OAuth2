@@ -1,28 +1,31 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
+using D2L.Security.AuthTokenValidation.JwtValidation;
+using D2L.Security.AuthTokenValidation.JwtValidation.Default;
+using D2L.Security.AuthTokenValidation.JwtValidation.Exceptions;
 using D2L.Security.AuthTokenValidation.PublicKeys;
 using D2L.Security.AuthTokenValidation.Tests.Utilities;
-using D2L.Security.AuthTokenValidation.TokenValidation;
-using D2L.Security.AuthTokenValidation.TokenValidation.Default;
-using D2L.Security.AuthTokenValidation.TokenValidation.Exceptions;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
+namespace D2L.Security.AuthTokenValidation.Tests.Unit.JwtValidation.Default {
 	
 	[TestFixture]
-	internal sealed class JWTValidatorTests {
+	internal sealed class JwtValidatorTests {
+
+		private const string VALID_TOKEN_TYPE = "JWT";
+		private const string VALID_ALGORITHM = "RS256";
 
 		[Test]
 		public void Validate_Success() {
 			string jwt = TestTokenProvider.MakeJwt(
-				"RS256",
-				"JWT",
+				VALID_ALGORITHM,
+				VALID_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);
-			IJWTValidator validator = MakeValidator( jwt );
+			IJwtValidator validator = MakeValidator( jwt );
 			Assert.DoesNotThrow( () => validator.Validate( jwt ) );
 		}
 
@@ -30,11 +33,11 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 		public void Validate_InvalidAlgorithm_Failure() {
 			string jwt = TestTokenProvider.MakeJwt(
 				"INVALIDALGORITHM",
-				"JWT",
+				VALID_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);
-			IJWTValidator validator = MakeValidator( jwt );
+			IJwtValidator validator = MakeValidator( jwt );
 			Assert.Throws<InvalidTokenTypeException>( () => validator.Validate( jwt ) );
 		}
 		
@@ -42,13 +45,13 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 		public void Validate_InvalidDotNetSecurityTokenType_Failure() {
 			Mock<SecurityToken> securityTokenMock = new Mock<SecurityToken>();
 			string jwt = TestTokenProvider.MakeJwt(
-				"RS256",
-				"JWT",
+				VALID_ALGORITHM,
+				VALID_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);
 
-			IJWTValidator validator = MakeValidator( securityTokenMock.Object );
+			IJwtValidator validator = MakeValidator( securityTokenMock.Object );
 			Assert.Throws<InvalidCastException>( () => validator.Validate( jwt ) );
 		}
 
@@ -56,16 +59,16 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 		public void Validate_Null_Failure() {
 			Mock<SecurityToken> securityTokenMock = new Mock<SecurityToken>();
 
-			IJWTValidator validator = MakeValidator( securityTokenMock.Object );
+			IJwtValidator validator = MakeValidator( securityTokenMock.Object );
 			Assert.Throws<ArgumentException>( () => validator.Validate( null ) );
 		}
 
-		private IJWTValidator MakeValidator( string jwt ) {
+		private IJwtValidator MakeValidator( string jwt ) {
 			JwtSecurityToken jwtToken = new JwtSecurityToken( jwt );
 			return MakeValidator( jwtToken );
 		}
 
-		private IJWTValidator MakeValidator( SecurityToken token ) {
+		private IJwtValidator MakeValidator( SecurityToken token ) {
 			Mock<IPublicKeyProvider> keyProviderMock = new Mock<IPublicKeyProvider>();
 			Mock<IPublicKey> keyMock = new Mock<IPublicKey>();
 			keyProviderMock.Setup( x => x.Get() ).Returns( keyMock.Object );
@@ -79,7 +82,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.TokenValidation.Default {
 				) )
 				.Returns( principal );
 
-			IJWTValidator validator = new JWTValidator( keyProviderMock.Object, tokenValidatorMock.Object );
+			IJwtValidator validator = new JwtValidator( keyProviderMock.Object, tokenValidatorMock.Object );
 			return validator;
 		}
 	}

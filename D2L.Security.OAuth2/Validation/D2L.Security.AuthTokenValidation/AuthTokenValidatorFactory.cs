@@ -1,6 +1,6 @@
 ﻿using System;
 using D2L.Security.AuthTokenValidation.Default;
-using D2L.Security.AuthTokenValidation.TokenValidation;
+using D2L.Security.AuthTokenValidation.JwtValidation;
 
 namespace D2L.Security.AuthTokenValidation {
 
@@ -10,7 +10,7 @@ namespace D2L.Security.AuthTokenValidation {
 			Uri authServiceEndpoint
 			) {
 
-			IJWTValidator validator = JWTValidatorFactory.Create( authServiceEndpoint );
+			IJwtValidator validator = JwtValidatorFactory.Create( authServiceEndpoint );
 
 			return new AuthTokenValidator(
 				validator

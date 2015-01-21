@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Web;
 using D2L.Security.AuthTokenValidation.Default;
 using D2L.Security.AuthTokenValidation.Tests.Utilities;
-using D2L.Security.AuthTokenValidation.TokenValidation;
+using D2L.Security.AuthTokenValidation.JwtValidation;
 using Moq;
 using NUnit.Framework;
 
@@ -138,7 +138,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 		}
 
 		private IAuthTokenValidator MakeValidatorWhichThrows( Exception innerException ) {
-			Mock<IJWTValidator> jwtValidator = new Mock<IJWTValidator>();
+			Mock<IJwtValidator> jwtValidator = new Mock<IJwtValidator>();
 			jwtValidator.Setup( x => x.Validate( It.IsAny<string>() ) ).Throws( innerException );
 			IAuthTokenValidator validator = new AuthTokenValidator( jwtValidator.Object );
 			return validator;

@@ -60,16 +60,16 @@
     <Compile Include="PublicKeys\OpenIdConfigurations\IOpenIdConfigurationFetcher.cs" />
     <Compile Include="PublicKeys\PublicKeyProviderFactory.cs" />
     <Compile Include="TokenExpiredException.cs" />
-    <Compile Include="TokenValidation\Default\ValidatedJWT.cs" />
-    <Compile Include="TokenValidation\Default\JWTHelper.cs" />
-    <Compile Include="TokenValidation\Default\JWTValidator.cs" />
-    <Compile Include="TokenValidation\Exceptions\InvalidTokenTypeException.cs" />
-    <Compile Include="TokenValidation\IValidatedJWT.cs" />
-    <Compile Include="TokenValidation\IJWTValidator.cs" />
+    <Compile Include="JwtValidation\Default\ValidatedJwt.cs" />
+    <Compile Include="JwtValidation\Default\JwtHelper.cs" />
+    <Compile Include="JwtValidation\Default\JwtValidator.cs" />
+    <Compile Include="JwtValidation\Exceptions\InvalidTokenTypeException.cs" />
+    <Compile Include="JwtValidation\IValidatedJwt.cs" />
+    <Compile Include="JwtValidation\IJwtValidator.cs" />
     <Compile Include="Default\Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicKeys\IPublicKey.cs" />
-    <Compile Include="TokenValidation\JWTValidatorFactory.cs" />
+    <Compile Include="JwtValidation\JwtValidatorFactory.cs" />
     <Compile Include="Utilities\AsyncHelper.cs" />
   </ItemGroup>
   <ItemGroup>

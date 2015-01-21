@@ -11,7 +11,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 		[Test]
 		public void AssertScope_Valid_Success() {
 			HashSet<string> scopes = new HashSet<string>() { "scope1", "scope2" };
-			IGenericPrincipal principal = new Principal( 1337, "dummytenantid", "dummyxsrftoken", scopes );
+			IGenericPrincipal principal = new Principal( 1337, "dummytenantid", "dummytenantfqdn", "dummyxsrftoken", scopes );
 			Assert.DoesNotThrow( () => principal.AssertScope( "scope2" ) );
 		}
 
@@ -32,7 +32,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 		}
 
 		private void AssertFailure( HashSet<string> scopes, string expectedScope ) {
-			IGenericPrincipal principal = new Principal( 1337, "dummytenantid", "dummyxsrftoken", scopes );
+			IGenericPrincipal principal = new Principal( 1337, "dummytenantid", "dummytenantfqdn", "dummyxsrftoken", scopes );
 			Assertions.Throws( () => principal.AssertScope( expectedScope ) );
 		}
 	}

@@ -8,12 +8,14 @@ namespace D2L.Security.AuthTokenValidation.Default {
 		public Principal(
 			long userId,
 			string tenantId,
+			string tenantFullyQualifiedDomainName,
 			string xsrfToken,
 			HashSet<string> scopes
 			) {
 
 			UserId = userId;
 			TenantId = tenantId;
+			TenantFullyQualifiedDomainName = tenantFullyQualifiedDomainName;
 			XsrfToken = xsrfToken;
 			Scopes = scopes;
 		}
@@ -23,6 +25,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 		public long UserId { get; private set; }
 
 		public string TenantId { get; private set; }
+		public string TenantFullyQualifiedDomainName { get; private set; }
 
 		public string XsrfToken { get; private set; }
 

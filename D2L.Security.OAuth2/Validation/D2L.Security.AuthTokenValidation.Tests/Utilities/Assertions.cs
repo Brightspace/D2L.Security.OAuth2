@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using D2L.Security.AuthTokenValidation.TokenValidation;
+using D2L.Security.AuthTokenValidation.JwtValidation;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
@@ -9,10 +9,10 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 		/// <summary>
 		/// Asserts that the "scope" claim contains the specified value
 		/// </summary>
-		/// <param name="validatedJWT">A validated JWT</param>
+		/// <param name="validatedJwt">A validated jwt</param>
 		/// <param name="scopeValue">The value to use when checking</param>
-		internal static void ContainsScopeValue( IValidatedJWT validatedJWT, string scopeValue ) {
-			string scopeValueFromClaim = validatedJWT.Claims.First( x => x.Type == "scope" ).Value;
+		internal static void ContainsScopeValue( IValidatedJwt validatedJwt, string scopeValue ) {
+			string scopeValueFromClaim = validatedJwt.Claims.First( x => x.Type == "scope" ).Value;
 			Assert.AreEqual( scopeValue, scopeValueFromClaim );
 		}
 

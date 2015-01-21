@@ -7,6 +7,7 @@ namespace D2L.Security.AuthTokenValidation {
 		HashSet<string> Scopes { get; }
 		long UserId { get; }
 		string TenantId { get; }
+		string TenantFullyQualifiedDomainName { get; }
 		string XsrfToken { get; }
 		bool IsBrowserUser { get; }
 		bool HasScope( string scope );
