@@ -44,5 +44,31 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			}
 			Assert.Fail( "Expected an exception to be thrown but none was." );
 		}
+
+		/// <summary>
+		/// Asserts that the specified action will throw an exception of type TOuter, 
+		/// whose immediate inner exception is as specified
+		/// </summary>
+		/// <param name="action">Action to perform</param>
+		/// <param name="action">Inner exception instance</param>
+		internal static void ThrowsWithInner<TOuter>( Action action, Exception inner ) 
+			where TOuter : Exception 
+			{
+			
+			try {
+				action();
+			} catch ( TOuter e ) {
+				Assert.IsTrue( Object.ReferenceEquals( inner, e.InnerException ) );
+				Assert.Pass();
+			} catch ( Exception e ) {
+				Assert.Fail( 
+					"Expected to catch " + 
+					typeof( TOuter ).AssemblyQualifiedName + 
+					" but caught " + 
+					e.GetType().AssemblyQualifiedName 
+					);
+			}
+			Assert.Fail( "Expected an exception to be thrown but none was." );
+		}
 	}
 }

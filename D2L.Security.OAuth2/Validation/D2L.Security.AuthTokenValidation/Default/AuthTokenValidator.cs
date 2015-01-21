@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Web;
 using D2L.Security.AuthTokenValidation.TokenValidation;
@@ -16,9 +18,26 @@ namespace D2L.Security.AuthTokenValidation.Default {
 		}
 
 		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( HttpRequest request ) {
+			try {
+				return VerifyAndDecodeWorker( request );
+			} catch( SecurityTokenExpiredException e ) {
+				throw new TokenExpiredException( "The provided token is expired", e );
+			} catch( Exception e ) {
+				throw new AuthorizationException( "An authorization exception has occured", e );
+			}
+		}
 
-			IAuthTokenValidator @this = this;
+		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
+			try {
+				return VerifyAndDecodeWorker( jwt );
+			} catch( SecurityTokenExpiredException e ) {
+				throw new TokenExpiredException( "The provided token is expired", e );
+			} catch( Exception e ) {
+				throw new AuthorizationException( "An authorization exception has occured", e );
+			}
+		}
 
+		private IGenericPrincipal VerifyAndDecodeWorker( HttpRequest request ) {
 			string tokenFromCookie = GetTokenFromCookie( request );
 			string tokenFromAuthHeader = GetTokenFromAuthHeader( request );
 
@@ -26,10 +45,10 @@ namespace D2L.Security.AuthTokenValidation.Default {
 				throw new AuthorizationException( "Token cannot be provided in the header and cookie" );
 			}
 
-			return @this.VerifyAndDecode( tokenFromCookie ?? tokenFromAuthHeader );
+			return VerifyAndDecodeWorker( tokenFromCookie ?? tokenFromAuthHeader );
 		}
 
-		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
+		private IGenericPrincipal VerifyAndDecodeWorker( string jwt ) {
 			IValidatedJWT validatedJWT = m_validator.Validate( jwt );
 			return GetPrincipal( validatedJWT );
 		}
@@ -67,7 +86,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 			Principal principal = new Principal(
 				-1337,
-				"DUMMY TENANT ID!!",
+				"14B7E2DC-9293-4786-8045-4EC99AFD0F02",
 				"DUMMY XSRF TOKEN!!",
 				scopes
 				);
