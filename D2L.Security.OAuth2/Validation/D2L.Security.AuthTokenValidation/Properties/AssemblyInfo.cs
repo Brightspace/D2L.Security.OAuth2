@@ -4,7 +4,7 @@
 [assembly: AssemblyTitle( "D2L Security Auth Token Validation" )]
 
 // Nuget: Description
-[assembly: AssemblyDescription( "A library that decrypts and validates JWT tokens." )]
+[assembly: AssemblyDescription( "A library that decrypts and validates jwt tokens." )]
 
 // Nuget: Author
 [assembly: AssemblyCompany( "Desire2Learn" )]

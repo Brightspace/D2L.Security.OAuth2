@@ -11,7 +11,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 		public void IAuthTokenValidator_VerifyAndDecode_Success() {
 			string expectedScope = TestCredentials.LOReSScopes.MANAGE;
 
-			string jwt = AuthServerInvoker.AuthenticateAndGetJWT(
+			string jwt = AuthServerInvoker.AuthenticateAndGetJwt(
 				TestCredentials.LOReSManager.CLIENT_ID,
 				TestCredentials.LOReSManager.SECRET,
 				expectedScope
@@ -30,7 +30,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 		public void IAuthTokenValidator_VerifyAndDecode_HttpContext_Cookie_Success() {
 			string expectedScope = TestCredentials.LOReSScopes.MANAGE;
 
-			string jwt = AuthServerInvoker.AuthenticateAndGetJWT(
+			string jwt = AuthServerInvoker.AuthenticateAndGetJwt(
 				TestCredentials.LOReSManager.CLIENT_ID,
 				TestCredentials.LOReSManager.SECRET,
 				expectedScope
@@ -51,7 +51,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 		public void IAuthTokenValidator_VerifyAndDecode_HttpContext_Header_Success() {
 			string expectedScope = TestCredentials.LOReSScopes.MANAGE;
 
-			string jwt = AuthServerInvoker.AuthenticateAndGetJWT(
+			string jwt = AuthServerInvoker.AuthenticateAndGetJwt(
 				TestCredentials.LOReSManager.CLIENT_ID,
 				TestCredentials.LOReSManager.SECRET,
 				expectedScope

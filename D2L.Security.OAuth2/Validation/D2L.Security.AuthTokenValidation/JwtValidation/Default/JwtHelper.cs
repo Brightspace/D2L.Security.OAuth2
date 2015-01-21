@@ -2,8 +2,8 @@
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Security;
 
-namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
-	internal static class JWTHelper {
+namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
+	internal static class JwtHelper {
 
 		internal static ISecurityTokenValidator CreateTokenHandler() {
 			SecurityTokenHandlerConfiguration tokenHandlerConfiguration =

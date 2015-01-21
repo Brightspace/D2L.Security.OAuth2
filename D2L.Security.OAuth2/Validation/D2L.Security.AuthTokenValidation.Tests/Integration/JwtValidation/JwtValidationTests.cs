@@ -4,15 +4,15 @@ using System.Security.Cryptography;
 using D2L.Security.AuthTokenValidation.PublicKeys;
 using D2L.Security.AuthTokenValidation.PublicKeys.Default;
 using D2L.Security.AuthTokenValidation.Tests.Utilities;
-using D2L.Security.AuthTokenValidation.TokenValidation;
-using D2L.Security.AuthTokenValidation.TokenValidation.Default;
+using D2L.Security.AuthTokenValidation.JwtValidation;
+using D2L.Security.AuthTokenValidation.JwtValidation.Default;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
+namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 
 	[TestFixture]
-	internal sealed class TokenValidationTests {
+	internal sealed class JwtValidation {
 
 		private const string SCOPE = TestCredentials.LOReSScopes.MANAGE;
 		private const string VALID_ISSUER = "https://api.d2l.com/auth";
@@ -22,7 +22,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 		private RSACryptoServiceProvider m_cryptoServiceProvider;
 		private RSAParameters m_rsaParameters;
 
-		private IJWTValidator m_validator;
+		private IJwtValidator m_validator;
 
 		[SetUp]
 		public void SetUp() {
@@ -46,7 +46,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, expiry );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 
-			IValidatedJWT validatedToken = m_validator.Validate( jwt );
+			IValidatedJwt validatedToken = m_validator.Validate( jwt );
 			Assertions.ContainsScopeValue( validatedToken, SCOPE );
 
 			// Unix time ignores milliseconds, so we have a tolerance of 999 milliseconds
@@ -119,7 +119,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 		}
 
 		[Test]
-		public void TruncatedJWT_Failure() {
+		public void TruncatedJwt_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 			// remove beginning to malform
@@ -165,7 +165,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 		}
 
 		[Test]
-		public void TooFewJWTSegments_Failure() {
+		public void TooFewJwtSegments_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 			int indexOfLastDot = jwt.LastIndexOf( '.' );
@@ -177,7 +177,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 		}
 
 		[Test]
-		public void TooManyJWTSegments_Failure() {
+		public void TooManyJwtSegments_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 			jwt += ".asdf";
@@ -207,9 +207,9 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.TokenValidation {
 			Mock<IPublicKeyProvider> publicKeyProviderMock = new Mock<IPublicKeyProvider>();
 			publicKeyProviderMock.Setup( x => x.Get() ).Returns( publicKey );
 
-			ISecurityTokenValidator tokenHandler = JWTHelper.CreateTokenHandler();
+			ISecurityTokenValidator tokenHandler = JwtHelper.CreateTokenHandler();
 
-			m_validator = new JWTValidator(
+			m_validator = new JwtValidator(
 				publicKeyProviderMock.Object,
 				tokenHandler
 				);

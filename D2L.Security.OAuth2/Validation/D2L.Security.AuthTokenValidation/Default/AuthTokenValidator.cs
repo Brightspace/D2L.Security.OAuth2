@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Web;
-using D2L.Security.AuthTokenValidation.TokenValidation;
+using D2L.Security.AuthTokenValidation.JwtValidation;
 
 namespace D2L.Security.AuthTokenValidation.Default {
 
 	internal sealed class AuthTokenValidator : IAuthTokenValidator {
 
-		private readonly IJWTValidator m_validator;
+		private readonly IJwtValidator m_validator;
 
 		public AuthTokenValidator(
-			IJWTValidator validator
+			IJwtValidator validator
 			) {
 			m_validator = validator;
 		}
@@ -49,8 +49,8 @@ namespace D2L.Security.AuthTokenValidation.Default {
 		}
 
 		private IGenericPrincipal VerifyAndDecodeWorker( string jwt ) {
-			IValidatedJWT validatedJWT = m_validator.Validate( jwt );
-			return GetPrincipal( validatedJWT );
+			IValidatedJwt validatedJwt = m_validator.Validate( jwt );
+			return GetPrincipal( validatedJwt );
 		}
 
 		internal static string GetTokenFromCookie( HttpRequest request ) {
@@ -74,9 +74,9 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return authToken;
 		}
 
-		internal static Principal GetPrincipal( IValidatedJWT validatedJWT ) {
+		internal static Principal GetPrincipal( IValidatedJwt validatedJwt ) {
 
-			string scopeClaimValue = validatedJWT.Claims
+			string scopeClaimValue = validatedJwt.Claims
 				.Where( x => x.Type == "scope" )
 				.Select( x => x.Value )
 				.First();
@@ -87,6 +87,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			Principal principal = new Principal(
 				-1337,
 				"14B7E2DC-9293-4786-8045-4EC99AFD0F02",
+				"localhost.com",
 				"DUMMY XSRF TOKEN!!",
 				scopes
 				);

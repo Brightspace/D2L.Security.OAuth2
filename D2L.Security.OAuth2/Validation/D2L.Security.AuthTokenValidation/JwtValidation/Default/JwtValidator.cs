@@ -2,10 +2,10 @@
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using D2L.Security.AuthTokenValidation.PublicKeys;
-using D2L.Security.AuthTokenValidation.TokenValidation.Exceptions;
+using D2L.Security.AuthTokenValidation.JwtValidation.Exceptions;
 
-namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
-	internal sealed class JWTValidator : IJWTValidator {
+namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
+	internal sealed class JwtValidator : IJwtValidator {
 
 		private const string ALLOWED_SIGNATURE_ALGORITHM = "RS256";
 		private const string ALLOWED_TOKEN_TYPE = "JWT";
@@ -13,7 +13,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 		private readonly IPublicKeyProvider m_keyProvider;
 		private readonly ISecurityTokenValidator m_tokenHandler;
 
-		internal JWTValidator( 
+		internal JwtValidator( 
 			IPublicKeyProvider keyProvider,
 			ISecurityTokenValidator tokenHandler
 			) {
@@ -21,7 +21,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 			m_tokenHandler = tokenHandler;
 		}
 
-		IValidatedJWT IJWTValidator.Validate( string jwt ) {
+		IValidatedJwt IJwtValidator.Validate( string jwt ) {
 
 			if( String.IsNullOrEmpty( jwt ) ) {
 				throw new ArgumentException( "Cannot be null or empty", jwt );
@@ -29,7 +29,7 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 
 			IPublicKey key = m_keyProvider.Get();
 			TokenValidationParameters validationParameters =
-				JWTHelper.CreateValidationParameters( key.Issuer, key.SecurityKey );
+				JwtHelper.CreateValidationParameters( key.Issuer, key.SecurityKey );
 
 			SecurityToken securityToken;
 			ClaimsPrincipal principal = m_tokenHandler.ValidateToken( jwt, validationParameters, out securityToken );
@@ -45,8 +45,8 @@ namespace D2L.Security.AuthTokenValidation.TokenValidation.Default {
 				throw new InvalidTokenTypeException( message );
 			}
 			
-			IValidatedJWT validatedJWT = new ValidatedJWT( jwtSecurityToken );
-			return validatedJWT;
+			IValidatedJwt validatedJwt = new ValidatedJwt( jwtSecurityToken );
+			return validatedJwt;
 		}
 	}
 }

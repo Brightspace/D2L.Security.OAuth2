@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 
-namespace D2L.Security.AuthTokenValidation.TokenValidation {
+namespace D2L.Security.AuthTokenValidation.JwtValidation {
 
-	internal sealed class ValidatedJWT : IValidatedJWT {
+	internal sealed class ValidatedJwt : IValidatedJwt {
 
 		private readonly JwtSecurityToken m_inner;
 
-		internal ValidatedJWT( JwtSecurityToken jwtSecurityToken ) {
+		internal ValidatedJwt( JwtSecurityToken jwtSecurityToken ) {
 			m_inner = jwtSecurityToken;
 		}
 
-		IEnumerable<Claim> IValidatedJWT.Claims {
+		IEnumerable<Claim> IValidatedJwt.Claims {
 			get { return m_inner.Claims; }
 		}
 
-		DateTime IValidatedJWT.Expiry {
+		DateTime IValidatedJwt.Expiry {
 			get { return m_inner.ValidTo; }
 		}
 	}
