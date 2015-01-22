@@ -17,19 +17,20 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			m_validator = validator;
 		}
 
+		ValidationResult IAuthTokenValidator.VerifyAndDecode( string jwt, out IGenericPrincipal principal ) {
+			try {
+				principal = VerifyAndDecodeWorker( jwt );
+			} catch ( SecurityTokenExpiredException e ) {
+				principal = null;
+				return ValidationResult.TokenExpired;
+			}
+
+			return ValidationResult.Success;
+		}
+
 		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( HttpRequest request ) {
 			try {
 				return VerifyAndDecodeWorker( request );
-			} catch( SecurityTokenExpiredException e ) {
-				throw new TokenExpiredException( "The provided token is expired", e );
-			} catch( Exception e ) {
-				throw new AuthorizationException( "An authorization exception has occured", e );
-			}
-		}
-
-		IGenericPrincipal IAuthTokenValidator.VerifyAndDecode( string jwt ) {
-			try {
-				return VerifyAndDecodeWorker( jwt );
 			} catch( SecurityTokenExpiredException e ) {
 				throw new TokenExpiredException( "The provided token is expired", e );
 			} catch( Exception e ) {

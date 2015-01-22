@@ -21,7 +21,8 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI
 				);
 
-			IGenericPrincipal principal = validator.VerifyAndDecode( jwt );
+			IGenericPrincipal principal;
+			Assert.AreEqual( ValidationResult.Success, validator.VerifyAndDecode( jwt, out principal ) );
 			Assert.AreEqual( 1, principal.Scopes.Count );
 			Assert.DoesNotThrow( () => principal.AssertScope( expectedScope ) );
 		}
@@ -42,7 +43,8 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI
 				);
 
-			IGenericPrincipal principal = validator.VerifyAndDecode( httpRequest );
+			IGenericPrincipal principal;
+			Assert.AreEqual( ValidationResult.Success, validator.VerifyAndDecode( jwt, out principal ) );
 			Assert.AreEqual( 1, principal.Scopes.Count );
 			Assert.DoesNotThrow( () => principal.AssertScope( expectedScope ) );
 		}
@@ -63,7 +65,8 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
 				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI
 				);
 
-			IGenericPrincipal principal = validator.VerifyAndDecode( httpRequest );
+			IGenericPrincipal principal;
+			Assert.AreEqual( ValidationResult.Success, validator.VerifyAndDecode( jwt, out principal ) );
 			Assert.AreEqual( 1, principal.Scopes.Count );
 			Assert.DoesNotThrow( () => principal.AssertScope( expectedScope ) );
 		}

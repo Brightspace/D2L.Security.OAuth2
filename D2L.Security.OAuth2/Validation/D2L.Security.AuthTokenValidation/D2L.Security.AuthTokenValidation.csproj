@@ -71,6 +71,7 @@
     <Compile Include="PublicKeys\IPublicKey.cs" />
     <Compile Include="JwtValidation\JwtValidatorFactory.cs" />
     <Compile Include="Utilities\AsyncHelper.cs" />
+    <Compile Include="ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="D2L.Security.AuthTokenValidation.nuspec" />
