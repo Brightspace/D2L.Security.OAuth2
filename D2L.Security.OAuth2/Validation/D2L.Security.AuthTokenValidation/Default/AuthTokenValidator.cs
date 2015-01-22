@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
+using System.Security.Claims;
 using System.Web;
 using D2L.Security.AuthTokenValidation.JwtValidation;
 
@@ -85,11 +86,23 @@ namespace D2L.Security.AuthTokenValidation.Default {
 				scopeClaimValue.Split( ',' )
 				);
 
+			long userId = -1337;
+			Claim userIdClaim = validatedJwt.Claims.Where( x => x.Type == "uid" ).FirstOrDefault();
+			if( userIdClaim != null ) {
+				userId = long.Parse( userIdClaim.Value );
+			}
+
+			string xsrfToken = "DUMMY XSRF TOKEN!!";
+			Claim xsrfClaim = validatedJwt.Claims.Where( x => x.Type == "xt" ).FirstOrDefault();
+			if( xsrfClaim != null ) {
+				xsrfToken = xsrfClaim.Value;
+			}
+
 			Principal principal = new Principal(
-				-1337,
+				userId,
 				"14B7E2DC-9293-4786-8045-4EC99AFD0F02",
 				"localhost.com",
-				"DUMMY XSRF TOKEN!!",
+				xsrfToken,
 				scopes
 				);
 
