@@ -21,7 +21,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 		ValidationResult IAuthTokenValidator.VerifyAndDecode( string jwt, out IGenericPrincipal principal ) {
 			try {
 				principal = VerifyAndDecodeWorker( jwt );
-			} catch ( SecurityTokenExpiredException e ) {
+			} catch ( SecurityTokenExpiredException ) {
 				principal = null;
 				return ValidationResult.TokenExpired;
 			}
