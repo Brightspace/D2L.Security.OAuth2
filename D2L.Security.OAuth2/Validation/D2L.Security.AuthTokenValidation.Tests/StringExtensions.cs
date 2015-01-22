@@ -8,10 +8,5 @@ namespace D2L.Security.AuthTokenValidation.Tests {
 			byte[] plainTextBytes = Encoding.UTF8.GetBytes( me );
 			return Convert.ToBase64String( plainTextBytes );
 		}
-
-		internal static string FromBase64( this string me ) {
-			byte[] base64EncodedBytes = Convert.FromBase64String( me );
-			return Encoding.UTF8.GetString( base64EncodedBytes );
-		}
 	}
 }
