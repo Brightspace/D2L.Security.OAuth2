@@ -54,7 +54,8 @@
   <ItemGroup>
     <Compile Include="AuthenticationFilter.cs" />
     <Compile Include="FriendAssemblies.cs" />
-    <Compile Include="Principal.cs" />
+    <Compile Include="ID2LPrincipal.cs" />
+    <Compile Include="D2LPrincipal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
