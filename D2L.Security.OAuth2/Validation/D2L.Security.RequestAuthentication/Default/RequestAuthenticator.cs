@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Web;
 using D2L.Security.AuthTokenValidation;
 
@@ -9,6 +8,7 @@ namespace D2L.Security.RequestAuthentication.Default {
 		private const string COOKIE_NAME = "d2lApi";
 		private const string AUTH_HEADER_PREFIX = "Bearer ";
 		private const string XSRF_HEADER = "X-Csrf-Token";
+		private const string AUTHORIZATION_SCHEME = "Bearer";
 
 		private readonly IAuthTokenValidator m_tokenValidator;
 
@@ -18,14 +18,8 @@ namespace D2L.Security.RequestAuthentication.Default {
 
 		AuthenticationResult IRequestAuthenticator.AuthenticateAndExtract( HttpRequestMessage request, out ID2LPrincipal principal ) {
 			string cookie = request.GetCookieValue( COOKIE_NAME );
-
-			string bearerToken = null;
-			var authHeader = request.Headers.Authorization;
-			if( authHeader != null && authHeader.Scheme == "Bearer" ) {
-				bearerToken = authHeader.Parameter;
-			}
-
-			string xsrfToken = request.Headers.GetValues( XSRF_HEADER ).FirstOrDefault();
+			string bearerToken = request.GetBearerTokenValue();
+			string xsrfToken = request.GetXsrfValue();
 
 			return TryAuthenticate( cookie, xsrfToken, bearerToken, out principal );
 		}

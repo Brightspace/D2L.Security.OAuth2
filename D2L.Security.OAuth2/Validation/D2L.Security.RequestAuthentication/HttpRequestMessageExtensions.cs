@@ -1,11 +1,13 @@
 ﻿using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace D2L.Security.RequestAuthentication {
 	internal static class HttpRequestMessageExtensions {
 
 		private const string COOKIE_HEADER = "Cookie";
 		private const string XSRF_HEADER = "X-Csrf-Token";
+		private const string BEARER_TOKEN_AUTHORIZATION_SCHEME = "Bearer";
 
 		/// <summary>
 		/// Return the value of a cookie
@@ -42,6 +44,24 @@ namespace D2L.Security.RequestAuthentication {
 		/// <returns>The value of the Xsrf header, or null if the Xsrf header was not found</returns>
 		internal static string GetXsrfValue( this HttpRequestMessage request ) {
 			return request.GetHeaderValue( XSRF_HEADER );
+		}
+
+		/// <summary>
+		/// Returns the value of the bearer token.
+		/// </summary>
+		/// <param name="request">The request</param>
+		/// <returns>The value of the bearer token, or null if the bearer token is not set</returns>
+		internal static string GetBearerTokenValue( this HttpRequestMessage request ) {
+			AuthenticationHeaderValue authHeader = request.Headers.Authorization;
+			if( authHeader == null ) {
+				return null;
+			}
+
+			if( authHeader.Scheme != BEARER_TOKEN_AUTHORIZATION_SCHEME ) {
+				return null;
+			}
+
+			return authHeader.Parameter;
 		}
 
 		private static string GetHeaderValue( this HttpRequestMessage request, string headerName ) {
