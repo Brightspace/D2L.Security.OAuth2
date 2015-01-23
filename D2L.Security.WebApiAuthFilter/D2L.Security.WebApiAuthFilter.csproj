@@ -67,11 +67,12 @@
   <ItemGroup>
     <Compile Include="AuthenticateAttribute.cs" />
     <Compile Include="AuthenticationSettings.cs" />
+    <Compile Include="Exceptions\InitializeNotCalledException.cs" />
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="D2LPrincipalAdapter.cs" />
     <Compile Include="ID2LPrincipalAdapter.cs" />
     <Compile Include="NullAuthTokenValidator.cs" />
-    <Compile Include="PrincipalNotAssignedException.cs" />
+    <Compile Include="Exceptions\PrincipalNotAssignedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

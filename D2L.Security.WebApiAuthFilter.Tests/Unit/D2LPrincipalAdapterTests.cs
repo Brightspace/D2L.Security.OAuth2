@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
+using D2L.Security.WebApiAuthFilter.Exceptions;
 using Moq;
 using NUnit.Framework;
 

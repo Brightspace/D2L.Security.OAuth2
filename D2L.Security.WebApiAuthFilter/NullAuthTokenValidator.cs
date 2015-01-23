@@ -4,6 +4,8 @@ using D2L.Security.RequestAuthentication;
 
 namespace D2L.Security.WebApiAuthFilter {
 
+	// TODO: Try to get this moved to a lower level (this is a pattern, SimpleLogInterface follows it too)
+
 	/// <summary>
 	/// A convenience class used for testing that returns a null IGenericPrincipal.
 	/// </summary>

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using D2L.Security.RequestAuthentication;
+using D2L.Security.WebApiAuthFilter.Exceptions;
 using SimpleLogInterface;
 
 namespace D2L.Security.WebApiAuthFilter {
@@ -24,6 +25,10 @@ namespace D2L.Security.WebApiAuthFilter {
 				m_requestAuthenticator = RequestAuthenticatorFactory.Create( AuthenticationConfig.AuthServiceEndpoint );
 			} else {
 				m_requestAuthenticator = NullRequestAuthenticator.Instance;
+			}
+
+			if( AuthenticationConfig.LogProvider == null ) {
+				throw new InitializeNotCalledException( "Initialize method was not called prior to authentication filter being created" );
 			}
 
 			m_log = AuthenticationConfig.LogProvider.Get( typeof( AuthenticateAttribute ) );
