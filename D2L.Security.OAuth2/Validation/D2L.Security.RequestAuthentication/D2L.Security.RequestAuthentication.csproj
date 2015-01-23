@@ -43,6 +43,8 @@
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.1\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,8 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Default\D2LPrincipal.cs" />
+    <Compile Include="Default\RequestAuthenticator.cs" />
     <Compile Include="FriendAssemblies.cs" />
+    <Compile Include="ID2LPrincipal.cs" />
+    <Compile Include="IRequestAuthenticator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AuthenticationResult.cs" />
+    <Compile Include="RequestAuthenticatorFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="D2L.Security.RequestAuthentication.nuspec" />
