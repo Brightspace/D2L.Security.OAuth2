@@ -4,6 +4,12 @@ using System.Collections.Generic;
 namespace D2L.Security.RequestAuthentication.Default {
 	internal sealed class D2LPrincipal : ID2LPrincipal {
 
+		private readonly bool m_isXsrfSafe;
+
+		internal D2LPrincipal( bool isXsrfSafe ) {
+			m_isXsrfSafe = isXsrfSafe;
+		}
+
 		long? ID2LPrincipal.UserId {
 			get { throw new NotImplementedException(); }
 		}
@@ -21,7 +27,7 @@ namespace D2L.Security.RequestAuthentication.Default {
 		}
 
 		bool ID2LPrincipal.XsrfSafe {
-			get { throw new NotImplementedException(); }
+			get { return m_isXsrfSafe; }
 		}
 
 		bool ID2LPrincipal.IsBrowserUser {
