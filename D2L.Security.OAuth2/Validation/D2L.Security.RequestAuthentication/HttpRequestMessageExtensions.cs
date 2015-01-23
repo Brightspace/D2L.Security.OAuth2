@@ -27,7 +27,9 @@ namespace D2L.Security.RequestAuthentication {
 
 			string[] allCookiesArray = cookiesHeaderValue.Split( ';' );
 
-
+			//!!!!!!!! refactor
+			//!!!!!!!! refactor
+			//!!!!!!!! refactor
 			string cookieValue = null;
 			var cookiePair = allCookiesArray.Select( c => c.Split( '=' ) ).FirstOrDefault( c => c[0] == cookieName );
 			if( cookiePair != null ) {
