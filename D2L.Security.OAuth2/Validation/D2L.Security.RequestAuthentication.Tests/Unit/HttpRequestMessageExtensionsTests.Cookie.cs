@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace D2L.Security.RequestAuthentication.Tests.Unit {
 	
 	[TestFixture]
-	internal class HttpRequestMessageExtensionsTests {
+	internal partial class HttpRequestMessageExtensionsTests {
 
 		private const string COOKIE_HEADER = "Cookie";
 
