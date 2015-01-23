@@ -4,7 +4,7 @@
 [assembly: AssemblyTitle( "D2L Security Request Authentication" )]
 
 // Nuget: Description
-[assembly: AssemblyDescription( "A library that authenticate various http request types." )]
+[assembly: AssemblyDescription( "A library which authenticates various request types." )]
 
 // Nuget: Author
 [assembly: AssemblyCompany( "Desire2Learn" )]
