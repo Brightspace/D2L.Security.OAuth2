@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Unit\HttpRequestMessageExtensionsTests.cs" />
+    <Compile Include="Unit\HttpRequestMessageExtensionsTests.Xsrf.cs" />
+    <Compile Include="Unit\HttpRequestMessageExtensionsTests.Cookie.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
