@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using D2L.Security.AuthTokenValidation;
+﻿using D2L.Security.AuthTokenValidation;
 
 namespace D2L.Security.RequestAuthentication.Core.Default {
 	internal sealed class CoreAuthenticator : ICoreAuthenticator {
@@ -17,23 +12,25 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 		AuthenticationResult ICoreAuthenticator.Authenticate( 
 			string cookie, 
 			string xsrfHeader, 
-			string bearerToken,
+			string bearerToken, 
 			out ID2LPrincipal principal
 			) {
 
-			if( cookie == null && bearerToken == null ) {
+			bool cookieExists = !string.IsNullOrEmpty( cookie );
+			bool bearerTokenExists = !string.IsNullOrEmpty( bearerToken );
+
+			if( !cookieExists && !bearerTokenExists ) {
 				principal = null;
 				return AuthenticationResult.Anonymous;
 			}
 
-			if( cookie != null && bearerToken != null ) {
+			if( cookieExists && bearerTokenExists ) {
 				principal = null;
-				return AuthenticationResult.TokenLocationConflict;
+				return AuthenticationResult.LocationConflict;
 			}
 
-			bool isBrowserUser = cookie != null;
-
-			string token = bearerToken ?? cookie;
+			bool isBrowserUser = cookieExists;
+			string token = cookieExists ? cookie : bearerToken;
 
 			IGenericPrincipal claims;
 			ValidationResult validationResult = m_tokenValidator.VerifyAndDecode( token, out claims );
@@ -47,7 +44,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			if( isBrowserUser && xsrfHeader != null ) {
 				if( claims.XsrfToken != xsrfHeader ) {
 					principal = null;
-					return AuthenticationResult.BadXsrf;
+					return AuthenticationResult.XsrfMismatch;
 				}
 
 				xsrfSafe = true;

@@ -7,7 +7,7 @@
 
 		AuthenticationResult Authenticate(
 			string cookie,
-			string xsrfHeader,
+			string xsrfToken,
 			string bearerToken,
 			out ID2LPrincipal principal
 			);
