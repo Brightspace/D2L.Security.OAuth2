@@ -6,9 +6,6 @@ namespace D2L.Security.RequestAuthentication.Default {
 	internal sealed class RequestAuthenticator : IRequestAuthenticator {
 
 		private const string COOKIE_NAME = "d2lApi";
-		private const string AUTH_HEADER_PREFIX = "Bearer ";
-		private const string XSRF_HEADER = "X-Csrf-Token";
-		private const string AUTHORIZATION_SCHEME = "Bearer";
 
 		private readonly IAuthTokenValidator m_tokenValidator;
 
@@ -25,19 +22,9 @@ namespace D2L.Security.RequestAuthentication.Default {
 		}
 
 		AuthenticationResult IRequestAuthenticator.AuthenticateAndExtract( HttpRequest request, out ID2LPrincipal principal ) {
-			string cookie = null;
-			HttpCookie httpCookie = request.Cookies.Get( COOKIE_NAME );
-			if( httpCookie != null ) {
-				cookie = httpCookie.Value;
-			}
-
-			string bearerToken = null;
-			string bearerTokenHeader = request.Headers["Authorization"];
-			if( bearerTokenHeader.StartsWith( AUTH_HEADER_PREFIX ) ) {
-				bearerToken = bearerTokenHeader.Substring( AUTH_HEADER_PREFIX.Length );
-			}
-
-			string xsrfToken = request.Headers[XSRF_HEADER];
+			string cookie = request.GetCookieValue( COOKIE_NAME );
+			string bearerToken = request.GetBearerTokenValue();
+			string xsrfToken = request.GetXsrfValue();
 
 			return TryAuthenticate( cookie, xsrfToken, bearerToken, out principal );
 		}

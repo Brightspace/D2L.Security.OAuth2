@@ -43,7 +43,8 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the Xsrf header, or null if the Xsrf header was not found</returns>
 		internal static string GetXsrfValue( this HttpRequestMessage request ) {
-			return request.GetHeaderValue( XSRF_HEADER );
+			string xsrfValue = request.GetHeaderValue( XSRF_HEADER );
+			return xsrfValue;
 		}
 
 		/// <summary>
