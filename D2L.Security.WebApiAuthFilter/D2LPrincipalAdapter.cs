@@ -12,7 +12,7 @@ namespace D2L.Security.WebApiAuthFilter {
 	/// at the time the principal is injected, which is before the authentication filter and 
 	/// controller are even created.
 	/// </summary>
-	internal sealed class D2LPrincipalAdapter : ID2LPrincipalAdapter {
+	public sealed class D2LPrincipalAdapter : ID2LPrincipalAdapter {
 
 		private readonly Lazy<ID2LPrincipal> m_principal;
 

@@ -65,7 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthenticationFilterAttribute.cs" />
+    <Compile Include="AuthenticateAttribute.cs" />
     <Compile Include="AuthenticationSettings.cs" />
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="D2LPrincipalAdapter.cs" />

@@ -11,14 +11,14 @@ using SimpleLogInterface;
 namespace D2L.Security.WebApiAuthFilter {
 
 	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false )]
-	public sealed class AuthenticationFilterAttribute : AuthorizationFilterAttribute {
+	public sealed class AuthenticateAttribute : AuthorizationFilterAttribute {
 
 		private readonly IRequestAuthenticator m_requestAuthenticator;
 		private readonly ILog m_log;
 
 		private bool m_verifyCsrf = true;
 
-		public AuthenticationFilterAttribute() {
+		public AuthenticateAttribute() {
 
 			if ( AuthenticationConfig.AuthServiceEndpoint != null ) {
 				m_requestAuthenticator = RequestAuthenticatorFactory.Create( AuthenticationConfig.AuthServiceEndpoint );
@@ -26,7 +26,7 @@ namespace D2L.Security.WebApiAuthFilter {
 				m_requestAuthenticator = NullRequestAuthenticator.Instance;
 			}
 
-			m_log = AuthenticationConfig.LogProvider.Get( typeof( AuthenticationFilterAttribute ) );
+			m_log = AuthenticationConfig.LogProvider.Get( typeof( AuthenticateAttribute ) );
 		}
 
 		public bool VerifyCsrf {
