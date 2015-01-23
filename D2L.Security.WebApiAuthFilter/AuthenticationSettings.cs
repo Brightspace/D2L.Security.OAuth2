@@ -6,7 +6,7 @@ namespace D2L.Security.WebApiAuthFilter {
 	public static class AuthenticationConfig {
 
 		/// <summary>
-		/// Call this method only once before the
+		/// Call this method only once and before the service begins listening.
 		/// </summary>
 		/// <param name="authServiceEndpoint">Used to fetch the certificate to validate the signature of
 		/// the token. For testing, set to null to bypass authentication altogether.</param>
@@ -15,10 +15,6 @@ namespace D2L.Security.WebApiAuthFilter {
 			Uri authServiceEndpoint,
 			ILogProvider logProvider
 			) {
-
-			if( LogProvider != null ) {
-				throw new InvalidOperationException( "Initialize has already been called." );
-			}
 
 			AuthServiceEndpoint = authServiceEndpoint;
 			LogProvider = logProvider;

@@ -52,12 +52,21 @@ namespace D2L.Security.WebApiAuthFilter {
 			get { return m_principal.Value.IsBrowserUser; }
 		}
 
+		/// <summary>
+		/// Do not use. Throws NotImplementedException.
+		/// </summary>
+		/// <param name="role"></param>
+		/// <returns></returns>
 		bool IPrincipal.IsInRole( string role ) {
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Do not use. Returns null.
+		/// </summary>
+		/// <remarks>Null due to logging framework attempting to access the principal.</remarks>
 		IIdentity IPrincipal.Identity {
-			get { throw new NotImplementedException(); }
+			get { return null; }
 		}
 
 		/// <summary>

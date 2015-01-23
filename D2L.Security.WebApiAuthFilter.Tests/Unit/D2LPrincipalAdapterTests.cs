@@ -40,13 +40,13 @@ namespace D2L.Security.WebApiAuthFilter.Tests.Unit {
 		}
 
 		[Test]
-		public void IPrincipalProperties_AccessThem_ThrowNotImplementedException() {
+		public void IPrincipalProperties_AccessThem_NotGoodValues() {
 			
 			IPrincipal principal = new D2LPrincipalAdapter();
 
 			Thread.CurrentPrincipal = CreateMockPrincipal();
 
-			Assert.Throws<NotImplementedException>( () => { var identity = principal.Identity; } );
+			Assert.Null( principal.Identity );
 			Assert.Throws<NotImplementedException>( () => { principal.IsInRole( "random_role" ); } );
 		}
 
