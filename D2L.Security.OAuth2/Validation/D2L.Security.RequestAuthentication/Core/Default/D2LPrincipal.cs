@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace D2L.Security.RequestAuthentication.Default {
+namespace D2L.Security.RequestAuthentication.Core.Default {
 	internal sealed class D2LPrincipal : ID2LPrincipal {
 
 		private readonly bool m_isXsrfSafe;
