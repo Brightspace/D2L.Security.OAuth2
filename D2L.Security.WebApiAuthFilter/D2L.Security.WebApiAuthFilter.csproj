@@ -32,34 +32,52 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="D2L.Security.AuthTokenValidation">
+      <HintPath>..\packages\D2L.Security.AuthTokenValidation.1.0.6.0\lib\net451\D2L.Security.AuthTokenValidation.dll</HintPath>
+    </Reference>
+    <Reference Include="D2L.Security.RequestAuthentication">
+      <HintPath>..\packages\D2L.Security.RequestAuthentication.1.0.0.0\lib\net451\D2L.Security.RequestAuthentication.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.1\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SimpleLogInterface">
       <HintPath>..\packages\SimpleLogInterface.1.0.2.0\lib\net45\SimpleLogInterface.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.1\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthenticationFilter.cs" />
+    <Compile Include="AuthenticationFilterAttribute.cs" />
+    <Compile Include="AuthenticationSettings.cs" />
     <Compile Include="FriendAssemblies.cs" />
-    <Compile Include="ID2LPrincipal.cs" />
-    <Compile Include="D2LPrincipal.cs" />
+    <Compile Include="D2LPrincipalAdapter.cs" />
+    <Compile Include="ID2LPrincipalAdapter.cs" />
+    <Compile Include="NullAuthTokenValidator.cs" />
+    <Compile Include="PrincipalNotAssignedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="D2L.Security.WebApiAuthFilter.nuspec" />
+    <None Include="D2L.Security.WebApiAuthFilter.nuspec">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
