@@ -52,7 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Default\D2LPrincipal.cs" />
+    <Compile Include="Core\CoreAuthenticatorFactory.cs" />
+    <Compile Include="Core\Default\CoreAuthenticator.cs" />
+    <Compile Include="Core\ICoreAuthenticator.cs" />
+    <Compile Include="Core\Default\D2LPrincipal.cs" />
     <Compile Include="HttpRequestExtensions.cs" />
     <Compile Include="HttpRequestMessageExtensions.cs" />
     <Compile Include="Default\RequestAuthenticator.cs" />
