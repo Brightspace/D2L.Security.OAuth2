@@ -9,7 +9,7 @@ using System.Web;
 namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 	internal static class RequestBuilder {
 
-		private const string COOKIE_NAME = "d2lApi";
+		private const string D2L_AUTH_COOKIE_NAME = "d2lApi";
 		private const string COOKIE_HEADER_NAME = "Cookie";
 		private const string AUTH_HEADER_SCHEME = "Bearer";
 		private const string BEARER_TOKEN_HEADER_NAME = "Authorization";
@@ -24,7 +24,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		}
 
 		internal static void AddCookie( HttpRequest httpRequest, string cookieValue ) {
-			httpRequest.Cookies.Add( new HttpCookie( COOKIE_NAME, cookieValue ) );
+			httpRequest.Cookies.Add( new HttpCookie( D2L_AUTH_COOKIE_NAME, cookieValue ) );
 		}
 
 		internal static void AddAuthHeader( HttpRequestMessage httpRequestMessage, string authHeaderValue ) {
@@ -37,7 +37,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		}
 
 		internal static void AddCookie( HttpRequestMessage httpRequestMessage, string cookieValue ) {
-			string cookieHeaderValue = COOKIE_NAME + "=" + cookieValue;
+			string cookieHeaderValue = D2L_AUTH_COOKIE_NAME + "=" + cookieValue;
 			httpRequestMessage.Headers.Add( COOKIE_HEADER_NAME, cookieHeaderValue );
 		}
 
