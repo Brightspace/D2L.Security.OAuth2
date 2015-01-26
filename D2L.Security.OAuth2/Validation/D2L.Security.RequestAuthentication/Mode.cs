@@ -1,4 +1,5 @@
 ﻿namespace D2L.Security.RequestAuthentication {
+	
 	public enum Mode {
 		/// <summary>
 		/// This mode will perform full authentication of the request
