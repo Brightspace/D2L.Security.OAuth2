@@ -8,8 +8,6 @@ namespace D2L.Security.RequestAuthentication {
 		string TenantId { get; }
 		string TenantUrl { get; }
 
-		bool XsrfSafe { get; }
-
 		bool IsBrowserUser { get; }
 		bool IsService { get; }
 

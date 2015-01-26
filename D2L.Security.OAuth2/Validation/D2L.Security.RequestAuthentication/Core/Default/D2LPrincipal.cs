@@ -23,10 +23,6 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			get { throw new NotImplementedException(); }
 		}
 
-		bool ID2LPrincipal.XsrfSafe {
-			get { throw new NotImplementedException(); }
-		}
-
 		bool ID2LPrincipal.IsBrowserUser {
 			get { throw new NotImplementedException(); }
 		}
