@@ -92,6 +92,12 @@ namespace D2L.Security.AuthTokenValidation.Default {
 				userId = long.Parse( userIdClaim.Value );
 			}
 
+			string tenantId = "00000000-0000-0000-0000-000000000000";
+			Claim tenantIdClaim = validatedJwt.Claims.Where( x => x.Type == "tid" ).FirstOrDefault();
+			if( tenantIdClaim != null ) {
+				tenantId = tenantIdClaim.Value;
+			}
+
 			string xsrfToken = "DUMMY XSRF TOKEN!!";
 			Claim xsrfClaim = validatedJwt.Claims.Where( x => x.Type == "xt" ).FirstOrDefault();
 			if( xsrfClaim != null ) {
@@ -100,7 +106,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 			Principal principal = new Principal(
 				userId,
-				"14B7E2DC-9293-4786-8045-4EC99AFD0F02",
+				tenantId,
 				"localhost.com",
 				xsrfToken,
 				scopes
