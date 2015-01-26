@@ -65,12 +65,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 
 		[Test]
 		public void Authenticate_ExpiredJwt_Expired() {
-			IGenericPrincipal claims = null;
-			Mock<IAuthTokenValidator> validator = new Mock<IAuthTokenValidator>();
-			validator.Setup(
-				x => x.VerifyAndDecode( It.IsAny<string>(), out claims )
-				).Returns( ValidationResult.TokenExpired );
-			ICoreAuthenticator authenticator = new CoreAuthenticator( validator.Object, false );
+			ICoreAuthenticator authenticator = MakeAuthenticator( false, ValidationResult.TokenExpired );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = authenticator.Authenticate( null, "dummyxsrftoken", "bearerToken", out principal );
@@ -91,13 +86,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 		public void Authenticate_BrowserUser_XsrfTokensDoNotMatch_XsrfMismatch( string xsrfInHeader, string xsrfInClaims ) {
 			Mock<IGenericPrincipal> claimsMock = new Mock<IGenericPrincipal>();
 			claimsMock.SetupGet( x => x.XsrfToken ).Returns( xsrfInClaims );
-			IGenericPrincipal claims = claimsMock.Object;
-
-			Mock<IAuthTokenValidator> validator = new Mock<IAuthTokenValidator>();
-			validator.Setup(
-				x => x.VerifyAndDecode( It.IsAny<string>(), out claims )
-				).Returns( ValidationResult.Success );
-			ICoreAuthenticator authenticator = new CoreAuthenticator( validator.Object, true );
+			ICoreAuthenticator authenticator = MakeAuthenticator( true, ValidationResult.Success, claimsMock.Object );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = authenticator.Authenticate( "dummycookie", xsrfInHeader, "", out principal );
@@ -108,13 +97,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 		public void Authenticate_XsrfCheckedAndMatch_Success() {
 			Mock<IGenericPrincipal> claimsMock = new Mock<IGenericPrincipal>();
 			claimsMock.SetupGet( x => x.XsrfToken ).Returns( "somexsrf" );
-			IGenericPrincipal claims = claimsMock.Object;
-
-			Mock<IAuthTokenValidator> validator = new Mock<IAuthTokenValidator>();
-			validator.Setup(
-				x => x.VerifyAndDecode( It.IsAny<string>(), out claims )
-				).Returns( ValidationResult.Success );
-			ICoreAuthenticator authenticator = new CoreAuthenticator( validator.Object, true );
+			ICoreAuthenticator authenticator = MakeAuthenticator( true, ValidationResult.Success, claimsMock.Object );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = authenticator.Authenticate( "dummycookie", "somexsrf", "", out principal );
@@ -123,16 +106,24 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 
 		[Test]
 		public void Authenticate_XsrfChecked_NotBrowserUser_Success() {
-			IGenericPrincipal claims = new Mock<IGenericPrincipal>().Object;
-			Mock<IAuthTokenValidator> validator = new Mock<IAuthTokenValidator>();
-			validator.Setup(
-				x => x.VerifyAndDecode( It.IsAny<string>(), out claims )
-				).Returns( ValidationResult.Success );
-			ICoreAuthenticator authenticator = new CoreAuthenticator( validator.Object, true );
+			ICoreAuthenticator authenticator = MakeAuthenticator( true, ValidationResult.Success );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = authenticator.Authenticate( "", "somexsrf", "somebearertoken", out principal );
 			Assert.AreEqual( AuthenticationResult.Success, result );
+		}
+
+		ICoreAuthenticator MakeAuthenticator( bool checkXsrf, ValidationResult resultFromJwtValidation, IGenericPrincipal claims = null ) {
+			IGenericPrincipal defaultClaims = new Mock<IGenericPrincipal>().Object;
+			claims = claims ?? defaultClaims;
+
+			Mock<IAuthTokenValidator> validator = new Mock<IAuthTokenValidator>();
+			validator.Setup(
+				x => x.VerifyAndDecode( It.IsAny<string>(), out claims )
+				).Returns( resultFromJwtValidation );
+			ICoreAuthenticator authenticator = new CoreAuthenticator( validator.Object, checkXsrf );
+
+			return authenticator;
 		}
 	}
 }
