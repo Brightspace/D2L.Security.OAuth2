@@ -40,6 +40,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.1\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>

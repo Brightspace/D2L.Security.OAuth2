@@ -56,12 +56,20 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 
 		private bool IsXsrfSafe( string cookie, string xsrfToken, IGenericPrincipal claims ) {
 			if( !m_mustValidateXsrf ) {
-				return false;
+				return true;
 			}
 
 			bool isBrowserUser = !string.IsNullOrEmpty( cookie );
-			bool xsrfTokensMatch = claims.XsrfToken == xsrfToken;
-			if( isBrowserUser && !xsrfTokensMatch ) {
+			if( !isBrowserUser ) {
+				return true;
+			}
+
+			// we must now validate that the xsrf tokens match
+
+			bool xsrfTokensEqual = claims.XsrfToken == xsrfToken;
+			bool xsrfTokenContainsValue = !string.IsNullOrEmpty( xsrfToken );
+
+			if( !xsrfTokensEqual || !xsrfTokenContainsValue ) {
 				return false;
 			}
 
