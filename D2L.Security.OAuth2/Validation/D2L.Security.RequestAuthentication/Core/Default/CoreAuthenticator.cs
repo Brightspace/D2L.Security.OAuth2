@@ -3,15 +3,20 @@
 namespace D2L.Security.RequestAuthentication.Core.Default {
 	internal sealed class CoreAuthenticator : ICoreAuthenticator {
 
+		private readonly bool m_mustValidateXsrf;
 		private readonly IAuthTokenValidator m_tokenValidator;
 
-		internal CoreAuthenticator( IAuthTokenValidator tokenValidator ) {
+		internal CoreAuthenticator( 
+			IAuthTokenValidator tokenValidator,
+			bool mustValidateXsrf
+			) {
+			m_mustValidateXsrf = mustValidateXsrf;
 			m_tokenValidator = tokenValidator;
 		}
 
 		AuthenticationResult ICoreAuthenticator.Authenticate( 
 			string cookie, 
-			string xsrfHeader, 
+			string xsrfToken, 
 			string bearerToken, 
 			out ID2LPrincipal principal
 			) {
@@ -29,7 +34,6 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 				return AuthenticationResult.LocationConflict;
 			}
 
-			bool isBrowserUser = cookieExists;
 			string token = cookieExists ? cookie : bearerToken;
 
 			IGenericPrincipal claims;
@@ -40,18 +44,28 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 				return AuthenticationResult.Expired;
 			}
 
-			bool xsrfSafe = false;
-			if( isBrowserUser && xsrfHeader != null ) {
-				if( claims.XsrfToken != xsrfHeader ) {
-					principal = null;
-					return AuthenticationResult.XsrfMismatch;
-				}
+			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, claims );
+			if( !isXsrfSafe ) {
+				principal = null;
+				return AuthenticationResult.XsrfMismatch;
+			}
+			
+			principal = new D2LPrincipal();
+			return AuthenticationResult.Success;
+		}
 
-				xsrfSafe = true;
+		private bool IsXsrfSafe( string cookie, string xsrfToken, IGenericPrincipal claims ) {
+			if( !m_mustValidateXsrf ) {
+				return false;
 			}
 
-			principal = new D2LPrincipal( xsrfSafe );
-			return AuthenticationResult.Success;
+			bool isBrowserUser = !string.IsNullOrEmpty( cookie );
+			bool xsrfTokensMatch = claims.XsrfToken == xsrfToken;
+			if( isBrowserUser && !xsrfTokensMatch ) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

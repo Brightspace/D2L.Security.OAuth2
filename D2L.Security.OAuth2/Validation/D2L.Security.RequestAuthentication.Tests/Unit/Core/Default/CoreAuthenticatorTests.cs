@@ -17,7 +17,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 		[TestCase( "", null )]
 		[TestCase( "", "" )]
 		public void Authenticate_NullOrEmptyCookieAndBearerToken_Anonymous( string cookie, string bearerToken ) {
-			ICoreAuthenticator authenticator = new CoreAuthenticator( null );
+			ICoreAuthenticator authenticator = new CoreAuthenticator( null, true );
 			ID2LPrincipal principal;
 			
 			AuthenticationResult result = authenticator.Authenticate( cookie, "dummyxsrf", bearerToken, out principal );
@@ -26,7 +26,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 
 		[Test]
 		public void Authenticate_TokenInBothCookieAndBearerToken_Conflict() {
-			ICoreAuthenticator authenticator = new CoreAuthenticator( null );
+			ICoreAuthenticator authenticator = new CoreAuthenticator( null, true );
 			ID2LPrincipal principal;
 
 			AuthenticationResult result = authenticator.Authenticate( "dummycookie", "dummyxsrftoken", "dummybearer", out principal );
