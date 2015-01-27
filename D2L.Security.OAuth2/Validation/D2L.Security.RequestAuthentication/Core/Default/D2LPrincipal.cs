@@ -7,6 +7,10 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 		internal D2LPrincipal() {
 		}
 
+		DateTime ID2LPrincipal.SecurityExpirationDate {
+			get { throw new NotImplementedException(); }
+		}
+
 		long? ID2LPrincipal.UserId {
 			get { throw new NotImplementedException(); }
 		}
