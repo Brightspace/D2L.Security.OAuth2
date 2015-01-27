@@ -8,7 +8,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 	internal sealed class FullStackTests {
 
 		[Test]
-		public void IRequestAuthenticator_AuthenticateAndExtract_NoXsrf_HttpRequestMessage_Success() {
+		public void HttpRequestMessage_Cookie_NoXsrf_Success() {
 			string cookieValue = TestTokens.VALID_NO_XSRF_JWT;
 
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
@@ -24,9 +24,26 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 		}
 
 		[Test]
-		public void IRequestAuthenticator_AuthenticateAndExtract_WithXsrf_HttpRequestMessage_Success() {
+		public void HttpRequestMessage_Cookie_WithXsrf_Success() {
 			Assert.Inconclusive();
 		}
+
+		[Test]
+		public void HttpRequestMessage_BearerToken_NoXsrf_Success() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void HttpRequestMessage_BearerToken_WithXsrf_Success() {
+			Assert.Inconclusive();
+		}
+
+
+
+
+
+
+
 
 		[Test]
 		public void IRequestAuthenticator_AuthenticateAndExtract_NoXsrf_HttpRequest_Success() {
