@@ -8,13 +8,18 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 		private readonly DateTime m_expiry;
 		private readonly long? m_userId;
 		private readonly string m_tenantId;
-		private readonly string m_tenantUrl;
 		private readonly IEnumerable<string> m_scopes;
 		private readonly PrincipalType m_type;
 		private readonly string m_xsrf;
 
 		internal ValidatedTokenToD2LPrincipalAdapter( IValidatedToken validatedToken ) {
 			m_xsrf = validatedToken.GetXsrfToken();
+			m_expiry = validatedToken.Expiry;
+			m_tenantId = validatedToken.GetTenantId();
+			m_scopes = validatedToken.GetScopes();
+
+			m_userId = validatedToken.GetUserId();
+			m_type = m_userId.HasValue ? PrincipalType.User : PrincipalType.Service;
 		}
 
 		DateTime ID2LPrincipal.SecurityExpiry {
@@ -30,7 +35,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 		}
 
 		string ID2LPrincipal.TenantUrl {
-			get { return m_tenantUrl; }
+			get { throw new NotImplementedException(); }
 		}
 		
 		IEnumerable<string> ID2LPrincipal.Scopes {
