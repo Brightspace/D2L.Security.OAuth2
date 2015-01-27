@@ -61,7 +61,7 @@
     <Compile Include="Core\Default\CoreAuthenticator.cs" />
     <Compile Include="Core\Default\IValidatedTokenExtensions.cs" />
     <Compile Include="Core\ICoreAuthenticator.cs" />
-    <Compile Include="Core\Default\D2LPrincipal.cs" />
+    <Compile Include="Core\Default\ValidatedTokenToD2LPrincipalAdapter.cs" />
     <Compile Include="HttpRequestExtensions.cs" />
     <Compile Include="HttpRequestMessageExtensions.cs" />
     <Compile Include="Default\RequestAuthenticator.cs" />
