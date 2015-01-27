@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 	
 	[TestFixture]
-	internal sealed class FullStackTests {
+	internal sealed partial class FullStackTests {
 
 		[Test]
 		public void HttpRequestMessage_Cookie_NoXsrf_Success() {
@@ -38,21 +38,24 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 			Assert.Inconclusive();
 		}
 
-
-
-
-
-
-
-
 		[Test]
-		public void IRequestAuthenticator_AuthenticateAndExtract_NoXsrf_HttpRequest_Success() {
+		public void HttpRequestMessage_BearerToken_InvalidJwt_Failure() {
 			Assert.Inconclusive();
 		}
 
 		[Test]
-		public void IRequestAuthenticator_AuthenticateAndExtract_WithXsrf_HttpRequest_Success() {
+		public void HttpRequestMessage_Cookie_InvalidJwt_Failure() {
 			Assert.Inconclusive();
 		}
+
+		[Test]
+		public void HttpRequestMessage_Cookie_NonMatchingXsrf_Failure() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void HttpRequestMessage_BearerToken_NonMatchingXsrf_Failure() {
+			Assert.Inconclusive();
+		}		
 	}
 }
