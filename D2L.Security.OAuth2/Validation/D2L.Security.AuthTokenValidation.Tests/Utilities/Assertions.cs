@@ -17,6 +17,21 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 		}
 
 		/// <summary>
+		/// Asserts that the "scope" claim contains the specified value
+		/// </summary>
+		/// <param name="validatedToken">A validated token</param>
+		/// <param name="scopeValue">The value to use when checking</param>
+		internal static void ContainsScopeValue( IValidatedToken validatedToken, string scopeValue ) {
+			string scopeValueFromClaim = validatedToken.Claims.First( x => x.Type == "scope" ).Value;
+			Assert.AreEqual( scopeValue, scopeValueFromClaim );
+		}
+
+		internal static void ScopeClaimsCountIsExactly( IValidatedToken validatedToken, long count ) {
+			string scopeValueFromClaim = validatedToken.Claims.First( x => x.Type == "scope" ).Value;
+			Assert.AreEqual( count, validatedToken.Claims.Count( x => x.Type == "scope" ) );
+		}
+
+		/// <summary>
 		/// Asserts that the inner most exception is of type T
 		/// </summary>
 		/// <typeparam name="T">Expected inner most exception type</typeparam>
