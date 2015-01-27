@@ -12,5 +12,7 @@ namespace D2L.Security.AuthTokenValidation {
 		bool IsBrowserUser { get; }
 		bool HasScope( string scope );
 		void AssertScope( string scope );
+
+		string Jwt { get; }
 	}
 }

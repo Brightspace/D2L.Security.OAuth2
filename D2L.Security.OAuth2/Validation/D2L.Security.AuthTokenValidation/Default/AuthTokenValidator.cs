@@ -52,7 +52,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 		private IGenericPrincipal VerifyAndDecodeWorker( string jwt ) {
 			IValidatedJwt validatedJwt = m_validator.Validate( jwt );
-			return GetPrincipal( validatedJwt );
+			return GetPrincipal( validatedJwt, jwt );
 		}
 
 		internal static string GetTokenFromCookie( HttpRequest request ) {
@@ -76,7 +76,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			return authToken;
 		}
 
-		internal static Principal GetPrincipal( IValidatedJwt validatedJwt ) {
+		internal static Principal GetPrincipal( IValidatedJwt validatedJwt, string sourceJwt ) {
 
 			string scopeClaimValue = validatedJwt.Claims
 				.Where( x => x.Type == "scope" )
@@ -109,7 +109,8 @@ namespace D2L.Security.AuthTokenValidation.Default {
 				tenantId,
 				"localhost.com",
 				xsrfToken,
-				scopes
+				scopes,
+				sourceJwt
 				);
 
 			return principal;
