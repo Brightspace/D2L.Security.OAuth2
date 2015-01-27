@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
-using D2L.Security.WebApiAuthFilter.Exceptions;
+using D2L.Security.WebApiAuthFilter.Principal;
+using D2L.Security.WebApiAuthFilter.Principal.Default;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.WebApiAuthFilter.Tests.Unit {
+namespace D2L.Security.WebApiAuthFilter.Tests.Unit.Principal.Default {
 
 	[TestFixture]
 	[Category( "Unit" )]
@@ -37,7 +38,6 @@ namespace D2L.Security.WebApiAuthFilter.Tests.Unit {
 			Assert.AreEqual( TENANT_ID, principal.TenantId );
 			Assert.AreEqual( TENANT_URL, principal.TenantUrl );
 			Assert.AreEqual( USER_ID, principal.UserId );
-			Assert.AreEqual( XSRF_SAFE, principal.XsrfSafe );
 		}
 
 		[Test]
@@ -55,30 +55,18 @@ namespace D2L.Security.WebApiAuthFilter.Tests.Unit {
 		public void IsBrowserUser_NotCrossedWithOtherBools() {
 
 			ID2LPrincipal principal = new D2LPrincipalAdapter();
-			Thread.CurrentPrincipal = CreateMockPrincipal( true, false, false );
+			Thread.CurrentPrincipal = CreateMockPrincipal( true, false );
 			Assert.True( principal.IsBrowserUser );
 			Assert.False( principal.IsService );
-			Assert.False( principal.XsrfSafe );
 		}
 
 		[Test]
 		public void IsService_NotCrossedWithOtherBools() {
 
 			ID2LPrincipal principal = new D2LPrincipalAdapter();
-			Thread.CurrentPrincipal = CreateMockPrincipal( false, true, false );
+			Thread.CurrentPrincipal = CreateMockPrincipal( false, true );
 			Assert.False( principal.IsBrowserUser );
 			Assert.True( principal.IsService );
-			Assert.False( principal.XsrfSafe );
-		}
-
-		[Test]
-		public void XsrfSafe_NotCrossedWithOtherBools() {
-
-			ID2LPrincipal principal = new D2LPrincipalAdapter();
-			Thread.CurrentPrincipal = CreateMockPrincipal( false, false, true );
-			Assert.False( principal.IsBrowserUser );
-			Assert.False( principal.IsService );
-			Assert.True( principal.XsrfSafe );
 		}
 
 		[Test]
@@ -89,7 +77,7 @@ namespace D2L.Security.WebApiAuthFilter.Tests.Unit {
 			Assert.Throws<PrincipalNotAssignedException>( () => { var tenant = principal.TenantId; } );
 		}
 
-		private ID2LPrincipalAdapter CreateMockPrincipal( bool isBrowserUser = IS_SERVICE, bool isService = IS_BROWSER_USER, bool xsrfSafe = XSRF_SAFE ) {
+		private ID2LPrincipalAdapter CreateMockPrincipal( bool isBrowserUser = IS_SERVICE, bool isService = IS_BROWSER_USER ) {
 
 			Mock<ID2LPrincipalAdapter> principalMock = new Mock<ID2LPrincipalAdapter>();
 			principalMock.Setup( x => x.ClientId ).Returns( CLIENT_ID );
@@ -99,7 +87,6 @@ namespace D2L.Security.WebApiAuthFilter.Tests.Unit {
 			principalMock.Setup( x => x.TenantId ).Returns( TENANT_ID );
 			principalMock.Setup( x => x.TenantUrl ).Returns( TENANT_URL );
 			principalMock.Setup( x => x.UserId ).Returns( USER_ID );
-			principalMock.Setup( x => x.XsrfSafe ).Returns( xsrfSafe );
 
 			return principalMock.Object;
 		}

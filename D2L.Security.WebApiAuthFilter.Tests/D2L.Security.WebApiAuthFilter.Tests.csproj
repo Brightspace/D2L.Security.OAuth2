@@ -32,11 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Security.AuthTokenValidation">
-      <HintPath>..\packages\D2L.Security.AuthTokenValidation.1.0.6.0\lib\net451\D2L.Security.AuthTokenValidation.dll</HintPath>
+    <Reference Include="D2L.Security.AuthTokenValidation, Version=1.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\D2L.Security.AuthTokenValidation.1.0.7.0\lib\net451\D2L.Security.AuthTokenValidation.dll</HintPath>
     </Reference>
-    <Reference Include="D2L.Security.RequestAuthentication">
-      <HintPath>..\packages\D2L.Security.RequestAuthentication.1.0.0.0\lib\net451\D2L.Security.RequestAuthentication.dll</HintPath>
+    <Reference Include="D2L.Security.RequestAuthentication, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\D2L.Security.RequestAuthentication.1.0.1.0\lib\net451\D2L.Security.RequestAuthentication.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
       <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.1\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
@@ -50,6 +52,10 @@
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleLogInterface, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SimpleLogInterface.1.0.2.0\lib\net45\SimpleLogInterface.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -67,7 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Unit\D2LPrincipalAdapterTests.cs" />
+    <Compile Include="Unit\Principal\Default\D2LPrincipalAdapterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

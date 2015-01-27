@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
-using D2L.Security.WebApiAuthFilter.Exceptions;
 
-namespace D2L.Security.WebApiAuthFilter {
+namespace D2L.Security.WebApiAuthFilter.Principal.Default {
 
 	/// <summary>
 	/// This class has some ugliness to present a clean injectable principal. It uses a lazy cache
@@ -45,10 +44,6 @@ namespace D2L.Security.WebApiAuthFilter {
 			get { return m_principal.Value.TenantUrl; }
 		}
 
-		bool ID2LPrincipal.XsrfSafe {
-			get { return m_principal.Value.XsrfSafe; }
-		}
-
 		bool ID2LPrincipal.IsBrowserUser {
 			get { return m_principal.Value.IsBrowserUser; }
 		}
@@ -78,7 +73,7 @@ namespace D2L.Security.WebApiAuthFilter {
 		private ID2LPrincipal GetCurrentPrincipal() {
 
 			if( !( Thread.CurrentPrincipal is ID2LPrincipal ) ) {
-				throw new PrincipalNotAssignedException( "ID2LPrincipal has not been assigned" );
+				throw new PrincipalNotAssignedException( "Principal must be assigned to Thread.CurrentPrincipal before accessing properties" );
 			}
 
 			return (ID2LPrincipal)Thread.CurrentPrincipal;
