@@ -10,7 +10,8 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			string tenantId,
 			string tenantFullyQualifiedDomainName,
 			string xsrfToken,
-			HashSet<string> scopes
+			HashSet<string> scopes,
+			string jwt
 			) {
 
 			UserId = userId;
@@ -18,6 +19,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			TenantFullyQualifiedDomainName = tenantFullyQualifiedDomainName;
 			XsrfToken = xsrfToken;
 			Scopes = scopes;
+			Jwt = jwt;
 		}
 
 		public HashSet<string> Scopes { get; private set; }
@@ -47,6 +49,16 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 		public IIdentity Identity {
 			get { throw new System.NotImplementedException(); }
+		}
+
+		public string Jwt { get; private set; }
+
+		IIdentity IPrincipal.Identity {
+			get { throw new System.NotImplementedException(); }
+		}
+
+		bool IPrincipal.IsInRole( string role ) {
+			throw new System.NotImplementedException();
 		}
 	}
 }
