@@ -26,9 +26,5 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 			IAuthTokenValidator validator = new AuthTokenValidator( jwtValidator.Object );
 			return validator;
 		}
-
-		private HttpRequest CreateHttpRequest() {
-			return new HttpRequest( null, "http://www.google.ca", null );
-		}
 	}
 }
