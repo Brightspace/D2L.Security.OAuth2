@@ -14,6 +14,6 @@ namespace D2L.Security.RequestAuthentication {
 		/// <summary>
 		/// The expiration date of the security information provided with the request
 		/// </summary>
-		DateTime SecurityExpirationDate { get; }
+		DateTime SecurityExpiry { get; }
 	}
 }

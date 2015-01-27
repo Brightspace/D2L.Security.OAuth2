@@ -77,7 +77,10 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 
 		[TestCase( "", "" )]
 		[TestCase( null, "" )]
+		//[TestCase( "", null )]
+		//[TestCase( null, null )]
 		[TestCase( null, "inclaims" )]
+		//[TestCase( "inheader", null )]
 		[TestCase( "", "inclaims" )]
 		[TestCase( "inheader", "" )]
 		[TestCase( "inheader", "inclaims" )]

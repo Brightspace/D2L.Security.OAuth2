@@ -50,7 +50,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 				return AuthenticationResult.XsrfMismatch;
 			}
 			
-			principal = new D2LPrincipal();
+			principal = new ValidatedTokenToD2LPrincipalAdapter( validatedToken );
 			return AuthenticationResult.Success;
 		}
 
