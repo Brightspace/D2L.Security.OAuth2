@@ -115,7 +115,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 			AuthenticationResult result = authenticator.Authenticate( "", "somexsrf", "somebearertoken", out principal );
 			Assert.AreEqual( AuthenticationResult.Success, result );
 		}
-
+		
 		ICoreAuthenticator MakeAuthenticator( bool checkXsrf, ValidationResult resultFromJwtValidation, IValidatedToken validatedToken = null ) {
 			IValidatedToken defaultValidatedToken = new Mock<IValidatedToken>().Object;
 			validatedToken = validatedToken ?? defaultValidatedToken;
