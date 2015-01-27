@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace D2L.Security.WebApiAuthFilter.Principal {
+namespace D2L.Security.WebApiAuth.Principal {
 	
 	/// <summary>
 	/// Exception for the case where properties on the principal object were accessed before the principal was assigned.

@@ -4,12 +4,12 @@ using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
 
-namespace D2L.Security.WebApiAuthFilter.Principal.Default {
+namespace D2L.Security.WebApiAuth.Principal.Default {
 
 	/// <summary>
 	/// This class has some ugliness to present a clean injectable principal. It uses a lazy cache
 	/// to delay fetching the principal from the current thread context, because it is not available 
-	/// at the time the principal is injected, which is before the authentication filter and 
+	/// at the time the principal is injected, which is before the authentication message handler and 
 	/// controller are even created.
 	/// </summary>
 	public sealed class D2LPrincipalAdapter : ID2LPrincipalAdapter {
@@ -66,7 +66,7 @@ namespace D2L.Security.WebApiAuthFilter.Principal.Default {
 		}
 
 		/// <summary>
-		/// Gets the principal from the current thread context, as assigned by the auth filter.
+		/// Gets the principal from the current thread context, as assigned by the auth message handler.
 		/// This method depends on the principal being assigned before this method executes.
 		/// </summary>
 		/// <returns>The principal object.</returns>

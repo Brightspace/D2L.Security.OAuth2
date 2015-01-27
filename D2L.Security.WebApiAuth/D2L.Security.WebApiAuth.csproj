@@ -7,8 +7,8 @@
     <ProjectGuid>{C9140879-73E6-4767-B12B-17581793E419}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>D2L.Security.WebApiAuthFilter</RootNamespace>
-    <AssemblyName>D2L.Security.WebApiAuthFilter</AssemblyName>
+    <RootNamespace>D2L.Security.WebApiAuth</RootNamespace>
+    <AssemblyName>D2L.Security.WebApiAuth</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\D2L.Security.WebApiAuthFilter.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\D2L.Security.WebApiAuth.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\D2L.Security.WebApiAuthFilter.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\D2L.Security.WebApiAuth.XML</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -82,10 +82,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="D2L.Security.WebApiAuth.nuspec" />
     <None Include="Publish\CreateNugetPackage.bat" />
-    <None Include="D2L.Security.WebApiAuthFilter.nuspec">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Publish\PublishNugetPackage.bat" />
   </ItemGroup>

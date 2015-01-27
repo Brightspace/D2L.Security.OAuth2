@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using D2L.Security.RequestAuthentication;
-using D2L.Security.WebApiAuthFilter.Principal.Default;
+using D2L.Security.WebApiAuth.Principal.Default;
 using SimpleLogInterface;
 
-namespace D2L.Security.WebApiAuthFilter.Handler {
+namespace D2L.Security.WebApiAuth.Handler {
 	
 	internal sealed class AuthenticationMessageHandler : DelegatingHandler {
 

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
-using D2L.Security.WebApiAuthFilter.Principal;
-using D2L.Security.WebApiAuthFilter.Principal.Default;
+using D2L.Security.WebApiAuth.Principal;
+using D2L.Security.WebApiAuth.Principal.Default;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.WebApiAuthFilter.Tests.Unit.Principal.Default {
+namespace D2L.Security.WebApiAuth.Tests.Unit.Principal.Default {
 
 	[TestFixture]
 	[Category( "Unit" )]
@@ -20,7 +20,6 @@ namespace D2L.Security.WebApiAuthFilter.Tests.Unit.Principal.Default {
 		private const string TENANT_ID = "tenant_id";
 		private const string TENANT_URL = "tenant_url";
 		private const long USER_ID = 123;
-		private const bool XSRF_SAFE = true;
 
 		private readonly IEnumerable<string> m_scopes = new[] { "scope1", "scope2" };
 

@@ -7,8 +7,8 @@
     <ProjectGuid>{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>D2L.Security.WebApiAuthFilter.Tests</RootNamespace>
-    <AssemblyName>D2L.Security.WebApiAuthFilter.Tests</AssemblyName>
+    <RootNamespace>D2L.Security.WebApiAuth.Tests</RootNamespace>
+    <AssemblyName>D2L.Security.WebApiAuth.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -80,9 +80,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\D2L.Security.WebApiAuthFilter\D2L.Security.WebApiAuthFilter.csproj">
+    <ProjectReference Include="..\D2L.Security.WebApiAuth\D2L.Security.WebApiAuth.csproj">
       <Project>{c9140879-73e6-4767-b12b-17581793e419}</Project>
-      <Name>D2L.Security.WebApiAuthFilter</Name>
+      <Name>D2L.Security.WebApiAuth</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
