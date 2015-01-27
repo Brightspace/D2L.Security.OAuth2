@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
-using System.Web;
 using D2L.Security.AuthTokenValidation.Default;
 using D2L.Security.AuthTokenValidation.JwtValidation;
 using Moq;
@@ -15,9 +14,9 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 		public void VerifyAndDecode_Expired_Fails() {
 			SecurityTokenExpiredException innerException = new SecurityTokenExpiredException();
 			IAuthTokenValidator validator = MakeValidatorWhichThrows( innerException );
-			IGenericPrincipal principal;
+			IValidatedToken validatedToken;
 
-			ValidationResult result = validator.VerifyAndDecode( string.Empty, out principal );
+			ValidationResult result = validator.VerifyAndDecode( string.Empty, out validatedToken );
 		}
 
 		private IAuthTokenValidator MakeValidatorWhichThrows( Exception innerException ) {

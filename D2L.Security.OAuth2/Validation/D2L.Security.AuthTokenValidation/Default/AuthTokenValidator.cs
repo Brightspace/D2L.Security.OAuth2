@@ -16,22 +16,25 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			m_validator = validator;
 		}
 
-		ValidationResult IAuthTokenValidator.VerifyAndDecode( string jwt, out IGenericPrincipal principal ) {
+		ValidationResult IAuthTokenValidator.VerifyAndDecode( string token, out IValidatedToken validatedToken ) {
 			try {
-				principal = VerifyAndDecodeWorker( jwt );
+				IValidatedJwt validatedJwt = m_validator.Validate( token );
+				validatedToken = new ValidatedJwtToValidatedTokenAdapter( validatedJwt );
 			} catch ( SecurityTokenExpiredException ) {
-				principal = null;
+				validatedToken = null;
 				return ValidationResult.TokenExpired;
 			}
 
 			return ValidationResult.Success;
 		}
 		
-		private IGenericPrincipal VerifyAndDecodeWorker( string jwt ) {
-			IValidatedJwt validatedJwt = m_validator.Validate( jwt );
-			return GetPrincipal( validatedJwt, jwt );
-		}
 
+		/// <summary>
+		/// !!!!!!!!!! REMOVE!!!!!!!!!!!!
+		/// </summary>
+		/// <param name="validatedJwt"></param>
+		/// <param name="sourceJwt"></param>
+		/// <returns></returns>
 		internal static Principal GetPrincipal( IValidatedJwt validatedJwt, string sourceJwt ) {
 
 			string scopeClaimValue = validatedJwt.Claims

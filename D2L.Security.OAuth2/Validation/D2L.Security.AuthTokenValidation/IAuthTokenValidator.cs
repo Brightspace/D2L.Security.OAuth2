@@ -1,9 +1,8 @@
-﻿using System.Web;
+﻿using D2L.Security.AuthTokenValidation.JwtValidation;
 
 namespace D2L.Security.AuthTokenValidation {
 
 	public interface IAuthTokenValidator {
-
-		ValidationResult VerifyAndDecode( string jwt, out IGenericPrincipal principal );
+		ValidationResult VerifyAndDecode( string token, out IValidatedToken validatedToken );
 	}
 }

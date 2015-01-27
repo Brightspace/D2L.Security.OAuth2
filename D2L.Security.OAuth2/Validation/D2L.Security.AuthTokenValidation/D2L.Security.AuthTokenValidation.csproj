@@ -53,10 +53,12 @@
     <Compile Include="AuthorizationException.cs" />
     <Compile Include="AuthTokenValidatorFactory.cs" />
     <Compile Include="Default\AuthTokenValidator.cs" />
+    <Compile Include="Default\ValidatedJwtToValidatedTokenAdapter.cs" />
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="IAuthTokenValidator.cs" />
     <Compile Include="IDisposableExtensions.cs" />
     <Compile Include="IGenericPrincipal.cs" />
+    <Compile Include="IValidatedToken.cs" />
     <Compile Include="PublicKeys\Default\PublicKey.cs" />
     <Compile Include="PublicKeys\Default\PublicKeyProvider.cs" />
     <Compile Include="PublicKeys\IPublicKeyProvider.cs" />
