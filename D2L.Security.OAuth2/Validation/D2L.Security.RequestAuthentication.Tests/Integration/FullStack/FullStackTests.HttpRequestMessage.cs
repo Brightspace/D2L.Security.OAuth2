@@ -8,15 +8,15 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 	internal sealed partial class FullStackTests {
 
 		[Test]
-		public void HttpRequestMessage_Cookie_NoXsrf_Success() {
+		public void HttpRequestMessage_Cookie_WithXsrf_Success() {
 			string cookieValue = TestTokens.ValidWithXsrf.Jwt;
 
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
 			RequestBuilder.AddCookie( httpRequestMessage, cookieValue );
+			RequestBuilder.AddXsrfHeader( httpRequestMessage, TestTokens.ValidWithXsrf.Xt );
 
 			IRequestAuthenticator requestAuthenticator = RequestAuthenticatorFactory.Create(
-				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI,
-				Mode.Full
+				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI
 				);
 
 			ID2LPrincipal principal;
@@ -24,7 +24,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 		}
 
 		[Test]
-		public void HttpRequestMessage_Cookie_WithXsrf_Success() {
+		public void HttpRequestMessage_Cookie_NoXsrf_Success() {
 			Assert.Inconclusive();
 		}
 

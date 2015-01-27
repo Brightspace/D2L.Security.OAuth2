@@ -11,8 +11,10 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 		private readonly string m_tenantUrl;
 		private readonly IEnumerable<string> m_scopes;
 		private readonly PrincipalType m_type;
+		private readonly string m_xsrf;
 
 		internal ValidatedTokenToD2LPrincipalAdapter( IValidatedToken validatedToken ) {
+			m_xsrf = validatedToken.GetXsrfToken();
 		}
 
 		DateTime ID2LPrincipal.SecurityExpiry {
@@ -37,6 +39,10 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 
 		PrincipalType ID2LPrincipal.Type {
 			get { return m_type; }
+		}
+
+		string ID2LPrincipal.Xsrf {
+			get { return m_xsrf;  }
 		}
 	}
 }

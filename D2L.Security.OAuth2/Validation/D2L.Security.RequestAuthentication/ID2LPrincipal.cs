@@ -15,5 +15,8 @@ namespace D2L.Security.RequestAuthentication {
 		/// The expiration date of the security information provided with the request
 		/// </summary>
 		DateTime SecurityExpiry { get; }
+
+		[Obsolete("Temporary")]
+		string Xsrf { get; }
 	}
 }
