@@ -36,15 +36,15 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 
 			string token = cookieExists ? cookie : bearerToken;
 
-			IGenericPrincipal claims;
-			ValidationResult validationResult = m_tokenValidator.VerifyAndDecode( token, out claims );
+			IValidatedToken validatedToken;
+			ValidationResult validationResult = m_tokenValidator.VerifyAndDecode( token, out validatedToken );
 
 			if( validationResult == ValidationResult.TokenExpired ) {
 				principal = null;
 				return AuthenticationResult.Expired;
 			}
 
-			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, claims );
+			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, validatedToken );
 			if( !isXsrfSafe ) {
 				principal = null;
 				return AuthenticationResult.XsrfMismatch;
@@ -54,7 +54,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			return AuthenticationResult.Success;
 		}
 
-		private bool IsXsrfSafe( string cookie, string xsrfToken, IGenericPrincipal claims ) {
+		private bool IsXsrfSafe( string cookie, string xsrfToken, IValidatedToken validatedToken ) {
 			if( !m_mustValidateXsrf ) {
 				return true;
 			}
@@ -66,7 +66,9 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 
 			// we must now validate that the xsrf tokens match
 
-			bool xsrfTokensEqual = claims.XsrfToken == xsrfToken;
+			string xsrfTokenFromValidatedToken = validatedToken.GetXsrfToken();
+
+			bool xsrfTokensEqual = xsrfTokenFromValidatedToken == xsrfToken;
 			bool xsrfTokenContainsValue = !string.IsNullOrEmpty( xsrfToken );
 
 			if( !xsrfTokensEqual || !xsrfTokenContainsValue ) {

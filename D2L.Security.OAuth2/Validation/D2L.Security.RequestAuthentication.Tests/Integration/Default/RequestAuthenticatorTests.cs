@@ -23,7 +23,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.Default {
 			RequestBuilder.AddXsrfHeader( httpRequestMessage, xsrfValue );
 			RequestBuilder.AddCookie( httpRequestMessage, cookieValue );
 
-			IGenericPrincipal claims = new Mock<IGenericPrincipal>().Object;
+			IValidatedToken claims = new Mock<IValidatedToken>().Object;
 			Mock<IAuthTokenValidator> validatorMock = new Mock<IAuthTokenValidator>();
 			validatorMock.Setup( x => x.VerifyAndDecode( It.IsAny<string>(), out claims ) )
 				.Returns( ValidationResult.Success );
@@ -55,7 +55,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.Default {
 			RequestBuilder.AddAuthHeader( httpRequest, "Bearer " + bearerTokenValue );
 			RequestBuilder.AddXsrfHeader( httpRequest, xsrfValue );
 
-			IGenericPrincipal claims = new Mock<IGenericPrincipal>().Object;
+			IValidatedToken claims = new Mock<IValidatedToken>().Object;
 			Mock<IAuthTokenValidator> validatorMock = new Mock<IAuthTokenValidator>();
 			validatorMock.Setup( x => x.VerifyAndDecode( It.IsAny<string>(), out claims ) )
 				.Returns( ValidationResult.Success );

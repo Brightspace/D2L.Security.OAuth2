@@ -36,8 +36,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Security.AuthTokenValidation">
-      <HintPath>..\packages\D2L.Security.AuthTokenValidation.1.0.6.0\lib\net451\D2L.Security.AuthTokenValidation.dll</HintPath>
+    <Reference Include="D2L.Security.AuthTokenValidation, Version=1.0.8.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\D2L.Security.AuthTokenValidation.1.0.8.1\lib\net451\D2L.Security.AuthTokenValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
       <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.1\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
@@ -58,6 +59,7 @@
   <ItemGroup>
     <Compile Include="Core\CoreAuthenticatorFactory.cs" />
     <Compile Include="Core\Default\CoreAuthenticator.cs" />
+    <Compile Include="Core\Default\IValidatedTokenExtensions.cs" />
     <Compile Include="Core\ICoreAuthenticator.cs" />
     <Compile Include="Core\Default\D2LPrincipal.cs" />
     <Compile Include="HttpRequestExtensions.cs" />
