@@ -62,7 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\Default\RequestAuthenticatorTests.cs" />
-    <Compile Include="Integration\FullStack\FullStackTests.cs" />
+    <Compile Include="Integration\FullStack\FullStackTests.HttpRequest.cs" />
+    <Compile Include="Integration\FullStack\FullStackTests.HttpRequestMessage.cs" />
     <Compile Include="Unit\Core\Default\CoreAuthenticatorTests.cs" />
     <Compile Include="Unit\HttpRequestExtensionsTests.AuthHeader.cs" />
     <Compile Include="Unit\HttpRequestMessageExtensionsTests.AuthHeader.cs" />
