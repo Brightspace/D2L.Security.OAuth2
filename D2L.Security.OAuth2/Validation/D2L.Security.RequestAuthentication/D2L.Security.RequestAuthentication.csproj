@@ -70,6 +70,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AuthenticationResult.cs" />
     <Compile Include="RequestAuthenticatorFactory.cs" />
+    <Compile Include="PrincipalType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="D2L.Security.RequestAuthentication.nuspec" />

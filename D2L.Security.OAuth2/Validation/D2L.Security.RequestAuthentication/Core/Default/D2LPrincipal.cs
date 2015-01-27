@@ -10,11 +10,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 		long? ID2LPrincipal.UserId {
 			get { throw new NotImplementedException(); }
 		}
-
-		string ID2LPrincipal.ClientId {
-			get { throw new NotImplementedException(); }
-		}
-
+		
 		string ID2LPrincipal.TenantId {
 			get { throw new NotImplementedException(); }
 		}
@@ -22,16 +18,12 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 		string ID2LPrincipal.TenantUrl {
 			get { throw new NotImplementedException(); }
 		}
-
-		bool ID2LPrincipal.IsBrowserUser {
-			get { throw new NotImplementedException(); }
-		}
-
-		bool ID2LPrincipal.IsService {
-			get { throw new NotImplementedException(); }
-		}
-
+		
 		IEnumerable<string> ID2LPrincipal.Scopes {
+			get { throw new NotImplementedException(); }
+		}
+
+		PrincipalType ID2LPrincipal.Type {
 			get { throw new NotImplementedException(); }
 		}
 	}
