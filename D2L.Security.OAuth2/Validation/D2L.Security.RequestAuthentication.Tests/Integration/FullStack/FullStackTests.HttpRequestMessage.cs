@@ -9,7 +9,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_Cookie_NoXsrf_Success() {
-			string cookieValue = TestTokens.VALID_NO_XSRF_JWT;
+			string cookieValue = TestTokens.ValidWithXsrf.Jwt;
 
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
 			RequestBuilder.AddCookie( httpRequestMessage, cookieValue );
@@ -56,6 +56,6 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 		[Test]
 		public void HttpRequestMessage_BearerToken_NonMatchingXsrf_Failure() {
 			Assert.Inconclusive();
-		}		
+		}
 	}
 }
