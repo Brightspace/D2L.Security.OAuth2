@@ -18,5 +18,8 @@ namespace D2L.Security.RequestAuthentication {
 
 		[Obsolete("Temporary")]
 		string Xsrf { get; }
+
+		[Obsolete( "Temporary" )]
+		string AccessToken { get; }
 	}
 }
