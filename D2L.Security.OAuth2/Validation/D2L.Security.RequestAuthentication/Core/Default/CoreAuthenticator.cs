@@ -49,8 +49,8 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 				principal = null;
 				return AuthenticationResult.XsrfMismatch;
 			}
-			
-			principal = new ValidatedTokenToD2LPrincipalAdapter( validatedToken );
+
+			principal = new ValidatedTokenToD2LPrincipalAdapter( validatedToken, token );
 			return AuthenticationResult.Success;
 		}
 
