@@ -4,11 +4,10 @@ using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
 using D2L.Security.WebApiAuth.Principal;
-using D2L.Security.WebApiAuth.Principal.Default;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.WebApiAuth.Tests.Unit.Principal.Default {
+namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 
 	[TestFixture]
 	[Category( "Unit" )]

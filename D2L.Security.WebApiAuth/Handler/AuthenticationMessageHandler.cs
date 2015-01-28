@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using D2L.Security.RequestAuthentication;
-using D2L.Security.WebApiAuth.Principal.Default;
+using D2L.Security.WebApiAuth.Principal;
 using SimpleLogInterface;
 
 namespace D2L.Security.WebApiAuth.Handler {

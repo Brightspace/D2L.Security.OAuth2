@@ -73,7 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Unit\Principal\Default\D2LPrincipalAdapterTests.cs" />
+    <Compile Include="Unit\Principal\D2LPrincipalAdapterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

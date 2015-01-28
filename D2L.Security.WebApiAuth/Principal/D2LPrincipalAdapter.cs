@@ -4,7 +4,7 @@ using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
 
-namespace D2L.Security.WebApiAuth.Principal.Default {
+namespace D2L.Security.WebApiAuth.Principal {
 
 	/// <summary>
 	/// This class has some ugliness to present a clean injectable principal. It uses a lazy cache
@@ -61,8 +61,6 @@ namespace D2L.Security.WebApiAuth.Principal.Default {
 		/// <summary>
 		/// Do not use. Throws NotImplementedException.
 		/// </summary>
-		/// <param name="role"></param>
-		/// <returns></returns>
 		bool IPrincipal.IsInRole( string role ) {
 			throw new NotImplementedException();
 		}

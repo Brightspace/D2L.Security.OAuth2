@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Http;
 using SimpleLogInterface;
 
-namespace D2L.Security.WebApiAuth.Handler.Default {
+namespace D2L.Security.WebApiAuth.Handler {
 
 	/// <summary>
 	/// A factory that creates authentication delegating message handlers for use with Web API.
