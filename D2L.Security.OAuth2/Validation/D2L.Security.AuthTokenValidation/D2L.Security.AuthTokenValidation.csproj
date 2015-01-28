@@ -50,14 +50,12 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthorizationException.cs" />
     <Compile Include="AuthTokenValidatorFactory.cs" />
     <Compile Include="Default\AuthTokenValidator.cs" />
-    <Compile Include="Default\ValidatedJwtToValidatedTokenAdapter.cs" />
+    <Compile Include="Default\ValidatedJwt.cs" />
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="IAuthTokenValidator.cs" />
     <Compile Include="IDisposableExtensions.cs" />
-    <Compile Include="IGenericPrincipal.cs" />
     <Compile Include="IValidatedToken.cs" />
     <Compile Include="PublicKeys\Default\PublicKey.cs" />
     <Compile Include="PublicKeys\Default\PublicKeyProvider.cs" />
@@ -65,14 +63,12 @@
     <Compile Include="PublicKeys\OpenIdConfigurations\Default\OpenIdConfigurationFetcher.cs" />
     <Compile Include="PublicKeys\OpenIdConfigurations\IOpenIdConfigurationFetcher.cs" />
     <Compile Include="PublicKeys\PublicKeyProviderFactory.cs" />
-    <Compile Include="TokenExpiredException.cs" />
     <Compile Include="JwtValidation\Default\ValidatedJwt.cs" />
     <Compile Include="JwtValidation\Default\JwtHelper.cs" />
     <Compile Include="JwtValidation\Default\JwtValidator.cs" />
     <Compile Include="JwtValidation\Exceptions\InvalidTokenTypeException.cs" />
     <Compile Include="JwtValidation\IValidatedJwt.cs" />
     <Compile Include="JwtValidation\IJwtValidator.cs" />
-    <Compile Include="Default\Principal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicKeys\IPublicKey.cs" />
     <Compile Include="JwtValidation\JwtValidatorFactory.cs" />
