@@ -20,20 +20,26 @@ namespace D2L.Security.WebApiAuth.Principal.Default {
 			m_principal = new Lazy<ID2LPrincipal>( GetCurrentPrincipal );
 		}
 
-		public bool IsService {
-			get { return m_principal.Value.IsService; }
+		#region ID2LPrincipal Passthrough Members
+
+		PrincipalType ID2LPrincipal.Type {
+			get { return m_principal.Value.Type; }
 		}
 
 		IEnumerable<string> ID2LPrincipal.Scopes {
 			get { return m_principal.Value.Scopes; }
 		}
 
-		long? ID2LPrincipal.UserId {
-			get { return m_principal.Value.UserId; }
+		DateTime ID2LPrincipal.SecurityExpiry {
+			get { return m_principal.Value.SecurityExpiry; }
 		}
 
-		string ID2LPrincipal.ClientId {
-			get { return m_principal.Value.ClientId; }
+		string ID2LPrincipal.Xsrf {
+			get { throw new NotImplementedException( "This is deprecated" ); }
+		}
+
+		long? ID2LPrincipal.UserId {
+			get { return m_principal.Value.UserId; }
 		}
 
 		string ID2LPrincipal.TenantId {
@@ -44,9 +50,9 @@ namespace D2L.Security.WebApiAuth.Principal.Default {
 			get { return m_principal.Value.TenantUrl; }
 		}
 
-		bool ID2LPrincipal.IsBrowserUser {
-			get { return m_principal.Value.IsBrowserUser; }
-		}
+		#endregion ID2LPrincipal Passthrough Members
+
+		#region IPrincipal Members (Not Implemented)
 
 		/// <summary>
 		/// Do not use. Throws NotImplementedException.
@@ -64,6 +70,8 @@ namespace D2L.Security.WebApiAuth.Principal.Default {
 		IIdentity IPrincipal.Identity {
 			get { return null; }
 		}
+
+		#endregion IPrincipal Members (Not Implemented)
 
 		/// <summary>
 		/// Gets the principal from the current thread context, as assigned by the auth message handler.

@@ -14,14 +14,13 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal.Default {
 	[Category( "Unit" )]
 	internal sealed class D2LPrincipalAdapterTests {
 
-		private const string CLIENT_ID = "client_id";
-		private const bool IS_BROWSER_USER = true;
-		private const bool IS_SERVICE = true;
+		private const PrincipalType PRINCIPAL_TYPE = PrincipalType.User;
 		private const string TENANT_ID = "tenant_id";
 		private const string TENANT_URL = "tenant_url";
 		private const long USER_ID = 123;
 
 		private readonly IEnumerable<string> m_scopes = new[] { "scope1", "scope2" };
+		private readonly DateTime m_securityExpiry = DateTime.Now;
 
 		[Test]
 		public void SetID2LPrincipalProperties_GoodValues_ValuesMatch() {
@@ -30,13 +29,14 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal.Default {
 
 			Thread.CurrentPrincipal = CreateMockPrincipal();
 
-			Assert.AreEqual( CLIENT_ID, principal.ClientId );
-			Assert.AreEqual( IS_BROWSER_USER, principal.IsBrowserUser );
-			Assert.AreEqual( IS_SERVICE, principal.IsService );
+			Assert.AreEqual( PRINCIPAL_TYPE, principal.Type );
 			Assert.AreEqual( m_scopes, principal.Scopes );
+			Assert.AreEqual( m_securityExpiry, principal.SecurityExpiry );
 			Assert.AreEqual( TENANT_ID, principal.TenantId );
 			Assert.AreEqual( TENANT_URL, principal.TenantUrl );
 			Assert.AreEqual( USER_ID, principal.UserId );
+
+			Assert.Throws<NotImplementedException>( () => { var xsrf = principal.Xsrf; } );
 		}
 
 		[Test]
@@ -51,24 +51,6 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal.Default {
 		}
 
 		[Test]
-		public void IsBrowserUser_NotCrossedWithOtherBools() {
-
-			ID2LPrincipal principal = new D2LPrincipalAdapter();
-			Thread.CurrentPrincipal = CreateMockPrincipal( true, false );
-			Assert.True( principal.IsBrowserUser );
-			Assert.False( principal.IsService );
-		}
-
-		[Test]
-		public void IsService_NotCrossedWithOtherBools() {
-
-			ID2LPrincipal principal = new D2LPrincipalAdapter();
-			Thread.CurrentPrincipal = CreateMockPrincipal( false, true );
-			Assert.False( principal.IsBrowserUser );
-			Assert.True( principal.IsService );
-		}
-
-		[Test]
 		public void ID2LPrincipalProperties_PrincipalNotSet_ExceptionWhenAccessingProperty() {
 
 			ID2LPrincipal principal = new D2LPrincipalAdapter();
@@ -76,12 +58,11 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal.Default {
 			Assert.Throws<PrincipalNotAssignedException>( () => { var tenant = principal.TenantId; } );
 		}
 
-		private ID2LPrincipalAdapter CreateMockPrincipal( bool isBrowserUser = IS_SERVICE, bool isService = IS_BROWSER_USER ) {
+		private ID2LPrincipalAdapter CreateMockPrincipal() {
 
 			Mock<ID2LPrincipalAdapter> principalMock = new Mock<ID2LPrincipalAdapter>();
-			principalMock.Setup( x => x.ClientId ).Returns( CLIENT_ID );
-			principalMock.Setup( x => x.IsBrowserUser ).Returns( isBrowserUser );
-			principalMock.Setup( x => x.IsService ).Returns( isService );
+			principalMock.Setup( x => x.SecurityExpiry ).Returns( m_securityExpiry );
+			principalMock.Setup( x => x.Type ).Returns( PRINCIPAL_TYPE );
 			principalMock.Setup( x => x.Scopes ).Returns( m_scopes );
 			principalMock.Setup( x => x.TenantId ).Returns( TENANT_ID );
 			principalMock.Setup( x => x.TenantUrl ).Returns( TENANT_URL );
