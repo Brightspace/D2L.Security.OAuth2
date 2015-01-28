@@ -10,17 +10,13 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 	internal static class RequestBuilder {
 
 		private const string D2L_AUTH_COOKIE_NAME = "d2lApi";
-		private const string COOKIE_HEADER_NAME = "Cookie";
-		private const string AUTH_HEADER_SCHEME = "Bearer";
-		private const string BEARER_TOKEN_HEADER_NAME = "Authorization";
-		private const string XSRF_HEADER_NAME = "X-Csrf-Token";
-
+		
 		internal static void AddAuthHeader( HttpRequest httpRequest, string authHeaderValue ) {
-			AddHeader( httpRequest, BEARER_TOKEN_HEADER_NAME, authHeaderValue );
+			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, Constants.BearerTokens.SCHEME_PREFIX + authHeaderValue );
 		}
 
 		internal static void AddXsrfHeader( HttpRequest httpRequest, string xsrfHeaderValue ) {
-			AddHeader( httpRequest, XSRF_HEADER_NAME, xsrfHeaderValue );
+			AddHeader( httpRequest, Constants.Headers.XSRF, xsrfHeaderValue );
 		}
 
 		internal static void AddCookie( HttpRequest httpRequest, string cookieValue ) {
@@ -28,17 +24,17 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		}
 
 		internal static void AddAuthHeader( HttpRequestMessage httpRequestMessage, string authHeaderValue ) {
-			AuthenticationHeaderValue authHeaderVal = new AuthenticationHeaderValue( AUTH_HEADER_SCHEME, authHeaderValue );
+			AuthenticationHeaderValue authHeaderVal = new AuthenticationHeaderValue( Constants.BearerTokens.SCHEME, authHeaderValue );
 			httpRequestMessage.Headers.Authorization = authHeaderVal;
 		}
 
 		internal static void AddXsrfHeader( HttpRequestMessage httpRequestMessage, string xsrfHeaderValue ) {
-			httpRequestMessage.Headers.Add( XSRF_HEADER_NAME, xsrfHeaderValue );
+			httpRequestMessage.Headers.Add( Constants.Headers.XSRF, xsrfHeaderValue );
 		}
 
 		internal static void AddCookie( HttpRequestMessage httpRequestMessage, string cookieValue ) {
 			string cookieHeaderValue = D2L_AUTH_COOKIE_NAME + "=" + cookieValue;
-			httpRequestMessage.Headers.Add( COOKIE_HEADER_NAME, cookieHeaderValue );
+			httpRequestMessage.Headers.Add( Constants.Headers.COOKIE, cookieHeaderValue );
 		}
 
 		private static void AddHeader( HttpRequest httpRequest, string headerName, string headerValue ) {

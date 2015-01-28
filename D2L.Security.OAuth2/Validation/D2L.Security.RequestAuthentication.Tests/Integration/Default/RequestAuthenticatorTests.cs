@@ -52,7 +52,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.Default {
 
 			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null );
 			RequestBuilder.AddCookie( httpRequest, cookieValue );
-			RequestBuilder.AddAuthHeader( httpRequest, "Bearer " + bearerTokenValue );
+			RequestBuilder.AddAuthHeader( httpRequest, bearerTokenValue );
 			RequestBuilder.AddXsrfHeader( httpRequest, xsrfValue );
 
 			IValidatedToken claims = new Mock<IValidatedToken>().Object;
