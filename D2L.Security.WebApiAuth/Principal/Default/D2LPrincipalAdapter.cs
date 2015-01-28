@@ -35,7 +35,11 @@ namespace D2L.Security.WebApiAuth.Principal.Default {
 		}
 
 		string ID2LPrincipal.Xsrf {
-			get { throw new NotImplementedException( "This is deprecated" ); }
+			get { return m_principal.Value.Xsrf; }
+		}
+
+		string ID2LPrincipal.AccessToken {
+			get { return m_principal.Value.AccessToken; }
 		}
 
 		long? ID2LPrincipal.UserId {
