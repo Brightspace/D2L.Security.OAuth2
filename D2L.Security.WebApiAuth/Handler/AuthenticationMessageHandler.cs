@@ -36,7 +36,7 @@ namespace D2L.Security.WebApiAuth.Handler {
 			) {
 
 			try {
-				Authorize( request );
+				Authenticate( request );
 			} catch( AuthenticationException ex ) {
 				m_log.Warn( "Authentication failed", ex );
 				return Task.FromResult( request.CreateResponse( HttpStatusCode.Unauthorized ) );
@@ -48,7 +48,7 @@ namespace D2L.Security.WebApiAuth.Handler {
 			return base.SendAsync( request, cancellationToken );
 		}
 
-		private void Authorize( HttpRequestMessage request ) {
+		private void Authenticate( HttpRequestMessage request ) {
 
 			ID2LPrincipal principal;
 
