@@ -13,8 +13,8 @@
 [assembly: AssemblyProduct( "Brightspace" )]
 
 // Nuget: Version
-[assembly: AssemblyInformationalVersion( "1.0.1.1" )]
-[assembly: AssemblyVersion( "1.0.1.1" )]
-[assembly: AssemblyFileVersion( "1.0.1.1" )]
+[assembly: AssemblyInformationalVersion( "1.0.1.2" )]
+[assembly: AssemblyVersion( "1.0.1.2" )]
+[assembly: AssemblyFileVersion( "1.0.1.2" )]
 
 [assembly: AssemblyCopyright( "Copyright © Desire2Learn" )]
