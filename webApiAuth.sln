@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.WebApiAuth", "D2L.Security.WebApiAuth\D2L.Security.WebApiAuth.csproj", "{C9140879-73E6-4767-B12B-17581793E419}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.WebApiAuth.Tests", "D2L.Security.WebApiAuth.Tests\D2L.Security.WebApiAuth.Tests.csproj", "{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F59E6B25-E149-45A7-9D8A-EC7292CCB56B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C9140879-73E6-4767-B12B-17581793E419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9140879-73E6-4767-B12B-17581793E419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9140879-73E6-4767-B12B-17581793E419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9140879-73E6-4767-B12B-17581793E419}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
