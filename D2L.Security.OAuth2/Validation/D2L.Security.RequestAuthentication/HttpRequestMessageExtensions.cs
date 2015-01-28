@@ -5,10 +5,6 @@ using System.Net.Http.Headers;
 namespace D2L.Security.RequestAuthentication {
 	internal static class HttpRequestMessageExtensions {
 
-		private const string COOKIE_HEADER = "Cookie";
-		private const string XSRF_HEADER = "X-Csrf-Token";
-		private const string BEARER_TOKEN_AUTHORIZATION_SCHEME = "Bearer";
-
 		/// <summary>
 		/// Return the value of a cookie
 		/// </summary>
@@ -16,7 +12,7 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="cookieName">The name of the cookie</param>
 		/// <returns>A cookie value, or null if the specified cookie was not found</returns>
 		internal static string GetCookieValue( this HttpRequestMessage request, string cookieName ) {
-			string cookiesHeaderValue = request.GetHeaderValue( COOKIE_HEADER );
+			string cookiesHeaderValue = request.GetHeaderValue( Constants.Headers.COOKIE );
 			if( cookiesHeaderValue == null ) {
 				return null;
 			}
@@ -45,7 +41,7 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the Xsrf header, or null if the Xsrf header was not found</returns>
 		internal static string GetXsrfValue( this HttpRequestMessage request ) {
-			string xsrfValue = request.GetHeaderValue( XSRF_HEADER );
+			string xsrfValue = request.GetHeaderValue( Constants.Headers.XSRF );
 			return xsrfValue;
 		}
 
@@ -60,7 +56,7 @@ namespace D2L.Security.RequestAuthentication {
 				return null;
 			}
 
-			if( authHeader.Scheme != BEARER_TOKEN_AUTHORIZATION_SCHEME ) {
+			if( authHeader.Scheme != Constants.BearerTokens.SCHEME ) {
 				return null;
 			}
 
