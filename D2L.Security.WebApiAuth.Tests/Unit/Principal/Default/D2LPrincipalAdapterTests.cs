@@ -39,8 +39,6 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal.Default {
 			Assert.AreEqual( TENANT_URL, principal.TenantUrl );
 			Assert.AreEqual( USER_ID, principal.UserId );
 			Assert.AreEqual( XSRF, principal.Xsrf );
-
-			Assert.Throws<NotImplementedException>( () => { var xsrf = principal.Xsrf; } );
 		}
 
 		[Test]
