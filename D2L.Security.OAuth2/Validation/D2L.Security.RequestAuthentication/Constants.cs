@@ -19,5 +19,7 @@
 			internal const string TENANT_URL = "tenanturl";
 			internal const string SCOPE = "scope";
 		}
+
+		internal const string D2L_AUTH_COOKIE_NAME = "d2lApi";
 	}
 }

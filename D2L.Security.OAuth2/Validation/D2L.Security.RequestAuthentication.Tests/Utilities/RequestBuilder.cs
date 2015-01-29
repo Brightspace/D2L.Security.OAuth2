@@ -9,10 +9,12 @@ using System.Web;
 namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 	internal static class RequestBuilder {
 
-		private const string D2L_AUTH_COOKIE_NAME = "d2lApi";
-		
 		internal static void AddAuthHeader( HttpRequest httpRequest, string authHeaderValue ) {
 			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, Constants.BearerTokens.SCHEME_PREFIX + authHeaderValue );
+		}
+
+		internal static void AddAuthHeader( HttpRequest httpRequest, string scheme, string authHeaderValue ) {
+			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, scheme + " " + authHeaderValue );
 		}
 
 		internal static void AddXsrfHeader( HttpRequest httpRequest, string xsrfHeaderValue ) {
@@ -20,11 +22,15 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		}
 
 		internal static void AddCookie( HttpRequest httpRequest, string cookieValue ) {
-			httpRequest.Cookies.Add( new HttpCookie( D2L_AUTH_COOKIE_NAME, cookieValue ) );
+			httpRequest.Cookies.Add( new HttpCookie( Constants.D2L_AUTH_COOKIE_NAME, cookieValue ) );
 		}
 
 		internal static void AddAuthHeader( HttpRequestMessage httpRequestMessage, string authHeaderValue ) {
-			AuthenticationHeaderValue authHeaderVal = new AuthenticationHeaderValue( Constants.BearerTokens.SCHEME, authHeaderValue );
+			AddAuthHeader( httpRequestMessage, Constants.BearerTokens.SCHEME, authHeaderValue );
+		}
+
+		internal static void AddAuthHeader( HttpRequestMessage httpRequestMessage, string scheme, string authHeaderValue ) {
+			AuthenticationHeaderValue authHeaderVal = new AuthenticationHeaderValue( scheme, authHeaderValue );
 			httpRequestMessage.Headers.Authorization = authHeaderVal;
 		}
 
@@ -33,7 +39,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		}
 
 		internal static void AddCookie( HttpRequestMessage httpRequestMessage, string cookieValue ) {
-			string cookieHeaderValue = D2L_AUTH_COOKIE_NAME + "=" + cookieValue;
+			string cookieHeaderValue = Constants.D2L_AUTH_COOKIE_NAME + "=" + cookieValue;
 			httpRequestMessage.Headers.Add( Constants.Headers.COOKIE, cookieHeaderValue );
 		}
 
