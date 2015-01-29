@@ -10,8 +10,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		[Test]
 		public void GetXsrfValue_Success() {
 			string expected = "somecookievalue";
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null );
-			RequestBuilder.AddXsrfHeader( httpRequest, expected );
+			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+				.WithXsrfHeader( expected );
 			Assert.AreEqual( expected, HttpRequestExtensions.GetXsrfValue( httpRequest ) );
 		}
 		

@@ -36,20 +36,24 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 
 		#region HttpRequest
 
-		internal static void AddAuthHeader( HttpRequest httpRequest, string authHeaderValue ) {
+		internal static HttpRequest WithAuthHeader( this HttpRequest httpRequest, string authHeaderValue ) {
 			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, Constants.BearerTokens.SCHEME_PREFIX + authHeaderValue );
+			return httpRequest;
 		}
 
-		internal static void AddAuthHeader( HttpRequest httpRequest, string scheme, string authHeaderValue ) {
+		internal static HttpRequest WithAuthHeader( this HttpRequest httpRequest, string scheme, string authHeaderValue ) {
 			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, scheme + " " + authHeaderValue );
+			return httpRequest;
 		}
 
-		internal static void AddXsrfHeader( HttpRequest httpRequest, string xsrfHeaderValue ) {
+		internal static HttpRequest WithXsrfHeader( this HttpRequest httpRequest, string xsrfHeaderValue ) {
 			AddHeader( httpRequest, Constants.Headers.XSRF, xsrfHeaderValue );
+			return httpRequest;
 		}
 
-		internal static void AddCookie( HttpRequest httpRequest, string cookieValue ) {
+		internal static HttpRequest WithCookie( this HttpRequest httpRequest, string cookieValue ) {
 			httpRequest.Cookies.Add( new HttpCookie( Constants.D2L_AUTH_COOKIE_NAME, cookieValue ) );
+			return httpRequest;
 		}
 
 		private static void AddHeader( HttpRequest httpRequest, string headerName, string headerValue ) {
