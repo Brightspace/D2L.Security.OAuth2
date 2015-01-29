@@ -66,7 +66,6 @@
     <Compile Include="Integration\FullStack\FullStackTests.HttpRequestMessage.cs" />
     <Compile Include="Unit\Core\Default\CoreAuthenticatorTests.cs" />
     <Compile Include="Unit\Core\Default\IValidatedTokenExtensionsTests.cs" />
-    <Compile Include="Unit\Core\Default\ValidatedTokenToD2LPrincipalAdapterTests.cs" />
     <Compile Include="Unit\HttpRequestExtensionsTests.AuthHeader.cs" />
     <Compile Include="Unit\HttpRequestMessageExtensionsTests.AuthHeader.cs" />
     <Compile Include="Unit\HttpRequestExtensionsTests.Cookie.cs" />
