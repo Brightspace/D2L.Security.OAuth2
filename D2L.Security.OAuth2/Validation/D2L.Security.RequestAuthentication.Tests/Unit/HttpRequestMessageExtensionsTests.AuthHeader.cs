@@ -1,30 +1,37 @@
-﻿using NUnit.Framework;
+﻿using System.Net.Http;
+using D2L.Security.RequestAuthentication.Tests.Utilities;
+using NUnit.Framework;
 
 namespace D2L.Security.RequestAuthentication.Tests.Unit {
 	
 	[TestFixture]
 	internal partial class HttpRequestMessageExtensionsTests {
 
-		private const string BEARER_TOKEN_AUTHORIZATION_SCHEME = "Bearer";
+		private readonly HttpRequestMessage m_bareHttpRequestMessage = new HttpRequestMessage();
 
 		[Test]
 		public void GetBearerTokenValue_Success() {
-			Assert.Inconclusive();
+			string expected = "somebearertokenvalue";
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+			RequestBuilder.AddAuthHeader( httpRequestMessage, expected );
+			Assert.AreEqual( expected, HttpRequestMessageExtensions.GetBearerTokenValue( httpRequestMessage ) );
 		}
 		
 		[Test]
 		public void GetBearerTokenValue_NullRequest_ExpectNull() {
-			Assert.Inconclusive();
+			Assert.IsNull( HttpRequestMessageExtensions.GetBearerTokenValue( null ) );
 		}
 
 		[Test]
 		public void GetBearerTokenValue_NoAuthorizationHeader_ExpectNull() {
-			Assert.Inconclusive();
+			Assert.IsNull( HttpRequestMessageExtensions.GetBearerTokenValue( m_bareHttpRequestMessage ) );
 		}
 
 		[Test]
 		public void GetBearerTokenValue_WrongScheme_ExpectNull() {
-			Assert.Inconclusive();
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+			RequestBuilder.AddAuthHeader( httpRequestMessage, "invalidscheme", "somevalue" );
+			Assert.IsNull( HttpRequestMessageExtensions.GetBearerTokenValue( httpRequestMessage) );
 		}
 	}
 }

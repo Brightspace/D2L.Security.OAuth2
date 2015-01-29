@@ -1,25 +1,28 @@
-﻿using NUnit.Framework;
+﻿using System.Net.Http;
+using D2L.Security.RequestAuthentication.Tests.Utilities;
+using NUnit.Framework;
 
 namespace D2L.Security.RequestAuthentication.Tests.Unit {
 	
 	[TestFixture]
 	internal partial class HttpRequestMessageExtensionsTests {
 
-		private const string XSRF_HEADER = "X-Csrf-Token";
-
 		[Test]
 		public void GetXsrfValue_Success() {
-			Assert.Inconclusive();
+			string expected = "somebearertokenvalue";
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+			RequestBuilder.AddXsrfHeader( httpRequestMessage, expected );
+			Assert.AreEqual( expected, HttpRequestMessageExtensions.GetXsrfValue( httpRequestMessage ) );
 		}
 		
 		[Test]
 		public void GetXsrfValue_NullRequest_ExpectNull() {
-			Assert.Inconclusive();
+			Assert.IsNull( HttpRequestMessageExtensions.GetXsrfValue( null ) );
 		}
 
 		[Test]
 		public void GetXsrfValue_NoXsrfHeader_ExpectNull() {
-			Assert.Inconclusive();
+			Assert.IsNull( HttpRequestMessageExtensions.GetXsrfValue( m_bareHttpRequestMessage ) );
 		}
 	}
 }
