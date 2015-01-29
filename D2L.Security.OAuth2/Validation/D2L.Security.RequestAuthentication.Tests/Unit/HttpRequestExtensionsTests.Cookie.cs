@@ -16,7 +16,12 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		}
 
 		[Test]
-		public void GetCookieValue_Single_Mismatch_ExpectNull() {
+		public void GetCookieValue_Single_NotMatching_ExpectNull() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void GetCookieValue_Many_NoneMatching_ExpectNull() {
 			Assert.Inconclusive();
 		}
 
