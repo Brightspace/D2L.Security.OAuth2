@@ -12,12 +12,12 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="cookieName">The name of the cookie</param>
 		/// <returns>A cookie value, or null if the specified cookie was not found</returns>
 		internal static string GetCookieValue( this HttpRequestMessage request, string cookieName ) {
-			string cookiesHeaderValue = request.GetHeaderValue( Constants.Headers.COOKIE );
-			if( cookiesHeaderValue == null ) {
+			if( string.IsNullOrEmpty( cookieName ) ) {
 				return null;
 			}
 
-			if( string.IsNullOrEmpty( cookieName ) ) {
+			string cookiesHeaderValue = request.GetHeaderValue( Constants.Headers.COOKIE );
+			if( cookiesHeaderValue == null ) {
 				return null;
 			}
 
@@ -51,6 +51,10 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the bearer token, or null if the bearer token is not set</returns>
 		internal static string GetBearerTokenValue( this HttpRequestMessage request ) {
+			if( request == null ) {
+				return null;
+			}
+
 			AuthenticationHeaderValue authHeader = request.Headers.Authorization;
 			if( authHeader == null ) {
 				return null;
