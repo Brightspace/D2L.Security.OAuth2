@@ -22,13 +22,13 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 			string expected = "somexsrf";
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.XSRF, expected );
-			Assert.AreEqual( expected, IValidatedTokenExtensions.GetXsrfToken( validatedTokenMock.Object ) );
+			Assert.AreEqual( expected, validatedTokenMock.Object.GetXsrfToken() );
 		}
 
 		[Test]
 		public void GetXsrfToken_None_ReturnsNull() {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			Assert.IsNull( IValidatedTokenExtensions.GetXsrfToken( validatedTokenMock.Object ) );
+			Assert.IsNull( validatedTokenMock.Object.GetXsrfToken() );
 		}
 
 		[Test]
@@ -36,13 +36,13 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 			string expected = "sometenantid";
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.TENANT_ID, expected );
-			Assert.AreEqual( expected, IValidatedTokenExtensions.GetTenantId( validatedTokenMock.Object ) );
+			Assert.AreEqual( expected, validatedTokenMock.Object.GetTenantId() );
 		}
 
 		[Test]
 		public void GetTenantId_None_ReturnsNull() {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			Assert.IsNull( IValidatedTokenExtensions.GetTenantId( validatedTokenMock.Object ) );
+			Assert.IsNull( validatedTokenMock.Object.GetTenantId() );
 		}
 
 		[Test]
@@ -50,7 +50,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 			string expected = "somescope";
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.SCOPE, expected );
-			IEnumerable<string> scopes = IValidatedTokenExtensions.GetScopes( validatedTokenMock.Object );
+			IEnumerable<string> scopes = validatedTokenMock.Object.GetScopes();
 			Assert.AreEqual( 1, scopes.Count() );
 			Assert.AreEqual( expected, scopes.First() );
 		}
@@ -61,7 +61,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 			string scope2 = "somescope2";
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.SCOPE, scope1 + " " + scope2 );
-			IEnumerable<string> scopes = IValidatedTokenExtensions.GetScopes( validatedTokenMock.Object );
+			IEnumerable<string> scopes = validatedTokenMock.Object.GetScopes();
 			Assert.AreEqual( 2, scopes.Count() );
 			Assert.IsTrue( scopes.Contains( scope1 ) );
 			Assert.IsTrue( scopes.Contains( scope2 ) );
@@ -70,7 +70,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 		[Test]
 		public void GetScopes_None_ReturnsEmpty() {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			IEnumerable<string> scopes = IValidatedTokenExtensions.GetScopes( validatedTokenMock.Object );
+			IEnumerable<string> scopes = validatedTokenMock.Object.GetScopes();
 			Assert.IsFalse( scopes.Any() );
 		}
 
@@ -79,20 +79,20 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 			long expected = 1337;
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.USER_ID, expected.ToString() );
-			Assert.AreEqual( expected, IValidatedTokenExtensions.GetUserId( validatedTokenMock.Object ) );
+			Assert.AreEqual( expected, validatedTokenMock.Object.GetUserId() );
 		}
 
 		[Test]
 		public void GetUserId_NonNumeric_ReturnsNull() {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.USER_ID, "nonnumeric_userid" );
-			Assert.IsNull( IValidatedTokenExtensions.GetUserId( validatedTokenMock.Object ) );
+			Assert.IsNull( validatedTokenMock.Object.GetUserId() );
 		}
 
 		[Test]
 		public void GetUserId_None_ReturnsNull() {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			Assert.IsNull( IValidatedTokenExtensions.GetUserId( validatedTokenMock.Object ) );
+			Assert.IsNull( validatedTokenMock.Object.GetUserId() );
 		}
 	}
 }
