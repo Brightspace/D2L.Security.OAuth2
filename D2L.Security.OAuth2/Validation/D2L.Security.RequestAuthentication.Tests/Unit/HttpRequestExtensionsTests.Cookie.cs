@@ -8,11 +8,31 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 	internal partial class HttpRequestExtensionsTests {
 
 		[Test]
-		public void GetCookieValue_Success() {
+		public void GetCookieValue_Single_Success() {
 			string expected = "somecookievalue";
 			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
 				.WithCookie( expected );
 			Assert.AreEqual( expected, HttpRequestExtensions.GetCookieValue( httpRequest, Constants.D2L_AUTH_COOKIE_NAME ) );
+		}
+
+		[Test]
+		public void GetCookieValue_Single_Mismatch_ExpectNull() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void GetCookieValue_Many_First_Success() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void GetCookieValue_Many_Middle_Success() {
+			Assert.Inconclusive();
+		}
+
+		[Test]
+		public void GetCookieValue_Many_Last_Success() {
+			Assert.Inconclusive();
 		}
 		
 		[Test]
