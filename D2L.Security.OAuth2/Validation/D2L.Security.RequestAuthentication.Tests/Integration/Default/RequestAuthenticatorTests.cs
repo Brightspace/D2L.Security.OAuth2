@@ -18,10 +18,10 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.Default {
 			string xsrfValue = "dummyxsrf";
 			string bearerTokenValue = "dummybearertoken";
 
-			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
-			RequestBuilder.AddAuthHeader( httpRequestMessage, bearerTokenValue );
-			RequestBuilder.AddXsrfHeader( httpRequestMessage, xsrfValue );
-			RequestBuilder.AddCookie( httpRequestMessage, cookieValue );
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithAuthHeader( bearerTokenValue )
+				.WithXsrfHeader( xsrfValue )
+				.WithCookie( cookieValue );
 
 			IValidatedToken claims = new Mock<IValidatedToken>().Object;
 			Mock<IAuthTokenValidator> validatorMock = new Mock<IAuthTokenValidator>();
