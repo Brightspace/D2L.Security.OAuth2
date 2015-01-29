@@ -14,7 +14,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 			string expected = "somebearertokenvalue";
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithAuthHeader( expected );
-			Assert.AreEqual( expected, HttpRequestMessageExtensions.GetBearerTokenValue( httpRequestMessage ) );
+			Assert.AreEqual( expected, httpRequestMessage.GetBearerTokenValue() );
 		}
 		
 		[Test]
@@ -24,14 +24,14 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 
 		[Test]
 		public void GetBearerTokenValue_NoAuthorizationHeader_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetBearerTokenValue( m_bareHttpRequestMessage ) );
+			Assert.IsNull( m_bareHttpRequestMessage.GetBearerTokenValue() );
 		}
 
 		[Test]
 		public void GetBearerTokenValue_WrongScheme_ExpectNull() {
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithAuthHeader( "invalidscheme", "somevalue" );
-			Assert.IsNull( HttpRequestMessageExtensions.GetBearerTokenValue( httpRequestMessage) );
+			Assert.IsNull( httpRequestMessage.GetBearerTokenValue() );
 		}
 	}
 }
