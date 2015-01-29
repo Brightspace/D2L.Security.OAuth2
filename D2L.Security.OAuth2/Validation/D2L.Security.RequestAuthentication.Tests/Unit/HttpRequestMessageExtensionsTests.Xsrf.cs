@@ -10,8 +10,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		[Test]
 		public void GetXsrfValue_Success() {
 			string expected = "somebearertokenvalue";
-			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
-			RequestBuilder.AddXsrfHeader( httpRequestMessage, expected );
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithXsrfHeader( expected );
 			Assert.AreEqual( expected, HttpRequestMessageExtensions.GetXsrfValue( httpRequestMessage ) );
 		}
 		

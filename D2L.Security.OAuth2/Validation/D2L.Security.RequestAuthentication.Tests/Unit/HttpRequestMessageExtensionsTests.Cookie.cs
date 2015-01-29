@@ -10,8 +10,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		[Test]
 		public void GetCookieValue_Success() {
 			string expected = "somecookievalue";
-			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
-			RequestBuilder.AddCookie( httpRequestMessage, expected );
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookie( expected );
 			string cookieValue = HttpRequestMessageExtensions.GetCookieValue( httpRequestMessage, Constants.D2L_AUTH_COOKIE_NAME );
 			Assert.AreEqual( expected, cookieValue );
 		}

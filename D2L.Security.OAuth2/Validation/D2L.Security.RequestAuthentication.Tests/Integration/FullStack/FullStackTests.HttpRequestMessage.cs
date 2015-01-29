@@ -11,8 +11,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_Cookie_NoXsrf_Failure() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddCookie( httpRequest, TestTokens.ValidWithXsrfTwoScopesNoUser.Jwt );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithCookie( TestTokens.ValidWithXsrfTwoScopesNoUser.Jwt );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
@@ -21,9 +21,9 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_Cookie_WithXsrf_Success() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddCookie( httpRequest, TestTokens.ValidWithXsrfTwoScopesNoUser.Jwt );
-			RequestBuilder.AddXsrfHeader( httpRequest, TestTokens.ValidWithXsrfTwoScopesNoUser.Xt );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithCookie( TestTokens.ValidWithXsrfTwoScopesNoUser.Jwt )
+				.WithXsrfHeader( TestTokens.ValidWithXsrfTwoScopesNoUser.Xt );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
@@ -48,8 +48,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_BearerToken_NoXsrf_Success() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddAuthHeader( httpRequest, TestTokens.ValidNoXsrfOneScope.Jwt );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithAuthHeader( TestTokens.ValidNoXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
@@ -58,8 +58,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_BearerToken_WithXsrf_Success() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddAuthHeader( httpRequest, TestTokens.ValidWithXsrfOneScope.Jwt );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithAuthHeader( TestTokens.ValidWithXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
@@ -68,8 +68,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_BearerToken_InvalidJwt_Failure() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddAuthHeader( httpRequest, "bogusjwt" );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithAuthHeader( "bogusjwt" );
 
 			ID2LPrincipal principal;
 			Assertions.Throws( () => m_authenticator.AuthenticateAndExtract( httpRequest, out principal ) );
@@ -77,8 +77,8 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_Cookie_InvalidJwt_Failure() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddCookie( httpRequest, "bogusjwt" );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithCookie( "bogusjwt" );
 
 			ID2LPrincipal principal;
 			Assertions.Throws( () => m_authenticator.AuthenticateAndExtract( httpRequest, out principal ) );
@@ -86,9 +86,9 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_Cookie_NonMatchingXsrf_Failure() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddCookie( httpRequest, TestTokens.ValidWithXsrfOneScope.Jwt );
-			RequestBuilder.AddXsrfHeader( httpRequest, "bogusxsrfheader" );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithCookie( TestTokens.ValidWithXsrfOneScope.Jwt )
+				.WithXsrfHeader( "bogusxsrfheader" );
 
 			ID2LPrincipal principal;
 			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
@@ -97,9 +97,9 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequestMessage_Cookie_NonMatchingXsrf_ExplicitlyNotValidatingXsrf_Success() {
-			HttpRequestMessage httpRequest = new HttpRequestMessage();
-			RequestBuilder.AddCookie( httpRequest, TestTokens.ValidWithXsrfOneScope.Jwt );
-			RequestBuilder.AddXsrfHeader( httpRequest, "bogusxsrfheader" );
+			HttpRequestMessage httpRequest = new HttpRequestMessage()
+				.WithCookie( TestTokens.ValidWithXsrfOneScope.Jwt )
+				.WithXsrfHeader( "bogusxsrfheader" );
 
 			IRequestAuthenticator m_authenticator = RequestAuthenticatorFactory.Create(
 				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI,
