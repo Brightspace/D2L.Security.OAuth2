@@ -12,7 +12,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 			string expected = "somecookievalue";
 			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
 				.WithXsrfHeader( expected );
-			Assert.AreEqual( expected, HttpRequestExtensions.GetXsrfValue( httpRequest ) );
+			Assert.AreEqual( expected, httpRequest.GetXsrfValue() );
 		}
 		
 		[Test]
@@ -22,7 +22,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 
 		[Test]
 		public void GetXsrfValue_NoXsrfHeader_ExpectNull() {
-			Assert.IsNull( HttpRequestExtensions.GetXsrfValue( m_bareHttpRequest ) );
+			Assert.IsNull( m_bareHttpRequest.GetXsrfValue() );
 		}
 	}
 }

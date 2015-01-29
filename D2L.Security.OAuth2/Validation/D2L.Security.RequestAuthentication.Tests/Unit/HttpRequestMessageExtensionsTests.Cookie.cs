@@ -12,7 +12,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 			string expected = "somecookievalue";
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookie( expected );
-			string cookieValue = HttpRequestMessageExtensions.GetCookieValue( httpRequestMessage, Constants.D2L_AUTH_COOKIE_NAME );
+			string cookieValue = httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME );
 			Assert.AreEqual( expected, cookieValue );
 		}
 
@@ -48,17 +48,17 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 
 		[Test]
 		public void GetCookieValue_NullCookieName_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetCookieValue( m_bareHttpRequestMessage, null ) );
+			Assert.IsNull( m_bareHttpRequestMessage.GetCookieValue( null ) );
 		}
 
 		[Test]
 		public void GetCookieValue_EmptyCookieName_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetCookieValue( m_bareHttpRequestMessage, string.Empty ) );
+			Assert.IsNull( m_bareHttpRequestMessage.GetCookieValue( string.Empty ) );
 		}
 
 		[Test]
 		public void GetCookieValue_NoCookieHeader_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetCookieValue( m_bareHttpRequestMessage, "dummycookiename" ) );
+			Assert.IsNull( m_bareHttpRequestMessage.GetCookieValue( "dummycookiename" ) );
 		}
 
 		[Test]

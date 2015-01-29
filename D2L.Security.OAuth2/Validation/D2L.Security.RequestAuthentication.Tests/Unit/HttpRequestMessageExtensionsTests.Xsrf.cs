@@ -12,7 +12,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 			string expected = "somebearertokenvalue";
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithXsrfHeader( expected );
-			Assert.AreEqual( expected, HttpRequestMessageExtensions.GetXsrfValue( httpRequestMessage ) );
+			Assert.AreEqual( expected, httpRequestMessage.GetXsrfValue() );
 		}
 		
 		[Test]
@@ -22,7 +22,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 
 		[Test]
 		public void GetXsrfValue_NoXsrfHeader_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetXsrfValue( m_bareHttpRequestMessage ) );
+			Assert.IsNull( m_bareHttpRequestMessage.GetXsrfValue() );
 		}
 	}
 }
