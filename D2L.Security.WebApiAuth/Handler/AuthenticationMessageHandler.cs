@@ -60,7 +60,7 @@ namespace D2L.Security.WebApiAuth.Handler {
 
 			switch( result ) {
 				case AuthenticationResult.Success:
-					Thread.CurrentPrincipal = new D2LPrincipalAdapter();
+					Thread.CurrentPrincipal = new D2LPrincipalAdapter( principal );
 					break;
 
 				default:

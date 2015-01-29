@@ -16,9 +16,17 @@ namespace D2L.Security.WebApiAuth.Principal {
 
 		private readonly Lazy<ID2LPrincipal> m_principal;
 
+		#region Constructors
+
 		public D2LPrincipalAdapter() {
 			m_principal = new Lazy<ID2LPrincipal>( GetCurrentPrincipal );
 		}
+
+		internal D2LPrincipalAdapter( ID2LPrincipal principal ) {
+			m_principal = new Lazy<ID2LPrincipal>( () => principal );
+		}
+
+		#endregion Constructors
 
 		#region ID2LPrincipal Passthrough Members
 
@@ -75,6 +83,8 @@ namespace D2L.Security.WebApiAuth.Principal {
 
 		#endregion IPrincipal Members (Not Implemented)
 
+		#region Private Methods
+
 		/// <summary>
 		/// Gets the principal from the current thread context, as assigned by the auth message handler.
 		/// This method depends on the principal being assigned before this method executes.
@@ -88,5 +98,7 @@ namespace D2L.Security.WebApiAuth.Principal {
 
 			return (ID2LPrincipal)Thread.CurrentPrincipal;
 		}
+
+		#endregion Private Methods
 	}
 }
