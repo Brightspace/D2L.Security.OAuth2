@@ -1,25 +1,28 @@
-﻿using NUnit.Framework;
+﻿using System.Web;
+using D2L.Security.RequestAuthentication.Tests.Utilities;
+using NUnit.Framework;
 
 namespace D2L.Security.RequestAuthentication.Tests.Unit {
 	
 	[TestFixture]
 	internal partial class HttpRequestExtensionsTests {
 
-		private const string XSRF_HEADER = "X-Csrf-Token";
-
 		[Test]
 		public void GetXsrfValue_Success() {
-			Assert.Inconclusive();
+			string expected = "somecookievalue";
+			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null );
+			RequestBuilder.AddXsrfHeader( httpRequest, expected );
+			Assert.AreEqual( expected, HttpRequestExtensions.GetXsrfValue( httpRequest ) );
 		}
 		
 		[Test]
 		public void GetXsrfValue_NullRequest_ExpectNull() {
-			Assert.Inconclusive();
+			Assert.IsNull( HttpRequestExtensions.GetXsrfValue( null ) );
 		}
 
 		[Test]
 		public void GetXsrfValue_NoXsrfHeader_ExpectNull() {
-			Assert.Inconclusive();
+			Assert.IsNull( HttpRequestExtensions.GetXsrfValue( m_bareHttpRequest ) );
 		}
 	}
 }

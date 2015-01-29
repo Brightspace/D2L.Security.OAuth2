@@ -5,8 +5,6 @@ using D2L.Security.RequestAuthentication.Core;
 namespace D2L.Security.RequestAuthentication.Default {
 	internal sealed class RequestAuthenticator : IRequestAuthenticator {
 
-		private const string D2L_AUTH_COOKIE_NAME = "d2lApi";
-
 		private readonly ICoreAuthenticator m_coreAuthenticator;
 
 		internal RequestAuthenticator( ICoreAuthenticator coreAuthenticator ) {
@@ -14,7 +12,7 @@ namespace D2L.Security.RequestAuthentication.Default {
 		}
 
 		AuthenticationResult IRequestAuthenticator.AuthenticateAndExtract( HttpRequestMessage request, out ID2LPrincipal principal ) {
-			string cookie = request.GetCookieValue( D2L_AUTH_COOKIE_NAME );
+			string cookie = request.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME );
 			string bearerToken = request.GetBearerTokenValue();
 			string xsrfToken = request.GetXsrfValue();
 
@@ -22,7 +20,7 @@ namespace D2L.Security.RequestAuthentication.Default {
 		}
 
 		AuthenticationResult IRequestAuthenticator.AuthenticateAndExtract( HttpRequest request, out ID2LPrincipal principal ) {
-			string cookie = request.GetCookieValue( D2L_AUTH_COOKIE_NAME );
+			string cookie = request.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME );
 			string bearerToken = request.GetBearerTokenValue();
 			string xsrfToken = request.GetXsrfValue();
 
