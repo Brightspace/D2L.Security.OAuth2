@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Security.AuthTokenValidation, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="D2L.Security.AuthTokenValidation, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\D2L.Security.AuthTokenValidation.1.0.9.0\lib\net451\D2L.Security.AuthTokenValidation.dll</HintPath>
+      <HintPath>..\packages\D2L.Security.AuthTokenValidation.1.1.0.0\lib\net451\D2L.Security.AuthTokenValidation.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
