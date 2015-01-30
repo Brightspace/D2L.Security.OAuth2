@@ -15,8 +15,7 @@ namespace D2L.Security.AuthTokenValidation.Default {
 
 		ValidationResult IAuthTokenValidator.VerifyAndDecode( string token, out IValidatedToken validatedToken ) {
 			try {
-				IValidatedJwt validatedJwt = m_validator.Validate( token );
-				validatedToken = new ValidatedJwtToValidatedTokenAdapter( validatedJwt );
+				validatedToken = m_validator.Validate( token );
 			} catch ( SecurityTokenExpiredException ) {
 				validatedToken = null;
 				return ValidationResult.TokenExpired;
