@@ -1,14 +1,11 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
-using D2L.Security.AuthTokenValidation.PublicKeys;
 using D2L.Security.AuthTokenValidation.JwtValidation.Exceptions;
+using D2L.Security.AuthTokenValidation.PublicKeys;
 
 namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
 	internal sealed class JwtValidator : IJwtValidator {
-
-		private const string ALLOWED_SIGNATURE_ALGORITHM = "RS256";
-		private const string ALLOWED_TOKEN_TYPE = "JWT";
 
 		private readonly IPublicKeyProvider m_keyProvider;
 		private readonly ISecurityTokenValidator m_tokenHandler;
@@ -36,10 +33,10 @@ namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
 			
 			JwtSecurityToken jwtSecurityToken = (JwtSecurityToken)securityToken;
 
-			if( jwtSecurityToken.SignatureAlgorithm != ALLOWED_SIGNATURE_ALGORITHM ) {
+			if( jwtSecurityToken.SignatureAlgorithm != Constants.ALLOWED_SIGNATURE_ALGORITHM ) {
 				string message = string.Format(
 					"Expected signature algorithm {0} but was {1}",
-					ALLOWED_SIGNATURE_ALGORITHM,
+					Constants.ALLOWED_SIGNATURE_ALGORITHM,
 					jwtSecurityToken.SignatureAlgorithm
 					);
 				throw new InvalidTokenTypeException( message );
