@@ -27,7 +27,15 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		}
 
 		internal static HttpRequestMessage WithCookie( this HttpRequestMessage httpRequestMessage, string cookieValue ) {
-			string cookieHeaderValue = Constants.D2L_AUTH_COOKIE_NAME + "=" + cookieValue;
+			return httpRequestMessage.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, cookieValue );
+		}
+
+		internal static HttpRequestMessage WithCookie( this HttpRequestMessage httpRequestMessage, string cookieName, string cookieValue ) {
+			string cookieHeaderValue = cookieName + "=" + cookieValue;
+			return httpRequestMessage.WithCookieHeader( cookieHeaderValue );
+		}
+
+		internal static HttpRequestMessage WithCookieHeader( this HttpRequestMessage httpRequestMessage, string cookieHeaderValue ) {
 			httpRequestMessage.Headers.Add( Constants.Headers.COOKIE, cookieHeaderValue );
 			return httpRequestMessage;
 		}
@@ -52,10 +60,14 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		}
 
 		internal static HttpRequest WithCookie( this HttpRequest httpRequest, string cookieValue ) {
-			httpRequest.Cookies.Add( new HttpCookie( Constants.D2L_AUTH_COOKIE_NAME, cookieValue ) );
-			return httpRequest;
+			return httpRequest.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, cookieValue );
 		}
 
+		internal static HttpRequest WithCookie( this HttpRequest httpRequest, string cookieName, string cookieValue ) {
+			httpRequest.Cookies.Add( new HttpCookie( cookieName, cookieValue ) );
+			return httpRequest;
+		}
+		
 		private static void AddHeader( HttpRequest httpRequest, string headerName, string headerValue ) {
 
 			// A hack for modifying http headers in an HttpRequest: http://stackoverflow.com/a/13307238
