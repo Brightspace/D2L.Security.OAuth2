@@ -21,7 +21,7 @@ namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
 			m_tokenHandler = tokenHandler;
 		}
 
-		IValidatedJwt IJwtValidator.Validate( string jwt ) {
+		IValidatedToken IJwtValidator.Validate( string jwt ) {
 
 			if( String.IsNullOrEmpty( jwt ) ) {
 				throw new ArgumentException( "Cannot be null or empty", jwt );
@@ -44,8 +44,8 @@ namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
 					);
 				throw new InvalidTokenTypeException( message );
 			}
-			
-			IValidatedJwt validatedJwt = new ValidatedJwt( jwtSecurityToken );
+
+			IValidatedToken validatedJwt = new ValidatedJwt( jwtSecurityToken );
 			return validatedJwt;
 		}
 	}

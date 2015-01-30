@@ -8,16 +8,6 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 		private readonly SecurityKey m_securityKey;
 		private readonly string m_issuer;
 
-		internal PublicKey( SecurityKey securityKey, string issuer ) {
-			
-			if( issuer == null ) {
-				throw new ArgumentException( "Cannot be null", "issuer" );
-			}
-
-			m_securityKey = securityKey;
-			m_issuer = issuer;
-		}
-
 		internal PublicKey( SecurityToken securityToken, string issuer ) {
 
 			if( securityToken == null ) {

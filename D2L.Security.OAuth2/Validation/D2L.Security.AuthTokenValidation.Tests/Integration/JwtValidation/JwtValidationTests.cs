@@ -46,7 +46,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, expiry );
 			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
 
-			IValidatedJwt validatedToken = m_validator.Validate( jwt );
+			IValidatedToken validatedToken = m_validator.Validate( jwt );
 			Assertions.ContainsScopeValue( validatedToken, SCOPE );
 
 			// Unix time ignores milliseconds, so we have a tolerance of 999 milliseconds
