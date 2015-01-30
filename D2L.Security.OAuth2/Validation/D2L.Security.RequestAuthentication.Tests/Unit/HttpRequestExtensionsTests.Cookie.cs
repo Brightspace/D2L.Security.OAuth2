@@ -17,27 +17,27 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 
 		[Test]
 		public void GetCookieValue_Single_NotMatching_ExpectNull() {
-			Assert.Inconclusive();
+			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+				.WithCookie( "invalidcookiename", "somecookievalue" );
+			Assert.IsNull( httpRequest.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]
 		public void GetCookieValue_Many_NoneMatching_ExpectNull() {
-			Assert.Inconclusive();
+			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+				.WithCookie( "first", "somevalue" )
+				.WithCookie( "second", "somevalue" );
+			Assert.IsNull( httpRequest.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]
 		public void GetCookieValue_Many_First_Success() {
-			Assert.Inconclusive();
-		}
-
-		[Test]
-		public void GetCookieValue_Many_Middle_Success() {
-			Assert.Inconclusive();
-		}
-
-		[Test]
-		public void GetCookieValue_Many_Last_Success() {
-			Assert.Inconclusive();
+			string expected = "goodcookie";
+			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+				.WithCookie( "first", "somevalue" )
+				.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, expected )
+				.WithCookie( "second", "somevalue" );
+			Assert.AreEqual( expected, httpRequest.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 		
 		[Test]

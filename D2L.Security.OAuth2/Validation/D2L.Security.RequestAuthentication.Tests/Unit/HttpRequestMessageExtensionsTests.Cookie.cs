@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using D2L.Security.RequestAuthentication.Tests.Utilities;
 using NUnit.Framework;
 
@@ -18,27 +19,71 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 
 		[Test]
 		public void GetCookieValue_Single_NotMatching_ExpectNull() {
-			Assert.Inconclusive();
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookie( "somecookiename", "somevalue" );
+			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]
 		public void GetCookieValue_Many_NoneMatching_ExpectNull() {
-			Assert.Inconclusive();
+			string headerValue = CookieHeaderMaker.MakeCookieHeader(
+				new Tuple<string, string>( "first", "value1" ),
+				new Tuple<string, string>( "second", "value2" )
+				);
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookieHeader( headerValue );
+			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]
-		public void GetCookieValue_Many_First_Success() {
-			Assert.Inconclusive();
+		public void GetCookieValue_Many_FirstMatches_Success() {
+			string expected = "goodcookievalue";
+			string headerValue = CookieHeaderMaker.MakeCookieHeader(
+				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected ),
+				new Tuple<string, string>( "first", "value1" ),
+				new Tuple<string, string>( "second", "value2" )
+				);
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookieHeader( headerValue );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]
-		public void GetCookieValue_Many_Middle_Success() {
-			Assert.Inconclusive();
+		public void GetCookieValue_Many_MiddleMatches_Success() {
+			string expected = "goodcookievalue";
+			string headerValue = CookieHeaderMaker.MakeCookieHeader(
+				new Tuple<string, string>( "first", "value1" ),
+				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected ),
+				new Tuple<string, string>( "second", "value2" )
+				);
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookieHeader( headerValue );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]
-		public void GetCookieValue_Many_Last_Success() {
-			Assert.Inconclusive();
+		public void GetCookieValue_Many_LastMatches_Success() {
+			string expected = "goodcookievalue";
+			string headerValue = CookieHeaderMaker.MakeCookieHeader(
+				new Tuple<string, string>( "first", "value1" ),
+				new Tuple<string, string>( "second", "value2" ),
+				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected )
+				);
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookieHeader( headerValue );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+		}
+
+		[Test]
+		public void GetCookieValue_Many_InvalidBeforeMatching_Success() {
+			string expected = "goodcookievalue";
+			string headerValue = CookieHeaderMaker.MakeCookieHeader(
+				new Tuple<string, string>( "first", "val=ue1" ),
+				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected )
+				);
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookieHeader( headerValue );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]

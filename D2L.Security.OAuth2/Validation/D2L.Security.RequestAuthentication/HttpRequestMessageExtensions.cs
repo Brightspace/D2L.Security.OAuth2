@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -22,17 +23,18 @@ namespace D2L.Security.RequestAuthentication {
 			}
 
 			string[] allCookiesArray = cookiesHeaderValue.Split( ';' );
+			foreach( string cookie in allCookiesArray ) {
+				string[] nameValuePair = cookie.Split( '=' );
+				if( nameValuePair.Length != 2 ) {
+					continue;
+				}
 
-			//!!!!!!!! refactor
-			//!!!!!!!! refactor
-			//!!!!!!!! refactor
-			string cookieValue = null;
-			var cookiePair = allCookiesArray.Select( c => c.Split( '=' ) ).FirstOrDefault( c => c[0] == cookieName );
-			if( cookiePair != null ) {
-				cookieValue = cookiePair[1];
+				if( nameValuePair[0].Trim() == cookieName ) {
+					return nameValuePair[1].Trim();
+				}
 			}
 
-			return cookieValue;
+			return null;
 		}
 
 		/// <summary>
