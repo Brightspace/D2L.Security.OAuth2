@@ -9,8 +9,6 @@ using Microsoft.IdentityModel.Protocols;
 namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
-		private const string ALLOWED_KEY_TYPE = "RSA";
-
 		private readonly IOpenIdConfigurationFetcher m_configurationFetcher;
 
 		internal PublicKeyProvider( IOpenIdConfigurationFetcher configurationFetcher ) {
@@ -37,8 +35,10 @@ namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
 
 		private X509SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
 			
-			if( jsonWebKey.Kty != ALLOWED_KEY_TYPE ) {
-				throw new Exception( string.Format( "Expected key type to be {0} but was {1}", ALLOWED_KEY_TYPE, jsonWebKey.Kty ) );
+			if( jsonWebKey.Kty != Constants.ALLOWED_KEY_TYPE ) {
+				throw new Exception( 
+					string.Format( "Expected key type to be {0} but was {1}", Constants.ALLOWED_KEY_TYPE, jsonWebKey.Kty ) 
+					);
 			}
 
 			IList<string> x5cEntries = jsonWebKey.X5c;
