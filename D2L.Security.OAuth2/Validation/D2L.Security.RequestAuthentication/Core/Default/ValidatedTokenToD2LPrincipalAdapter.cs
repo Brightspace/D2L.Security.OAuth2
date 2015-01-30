@@ -28,7 +28,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			m_accessToken = accessToken;
 		}
 
-		DateTime ID2LPrincipal.SecurityExpiry {
+		DateTime ID2LPrincipal.AccessTokenExpiry {
 			get { return m_expiry; }
 		}
 

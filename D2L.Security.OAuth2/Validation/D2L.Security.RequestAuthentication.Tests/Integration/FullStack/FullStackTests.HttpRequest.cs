@@ -45,7 +45,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 			Assert.AreEqual( PrincipalType.User, principal.Type );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Xt, principal.Xsrf );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Jwt, principal.AccessToken );
-			Assert.AreEqual( expectedExpiry, principal.SecurityExpiry );
+			Assert.AreEqual( expectedExpiry, principal.AccessTokenExpiry );
 		}
 
 		[Test]
