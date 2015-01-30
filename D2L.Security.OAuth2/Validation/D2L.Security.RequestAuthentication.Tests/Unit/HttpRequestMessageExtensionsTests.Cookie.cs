@@ -75,15 +75,29 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		}
 
 		[Test]
-		public void GetCookieValue_Many_InvalidBeforeMatching_Success() {
+		public void GetCookieValue_Many_EmptyCookie_BeforeMatchingCookie_Success() {
 			string expected = "goodcookievalue";
 			string headerValue = CookieHeaderMaker.MakeCookieHeader(
-				new Tuple<string, string>( "first", "val=ue1" ),
+				new Tuple<string, string>( "first", string.Empty ),
 				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected )
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
 			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+		}
+
+		[Test]
+		public void GetCookieValue_EmptyHeader_ExpectNull() {
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookieHeader( string.Empty );
+			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+		}
+
+		[Test]
+		public void GetCookieValue_NullHeader_ExpectNull() {
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
+				.WithCookieHeader( null );
+			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
 		}
 
 		[Test]
