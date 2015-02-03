@@ -10,7 +10,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 	internal static class RequestBuilder {
 
 		#region HttpRequestMessage
-
+		
 		internal static HttpRequestMessage WithAuthHeader( this HttpRequestMessage httpRequestMessage, string authHeaderValue ) {
 			return httpRequestMessage.WithAuthHeader( Constants.BearerTokens.SCHEME, authHeaderValue );
 		}
@@ -43,6 +43,10 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		#endregion
 
 		#region HttpRequest
+
+		internal static HttpRequest Create() {
+			return new HttpRequest( null, "http://d2l.com", null );
+		}
 
 		internal static HttpRequest WithAuthHeader( this HttpRequest httpRequest, string authHeaderValue ) {
 			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, Constants.BearerTokens.SCHEME_PREFIX + authHeaderValue );

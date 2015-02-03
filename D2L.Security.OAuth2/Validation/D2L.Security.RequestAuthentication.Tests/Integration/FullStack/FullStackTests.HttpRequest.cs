@@ -15,7 +15,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequest_Cookie_NoXsrf_Failure() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithCookie( TestTokens.ValidNoXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
@@ -25,7 +25,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 		
 		[Test]
 		public void HttpRequest_Cookie_WithXsrf_Success() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithCookie( TestTokens.ValidWithXsrfOneScope.Jwt )
 				.WithXsrfHeader( TestTokens.ValidWithXsrfOneScope.Xt );
 
@@ -50,7 +50,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequest_BearerToken_NoXsrf_Success() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithAuthHeader( TestTokens.ValidNoXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
@@ -60,7 +60,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequest_BearerToken_WithXsrf_Success() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithAuthHeader( TestTokens.ValidWithXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
@@ -70,7 +70,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequest_BearerToken_InvalidJwt_Failure() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithAuthHeader( "bogusjwt" );
 
 			ID2LPrincipal principal;
@@ -79,7 +79,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequest_Cookie_InvalidJwt_Failure() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithCookie( "bogusjwt" );
 
 			ID2LPrincipal principal;
@@ -88,7 +88,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequest_Cookie_NonMatchingXsrf_Failure() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithCookie( TestTokens.ValidWithXsrfOneScope.Jwt )
 				.WithXsrfHeader( "bogusxsrfheader" );
 
@@ -99,7 +99,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 		[Test]
 		public void HttpRequest_Cookie_NonMatchingXsrf_ExplicitlyNotValidatingXsrf_Success() {
-			HttpRequest httpRequest = new HttpRequest( null, "http://d2l.com", null )
+			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithCookie( TestTokens.ValidWithXsrfOneScope.Jwt )
 				.WithXsrfHeader( "bogusxsrfheader" );
 
