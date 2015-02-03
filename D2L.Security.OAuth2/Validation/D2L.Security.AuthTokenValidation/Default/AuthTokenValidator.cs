@@ -13,7 +13,11 @@ namespace D2L.Security.AuthTokenValidation.Default {
 			m_validator = validator;
 		}
 
-		ValidationResult IAuthTokenValidator.VerifyAndDecode( string token, out IValidatedToken validatedToken ) {
+		ValidationResult IAuthTokenValidator.VerifyAndDecode( 
+			string token, 
+			out IValidatedToken validatedToken 
+			) {
+			
 			try {
 				validatedToken = m_validator.Validate( token );
 			} catch ( SecurityTokenExpiredException ) {
