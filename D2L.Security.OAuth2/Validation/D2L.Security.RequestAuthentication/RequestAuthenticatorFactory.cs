@@ -12,7 +12,7 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="authServiceEndpoint">End point of the auth service</param>
 		/// <returns>A request authenticator</returns>
 		public static IRequestAuthenticator Create( Uri authServiceEndpoint ) {
-			return Create( authServiceEndpoint, Mode.Full );
+			return Create( authServiceEndpoint, AuthenticationMode.Full );
 		}
 
 		/// <summary>
@@ -21,11 +21,11 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="authServiceEndpoint">End point of the auth service</param>
 		/// <param name="mode">The mode of the request authenticator</param>
 		/// <returns>A request authenticator</returns>
-		public static IRequestAuthenticator Create( Uri authServiceEndpoint, Mode mode ) {
+		public static IRequestAuthenticator Create( Uri authServiceEndpoint, AuthenticationMode mode ) {
 			switch( mode ) {
-				case Mode.Full:
+				case AuthenticationMode.Full:
 					return CreateWorker( authServiceEndpoint, true );
-				case Mode.SkipXsrfValidation:
+				case AuthenticationMode.SkipXsrfValidation:
 					return CreateWorker( authServiceEndpoint, false );
 			}
 
