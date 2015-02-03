@@ -105,7 +105,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 
 			IRequestAuthenticator m_authenticator = RequestAuthenticatorFactory.Create(
 				TestUris.TOKEN_VERIFICATION_AUTHORITY_URI,
-				Mode.SkipXsrfValidation
+				AuthenticationMode.SkipXsrfValidation
 				);
 
 			ID2LPrincipal principal;
