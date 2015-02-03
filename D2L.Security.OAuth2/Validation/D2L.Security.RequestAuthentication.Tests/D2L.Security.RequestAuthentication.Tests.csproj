@@ -76,7 +76,6 @@
     <Compile Include="Utilities\Assertions.cs" />
     <Compile Include="Utilities\CookieHeaderMaker.cs" />
     <Compile Include="Utilities\RequestBuilder.cs" />
-    <Compile Include="Utilities\TestCredentials.cs" />
     <Compile Include="Utilities\TestTokens.cs" />
     <Compile Include="Utilities\TestUris.cs" />
   </ItemGroup>

@@ -36,11 +36,12 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.Default {
 
 			Assert.AreEqual( AuthenticationResult.Success, result );
 			coreAuthenticatorMock.Verify( x => x.Authenticate(
-				DUMMY_JWT,
-				DUMMY_XSRF,
-				DUMMY_BEARER_TOKEN,
-				out principal
-				), Times.Once
+					DUMMY_JWT,
+					DUMMY_XSRF,
+					DUMMY_BEARER_TOKEN,
+					out principal
+					), 
+				Times.Once
 				);
 		}
 
