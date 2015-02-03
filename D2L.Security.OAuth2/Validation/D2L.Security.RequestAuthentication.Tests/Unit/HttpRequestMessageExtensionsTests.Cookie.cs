@@ -13,7 +13,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 			string expected = "somecookievalue";
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookie( expected );
-			string cookieValue = httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME );
+			string cookieValue = httpRequestMessage.GetCookieValue();
 			Assert.AreEqual( expected, cookieValue );
 		}
 
@@ -21,7 +21,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		public void GetCookieValue_Single_NotMatching_ExpectNull() {
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookie( "somecookiename", "somevalue" );
-			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.IsNull( httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
@@ -32,7 +32,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
-			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.IsNull( httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
@@ -45,7 +45,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
-			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
@@ -58,7 +58,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
-			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
@@ -71,7 +71,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
-			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
@@ -83,48 +83,38 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
-			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.AreEqual( expected, httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
 		public void GetCookieValue_EmptyHeader_ExpectNull() {
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( string.Empty );
-			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.IsNull( httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
 		public void GetCookieValue_NullHeader_ExpectNull() {
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( null );
-			Assert.IsNull( httpRequestMessage.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME ) );
+			Assert.IsNull( httpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
 		public void GetCookieValue_NullRequest_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetCookieValue( null, "dummycookiename" ) );
+			Assert.IsNull( HttpRequestMessageExtensions.GetCookieValue( null ) );
 		}
-
-		[Test]
-		public void GetCookieValue_NullCookieName_ExpectNull() {
-			Assert.IsNull( m_bareHttpRequestMessage.GetCookieValue( null ) );
-		}
-
-		[Test]
-		public void GetCookieValue_EmptyCookieName_ExpectNull() {
-			Assert.IsNull( m_bareHttpRequestMessage.GetCookieValue( string.Empty ) );
-		}
-
+		
 		[Test]
 		public void GetCookieValue_NoCookieHeader_ExpectNull() {
-			Assert.IsNull( m_bareHttpRequestMessage.GetCookieValue( "dummycookiename" ) );
+			Assert.IsNull( m_bareHttpRequestMessage.GetCookieValue() );
 		}
 
 		[Test]
 		public void GetCookieValue_NoCookies_ExpectNull() {
 			HttpRequestMessage request = new HttpRequestMessage();
 			request.Headers.Add( Constants.Headers.COOKIE, new string[] { } );
-			Assert.IsNull( request.GetCookieValue( "dummycookiename" ) );
+			Assert.IsNull( request.GetCookieValue() );
 		}
 	}
 }
