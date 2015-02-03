@@ -21,16 +21,16 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			out ID2LPrincipal principal
 			) {
 
+			principal = null;
+
 			bool cookieExists = !string.IsNullOrEmpty( cookie );
 			bool bearerTokenExists = !string.IsNullOrEmpty( bearerToken );
 
 			if( !cookieExists && !bearerTokenExists ) {
-				principal = null;
 				return AuthenticationResult.Anonymous;
 			}
 
 			if( cookieExists && bearerTokenExists ) {
-				principal = null;
 				return AuthenticationResult.LocationConflict;
 			}
 
@@ -40,13 +40,11 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			ValidationResult validationResult = m_tokenValidator.VerifyAndDecode( token, out validatedToken );
 
 			if( validationResult == ValidationResult.TokenExpired ) {
-				principal = null;
 				return AuthenticationResult.Expired;
 			}
 
 			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, validatedToken );
 			if( !isXsrfSafe ) {
-				principal = null;
 				return AuthenticationResult.XsrfMismatch;
 			}
 
