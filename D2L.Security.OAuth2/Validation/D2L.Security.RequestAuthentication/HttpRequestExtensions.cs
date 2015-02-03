@@ -3,11 +3,8 @@
 namespace D2L.Security.RequestAuthentication {
 	internal static class HttpRequestExtensions {
 
-		/// <summary>
-		/// Return the value of a cookie
-		/// </summary>
 		/// <param name="request">The request</param>
-		/// <returns>A cookie value, or null if the specified cookie was not found</returns>
+		/// <returns>The value of the auth cookie, or null if one was not found</returns>
 		internal static string GetCookieValue( this HttpRequest request ) {
 			if( request == null ) {
 				return null;
@@ -21,9 +18,6 @@ namespace D2L.Security.RequestAuthentication {
 			return cookie.Value;
 		}
 
-		/// <summary>
-		/// Returns the value of the bearer token.
-		/// </summary>
 		/// <param name="request">The request</param>
 		/// <returns>The value of the bearer token, or null if the bearer token is not set</returns>
 		internal static string GetBearerTokenValue( this HttpRequest request ) {
@@ -44,9 +38,6 @@ namespace D2L.Security.RequestAuthentication {
 			return bearerToken;
 		}
 
-		/// <summary>
-		/// Returns the value of the Xsrf header.
-		/// </summary>
 		/// <param name="request">The request</param>
 		/// <returns>The value of the Xsrf header, or null if the Xsrf header was not found</returns>
 		internal static string GetXsrfValue( this HttpRequest request ) {

@@ -1,22 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
 namespace D2L.Security.RequestAuthentication {
 	internal static class HttpRequestMessageExtensions {
 
-		/// <summary>
-		/// Return the value of a cookie
-		/// </summary>
 		/// <param name="request">The request</param>
-		/// <param name="cookieName">The name of the cookie</param>
-		/// <returns>A cookie value, or null if the specified cookie was not found</returns>
-		internal static string GetCookieValue( this HttpRequestMessage request, string cookieName ) {
-			if( string.IsNullOrEmpty( cookieName ) ) {
-				return null;
-			}
-
+		/// <returns>The value of the auth cookie, or null if one was not found</returns>
+		internal static string GetCookieValue( this HttpRequestMessage request ) {
 			string cookiesHeaderValue = request.GetHeaderValue( Constants.Headers.COOKIE );
 			if( cookiesHeaderValue == null ) {
 				return null;
@@ -29,7 +20,7 @@ namespace D2L.Security.RequestAuthentication {
 					continue;
 				}
 
-				if( nameValuePair[0].Trim() == cookieName ) {
+				if( nameValuePair[0].Trim() == Constants.D2L_AUTH_COOKIE_NAME ) {
 					return nameValuePair[1].Trim();
 				}
 			}
@@ -37,9 +28,6 @@ namespace D2L.Security.RequestAuthentication {
 			return null;
 		}
 
-		/// <summary>
-		/// Returns the value of the Xsrf header.
-		/// </summary>
 		/// <param name="request">The request</param>
 		/// <returns>The value of the Xsrf header, or null if the Xsrf header was not found</returns>
 		internal static string GetXsrfValue( this HttpRequestMessage request ) {
@@ -47,9 +35,6 @@ namespace D2L.Security.RequestAuthentication {
 			return xsrfValue;
 		}
 
-		/// <summary>
-		/// Returns the value of the bearer token.
-		/// </summary>
 		/// <param name="request">The request</param>
 		/// <returns>The value of the bearer token, or null if the bearer token is not set</returns>
 		internal static string GetBearerTokenValue( this HttpRequestMessage request ) {
