@@ -17,6 +17,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
 			IValidatedToken validatedToken;
 
 			ValidationResult result = validator.VerifyAndDecode( string.Empty, out validatedToken );
+			Assert.AreEqual( ValidationResult.TokenExpired, result );
 		}
 
 		private IAuthTokenValidator MakeValidatorWhichThrows( Exception innerException ) {
