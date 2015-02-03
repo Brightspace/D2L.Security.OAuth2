@@ -20,7 +20,7 @@ namespace D2L.Security.RequestAuthentication.Default {
 		}
 
 		AuthenticationResult IRequestAuthenticator.AuthenticateAndExtract( HttpRequest request, out ID2LPrincipal principal ) {
-			string cookie = request.GetCookieValue( Constants.D2L_AUTH_COOKIE_NAME );
+			string cookie = request.GetCookieValue();
 			string bearerToken = request.GetBearerTokenValue();
 			string xsrfToken = request.GetXsrfValue();
 

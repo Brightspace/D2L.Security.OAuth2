@@ -7,18 +7,13 @@ namespace D2L.Security.RequestAuthentication {
 		/// Return the value of a cookie
 		/// </summary>
 		/// <param name="request">The request</param>
-		/// <param name="cookieName">The name of the cookie</param>
 		/// <returns>A cookie value, or null if the specified cookie was not found</returns>
-		internal static string GetCookieValue( this HttpRequest request, string cookieName ) {
-			if( string.IsNullOrEmpty( cookieName ) ) {
-				return null;
-			}
-
+		internal static string GetCookieValue( this HttpRequest request ) {
 			if( request == null ) {
 				return null;
 			}
 
-			HttpCookie cookie = request.Cookies.Get( cookieName );
+			HttpCookie cookie = request.Cookies.Get( Constants.D2L_AUTH_COOKIE_NAME );
 			if( cookie == null ) {
 				return null;
 			}
