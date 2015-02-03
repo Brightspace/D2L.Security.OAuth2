@@ -2,6 +2,7 @@
 using D2L.Security.AuthTokenValidation;
 using D2L.Security.RequestAuthentication.Core;
 using D2L.Security.RequestAuthentication.Core.Default;
+using D2L.Security.RequestAuthentication.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
@@ -77,10 +78,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 
 		[TestCase( "", "" )]
 		[TestCase( null, "" )]
-		//[TestCase( "", null )]
-		//[TestCase( null, null )]
 		[TestCase( null, "inclaims" )]
-		//[TestCase( "inheader", null )]
 		[TestCase( "", "inclaims" )]
 		[TestCase( "inheader", "" )]
 		[TestCase( "inheader", "inclaims" )]

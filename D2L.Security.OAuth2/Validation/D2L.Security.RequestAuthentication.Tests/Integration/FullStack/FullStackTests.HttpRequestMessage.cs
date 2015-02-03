@@ -10,7 +10,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 	internal sealed partial class FullStackTests {
 
 		[Test]
-		public void HttpRequestMessage_Cookie_NoXsrf_Failure() {
+		public void HttpRequestMessage_Cookie_NoXsrfHeader_Failure() {
 			HttpRequestMessage httpRequest = new HttpRequestMessage()
 				.WithCookie( TestTokens.ValidWithXsrfTwoScopesNoUser.Jwt );
 
@@ -20,7 +20,7 @@ namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
 		}
 
 		[Test]
-		public void HttpRequestMessage_Cookie_WithXsrf_Success() {
+		public void HttpRequestMessage_Cookie_WithXsrfHeader_Success() {
 			HttpRequestMessage httpRequest = new HttpRequestMessage()
 				.WithCookie( TestTokens.ValidWithXsrfTwoScopesNoUser.Jwt )
 				.WithXsrfHeader( TestTokens.ValidWithXsrfTwoScopesNoUser.Xt );
