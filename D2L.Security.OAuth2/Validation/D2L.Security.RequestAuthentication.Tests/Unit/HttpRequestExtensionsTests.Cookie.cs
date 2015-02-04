@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using D2L.Security.RequestAuthentication.Tests.Utilities;
 using NUnit.Framework;
 
@@ -62,7 +63,9 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		
 		[Test]
 		public void GetCookieValue_NullRequest_ExpectNull() {
-			Assert.IsNull( HttpRequestExtensions.GetCookieValue( null ) );
+			Assert.Throws<NullReferenceException>(
+				() => HttpRequestExtensions.GetCookieValue( null )
+				);
 		}
 		
 		[Test]

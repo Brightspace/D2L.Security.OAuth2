@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System;
+using System.Net.Http;
 using D2L.Security.RequestAuthentication.Tests.Utilities;
 using NUnit.Framework;
 
@@ -19,7 +20,9 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		
 		[Test]
 		public void GetBearerTokenValue_NullRequest_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetBearerTokenValue( null ) );
+			Assert.Throws<NullReferenceException>(
+				() => HttpRequestMessageExtensions.GetBearerTokenValue( null )
+				);
 		}
 
 		[Test]

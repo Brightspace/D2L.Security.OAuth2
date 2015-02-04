@@ -37,10 +37,6 @@ namespace D2L.Security.RequestAuthentication {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the bearer token, or null if the bearer token is not set</returns>
 		internal static string GetBearerTokenValue( this HttpRequestMessage request ) {
-			if( request == null ) {
-				return null;
-			}
-
 			AuthenticationHeaderValue authHeader = request.Headers.Authorization;
 			if( authHeader == null ) {
 				return null;
@@ -54,10 +50,6 @@ namespace D2L.Security.RequestAuthentication {
 		}
 
 		private static string GetHeaderValue( this HttpRequestMessage request, string headerName ) {
-			if( request == null || request.Headers == null ) {
-				return null;
-			}
-
 			if( !request.Headers.Contains( headerName ) ) {
 				return null;
 			}

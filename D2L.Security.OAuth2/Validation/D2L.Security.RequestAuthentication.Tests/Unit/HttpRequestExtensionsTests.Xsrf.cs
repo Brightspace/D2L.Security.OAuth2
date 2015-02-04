@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using D2L.Security.RequestAuthentication.Tests.Utilities;
 using NUnit.Framework;
 
@@ -17,7 +18,9 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		
 		[Test]
 		public void GetXsrfValue_NullRequest_ExpectNull() {
-			Assert.IsNull( HttpRequestExtensions.GetXsrfValue( null ) );
+			Assert.Throws<NullReferenceException>(
+				() => HttpRequestExtensions.GetXsrfValue( null )
+				);
 		}
 
 		[Test]

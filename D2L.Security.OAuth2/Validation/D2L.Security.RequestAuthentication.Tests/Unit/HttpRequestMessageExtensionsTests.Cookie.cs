@@ -101,8 +101,10 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit {
 		}
 
 		[Test]
-		public void GetCookieValue_NullRequest_ExpectNull() {
-			Assert.IsNull( HttpRequestMessageExtensions.GetCookieValue( null ) );
+		public void GetCookieValue_NullRequest_Throws() {
+			Assert.Throws<NullReferenceException>( 
+				() => HttpRequestMessageExtensions.GetCookieValue( null ) 
+				);
 		}
 		
 		[Test]
