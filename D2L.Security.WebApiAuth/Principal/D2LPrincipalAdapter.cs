@@ -30,28 +30,16 @@ namespace D2L.Security.WebApiAuth.Principal {
 
 		#region ID2LPrincipal Passthrough Members
 
-		PrincipalType ID2LPrincipal.Type {
-			get { return m_principal.Value.Type; }
-		}
-
-		IEnumerable<string> ID2LPrincipal.Scopes {
-			get { return m_principal.Value.Scopes; }
-		}
-
-		DateTime ID2LPrincipal.SecurityExpiry {
-			get { return m_principal.Value.SecurityExpiry; }
-		}
-
-		string ID2LPrincipal.Xsrf {
-			get { return m_principal.Value.Xsrf; }
-		}
-
 		string ID2LPrincipal.AccessToken {
 			get { return m_principal.Value.AccessToken; }
 		}
 
-		long? ID2LPrincipal.UserId {
-			get { return m_principal.Value.UserId; }
+		DateTime ID2LPrincipal.AccessTokenExpiry {
+			get { return m_principal.Value.AccessTokenExpiry; }
+		}
+
+		IEnumerable<string> ID2LPrincipal.Scopes {
+			get { return m_principal.Value.Scopes; }
 		}
 
 		string ID2LPrincipal.TenantId {
@@ -60,6 +48,19 @@ namespace D2L.Security.WebApiAuth.Principal {
 
 		string ID2LPrincipal.TenantUrl {
 			get { return m_principal.Value.TenantUrl; }
+		}
+
+		PrincipalType ID2LPrincipal.Type {
+			get { return m_principal.Value.Type; }
+		}
+
+		long? ID2LPrincipal.UserId {
+			get { return m_principal.Value.UserId; }
+		}
+
+
+		string ID2LPrincipal.Xsrf {
+			get { return m_principal.Value.Xsrf; }
 		}
 
 		#endregion ID2LPrincipal Passthrough Members

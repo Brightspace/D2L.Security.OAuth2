@@ -25,7 +25,7 @@ namespace D2L.Security.WebApiAuth.Handler {
 			) {
 
 			InnerHandler = new HttpControllerDispatcher( httpConfiguration );
-			Mode mode = verifyCsrf ? Mode.Full : Mode.SkipXsrfValidation;
+			AuthenticationMode mode = verifyCsrf ? AuthenticationMode.Full : AuthenticationMode.SkipXsrfValidation;
 			m_requestAuthenticator = RequestAuthenticatorFactory.Create( authenticationEndpoint, mode );
 			m_log = logProvider.Get( typeof( AuthenticationMessageHandler ) );
 		}
