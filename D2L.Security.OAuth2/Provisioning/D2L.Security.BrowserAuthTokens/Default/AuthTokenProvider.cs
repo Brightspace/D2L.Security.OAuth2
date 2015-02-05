@@ -9,12 +9,6 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 		private readonly TimeSpan ASSERTION_GRANT_JWT_LIFETIME = TimeSpan.FromMinutes( 30 );
 		private readonly TimeSpan NOT_BEFORE_PADDING = TimeSpan.FromMinutes( 5 );
 
-		/*
-		grant_type    urn:ietf:params:oauth:grant-type:jwt-bearer
-		assertion    (signed assertion grant JWT)
-		scope     just like for client
-		*/
-
 		string IAuthTokenProvider.GetTokenForUser( string tenantId, long userId, string xsrfToken, long duration ) {
 			throw new NotImplementedException();
 		}

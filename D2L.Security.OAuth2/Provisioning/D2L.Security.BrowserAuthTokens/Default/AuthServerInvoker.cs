@@ -12,6 +12,14 @@ using D2L.Security.BrowserAuthTokens.Default.Serialization;
 namespace D2L.Security.BrowserAuthTokens.Default {
 	internal static class AuthServerInvoker {
 
+		/*
+		CLAIMS IN FORM:
+		
+		grant_type    urn:ietf:params:oauth:grant-type:jwt-bearer
+		assertion    (signed assertion grant JWT)
+		scope     just like for client
+		*/
+
 		internal static string AuthenticateAndGetJwt( string tokenProvisioningUrl, string clientId, string clientSecret, string scope ) {
 			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( tokenProvisioningUrl );
 			request.Method = "POST";
@@ -29,13 +37,14 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 				write.Write( formContents );
 			}
 
-			WebResponse response = request.GetResponse();
+			using( WebResponse response = request.GetResponse() ) {
 
-			DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( GrantJwtHeader ) );
-			GrantJwtHeader authServerResponse = (GrantJwtHeader)serializer.ReadObject( response.GetResponseStream() );
+				DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( GrantJwtHeader ) );
+				GrantJwtHeader authServerResponse = (GrantJwtHeader)serializer.ReadObject( response.GetResponseStream() );
 
-			//return authServerResponse.access_token;
-			throw new NotImplementedException();
+				//return authServerResponse.access_token;
+				throw new NotImplementedException();
+			}
 		}
 
 		private static string MakeHeader() {
