@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>1591</NoWarn>
+    <DocumentationFile>bin\Debug\D2L.Security.BrowserAuthTokens.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,10 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="Default\AssertionGrantJwt.cs" />
+    <Compile Include="Default\Serialization\GrantJwtHeader.cs" />
     <Compile Include="Default\AuthServerInvoker.cs" />
     <Compile Include="Default\AuthTokenProvider.cs" />
     <Compile Include="AuthTokenProviderFactory.cs" />
+    <Compile Include="Default\Serialization\GrantJwtPayload.cs" />
+    <Compile Include="Default\Serialization\SerializationHelper.cs" />
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="IAssertionGrantSigner.cs" />
     <Compile Include="IAuthTokenProvider.cs" />
