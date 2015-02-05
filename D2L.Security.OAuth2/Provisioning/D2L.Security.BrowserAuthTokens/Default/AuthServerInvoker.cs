@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
+using D2L.Security.BrowserAuthTokens.Default.Serialization;
 
 namespace D2L.Security.BrowserAuthTokens.Default {
 	internal static class AuthServerInvoker {
@@ -30,24 +31,29 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 
 			WebResponse response = request.GetResponse();
 
-			DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( Header ) );
-			Header authServerResponse = (Header)serializer.ReadObject( response.GetResponseStream() );
+			DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( GrantJwtHeader ) );
+			GrantJwtHeader authServerResponse = (GrantJwtHeader)serializer.ReadObject( response.GetResponseStream() );
 
 			//return authServerResponse.access_token;
 			throw new NotImplementedException();
 		}
 
-		internal static void TEST() {
-			DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( Header ) );
-			
-			Header h = new Header();
-			h.typ = "asdf";
-			h.alg = "1234";
+		private static string MakeHeader() {
+			GrantJwtHeader header = new GrantJwtHeader();
+			return SerializationHelper.Serialize<GrantJwtHeader>( header );
+		}
 
-			using( MemoryStream stream = new MemoryStream() ) {
-				serializer.WriteObject( stream, h );
-				string result = Encoding.UTF8.GetString( stream.ToArray() );
-			}
+		private static string MakePayload() {
+			GrantJwtPayload payload = new GrantJwtPayload(
+				"dummyuserid",
+				"dummytenantid",
+				"dummytenanturl"
+				);
+
+			return SerializationHelper.Serialize<GrantJwtPayload>( payload );
+		}
+
+		internal static void TEST() {
 		}
 
 		internal static string ToBase64( this string me ) {
