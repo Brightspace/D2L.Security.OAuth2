@@ -37,6 +37,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,9 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthTokenException.cs" />
+    <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="Default\AssertionGrantJwt.cs" />
+    <Compile Include="Default\AuthServerInvoker.cs" />
     <Compile Include="Default\AuthTokenProvider.cs" />
-    <Compile Include="IAuthTokenProviderFactory.cs" />
+    <Compile Include="AuthTokenProviderFactory.cs" />
+    <Compile Include="IAssertionGrantSigner.cs" />
     <Compile Include="IAuthTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
