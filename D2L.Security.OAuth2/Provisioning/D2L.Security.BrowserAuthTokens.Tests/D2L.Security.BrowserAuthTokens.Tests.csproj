@@ -4,16 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8E4E6959-EFC8-48F3-9479-A58B23C96C8C}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{F9A52935-FEE3-4763-AD92-87C8C9619862}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>D2L.Security.BrowserAuthTokens</RootNamespace>
-    <AssemblyName>D2L.Security.BrowserAuthTokens</AssemblyName>
+    <RootNamespace>D2L.Security.BrowserAuthTokens.Tests</RootNamespace>
+    <AssemblyName>D2L.Security.BrowserAuthTokens.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,13 +33,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,19 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="Default\AssertionGrantJwt.cs" />
-    <Compile Include="Default\AuthServerInvoker.cs" />
-    <Compile Include="Default\AuthTokenProvider.cs" />
-    <Compile Include="AuthTokenProviderFactory.cs" />
-    <Compile Include="FriendAssemblies.cs" />
-    <Compile Include="IAssertionGrantSigner.cs" />
-    <Compile Include="IAuthTokenProvider.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TemporaryTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="D2L.Security.BrowserAuthToken.nuspec" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\D2L.Security.BrowserAuthTokens\D2L.Security.BrowserAuthTokens.csproj">
+      <Project>{8e4e6959-efc8-48f3-9479-a58b23c96c8c}</Project>
+      <Name>D2L.Security.BrowserAuthTokens</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
