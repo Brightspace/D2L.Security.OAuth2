@@ -25,8 +25,8 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 		scope     just like for client
 		*/
 
-		internal static async Task<string> AuthenticateAndGetJwt( Uri tokenProvisioningUrl, string jwt, string scope ) {
-			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( tokenProvisioningUrl );
+		internal static async Task<string> AuthenticateAndGetJwt( Uri tokenProvisioningEndpoint, string jwt, string scope ) {
+			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( tokenProvisioningEndpoint );
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
 
@@ -37,12 +37,17 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			//authorizationHeaderValue = "Basic " + authorizationHeaderValue;
 			//request.Headers["Authorization"] = authorizationHeaderValue;
 
-			string formContents = "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer";
-			formContents += "&scope=" + scope;
+			string grantType = "urn:ietf:params:oauth:grant-type:jwt-bearer";
+			grantType = WebUtility.UrlEncode( grantType );
+
+			string formContents = "grant_type=" + grantType;
 			formContents += "&assertion=" + jwt;
 
-			using( StreamWriter write = new StreamWriter( request.GetRequestStream() ) ) {
-				write.Write( formContents );
+			scope = WebUtility.UrlEncode( scope );
+			formContents += "&scope=" + scope;
+
+			using( StreamWriter writer = new StreamWriter( request.GetRequestStream() ) ) {
+				writer.Write( formContents );
 			}
 
 			using( WebResponse response = await request.GetResponseAsync() ) {
