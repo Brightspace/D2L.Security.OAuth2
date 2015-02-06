@@ -4,6 +4,6 @@
 	/// Entry point into validating a jwt
 	/// </summary>
 	interface IJwtValidator {
-		IValidatedJwt Validate( string jwt );
+		IValidatedToken Validate( string jwt );
 	}
 }

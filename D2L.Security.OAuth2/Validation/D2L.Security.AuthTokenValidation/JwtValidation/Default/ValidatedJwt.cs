@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace D2L.Security.AuthTokenValidation.JwtValidation {
 
-	internal sealed class ValidatedJwt : IValidatedJwt {
+	internal sealed class ValidatedJwt : IValidatedToken {
 
 		private readonly JwtSecurityToken m_inner;
 
@@ -13,11 +13,11 @@ namespace D2L.Security.AuthTokenValidation.JwtValidation {
 			m_inner = jwtSecurityToken;
 		}
 
-		IEnumerable<Claim> IValidatedJwt.Claims {
+		IEnumerable<Claim> IValidatedToken.Claims {
 			get { return m_inner.Claims; }
 		}
 
-		DateTime IValidatedJwt.Expiry {
+		DateTime IValidatedToken.Expiry {
 			get { return m_inner.ValidTo; }
 		}
 	}

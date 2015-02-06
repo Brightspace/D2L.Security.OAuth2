@@ -14,14 +14,11 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.JwtValidation.Default {
 	[TestFixture]
 	internal sealed class JwtValidatorTests {
 
-		private const string VALID_TOKEN_TYPE = "JWT";
-		private const string VALID_ALGORITHM = "RS256";
-
 		[Test]
 		public void Validate_Success() {
 			string jwt = TestTokenProvider.MakeJwt(
-				VALID_ALGORITHM,
-				VALID_TOKEN_TYPE,
+				Constants.ALLOWED_SIGNATURE_ALGORITHM,
+				Constants.ALLOWED_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);
@@ -33,7 +30,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.JwtValidation.Default {
 		public void Validate_InvalidAlgorithm_Failure() {
 			string jwt = TestTokenProvider.MakeJwt(
 				"INVALIDALGORITHM",
-				VALID_TOKEN_TYPE,
+				Constants.ALLOWED_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);
@@ -45,8 +42,8 @@ namespace D2L.Security.AuthTokenValidation.Tests.Unit.JwtValidation.Default {
 		public void Validate_InvalidDotNetSecurityTokenType_Failure() {
 			Mock<SecurityToken> securityTokenMock = new Mock<SecurityToken>();
 			string jwt = TestTokenProvider.MakeJwt(
-				VALID_ALGORITHM,
-				VALID_TOKEN_TYPE,
+				Constants.ALLOWED_SIGNATURE_ALGORITHM,
+				Constants.ALLOWED_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);

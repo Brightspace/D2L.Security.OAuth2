@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Linq;
-using D2L.Security.AuthTokenValidation.JwtValidation;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 	internal static class Assertions {
-		
+
 		/// <summary>
 		/// Asserts that the "scope" claim contains the specified value
 		/// </summary>
-		/// <param name="validatedJwt">A validated jwt</param>
+		/// <param name="validatedToken">A validated token</param>
 		/// <param name="scopeValue">The value to use when checking</param>
-		internal static void ContainsScopeValue( IValidatedJwt validatedJwt, string scopeValue ) {
-			string scopeValueFromClaim = validatedJwt.Claims.First( x => x.Type == "scope" ).Value;
+		internal static void ContainsScopeValue( IValidatedToken validatedToken, string scopeValue ) {
+			string scopeValueFromClaim = validatedToken.Claims.First( x => x.Type == "scope" ).Value;
 			Assert.AreEqual( scopeValue, scopeValueFromClaim );
+		}
+
+		internal static void ScopeClaimsCountIsExactly( IValidatedToken validatedToken, long count ) {
+			string scopeValueFromClaim = validatedToken.Claims.First( x => x.Type == "scope" ).Value;
+			Assert.AreEqual( count, validatedToken.Claims.Count( x => x.Type == "scope" ) );
 		}
 
 		/// <summary>
