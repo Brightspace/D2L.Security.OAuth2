@@ -35,8 +35,6 @@ namespace D2L.Security.BrowserAuthTokens.Default.Serialization {
 			// remove last separator
 			result = result.Substring( 0, result.Length - separator.Length );
 
-			result = WebUtility.UrlEncode( result );
-
 			return result;
 		}
 	}
