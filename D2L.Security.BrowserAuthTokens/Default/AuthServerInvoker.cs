@@ -25,34 +25,32 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 		scope     just like for client
 		*/
 
-		internal static string AuthenticateAndGetJwt( string tokenProvisioningUrl, string clientId, string clientSecret, string scope ) {
+		internal static async Task<string> AuthenticateAndGetJwt( Uri tokenProvisioningUrl, string jwt, string scope ) {
 			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( tokenProvisioningUrl );
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
 
 			//string authorizationHeaderValue = HttpUtility.UrlEncode( clientId ) + ":" + HttpUtility.UrlEncode( clientSecret );
 
-			string authorizationHeaderValue = "bogus";
-			authorizationHeaderValue = authorizationHeaderValue.ToBase64();
-			authorizationHeaderValue = "Basic " + authorizationHeaderValue;
-			request.Headers["Authorization"] = authorizationHeaderValue;
+			//string authorizationHeaderValue = "bogus";
+			//authorizationHeaderValue = authorizationHeaderValue.ToBase64();
+			//authorizationHeaderValue = "Basic " + authorizationHeaderValue;
+			//request.Headers["Authorization"] = authorizationHeaderValue;
 
-			string formContents = "grant_type=client_credentials&scope=" + scope;
+			string formContents = "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer";
+			formContents += "&scope=" + scope;
+			formContents += "&assertion=" + jwt;
+
 			using( StreamWriter write = new StreamWriter( request.GetRequestStream() ) ) {
 				write.Write( formContents );
 			}
 
-			using( WebResponse response = request.GetResponse() ) {
-
-				DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( GrantJwtHeader ) );
-				GrantJwtHeader authServerResponse = (GrantJwtHeader)serializer.ReadObject( response.GetResponseStream() );
-
-				//return authServerResponse.access_token;
-				throw new NotImplementedException();
+			using( WebResponse response = await request.GetResponseAsync() ) {
+				return response.ContentLength.ToString();
 			}
 		}
-
-		internal static string MakeJwt2() {
+		
+		internal static string MakeJwt2( X509Certificate2 certificate ) {
 			string userId = "dummyuserid";
 			string tenantId = "dummytenantid";
 			string tenantUrl = "dummytenanturl";
@@ -67,12 +65,9 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			claims.Add( new Claim( "tenanturl", tenantUrl ) );
 			claims.Add( new Claim( "xt", xsrf ) );
 
-			string password = "lms_dev_keypair";
-			byte[] certificateRawData = new byte[1337];
-			X509Certificate2 certificate = new X509Certificate2( certificateRawData, password );
 			SigningCredentials credentials = new X509SigningCredentials( certificate );
 
-			var jwt = new JwtSecurityToken(
+			JwtSecurityToken jwt = new JwtSecurityToken(
                 "lms.dev.d2l",
                 "https://api.brightspace.com/auth/token",
                 claims,
@@ -87,7 +82,7 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			//	jwt.Header.Add("kid", Base64Url(x509credential.Certificate.GetCertHash()));
 			//}
 
-            var handler = new JwtSecurityTokenHandler();
+			JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             return handler.WriteToken(jwt);
 		}
 

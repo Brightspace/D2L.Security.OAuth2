@@ -59,5 +59,15 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] lms_dev_d2l {
+            get {
+                object obj = ResourceManager.GetObject("lms_dev_d2l", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
