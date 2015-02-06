@@ -54,15 +54,6 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 		//}
 
 
-		//private static string Base64Url( string s ) {
-		//	return Base64Url( Encoding.UTF8.GetBytes( s ) );
-		//}
-
-		//private static string Base64Url( byte[] s ) {
-		//	return Convert.ToBase64String( s )
-		//		.Replace( '+', '-' )
-		//		.Replace( '/', '_' )
-		//		.Trim( '=' );
-		//}
+		
 	}
 }
