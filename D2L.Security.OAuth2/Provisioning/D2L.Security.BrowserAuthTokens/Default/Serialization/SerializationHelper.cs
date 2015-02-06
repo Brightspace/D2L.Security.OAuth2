@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
@@ -33,6 +34,8 @@ namespace D2L.Security.BrowserAuthTokens.Default.Serialization {
 			string result = builder.ToString();
 			// remove last separator
 			result = result.Substring( 0, result.Length - separator.Length );
+
+			result = WebUtility.UrlEncode( result );
 
 			return result;
 		}
