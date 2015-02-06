@@ -59,9 +59,11 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="TemporaryTest.cs" />
+    <Compile Include="Utilities\TestUris.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\lms.dev.d2l.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D2L.Security.BrowserAuthTokens\D2L.Security.BrowserAuthTokens.csproj">
