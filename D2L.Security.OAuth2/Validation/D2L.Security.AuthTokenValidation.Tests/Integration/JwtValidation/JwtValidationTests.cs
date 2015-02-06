@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using D2L.Security.AuthTokenValidation.JwtValidation;
+using D2L.Security.AuthTokenValidation.JwtValidation.Default;
 using D2L.Security.AuthTokenValidation.PublicKeys;
 using D2L.Security.AuthTokenValidation.PublicKeys.Default;
 using D2L.Security.AuthTokenValidation.Tests.Utilities;
-using D2L.Security.AuthTokenValidation.JwtValidation;
-using D2L.Security.AuthTokenValidation.JwtValidation.Default;
 using Moq;
 using NUnit.Framework;
 
@@ -16,8 +16,6 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 
 		private const string SCOPE = TestCredentials.LOReSScopes.MANAGE;
 		private const string VALID_ISSUER = "https://api.d2l.com/auth";
-		private const string VALID_ALGORITHM = "RS256";
-		private const string VALID_TOKEN_TYPE = "JWT";
 
 		private RSACryptoServiceProvider m_cryptoServiceProvider;
 		private RSAParameters m_rsaParameters;
@@ -44,9 +42,9 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		public void Valid_Success() {
 			DateTime expiry = DateTime.UtcNow + TimeSpan.FromMinutes( 15 );
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, expiry );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 
-			IValidatedJwt validatedToken = m_validator.Validate( jwt );
+			IValidatedToken validatedToken = m_validator.Validate( jwt );
 			Assertions.ContainsScopeValue( validatedToken, SCOPE );
 
 			// Unix time ignores milliseconds, so we have a tolerance of 999 milliseconds
@@ -59,7 +57,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void Expired_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( -15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<SecurityTokenExpiredException>(
 				() => m_validator.Validate( jwt )
@@ -69,7 +67,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void InvalidAlgorithm_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( "invalidalgorithm", VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( "invalidalgorithm", Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<CryptographicException>( 
 				() => m_validator.Validate( jwt ) 
@@ -79,7 +77,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void InvalidTokenType_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, "invalidtokentype", payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, "invalidtokentype", payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<SecurityTokenException>(
 				() => m_validator.Validate( jwt )
@@ -89,7 +87,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void InvalidIssuer_Failure() {
 			string payload = TestTokenProvider.MakePayload( "invalidissuer", SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<SecurityTokenInvalidIssuerException>(
 				() => m_validator.Validate( jwt )
@@ -121,7 +119,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void TruncatedJwt_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 			// remove beginning to malform
 			jwt = jwt.Substring( 1 );
 
@@ -133,7 +131,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void EmptyHeader_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 			int indexOfFirstDot = jwt.IndexOf( '.' );
 			jwt = jwt.Substring( indexOfFirstDot );
 
@@ -145,7 +143,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void EmptyPayload_Failure() {
 			string payload = string.Empty;
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<ArgumentException>(
 				() => m_validator.Validate( jwt )
@@ -155,7 +153,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void EmptySignature_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 			int indexOfLastDot = jwt.LastIndexOf( '.' );
 			jwt = jwt.Substring( 0, indexOfLastDot + 1 );
 
@@ -167,7 +165,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void TooFewJwtSegments_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 			int indexOfLastDot = jwt.LastIndexOf( '.' );
 			jwt = jwt.Substring( 0, indexOfLastDot );
 
@@ -179,7 +177,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		[Test]
 		public void TooManyJwtSegments_Failure() {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 			jwt += ".asdf";
 
 			Assertions.ExceptionStemsFrom<ArgumentException>(
@@ -192,7 +190,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 			string payload = TestTokenProvider.MakePayload( VALID_ISSUER, SCOPE, TimeSpan.FromMinutes( 15 ) );
 			// remove beginning to malform
 			payload = payload.Substring( 1 );
-			string jwt = TestTokenProvider.MakeJwt( VALID_ALGORITHM, VALID_TOKEN_TYPE, payload, m_rsaParameters );
+			string jwt = TestTokenProvider.MakeJwt( Constants.ALLOWED_SIGNATURE_ALGORITHM, Constants.ALLOWED_TOKEN_TYPE, payload, m_rsaParameters );
 
 			Assertions.ExceptionStemsFrom<ArgumentException>(
 				() => m_validator.Validate( jwt )

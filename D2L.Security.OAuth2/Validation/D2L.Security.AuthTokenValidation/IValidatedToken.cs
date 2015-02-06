@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace D2L.Security.AuthTokenValidation.JwtValidation {
-
+namespace D2L.Security.AuthTokenValidation {
+	
 	/// <summary>
 	/// A token which can be trusted to have been validated
 	/// </summary>
-	interface IValidatedJwt {
+	public interface IValidatedToken {
 		IEnumerable<Claim> Claims { get; }
 
 		/// <summary>

@@ -23,12 +23,12 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 				write.Write( formContents );
 			}
 
-			WebResponse response = request.GetResponse();
+			using( WebResponse response = request.GetResponse() ) {
+				DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( AuthServerResponse ) );
+				AuthServerResponse authServerResponse = (AuthServerResponse)serializer.ReadObject( response.GetResponseStream() );
 
-			DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( AuthServerResponse ) );
-			AuthServerResponse authServerResponse = (AuthServerResponse)serializer.ReadObject( response.GetResponseStream() );
-
-			return authServerResponse.access_token;
+				return authServerResponse.access_token;
+			}
 		}
 
 		[DataContract]
