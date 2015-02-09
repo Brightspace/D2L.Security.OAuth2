@@ -7,7 +7,7 @@ using System.Text;
 namespace D2L.Security.BrowserAuthTokens.Invocation {
 
 	/// <summary>
-	/// Configures a provision invocation
+	/// Configures an access token provision invocation
 	/// </summary>
 	internal sealed class InvocationParameters {
 
@@ -41,19 +41,19 @@ namespace D2L.Security.BrowserAuthTokens.Invocation {
 		}
 
 		internal string GrantType {
-			get { return Constants.ASSERTION_GRANT_TYPE; }
+			get { return Constants.AssertionGrant.GRANT_TYPE; }
 		}
 
 		internal string Assertion {
 			get { return m_assertionToken; }
 		}
 
-		private string ToBase64( string me ) {
+		private static string ToBase64( string me ) {
 			byte[] plainTextBytes = Encoding.UTF8.GetBytes( me );
 			return Convert.ToBase64String( plainTextBytes );
 		}
 
-		private string SerializeScopes( IEnumerable<string> scopes ) {
+		private static string SerializeScopes( IEnumerable<string> scopes ) {
 			const string separator = " ";
 
 			if( !scopes.Any() ) {

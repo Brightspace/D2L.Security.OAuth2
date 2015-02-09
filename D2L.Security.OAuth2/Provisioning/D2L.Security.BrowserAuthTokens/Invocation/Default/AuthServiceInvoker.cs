@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace D2L.Security.BrowserAuthTokens.Invocation.Default {
@@ -21,15 +18,9 @@ namespace D2L.Security.BrowserAuthTokens.Invocation.Default {
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
 
-			string clientId = "lms.dev.d2l";
-			string clientSecret = "lms_secret";
-
 			request.Headers["Authorization"] = invocationParams.Authorization;
 
-			string formContents = "grant_type=" + invocationParams.GrantType;
-			formContents += "&assertion=" + invocationParams.Assertion;
-
-			formContents += "&scope=" + invocationParams.Scope;
+			string formContents = BuildFormContents( invocationParams );
 
 			using( StreamWriter writer = new StreamWriter( request.GetRequestStream() ) ) {
 				writer.Write( formContents );
@@ -42,6 +33,14 @@ namespace D2L.Security.BrowserAuthTokens.Invocation.Default {
 					}
 				}
 			}
-		}		
+		}
+		
+		private static string BuildFormContents( InvocationParameters invocationParams ) {
+			string formContents = "grant_type=" + invocationParams.GrantType;
+			formContents += "&assertion=" + invocationParams.Assertion;
+			formContents += "&scope=" + invocationParams.Scope;
+
+			return formContents;
+		}
 	}
 }

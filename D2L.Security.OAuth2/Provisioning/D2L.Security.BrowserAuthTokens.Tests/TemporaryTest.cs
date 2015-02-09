@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using D2L.Security.BrowserAuthTokens.Default;
+using D2L.Security.BrowserAuthTokens.Invocation;
 using D2L.Security.BrowserAuthTokens.Tests.Utilities;
 using NUnit.Framework;
 
@@ -23,13 +24,17 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 			string[] scopeFragments = new string[] { 
 				"https://api.brightspace.com/auth/lores.manage" 
 			};
-			string scopes = SerializationHelper.SerializeScopes( scopeFragments );
+			//string scopes = SerializationHelper.SerializeScopes( scopeFragments );
 
 			IAuthTokenProvider tokenProvider = AuthTokenProviderFactory.Create(
 				certificate,
 				TestUris.AUTH_TOKEN_PROVISIONING_URI
 				);
 
+			IAuthServiceInvoker invoker = AuthServiceInvokerFactory.Create( TestUris.AUTH_TOKEN_PROVISIONING_URI );
+
+			string clientId = "lms.dev.d2l";
+			string clientSecret = "lms_secret";
 		}
 	}
 }
