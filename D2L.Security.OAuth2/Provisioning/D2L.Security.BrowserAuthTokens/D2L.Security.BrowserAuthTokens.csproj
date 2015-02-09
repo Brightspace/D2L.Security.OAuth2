@@ -55,16 +55,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="DateTimeExtensions.cs" />
-    <Compile Include="Default\Serialization\GrantJwtHeader.cs" />
-    <Compile Include="Default\AuthServerInvoker.cs" />
     <Compile Include="Default\AuthTokenProvider.cs" />
     <Compile Include="AuthTokenProviderFactory.cs" />
-    <Compile Include="Default\Serialization\GrantJwtPayload.cs" />
-    <Compile Include="Default\Serialization\SerializationHelper.cs" />
+    <Compile Include="Default\SerializationHelper.cs" />
     <Compile Include="FriendAssemblies.cs" />
-    <Compile Include="IAssertionGrantSigner.cs" />
     <Compile Include="IAuthTokenProvider.cs" />
+    <Compile Include="Invocation\Default\AuthServiceInvoker.cs" />
+    <Compile Include="Invocation\IAuthServiceInvoker.cs" />
+    <Compile Include="Invocation\InvocationParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,59 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace D2L.Security.BrowserAuthTokens.Default {
-	public sealed class AuthTokenProvider : IAuthTokenProvider {
+	internal sealed class AuthTokenProvider : IAuthTokenProvider {
 
-		private const string JWT_HEADER = "{\"alg\":\"RS256\",\"typ\":\"JWT\"}";
-		
-		private readonly TimeSpan ASSERTION_GRANT_JWT_LIFETIME = TimeSpan.FromMinutes( 30 );
-		private readonly TimeSpan NOT_BEFORE_PADDING = TimeSpan.FromMinutes( 5 );
+		// Used to sign assertion grant jwts
+		private readonly SigningCredentials m_signingCredentials;
 
-		string IAuthTokenProvider.GetTokenForUser( string tenantId, long userId, string xsrfToken, long duration ) {
-			throw new NotImplementedException();
+		internal AuthTokenProvider( X509Certificate2 signingCertificate ) {
+			m_signingCredentials = new X509SigningCredentials( signingCertificate );
 		}
 
-		//string IAuthTokenProvider.GetTokenForUser( string tenantId, long userId, string xsrfToken, long duration ) {
-			
-		//	StringBuilder builder = new StringBuilder();
-		//	builder.Append( "{" );
-
-		//	builder.Append( "}" );
-		//	string payload = String.Format( "{{\"uid\":{0},\"tid\":\"{1}\",\"xt\":\"{2}\"}}", userId, tenantId, xsrfToken );
-
-		//	return String.Format( "{0}.{1}.trustme", Base64Url(JWT_HEADER), Base64Url(payload) );
-		//}
-
-		//private void WriteTenantId( StringBuilder builder, string tenantId ) {
-		//	builder.Append( "\"tenantid\":\"" );
-		//	builder.Append( tenantId );
-		//	builder.Append( "\"" );
-		//}
-
-		//private void WriteUserId( StringBuilder builder, long userId ) {
-		//	builder.Append( "\"sub\":" );
-		//	builder.Append( userId );
-		//}
-
-		//private void WriteExpiry( StringBuilder builder, DateTime now ) {
-		//	DateTime expiry = now + ASSERTION_GRANT_JWT_LIFETIME;
-
-		//	builder.Append( "\"exp\":" );
-		//	builder.Append( expiry.GetSecondsSinceUnixEpoch() );
-		//}
-
-		//private void WriteNotBefore( StringBuilder builder, DateTime now ) {
-		//	DateTime notBefore = now - NOT_BEFORE_PADDING;
-
-		//	builder.Append( "\"nbf\":" );
-		//	builder.Append( notBefore.GetSecondsSinceUnixEpoch() );
-		//}
-
-		//private void WriteComma( StringBuilder builder ) {
-		//	builder.Append( ',' );
-		//}
-
-
+		Task<string> IAuthTokenProvider.GetTokenForUserAsync( string tenantId, long userId, string xsrfToken ) {
+			throw new NotImplementedException();
+		}
 		
+		private string MakeJwt() {
+			string userId = "dummyuserid";
+			string tenantId = "dummytenantid";
+			string tenantUrl = "dummytenanturl";
+			string xsrf = "dummyxsrf";
+
+			DateTime expiry = DateTime.UtcNow + Constants.ASSERTION_GRANT_JWT_LIFETIME;
+
+			IList<Claim> claims = new List<Claim>();
+			claims.Add( new Claim( "sub", userId ) );
+			claims.Add( new Claim( "tenantid", tenantId ) );
+			claims.Add( new Claim( "tenanturl", tenantUrl ) );
+			claims.Add( new Claim( "xt", xsrf ) );
+			
+			JwtSecurityToken jwt = new JwtSecurityToken(
+				"lms.dev.d2l",
+				"https://api.brightspace.com/auth/token",
+				claims,
+				null,
+				expiry,
+				m_signingCredentials
+				);
+
+			JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+			return handler.WriteToken( jwt );
+		}
 	}
 }
