@@ -1,7 +1,6 @@
 bin
 obj
 packages
-*.exe
 *.suo
 *.user
 *.nupkg
