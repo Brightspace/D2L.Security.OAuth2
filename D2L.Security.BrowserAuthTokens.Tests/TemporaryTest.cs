@@ -32,7 +32,6 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 			X509Certificate2 certificate = new X509Certificate2( certificateRawData, password );
 
 			string[] scopeFragments = new string[] { 
-				"https://api.brightspace.com/auth/lores.read", 
 				"https://api.brightspace.com/auth/lores.manage" 
 			};
 			string scopes = SerializationHelper.SerializeScopes( scopeFragments );

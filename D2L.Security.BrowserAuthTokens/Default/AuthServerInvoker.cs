@@ -12,6 +12,7 @@ using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using D2L.Security.BrowserAuthTokens.Default.Serialization;
 
 namespace D2L.Security.BrowserAuthTokens.Default {
@@ -30,12 +31,13 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
 
-			//string authorizationHeaderValue = HttpUtility.UrlEncode( clientId ) + ":" + HttpUtility.UrlEncode( clientSecret );
+			string clientId = "lms.dev.d2l";
+			string clientSecret = "lms_secret";
 
-			//string authorizationHeaderValue = "bogus";
-			//authorizationHeaderValue = authorizationHeaderValue.ToBase64();
-			//authorizationHeaderValue = "Basic " + authorizationHeaderValue;
-			//request.Headers["Authorization"] = authorizationHeaderValue;
+			string authorizationHeaderValue = WebUtility.UrlEncode( clientId ) + ":" + WebUtility.UrlEncode( clientSecret );
+			authorizationHeaderValue = authorizationHeaderValue.ToBase64();
+			authorizationHeaderValue = "Basic " + authorizationHeaderValue;
+			request.Headers["Authorization"] = authorizationHeaderValue;
 
 			string grantType = "urn:ietf:params:oauth:grant-type:jwt-bearer";
 			grantType = WebUtility.UrlEncode( grantType );
@@ -51,7 +53,11 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			}
 
 			using( WebResponse response = await request.GetResponseAsync() ) {
-				return response.ContentLength.ToString();
+				using( Stream responseStream = response.GetResponseStream() ) {
+					using( StreamReader reader = new StreamReader( responseStream ) ) {
+						return reader.ReadToEnd();
+					}
+				}
 			}
 		}
 		
