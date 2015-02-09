@@ -1,25 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
+﻿using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-using D2L.Security.AuthTokenValidation.Tests.Utilities;
 using D2L.Security.BrowserAuthTokens.Default;
-using D2L.Security.BrowserAuthTokens.Default.Serialization;
+using D2L.Security.BrowserAuthTokens.Tests.Utilities;
 using NUnit.Framework;
 
 namespace D2L.Security.BrowserAuthTokens.Tests {
 	
 	[TestFixture]
 	internal sealed class TemporaryTest {
-
-		[Test]
-		public void THROWAWAY_TEST() {
-			AuthServerInvoker.TEST();
-		}
-
+		
 		[Test]
 		public void MAKEJWT_TEST() {
 			Task t = ReadResponse();
@@ -36,13 +25,11 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 			};
 			string scopes = SerializationHelper.SerializeScopes( scopeFragments );
 
-			string grantJwt = AuthServerInvoker.MakeJwt2( certificate );
-
-			string jwt = await AuthServerInvoker.AuthenticateAndGetJwt(
-				TestUris.AUTH_TOKEN_PROVISIONING_URI,
-				grantJwt,
-				scopes
+			IAuthTokenProvider tokenProvider = AuthTokenProviderFactory.Create(
+				certificate,
+				TestUris.AUTH_TOKEN_PROVISIONING_URI
 				);
+
 		}
 	}
 }

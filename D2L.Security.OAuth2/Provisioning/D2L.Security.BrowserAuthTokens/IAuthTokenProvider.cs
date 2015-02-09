@@ -1,5 +1,14 @@
-﻿namespace D2L.Security.BrowserAuthTokens {
+﻿using System.Threading.Tasks;
+
+namespace D2L.Security.BrowserAuthTokens {
+	
 	public interface IAuthTokenProvider {
-		string GetTokenForUser( string tenantId, long userId, string xsrfToken, long duration );
+		Task<string> GetTokenForUserAsync( string tenantId, long userId, string xsrfToken );
+
+		// no xsrf
+		//Task<string> GetTokenForUserAsync( string tenantId, long userId );
+
+		// no user id, no xsrf (application to service)
+		//Task<string> GetTokenForApplicationAsync( string tenantId );
 	}
 }
