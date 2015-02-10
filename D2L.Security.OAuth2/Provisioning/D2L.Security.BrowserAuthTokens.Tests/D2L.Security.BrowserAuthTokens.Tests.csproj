@@ -64,6 +64,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Unit\Invocation\InvocationParametersTests.cs" />
     <Compile Include="Utilities\Assertions.cs" />
     <Compile Include="Utilities\TestCredentials.cs" />
     <Compile Include="Utilities\TestUris.cs" />
