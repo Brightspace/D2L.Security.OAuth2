@@ -12,30 +12,24 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 		
 		[Test]
 		public void ASSERTION_GRANT_TEMPORARY_TEST() {
-			//string jwt = AsyncHelper.RunSync<string>( () => ReadResponse() );
 			string accessToken = ReadResponse().Result;
 		}
 
 		private async Task<string> ReadResponse() {
-			string password = "lms_dev_keypair";
-			byte[] certificateRawData = Resources.lms_dev_d2l;
-			X509Certificate2 certificate = new X509Certificate2( certificateRawData, password );
-
-			string[] scopeFragments = new string[] { 
-				"https://api.brightspace.com/auth/lores.manage" 
-			};
+			X509Certificate2 certificate = new X509Certificate2(
+				Resources.lms_dev_d2l, 
+				Resources.lms_dev_d2l_PASSWORD 
+				);
 
 			IAuthTokenProvider tokenProvider = AuthTokenProviderFactory.Create(
 				certificate,
 				TestUris.AUTH_TOKEN_PROVISIONING_URI
 				);
 
-			string clientId = "lms.dev.d2l";
-			string clientSecret = "lms_secret";
 			ProvisioningParameters provisioningParams = new ProvisioningParameters(
-				clientId,
-				clientSecret,
-				scopeFragments,
+				TestCredentials.LMS.CLIENT_ID,
+				TestCredentials.LMS.CLIENT_SECRET,
+				new string[] { TestCredentials.LOReSScopes.MANAGE },
 				"dummytenantID",
 				"dummytenantURL"
 				);

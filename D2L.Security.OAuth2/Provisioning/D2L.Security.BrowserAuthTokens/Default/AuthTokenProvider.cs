@@ -27,7 +27,7 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 
 			JwtSecurityToken jwt = new JwtSecurityToken(
 				provisioningParams.ClientId,
-				"https://api.brightspace.com/auth/token",
+				Constants.AssertionGrant.AUDIENCE,
 				claims,
 				null,
 				provisioningParams.Expiry,
@@ -38,7 +38,6 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			string assertionToken = handler.WriteToken( jwt );
 
 			InvocationParameters invocationParams = provisioningParams.ToInvocationParameters( assertionToken );
-
 			string accessToken = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
 
 			return accessToken;
@@ -60,33 +59,6 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			if( value != null ) {
 				claims.Add( new Claim( type, value ) );
 			}
-		}
-
-		private string MakeJwt() {
-			string userId = "dummyuserid";
-			string tenantId = "dummytenantid";
-			string tenantUrl = "dummytenanturl";
-			string xsrf = "dummyxsrf";
-
-			DateTime expiry = DateTime.UtcNow + Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME;
-
-			IList<Claim> claims = new List<Claim>();
-			claims.Add( new Claim( "sub", userId ) );
-			claims.Add( new Claim( "tenantid", tenantId ) );
-			claims.Add( new Claim( "tenanturl", tenantUrl ) );
-			claims.Add( new Claim( "xt", xsrf ) );
-			
-			JwtSecurityToken jwt = new JwtSecurityToken(
-				"lms.dev.d2l",
-				"https://api.brightspace.com/auth/token",
-				claims,
-				null,
-				expiry,
-				m_signingCredentials
-				);
-
-			JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-			return handler.WriteToken( jwt );
 		}
 	}
 }
