@@ -19,9 +19,10 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			IAuthServiceInvoker serviceInvoker
 			) {
 			m_signingCredentials = new X509SigningCredentials( signingCertificate );
+			m_serviceInvoker = serviceInvoker;
 		}
 
-		Task<string> IAuthTokenProvider.GetTokenForUserAsync( ProvisioningParameters provisioningParams ) {
+		async Task<string> IAuthTokenProvider.ProvisionAccessToken( ProvisioningParameters provisioningParams ) {
 			IEnumerable<Claim> claims = BuildClaims( provisioningParams );
 
 			JwtSecurityToken jwt = new JwtSecurityToken(
@@ -34,9 +35,13 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 				);
 
 			JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-			string serializedAssertionToken = handler.WriteToken( jwt );
+			string assertionToken = handler.WriteToken( jwt );
 
-			
+			InvocationParameters invocationParams = provisioningParams.ToInvocationParameters( assertionToken );
+
+			string accessToken = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
+
+			return accessToken;
 		}
 
 		private static IEnumerable<Claim> BuildClaims( ProvisioningParameters provisioningParams ) {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace D2L.Security.BrowserAuthTokens {
 
 	/// <summary>
-	/// Configures assertion grant token
+	/// Configures an assertion grant provisioning
 	/// </summary>
 	public sealed class ProvisioningParameters {
 
