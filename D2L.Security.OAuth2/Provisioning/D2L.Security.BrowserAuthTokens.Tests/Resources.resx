@@ -121,4 +121,8 @@
   <data name="lms_dev_d2l" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\lms.dev.d2l.pfx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="lms_dev_d2l_PASSWORD" xml:space="preserve">
+    <value>lms_dev_keypair</value>
+    <comment>The password for the lms_dev_d2l certificate</comment>
+  </data>
 </root>

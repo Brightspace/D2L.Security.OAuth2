@@ -69,5 +69,14 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to lms_dev_keypair.
+        /// </summary>
+        internal static string lms_dev_d2l_PASSWORD {
+            get {
+                return ResourceManager.GetString("lms_dev_d2l_PASSWORD", resourceCulture);
+            }
+        }
     }
 }
