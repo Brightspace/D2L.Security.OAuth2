@@ -9,7 +9,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Unit.Invocation {
 
 		[Test]
 		public void Constructor_NoScopes() {
-			InvocationParameters invocationParams = new InvocationParameters( null,	null, new string[] { },	null );
+			InvocationParameters invocationParams = new InvocationParameters( null, null, new string[] { }, null );
 			Assert.AreEqual( string.Empty, invocationParams.Scope );
 		}
 
