@@ -11,12 +11,12 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 	internal sealed class TemporaryTest {
 		
 		[Test]
-		public void MAKEJWT_TEST() {
-			Task t = ReadResponse();
-			t.Wait();
+		public void ASSERTION_GRANT_TEMPORARY_TEST() {
+			//string jwt = AsyncHelper.RunSync<string>( () => ReadResponse() );
+			string accessToken = ReadResponse().Result;
 		}
 
-		private async Task ReadResponse() {
+		private async Task<string> ReadResponse() {
 			string password = "lms_dev_keypair";
 			byte[] certificateRawData = Resources.lms_dev_d2l;
 			X509Certificate2 certificate = new X509Certificate2( certificateRawData, password );
@@ -24,17 +24,25 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 			string[] scopeFragments = new string[] { 
 				"https://api.brightspace.com/auth/lores.manage" 
 			};
-			//string scopes = SerializationHelper.SerializeScopes( scopeFragments );
 
 			IAuthTokenProvider tokenProvider = AuthTokenProviderFactory.Create(
 				certificate,
 				TestUris.AUTH_TOKEN_PROVISIONING_URI
 				);
 
-			IAuthServiceInvoker invoker = AuthServiceInvokerFactory.Create( TestUris.AUTH_TOKEN_PROVISIONING_URI );
-
 			string clientId = "lms.dev.d2l";
 			string clientSecret = "lms_secret";
+			ProvisioningParameters provisioningParams = new ProvisioningParameters(
+				clientId,
+				clientSecret,
+				scopeFragments,
+				"dummytenantID",
+				"dummytenantURL"
+				);
+
+			provisioningParams.UserId = "1337";
+
+			return await tokenProvider.ProvisionAccessToken( provisioningParams );
 		}
 	}
 }

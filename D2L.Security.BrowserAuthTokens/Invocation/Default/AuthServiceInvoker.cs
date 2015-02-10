@@ -13,7 +13,7 @@ namespace D2L.Security.BrowserAuthTokens.Invocation.Default {
 			m_tokenProvisioningEndpoint = tokenProvisioningEndpoint;
 		}
 
-		async Task<string> IAuthServiceInvoker.ProvisionAccessToken( InvocationParameters invocationParams ) {
+		async Task<string> IAuthServiceInvoker.ProvisionAccessTokenAsync( InvocationParameters invocationParams ) {
 			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( m_tokenProvisioningEndpoint );
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
