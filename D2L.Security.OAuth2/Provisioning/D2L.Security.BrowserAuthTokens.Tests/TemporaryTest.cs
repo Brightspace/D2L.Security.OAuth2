@@ -12,10 +12,10 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 		
 		[Test]
 		public void ASSERTION_GRANT_TEMPORARY_TEST() {
-			string accessToken = ReadResponse().Result;
+			IAccessToken accessToken = ReadResponse().Result;
 		}
 
-		private async Task<string> ReadResponse() {
+		private async Task<IAccessToken> ReadResponse() {
 			X509Certificate2 certificate = new X509Certificate2(
 				Resources.lms_dev_d2l, 
 				Resources.lms_dev_d2l_PASSWORD 
@@ -36,7 +36,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests {
 
 			provisioningParams.UserId = "1337";
 
-			return await tokenProvider.ProvisionAccessToken( provisioningParams );
+			return await tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
 		}
 	}
 }

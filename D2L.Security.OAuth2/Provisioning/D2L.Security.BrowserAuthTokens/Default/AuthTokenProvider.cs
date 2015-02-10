@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.BrowserAuthTokens.Invocation;
 
@@ -22,7 +21,7 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			m_serviceInvoker = serviceInvoker;
 		}
 
-		async Task<string> IAuthTokenProvider.ProvisionAccessToken( ProvisioningParameters provisioningParams ) {
+		async Task<IAccessToken> IAuthTokenProvider.ProvisionAccessTokenAsync( ProvisioningParameters provisioningParams ) {
 			IEnumerable<Claim> claims = BuildClaims( provisioningParams );
 
 			JwtSecurityToken jwt = new JwtSecurityToken(
@@ -38,7 +37,9 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			string assertionToken = handler.WriteToken( jwt );
 
 			InvocationParameters invocationParams = provisioningParams.ToInvocationParameters( assertionToken );
-			string accessToken = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
+			string assertionGrantResponse = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
+
+			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
 
 			return accessToken;
 		}

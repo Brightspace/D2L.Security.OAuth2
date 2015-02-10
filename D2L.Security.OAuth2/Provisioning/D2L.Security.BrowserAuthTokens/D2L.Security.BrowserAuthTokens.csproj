@@ -59,9 +59,12 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="DateTimeExtensions.cs" />
+    <Compile Include="Default\AccessToken.cs" />
     <Compile Include="Default\AuthTokenProvider.cs" />
     <Compile Include="AuthTokenProviderFactory.cs" />
+    <Compile Include="Default\SerializationHelper.cs" />
     <Compile Include="FriendAssemblies.cs" />
+    <Compile Include="IAccessToken.cs" />
     <Compile Include="IAuthTokenProvider.cs" />
     <Compile Include="Invocation\AuthServiceInvokerFactory.cs" />
     <Compile Include="Invocation\Default\AuthServiceInvoker.cs" />
