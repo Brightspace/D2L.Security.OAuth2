@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
-using System.Security.Cryptography.X509Certificates;
-using D2L.Security.BrowserAuthTokens.Default;
-using D2L.Security.BrowserAuthTokens.Invocation;
 using D2L.Security.BrowserAuthTokens.Tests.Utilities;
 using NUnit.Framework;
 
@@ -34,14 +28,71 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 				tenantId,
 				tenantUrl
 				);
-
 			provisioningParams.UserId = userId;
 			provisioningParams.Xsrf = xsrf;
 
 			Task<IAccessToken> task = m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
-			IAccessToken accessToken = task.Result;
+			IAccessToken serializedAccessToken = task.Result;
 
+			JwtSecurityToken token = new JwtSecurityToken( serializedAccessToken.Token );
 
+			token.AssertHasClaim( Constants.Claims.XSRF, xsrf );
+			token.AssertHasClaim( Constants.Claims.USER, userId );
+			token.AssertHasClaim( Constants.Claims.TENANT_URL, tenantUrl );
+			token.AssertHasClaim( Constants.Claims.TENANT_ID, tenantId );
+		}
+
+		[Explicit( "Delete if Auth server should always expect the sub (user id) claim" )]
+		[Test]
+		public void IAuthTokenProvider_ProvisionAccessTokenAsync_NoUserId_Success() {
+			string tenantId = "smTenant";
+			string tenantUrl = "smTenantUrl";
+			string xsrf = "smXsrf";
+
+			ProvisioningParameters provisioningParams = new ProvisioningParameters(
+				TestCredentials.LMS.CLIENT_ID,
+				TestCredentials.LMS.CLIENT_SECRET,
+				new string[] { TestCredentials.LOReSScopes.MANAGE },
+				tenantId,
+				tenantUrl
+				);
+			provisioningParams.Xsrf = xsrf;
+
+			Task<IAccessToken> task = m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
+			IAccessToken serializedAccessToken = task.Result;
+
+			JwtSecurityToken token = new JwtSecurityToken( serializedAccessToken.Token );
+
+			token.AssertDoesNotHaveClaim( Constants.Claims.USER );
+			token.AssertHasClaim( Constants.Claims.XSRF, xsrf );
+			token.AssertHasClaim( Constants.Claims.TENANT_URL, tenantUrl );
+			token.AssertHasClaim( Constants.Claims.TENANT_ID, tenantId );
+		}
+
+		[Test]
+		public void IAuthTokenProvider_ProvisionAccessTokenAsync_NoXsrf_Success() {
+			string tenantId = "smTenant";
+			string tenantUrl = "smTenantUrl";
+			string userId = "smUser";
+
+			ProvisioningParameters provisioningParams = new ProvisioningParameters(
+				TestCredentials.LMS.CLIENT_ID,
+				TestCredentials.LMS.CLIENT_SECRET,
+				new string[] { TestCredentials.LOReSScopes.MANAGE },
+				tenantId,
+				tenantUrl
+				);
+			provisioningParams.UserId = userId;
+
+			Task<IAccessToken> task = m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
+			IAccessToken serializedAccessToken = task.Result;
+
+			JwtSecurityToken token = new JwtSecurityToken( serializedAccessToken.Token );
+
+			token.AssertDoesNotHaveClaim( Constants.Claims.XSRF );
+			token.AssertHasClaim( Constants.Claims.USER, userId );
+			token.AssertHasClaim( Constants.Claims.TENANT_URL, tenantUrl );
+			token.AssertHasClaim( Constants.Claims.TENANT_ID, tenantId );
 		}
 	}
 }
