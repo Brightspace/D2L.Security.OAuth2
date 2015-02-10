@@ -7,6 +7,6 @@ namespace D2L.Security.BrowserAuthTokens.Invocation {
 	/// </summary>
 	interface IAuthServiceInvoker {
 
-		Task<string> ProvisionAccessToken( InvocationParameters invocationParams );
+		Task<string> ProvisionAccessTokenAsync( InvocationParameters invocationParams );
 	}
 }

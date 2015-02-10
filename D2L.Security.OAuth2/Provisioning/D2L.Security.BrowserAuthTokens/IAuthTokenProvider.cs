@@ -3,7 +3,7 @@
 namespace D2L.Security.BrowserAuthTokens {
 	
 	public interface IAuthTokenProvider {
-		Task<string> GetTokenForUserAsync( ProvisioningParameters provisioningParams );
+		Task<string> ProvisionAccessToken( ProvisioningParameters provisioningParams );
 
 		// no xsrf
 		//Task<string> GetTokenForUserAsync( string tenantId, long userId );
