@@ -14,6 +14,30 @@ namespace D2L.Security.BrowserAuthTokens.Invocation.Default {
 		}
 
 		async Task<string> IAuthServiceInvoker.ProvisionAccessTokenAsync( InvocationParameters invocationParams ) {
+			HttpWebRequest request = BuildRequest( invocationParams );
+
+			using( WebResponse response = await request.GetResponseAsync() ) {
+				using( Stream responseStream = response.GetResponseStream() ) {
+					using( StreamReader reader = new StreamReader( responseStream ) ) {
+						return reader.ReadToEnd();
+					}
+				}
+			}
+		}
+
+		string IAuthServiceInvoker.ProvisionAccessToken( InvocationParameters invocationParams ) {
+			HttpWebRequest request = BuildRequest( invocationParams );
+
+			using( WebResponse response = request.GetResponse() ) {
+				using( Stream responseStream = response.GetResponseStream() ) {
+					using( StreamReader reader = new StreamReader( responseStream ) ) {
+						return reader.ReadToEnd();
+					}
+				}
+			}
+		}
+
+		private HttpWebRequest BuildRequest( InvocationParameters invocationParams ) {
 			HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create( m_tokenProvisioningEndpoint );
 			request.Method = "POST";
 			request.ContentType = "application/x-www-form-urlencoded";
@@ -26,15 +50,9 @@ namespace D2L.Security.BrowserAuthTokens.Invocation.Default {
 				writer.Write( formContents );
 			}
 
-			using( WebResponse response = await request.GetResponseAsync() ) {
-				using( Stream responseStream = response.GetResponseStream() ) {
-					using( StreamReader reader = new StreamReader( responseStream ) ) {
-						return reader.ReadToEnd();
-					}
-				}
-			}
+			return request;
 		}
-		
+
 		private static string BuildFormContents( InvocationParameters invocationParams ) {
 			string formContents = "grant_type=" + invocationParams.GrantType;
 			formContents += "&assertion=" + invocationParams.Assertion;

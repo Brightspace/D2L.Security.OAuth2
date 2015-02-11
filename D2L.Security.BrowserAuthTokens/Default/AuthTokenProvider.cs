@@ -22,6 +22,24 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 		}
 
 		async Task<IAccessToken> IAuthTokenProvider.ProvisionAccessTokenAsync( ProvisioningParameters provisioningParams ) {
+			InvocationParameters invocationParams = CreateInvocationParams( provisioningParams );
+			string assertionGrantResponse = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
+
+			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
+
+			return accessToken;
+		}
+
+		IAccessToken IAuthTokenProvider.ProvisionAccessToken( ProvisioningParameters provisioningParams ) {
+			InvocationParameters invocationParams = CreateInvocationParams( provisioningParams );
+			string assertionGrantResponse = m_serviceInvoker.ProvisionAccessToken( invocationParams );
+
+			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
+
+			return accessToken;
+		}
+
+		private InvocationParameters CreateInvocationParams( ProvisioningParameters provisioningParams ) {
 			IEnumerable<Claim> claims = BuildClaims( provisioningParams );
 
 			JwtSecurityToken jwt = new JwtSecurityToken(
@@ -37,11 +55,8 @@ namespace D2L.Security.BrowserAuthTokens.Default {
 			string assertionToken = handler.WriteToken( jwt );
 
 			InvocationParameters invocationParams = provisioningParams.ToInvocationParameters( assertionToken );
-			string assertionGrantResponse = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
 
-			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
-
-			return accessToken;
+			return invocationParams;
 		}
 
 		private static IEnumerable<Claim> BuildClaims( ProvisioningParameters provisioningParams ) {
