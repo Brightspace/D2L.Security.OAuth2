@@ -198,7 +198,6 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		}
 
 		private void InitializeValidator() {
-			RsaKeyIdentifierClause clause = new RsaKeyIdentifierClause( m_cryptoServiceProvider );
 			RsaSecurityToken securityToken = new RsaSecurityToken( m_cryptoServiceProvider );
 
 			IPublicKey publicKey = new PublicKey( securityToken, VALID_ISSUER );
