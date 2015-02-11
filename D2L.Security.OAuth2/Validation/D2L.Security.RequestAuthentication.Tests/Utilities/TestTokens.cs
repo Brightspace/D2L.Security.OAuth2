@@ -3,7 +3,7 @@
 	internal static class TestTokens {
 
 		internal static class ValidWithXsrfOneScope {
-			internal const long Sub = 169;
+			internal const string Sub = "169";
 			internal const string Tenantid = "00000000-0000-0000-0000-000000000000";
 			internal const string Tenanturl = "http://lores.d2l";
 			internal const string Xt = "abc";
@@ -27,7 +27,7 @@
 		}
 
 		internal static class ValidNoXsrfOneScope {
-			internal const long Sub = 169;
+			internal const string Sub = "169";
 			internal const string Tenantid = "00000000-0000-0000-0000-000000000000";
 			internal const string Tenanturl = "http://lores.d2l";
 			internal const long Exp = 1621858476;

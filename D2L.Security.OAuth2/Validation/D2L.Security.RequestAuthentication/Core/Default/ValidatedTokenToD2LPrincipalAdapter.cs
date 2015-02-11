@@ -6,7 +6,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 	internal sealed class ValidatedTokenToD2LPrincipalAdapter : ID2LPrincipal {
 
 		private readonly DateTime m_expiry;
-		private readonly long? m_userId;
+		private readonly string m_userId;
 		private readonly string m_tenantId;
 		private readonly string m_tenantUrl;
 		private readonly IEnumerable<string> m_scopes;
@@ -22,7 +22,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			m_scopes = validatedToken.GetScopes();
 
 			m_userId = validatedToken.GetUserId();
-			m_type = m_userId.HasValue ? PrincipalType.User : PrincipalType.Service;
+			m_type = string.IsNullOrEmpty( m_userId ) ? PrincipalType.Service : PrincipalType.User;
 
 			m_xsrf = validatedToken.GetXsrfToken();
 			m_accessToken = accessToken;
@@ -32,7 +32,7 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 			get { return m_expiry; }
 		}
 
-		long? ID2LPrincipal.UserId {
+		string ID2LPrincipal.UserId {
 			get { return m_userId; }
 		}
 		

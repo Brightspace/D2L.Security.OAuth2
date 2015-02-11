@@ -76,19 +76,12 @@ namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
 
 		[Test]
 		public void GetUserId_Success() {
-			long expected = 1337;
+			string expected = "userid-1337";
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.USER_ID, expected.ToString() );
 			Assert.AreEqual( expected, validatedTokenMock.Object.GetUserId() );
 		}
-
-		[Test]
-		public void GetUserId_NonNumeric_ReturnsNull() {
-			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			MockClaim( validatedTokenMock, Constants.Claims.USER_ID, "nonnumeric_userid" );
-			Assert.IsNull( validatedTokenMock.Object.GetUserId() );
-		}
-
+		
 		[Test]
 		public void GetUserId_None_ReturnsNull() {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
