@@ -7,7 +7,7 @@
 		<authors>$author$</authors>
 		<owners>$author$</owners>
 
-		<projectUrl>https://git.dev.d2l/projects/AUTH/repos/auth-browser-tokens/browse</projectUrl>
+		<projectUrl>https://git.dev.d2l/projects/AUTH/repos/auth-token-provisioning/browse</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<copyright>Copyright 2015</copyright>
