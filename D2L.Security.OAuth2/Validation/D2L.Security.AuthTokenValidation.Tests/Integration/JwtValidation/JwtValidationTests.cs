@@ -15,7 +15,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 	internal sealed class JwtValidation {
 
 		private const string SCOPE = TestCredentials.LOReSScopes.MANAGE;
-		private const string VALID_ISSUER = "https://api.d2l.com/auth";
+		private const string VALID_ISSUER = "some_valid_issuer";
 
 		private RSACryptoServiceProvider m_cryptoServiceProvider;
 		private RSAParameters m_rsaParameters;
