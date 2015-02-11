@@ -6,7 +6,5 @@ namespace D2L.Security.RequestAuthentication.Tests.Utilities {
 		private static readonly Uri AUTH_SERVER_SITE = new Uri( "https://phwinsl01.proddev.d2l:44333" );
 
 		internal static readonly Uri TOKEN_VERIFICATION_AUTHORITY_URI = new Uri( AUTH_SERVER_SITE, "core/" );
-		
-		internal static readonly string ISSUER_URL = "https://api.d2l.com/auth";
 	}
 }
