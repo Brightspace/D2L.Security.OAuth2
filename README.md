@@ -1,4 +1,4 @@
-D2L.Security.BrowserAuthTokens
+D2L.Security.AuthTokenProvisioning
 ==============================
 
 This library works with the auth server to get a browser auth token for a given user in a given tenant, etc.
