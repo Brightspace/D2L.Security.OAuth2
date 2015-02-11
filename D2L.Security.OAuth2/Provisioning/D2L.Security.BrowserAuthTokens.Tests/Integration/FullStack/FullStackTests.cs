@@ -1,5 +1,4 @@
 ﻿using System.IdentityModel.Tokens;
-using System.Threading.Tasks;
 using D2L.Security.BrowserAuthTokens.Tests.Utilities;
 using NUnit.Framework;
 
@@ -15,7 +14,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 				);
 
 		[Test]
-		public void IAuthTokenProvider_ProvisionAccessTokenAsync_Success() {
+		public async void IAuthTokenProvider_ProvisionAccessTokenAsync_Success() {
 			string userId = "smUser";
 			string tenantId = "smTenant";
 			string tenantUrl = "smTenantUrl";
@@ -31,8 +30,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 			provisioningParams.UserId = userId;
 			provisioningParams.Xsrf = xsrf;
 
-			Task<IAccessToken> task = m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
-			IAccessToken serializedAccessToken = task.Result;
+			IAccessToken serializedAccessToken = await m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
 
 			JwtSecurityToken token = new JwtSecurityToken( serializedAccessToken.Token );
 
@@ -44,7 +42,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 
 		[Explicit( "Remove Explicit attribute once auth server supports optional sub claims" )]
 		[Test]
-		public void IAuthTokenProvider_ProvisionAccessTokenAsync_NoUserId_Success() {
+		public async void IAuthTokenProvider_ProvisionAccessTokenAsync_NoUserId_Success() {
 			string tenantId = "smTenant";
 			string tenantUrl = "smTenantUrl";
 			string xsrf = "smXsrf";
@@ -58,8 +56,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 				);
 			provisioningParams.Xsrf = xsrf;
 
-			Task<IAccessToken> task = m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
-			IAccessToken serializedAccessToken = task.Result;
+			IAccessToken serializedAccessToken = await m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
 
 			JwtSecurityToken token = new JwtSecurityToken( serializedAccessToken.Token );
 
@@ -70,7 +67,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 		}
 
 		[Test]
-		public void IAuthTokenProvider_ProvisionAccessTokenAsync_NoXsrf_Success() {
+		public async void IAuthTokenProvider_ProvisionAccessTokenAsync_NoXsrf_Success() {
 			string tenantId = "smTenant";
 			string tenantUrl = "smTenantUrl";
 			string userId = "smUser";
@@ -84,8 +81,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 				);
 			provisioningParams.UserId = userId;
 
-			Task<IAccessToken> task = m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
-			IAccessToken serializedAccessToken = task.Result;
+			IAccessToken serializedAccessToken = await m_tokenProvider.ProvisionAccessTokenAsync( provisioningParams );
 
 			JwtSecurityToken token = new JwtSecurityToken( serializedAccessToken.Token );
 
