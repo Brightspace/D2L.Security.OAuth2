@@ -42,7 +42,7 @@ namespace D2L.Security.BrowserAuthTokens.Tests.Integration.FullStack {
 			token.AssertHasClaim( Constants.Claims.TENANT_ID, tenantId );
 		}
 
-		[Explicit( "Delete if Auth server should always expect the sub (user id) claim" )]
+		[Explicit( "Remove Explicit attribute once auth server supports optional sub claims" )]
 		[Test]
 		public void IAuthTokenProvider_ProvisionAccessTokenAsync_NoUserId_Success() {
 			string tenantId = "smTenant";
