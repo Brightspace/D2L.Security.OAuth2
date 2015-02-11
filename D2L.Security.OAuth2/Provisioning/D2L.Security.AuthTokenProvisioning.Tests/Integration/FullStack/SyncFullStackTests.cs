@@ -1,4 +1,6 @@
-﻿using System.IdentityModel.Tokens;
+﻿using System;
+using System.IdentityModel.Tokens;
+using System.Net;
 using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
 using NUnit.Framework;
 
@@ -89,6 +91,16 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Integration.FullStack {
 			token.AssertHasClaim( Constants.Claims.USER, userId );
 			token.AssertHasClaim( Constants.Claims.TENANT_URL, tenantUrl );
 			token.AssertHasClaim( Constants.Claims.TENANT_ID, tenantId );
+		}
+
+		[Test]
+		public void IAuthTokenProvider_ProvisionAccessToken_InvalidServerUri_Throws() {
+			IAuthTokenProvider tokenProvider = AuthTokenProviderFactory.Create(
+				TestCredentials.LMS.CERTIFICATE,
+				new Uri( "http://somebogusserver.d2l" )
+				);
+			ProvisioningParameters provisioningParams = TestParameters.MakeValidProvisioningParams();
+			Assert.Throws<WebException>( () => tokenProvider.ProvisionAccessToken( provisioningParams ) );
 		}
 	}
 }

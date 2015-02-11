@@ -68,6 +68,7 @@
     <Compile Include="Unit\Invocation\InvocationParametersTests.cs" />
     <Compile Include="Utilities\Assertions.cs" />
     <Compile Include="Utilities\TestCredentials.cs" />
+    <Compile Include="Utilities\TestParameters.cs" />
     <Compile Include="Utilities\TestUris.cs" />
   </ItemGroup>
   <ItemGroup>
