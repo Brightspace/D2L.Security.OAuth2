@@ -29,6 +29,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 			// and a service which will provide keys based on them
 			m_cryptoServiceProvider = new RSACryptoServiceProvider();
 			m_cryptoServiceProvider.ImportParameters( m_rsaParameters );
+			m_cryptoServiceProvider.PersistKeyInCsp = false;
 
 			InitializeValidator();
 		}

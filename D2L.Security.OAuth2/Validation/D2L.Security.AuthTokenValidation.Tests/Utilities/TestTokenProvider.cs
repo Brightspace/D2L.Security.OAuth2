@@ -12,6 +12,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 
 			byte[] signature;
 			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider() ) {
+				rsaService.PersistKeyInCsp = false;
 				rsaService.ImportParameters( rsaParams );
 				byte[] payloadBytes = Encoding.UTF8.GetBytes( payload );
 				string oid = CryptoConfig.MapNameToOID( "SHA256" );
