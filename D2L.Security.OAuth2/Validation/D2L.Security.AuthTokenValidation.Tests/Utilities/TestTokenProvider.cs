@@ -47,7 +47,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 			payloadBuilder.Append( scope );
 			payloadBuilder.Append( "\",\"iss\":\"" );
 			payloadBuilder.Append( issuer );
-			payloadBuilder.Append( "\",\"aud\":\"https://api.d2l.com/auth/resources\",\"exp\":" );
+			payloadBuilder.Append( "\",\"aud\":\"some_audience\",\"exp\":" );
 			payloadBuilder.Append( expiryInSeconds );
 			payloadBuilder.Append( ",\"nbf\":1421352874}" );
 
