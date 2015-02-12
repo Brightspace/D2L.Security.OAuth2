@@ -15,7 +15,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 	internal sealed class JwtValidation {
 
 		private const string SCOPE = TestCredentials.LOReSScopes.MANAGE;
-		private const string VALID_ISSUER = "https://api.d2l.com/auth";
+		private const string VALID_ISSUER = "some_valid_issuer";
 
 		private RSACryptoServiceProvider m_cryptoServiceProvider;
 		private RSAParameters m_rsaParameters;
@@ -29,6 +29,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 			// and a service which will provide keys based on them
 			m_cryptoServiceProvider = new RSACryptoServiceProvider();
 			m_cryptoServiceProvider.ImportParameters( m_rsaParameters );
+			m_cryptoServiceProvider.PersistKeyInCsp = false;
 
 			InitializeValidator();
 		}
@@ -198,7 +199,6 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
 		}
 
 		private void InitializeValidator() {
-			RsaKeyIdentifierClause clause = new RsaKeyIdentifierClause( m_cryptoServiceProvider );
 			RsaSecurityToken securityToken = new RsaSecurityToken( m_cryptoServiceProvider );
 
 			IPublicKey publicKey = new PublicKey( securityToken, VALID_ISSUER );

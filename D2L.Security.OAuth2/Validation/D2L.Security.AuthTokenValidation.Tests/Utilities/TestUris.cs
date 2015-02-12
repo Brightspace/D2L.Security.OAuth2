@@ -7,7 +7,5 @@ namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
 
 		internal static readonly Uri AUTH_TOKEN_PROVISIONING_URI = new Uri( AUTH_SERVER_SITE, "core/connect/token/" );
 		internal static readonly Uri TOKEN_VERIFICATION_AUTHORITY_URI = new Uri( AUTH_SERVER_SITE, "core/" );
-
-		internal static readonly string ISSUER_URL = "https://api.brightspace.com/auth";
 	}
 }
