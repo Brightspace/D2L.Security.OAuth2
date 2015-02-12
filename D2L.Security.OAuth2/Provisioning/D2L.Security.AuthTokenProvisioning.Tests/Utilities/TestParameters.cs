@@ -1,4 +1,5 @@
 ﻿namespace D2L.Security.AuthTokenProvisioning.Tests.Utilities {
+	
 	internal static class TestParameters {
 		
 		internal static ProvisioningParameters MakeValidProvisioningParams() {
