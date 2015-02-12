@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace D2L.Security.AuthTokenProvisioning.Invocation.Default {
@@ -54,11 +55,16 @@ namespace D2L.Security.AuthTokenProvisioning.Invocation.Default {
 		}
 
 		private static string BuildFormContents( InvocationParameters invocationParams ) {
-			string formContents = "grant_type=" + invocationParams.GrantType;
-			formContents += "&assertion=" + invocationParams.Assertion;
-			formContents += "&scope=" + invocationParams.Scope;
+			StringBuilder builder = new StringBuilder( "grant_type=" );
+			builder.Append( invocationParams.GrantType );
 
-			return formContents;
+			builder.Append( "&assertion=" );
+			builder.Append( invocationParams.Assertion );
+
+			builder.Append( "&scope=" );
+			builder.Append( invocationParams.Scope );
+
+			return builder.ToString();
 		}
 	}
 }
