@@ -39,19 +39,8 @@ namespace D2L.Security.RequestAuthentication.Core.Default {
 
 		/// <param name="token">A validated token</param>
 		/// <returns>The user id. Returns null if one was not found.</returns>
-		internal static long? GetUserId( this IValidatedToken token ) {
-			string userIdString = token.GetClaimValue( Constants.Claims.USER_ID );
-
-			if( userIdString == null ) {
-				return null;
-			}
-
-			long result;
-			if( !long.TryParse( userIdString, out result ) ) {
-				return null;
-			}
-
-			return result;
+		internal static string GetUserId( this IValidatedToken token ) {
+			return token.GetClaimValue( Constants.Claims.USER_ID );
 		}
 
 		/// <param name="token">A validated token</param>
