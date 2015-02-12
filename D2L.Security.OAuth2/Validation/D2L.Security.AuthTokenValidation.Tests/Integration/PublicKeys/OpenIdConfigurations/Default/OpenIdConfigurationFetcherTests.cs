@@ -2,7 +2,6 @@
 using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations;
 using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Default;
 using D2L.Security.AuthTokenValidation.Tests.Utilities;
-using Microsoft.IdentityModel.Protocols;
 using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenValidation.Tests.Integration.PublicKeys.OpenIdConfigurations.Default {
@@ -15,8 +14,7 @@ namespace D2L.Security.AuthTokenValidation.Tests.Integration.PublicKeys.OpenIdCo
 			IOpenIdConfigurationFetcher fetcher = 
 				new OpenIdConfigurationFetcher( TestUris.TOKEN_VERIFICATION_AUTHORITY_URI );
 
-			OpenIdConnectConfiguration configuration = fetcher.Fetch();
-			Assert.AreEqual( TestUris.ISSUER_URL, configuration.Issuer );
+			Assert.IsNotNull( fetcher.Fetch() );
 		}
 
 		[Test]
