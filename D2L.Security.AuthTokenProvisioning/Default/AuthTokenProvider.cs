@@ -60,8 +60,6 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 		}
 
 		private static IEnumerable<Claim> BuildClaims( ProvisioningParameters provisioningParams ) {
-			DateTime expiry = DateTime.UtcNow + Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME;
-
 			IList<Claim> claims = new List<Claim>();
 			AddClaim( claims, Constants.Claims.USER, provisioningParams.UserId );
 			AddClaim( claims, Constants.Claims.TENANT_ID, provisioningParams.TenantId );
