@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using D2L.Security.AuthTokenProvisioning.Invocation;
 
 namespace D2L.Security.AuthTokenProvisioning {
 
@@ -58,6 +59,20 @@ namespace D2L.Security.AuthTokenProvisioning {
 
 		public DateTime Expiry {
 			get { return m_expiry; }
+		}
+
+		internal InvocationParameters ToInvocationParameters(
+			string assertionToken
+			) {
+
+			InvocationParameters result = new InvocationParameters(
+				ClientId,
+				ClientSecret,
+				Scopes,
+				assertionToken
+				);
+
+			return result;
 		}
 	}
 }

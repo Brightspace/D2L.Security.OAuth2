@@ -67,7 +67,6 @@
     <Compile Include="Invocation\InvocationParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvisioningParameters.cs" />
-    <Compile Include="ProvisioningParametersExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="D2L.Security.AuthTokenProvisioning.nuspec" />
