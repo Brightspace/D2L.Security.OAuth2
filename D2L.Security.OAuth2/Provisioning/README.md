@@ -1,6 +1,6 @@
-D2L.Security.BrowserAuthTokens
+D2L.Security.AuthTokenProvisioning
 ==============================
 
-This library works with the auth server to get a browser auth token for a given user in a given tenant, etc.
+This library allows provisioning of auth tokens from the auth server. As part of the provisioning process, information such as a user ID, tenant ID, etc. can be included in the provisioned token.
 
-You need to have appropriate permissions with the auth server to use this functionality. At this point in time this is only intended to be used by the LE.
+Each consumer of this library will have to be trusted by the auth server via a private/public key pair.

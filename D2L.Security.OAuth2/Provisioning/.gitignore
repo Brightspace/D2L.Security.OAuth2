@@ -1,8 +1,6 @@
+bin
+obj
+packages
 *.suo
-*.swp
-D2L.Security.BrowserAuthTokens/bin/*
-D2L.Security.BrowserAuthTokens/obj/*
-D2L.Security.BrowserAuthTokens/*.nupkg
-packages/*
-.nuget/
-
+*.user
+*.nupkg
