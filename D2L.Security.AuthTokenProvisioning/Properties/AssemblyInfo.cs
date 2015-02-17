@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 
 // Nuget: Title
-[assembly: AssemblyTitle( "D2L Security Browser Auth Tokens" )]
+[assembly: AssemblyTitle( "D2L Security Auth Token Provisioning" )]
 
 // Nuget: Description
-[assembly: AssemblyDescription( "A library that fetches browser auth tokens for a user from the auth service." )]
+[assembly: AssemblyDescription( "A library which provisions auth tokens from the auth service." )]
 
 // Nuget: Author
 [assembly: AssemblyCompany( "Desire2Learn" )]
