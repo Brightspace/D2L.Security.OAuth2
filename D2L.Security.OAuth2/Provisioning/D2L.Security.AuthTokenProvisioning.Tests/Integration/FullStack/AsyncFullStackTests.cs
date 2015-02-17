@@ -34,7 +34,6 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Integration.FullStack {
 			token.AssertHasClaim( Constants.Claims.TENANT_ID, TENANT_ID );
 		}
 
-		[Explicit( "Remove Explicit attribute once auth server supports optional sub claims" )]
 		[Test]
 		public async void IAuthTokenProvider_ProvisionAccessTokenAsync_NoUserId_Success() {
 			ProvisioningParameters provisioningParams =
