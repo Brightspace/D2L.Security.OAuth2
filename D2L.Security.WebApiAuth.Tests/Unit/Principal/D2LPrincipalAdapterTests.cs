@@ -17,7 +17,7 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 		private const PrincipalType PRINCIPAL_TYPE = PrincipalType.User;
 		private const string TENANT_ID = "tenant_id";
 		private const string TENANT_URL = "tenant_url";
-		private const long USER_ID = 123;
+		private const string USER_ID = "123";
 		private const string XSRF = "xsrf";
 
 		private readonly IEnumerable<string> m_scopes = new[] { "scope1", "scope2" };
