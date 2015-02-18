@@ -54,7 +54,7 @@ namespace D2L.Security.WebApiAuth.Principal {
 			get { return m_principal.Value.Type; }
 		}
 
-		long? ID2LPrincipal.UserId {
+		string ID2LPrincipal.UserId {
 			get { return m_principal.Value.UserId; }
 		}
 
