@@ -18,23 +18,40 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 	[TestFixture]
 	internal sealed class AuthTokenProviderTests {
 
+		// since the provider tries to deserialize the assertion grant response, 
+		// we need one containing valid JSON
+		private const string ASSERTION_GRANT_RESPONSE = "{\"access_token\":\"bogus\",\"expires_in\":3600}";
+
+		private static readonly ProvisioningParameters PROVISIONING_PARAMS = new ProvisioningParameters(
+			"some_client_id",
+			"some_client_secret",
+			new string[] { "https://api.brightspace.com/auth/lores.manage" },
+			"some_tenant_id",
+			"some_tenant_url"
+			);
+
 		[Test]
-		public void a() {
+		public void b() {
+			byte[] privateKey;
+			byte[] publicKey;
+
+			MakeKeyPair( out privateKey, out publicKey );
+
+			string signedToken = CreateAndSignToken( privateKey );
+			JwtSecurityToken signatureCheckedToken = CheckSignatureAndGetToken( signedToken, publicKey );
+		}
+
+		private static string CreateAndSignToken( byte[] signingKey ) {
 			InvocationParameters actualInvocationParams = null;
 			Mock<IAuthServiceInvoker> invokerMock = new Mock<IAuthServiceInvoker>();
 			invokerMock
 				.Setup( x => x.ProvisionAccessToken( It.IsAny<InvocationParameters>() ) )
 				.Callback<InvocationParameters>( x => actualInvocationParams = x )
-				.Returns( "{\"access_token\":\"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlA5NmNVbnoxQWcxaWhnRjQ3c0EtWmU4VGxxQSIsImtpZCI6IlA5NmNVbnoxQWcxaWhnRjQ3c0EtWmU4VGxxQSJ9.eyJjbGllbnRfaWQiOiJsbXMuZGV2LmQybCIsInNjb3BlIjoiaHR0cHM6Ly9hcGkuYnJpZ2h0c3BhY2UuY29tL2F1dGgvbG9yZXMubWFuYWdlIiwic3ViIjoic29tZVZhbGlkVXNlciIsImFtciI6Imp3dC1iZWFyZXIiLCJhdXRoX3RpbWUiOiIxNDI0NDQ4OTIxIiwiaWRwIjoiaWRzcnYiLCJ0ZW5hbnRpZCI6InNvbWVWYWxpZFRlbmFudElkIiwidGVuYW50dXJsIjoic29tZVZhbGlkVGVuYW50VXJsIiwieHQiOiJzb21lVmFsaWRYc3JmIiwiaXNzIjoiaHR0cHM6Ly9hcGkuYnJpZ2h0c3BhY2UuY29tL2F1dGgiLCJhdWQiOiJodHRwczovL2FwaS5icmlnaHRzcGFjZS5jb20vYXV0aC9yZXNvdXJjZXMiLCJleHAiOjE0MjQ0NTI1MjEsIm5iZiI6MTQyNDQ0ODkyMX0.FEy7aLi8tuaAxYze0Uu2jn5Kft25TL_h_FZi_AzOzga-S4-1ZjnVk3DxRyY2-MrPR7aSG4khQ2FbHHfFW6HIQiwEk5d6uLWND5FPP6Q3OxUS-0iTwEitFYzwQH-xBFOSFQvakuFRRXd1xDehOlth6y4lQYpwJDAZ4hpCgw7oZovXjSFUpEfHCyS66R_Hd2vquMDRI1RxoYRNkRCDFygNt7f-JXPUksjMmpRQX_YnMGbPPLyAQbdeAujO_IX3DuWMJfsk46aPlgilx6FXPPWVgpHEr-9uwJDWRbhT-LogY8amgA3-x1fdbDtsyjlaxWsL5VuDXd9gmBbW3ib6_DhB7A\",\"expires_in\":3600,\"token_type\":\"Bearer\"}" );
-
-			byte[] privateAndPublicKeyPairBlob;
-			byte[] publicKeyBlob;
+				.Returns( ASSERTION_GRANT_RESPONSE );
 
 			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
 				rsaService.PersistKeyInCsp = false;
-
-				privateAndPublicKeyPairBlob = rsaService.ExportCspBlob( true );
-				publicKeyBlob = rsaService.ExportCspBlob( false );
+				rsaService.ImportCspBlob( signingKey );
 
 				RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( rsaService );
 				SigningCredentials signingCredentials =
@@ -46,32 +63,17 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 					);
 
 
+				provider.ProvisionAccessToken( PROVISIONING_PARAMS );
 
-				string clientId = "lms.dev.d2l";
-				string clientSecret = "lms_secret";
-				IEnumerable<string> scopes = new string[] { "https://api.brightspace.com/auth/lores.manage" };
-				string tenantId = "mytenantid";
-				string tenantUrl = "mytenanturl";
-				ProvisioningParameters provisioningParams = new ProvisioningParameters(
-					clientId,
-					clientSecret,
-					scopes,
-					tenantId,
-					tenantUrl
-					);
-
-				provider.ProvisionAccessToken( provisioningParams );
+				return actualInvocationParams.Assertion;
 			}
+		}
 
-			// invalidate public key to test negative case!
-			//publicKeyBlob[103] = 55;
-
-			// now check signature using public key
-			string serializedAssertionToken = actualInvocationParams.Assertion;
+		private static JwtSecurityToken CheckSignatureAndGetToken( string signedToken, byte[] publicKey ) {
 			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
 				rsaService.PersistKeyInCsp = false;
-				rsaService.ImportCspBlob( publicKeyBlob );
-				
+				rsaService.ImportCspBlob( publicKey );
+
 				RsaSecurityToken rsaScurityToken = new RsaSecurityToken( rsaService );
 				SecurityKey securityKey = rsaScurityToken.SecurityKeys[0];
 
@@ -80,14 +82,19 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 				ISecurityTokenValidator tokenHandler = CreateTokenHandler();
 
 				SecurityToken securityToken;
-				ClaimsPrincipal principal = tokenHandler.ValidateToken( serializedAssertionToken, validationParameters, out securityToken );
+				ClaimsPrincipal principal = tokenHandler.ValidateToken( signedToken, validationParameters, out securityToken );
 
-				JwtSecurityToken jwtSecurityToken = (JwtSecurityToken)securityToken;
+				return (JwtSecurityToken)securityToken;
 			}
 		}
 
-		private static void Assert( InvocationParameters invocationParams ) {
-			
+		private static void MakeKeyPair( out byte[] privateKey, out byte[] publicKey ) {
+			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
+				rsaService.PersistKeyInCsp = false;
+
+				privateKey = rsaService.ExportCspBlob( true );
+				publicKey = rsaService.ExportCspBlob( false );
+			}
 		}
 
 		private static ISecurityTokenValidator CreateTokenHandler() {
