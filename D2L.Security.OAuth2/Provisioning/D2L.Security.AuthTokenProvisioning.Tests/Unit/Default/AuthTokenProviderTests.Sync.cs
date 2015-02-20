@@ -3,7 +3,6 @@ using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.ServiceModel.Security;
-using System.Threading.Tasks;
 using D2L.Security.AuthTokenProvisioning.Default;
 using D2L.Security.AuthTokenProvisioning.Invocation;
 using Moq;
@@ -12,7 +11,7 @@ using NUnit.Framework;
 namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 	
 	[TestFixture]
-	internal sealed class AuthTokenProviderTests {
+	internal sealed partial class AuthTokenProviderTests {
 
 		// since the provider tries to deserialize the assertion grant response, 
 		// we need one containing valid JSON
@@ -48,26 +47,6 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 			Assert.AreEqual( PROVISIONING_PARAMS.UserId, signatureCheckedToken.Subject );
 		}
 
-		[Test]
-		public async void ProvisionAccessTokenAsync_AssertionTokenIsSigned() {
-			byte[] privateKey;
-			byte[] publicKey;
-			MakeKeyPair( out privateKey, out publicKey );
-
-			InvocationParameters actualInvocationParams = null;
-			Mock<IAuthServiceInvoker> invokerMock = new Mock<IAuthServiceInvoker>();
-			invokerMock
-				.Setup( x => x.ProvisionAccessTokenAsync( It.IsAny<InvocationParameters>() ) )
-				.Callback<InvocationParameters>( x => actualInvocationParams = x )
-				.Returns( () => Task.FromResult<string>( ASSERTION_GRANT_RESPONSE ) );
-
-			await SignTokenAsync( invokerMock.Object, privateKey );
-			string signedToken = actualInvocationParams.Assertion;
-
-			JwtSecurityToken signatureCheckedToken = CheckSignatureAndGetToken( signedToken, publicKey );
-			Assert.AreEqual( PROVISIONING_PARAMS.UserId, signatureCheckedToken.Subject );
-		}
-
 		private static void SignToken( IAuthServiceInvoker serviceInvoker, byte[] signingKey ) {
 
 			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
@@ -86,27 +65,6 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 					);
 
 				provider.ProvisionAccessToken( PROVISIONING_PARAMS );
-			}
-		}
-
-		private async static Task SignTokenAsync( IAuthServiceInvoker serviceInvoker, byte[] signingKey ) {
-
-			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
-				rsaService.ImportCspBlob( signingKey );
-
-				RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( rsaService );
-				SigningCredentials signingCredentials = new SigningCredentials(
-					rsaSecurityKey,
-					SecurityAlgorithms.RsaSha256Signature,
-					SecurityAlgorithms.Sha256Digest
-					);
-
-				IAuthTokenProvider provider = new AuthTokenProvider(
-					signingCredentials,
-					serviceInvoker
-					);
-
-				await provider.ProvisionAccessTokenAsync( PROVISIONING_PARAMS );
 			}
 		}
 

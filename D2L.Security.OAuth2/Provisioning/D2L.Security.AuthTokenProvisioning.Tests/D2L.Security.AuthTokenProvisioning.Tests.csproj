@@ -68,7 +68,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Unit\Default\AuthTokenProviderTests.cs" />
+    <Compile Include="Unit\Default\AuthTokenProviderTests.Sync.cs" />
+    <Compile Include="Unit\Default\AuthTokenProviderTests.Async.cs" />
     <Compile Include="Unit\Invocation\InvocationParametersTests.cs" />
     <Compile Include="Utilities\Assertions.cs" />
     <Compile Include="Utilities\TestCredentials.cs" />
