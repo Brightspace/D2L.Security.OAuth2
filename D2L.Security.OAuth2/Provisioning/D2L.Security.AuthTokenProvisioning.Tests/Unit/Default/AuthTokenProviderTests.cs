@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Selectors;
+﻿using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.ServiceModel.Security;
-using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.AuthTokenProvisioning.Default;
 using D2L.Security.AuthTokenProvisioning.Invocation;
@@ -28,20 +24,16 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 			new string[] { "https://api.brightspace.com/auth/lores.manage" },
 			"some_tenant_id",
 			"some_tenant_url"
-			);
+			) {
+			UserId = "some_user_id"
+		};
 
 		[Test]
-		public void b() {
+		public void ProvisionAccessToken_AssertionTokenIsSigned() {
 			byte[] privateKey;
 			byte[] publicKey;
-
 			MakeKeyPair( out privateKey, out publicKey );
 
-			string signedToken = CreateAndSignToken( privateKey );
-			JwtSecurityToken signatureCheckedToken = CheckSignatureAndGetToken( signedToken, publicKey );
-		}
-
-		private static string CreateAndSignToken( byte[] signingKey ) {
 			InvocationParameters actualInvocationParams = null;
 			Mock<IAuthServiceInvoker> invokerMock = new Mock<IAuthServiceInvoker>();
 			invokerMock
@@ -49,36 +41,83 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 				.Callback<InvocationParameters>( x => actualInvocationParams = x )
 				.Returns( ASSERTION_GRANT_RESPONSE );
 
-			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
-				rsaService.PersistKeyInCsp = false;
+			SignToken( invokerMock.Object, privateKey );
+			string signedToken = actualInvocationParams.Assertion;
+
+			JwtSecurityToken signatureCheckedToken = CheckSignatureAndGetToken( signedToken, publicKey );
+			Assert.AreEqual( PROVISIONING_PARAMS.UserId, signatureCheckedToken.Subject );
+		}
+
+		[Test]
+		public async void ProvisionAccessTokenAsync_AssertionTokenIsSigned() {
+			byte[] privateKey;
+			byte[] publicKey;
+			MakeKeyPair( out privateKey, out publicKey );
+
+			InvocationParameters actualInvocationParams = null;
+			Mock<IAuthServiceInvoker> invokerMock = new Mock<IAuthServiceInvoker>();
+			invokerMock
+				.Setup( x => x.ProvisionAccessTokenAsync( It.IsAny<InvocationParameters>() ) )
+				.Callback<InvocationParameters>( x => actualInvocationParams = x )
+				.Returns( () => Task.FromResult<string>( ASSERTION_GRANT_RESPONSE ) );
+
+			await SignTokenAsync( invokerMock.Object, privateKey );
+			string signedToken = actualInvocationParams.Assertion;
+
+			JwtSecurityToken signatureCheckedToken = CheckSignatureAndGetToken( signedToken, publicKey );
+			Assert.AreEqual( PROVISIONING_PARAMS.UserId, signatureCheckedToken.Subject );
+		}
+
+		private static void SignToken( IAuthServiceInvoker serviceInvoker, byte[] signingKey ) {
+
+			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
 				rsaService.ImportCspBlob( signingKey );
 
 				RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( rsaService );
-				SigningCredentials signingCredentials =
-					new SigningCredentials( rsaSecurityKey, SecurityAlgorithms.RsaSha256Signature, SecurityAlgorithms.Sha256Digest );
+				SigningCredentials signingCredentials =	new SigningCredentials( 
+					rsaSecurityKey, 
+					SecurityAlgorithms.RsaSha256Signature, 
+					SecurityAlgorithms.Sha256Digest 
+					);
 
 				IAuthTokenProvider provider = new AuthTokenProvider(
 					signingCredentials,
-					invokerMock.Object
+					serviceInvoker
 					);
 
-
 				provider.ProvisionAccessToken( PROVISIONING_PARAMS );
+			}
+		}
 
-				return actualInvocationParams.Assertion;
+		private async static Task SignTokenAsync( IAuthServiceInvoker serviceInvoker, byte[] signingKey ) {
+
+			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
+				rsaService.ImportCspBlob( signingKey );
+
+				RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( rsaService );
+				SigningCredentials signingCredentials = new SigningCredentials(
+					rsaSecurityKey,
+					SecurityAlgorithms.RsaSha256Signature,
+					SecurityAlgorithms.Sha256Digest
+					);
+
+				IAuthTokenProvider provider = new AuthTokenProvider(
+					signingCredentials,
+					serviceInvoker
+					);
+
+				await provider.ProvisionAccessTokenAsync( PROVISIONING_PARAMS );
 			}
 		}
 
 		private static JwtSecurityToken CheckSignatureAndGetToken( string signedToken, byte[] publicKey ) {
-			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
-				rsaService.PersistKeyInCsp = false;
+			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
 				rsaService.ImportCspBlob( publicKey );
 
 				RsaSecurityToken rsaScurityToken = new RsaSecurityToken( rsaService );
 				SecurityKey securityKey = rsaScurityToken.SecurityKeys[0];
 
 				TokenValidationParameters validationParameters = CreateTokenValidationParameters( securityKey );
-
 				ISecurityTokenValidator tokenHandler = CreateTokenHandler();
 
 				SecurityToken securityToken;
@@ -89,12 +128,16 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 		}
 
 		private static void MakeKeyPair( out byte[] privateKey, out byte[] publicKey ) {
-			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 ) ) {
-				rsaService.PersistKeyInCsp = false;
-
+			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
 				privateKey = rsaService.ExportCspBlob( true );
 				publicKey = rsaService.ExportCspBlob( false );
 			}
+		}
+
+		private static RSACryptoServiceProvider MakeCryptoServiceProvider() {
+			RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider( 2048 );
+			rsaService.PersistKeyInCsp = false;
+			return rsaService;
 		}
 
 		private static ISecurityTokenValidator CreateTokenHandler() {
