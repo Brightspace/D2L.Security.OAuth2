@@ -12,11 +12,11 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 		private readonly SigningCredentials m_signingCredentials;
 		private readonly IAuthServiceInvoker m_serviceInvoker;
 
-		internal AuthTokenProvider( 
-			X509Certificate2 signingCertificate,
+		internal AuthTokenProvider(
+			SigningCredentials signingCredentials,
 			IAuthServiceInvoker serviceInvoker
 			) {
-			m_signingCredentials = new X509SigningCredentials( signingCertificate );
+			m_signingCredentials = signingCredentials;
 			m_serviceInvoker = serviceInvoker;
 		}
 
