@@ -17,15 +17,18 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 		// we need one containing valid JSON
 		private const string ASSERTION_GRANT_RESPONSE = "{\"access_token\":\"bogus\",\"expires_in\":3600}";
 
-		private static readonly ProvisioningParameters PROVISIONING_PARAMS = new ProvisioningParameters(
-			"some_client_id",
-			"some_client_secret",
-			new string[] { "https://api.brightspace.com/auth/lores.manage" },
-			"some_tenant_id",
-			"some_tenant_url"
-			) {
-			UserId = "some_user_id"
-		};
+		private static ProvisioningParameters PROVISIONING_PARAMS( RSA signingKey ) {
+			return new ProvisioningParameters(
+				"some_client_id",
+				"some_client_secret",
+				new string[] { "https://api.brightspace.com/auth/lores.manage" },
+				"some_tenant_id",
+				"some_tenant_url",
+				signingKey
+				) {
+					UserId = "some_user_id"
+				};
+		}
 
 		[Test]
 		public void ProvisionAccessToken_AssertionTokenIsSigned() {
@@ -40,31 +43,27 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 				.Callback<InvocationParameters>( x => actualInvocationParams = x )
 				.Returns( ASSERTION_GRANT_RESPONSE );
 
-			SignToken( invokerMock.Object, privateKey );
+			ProvisioningParameters generatedProvisioningParams;
+			SignToken( invokerMock.Object, privateKey, out generatedProvisioningParams );
 			string signedToken = actualInvocationParams.Assertion;
 
 			JwtSecurityToken signatureCheckedToken = CheckSignatureAndGetToken( signedToken, publicKey );
-			Assert.AreEqual( PROVISIONING_PARAMS.UserId, signatureCheckedToken.Subject );
+			Assert.AreEqual( generatedProvisioningParams.UserId, signatureCheckedToken.Subject );
 		}
 
-		private static void SignToken( IAuthServiceInvoker serviceInvoker, byte[] signingKey ) {
+		private static void SignToken( 
+			IAuthServiceInvoker serviceInvoker, 
+			byte[] signingKey,
+			out ProvisioningParameters generatedProvisioningParams
+			) {
+
+			IAuthTokenProvider provider = new AuthTokenProvider( serviceInvoker );
 
 			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
 				rsaService.ImportCspBlob( signingKey );
 
-				RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( rsaService );
-				SigningCredentials signingCredentials =	new SigningCredentials( 
-					rsaSecurityKey, 
-					SecurityAlgorithms.RsaSha256Signature, 
-					SecurityAlgorithms.Sha256Digest 
-					);
-
-				IAuthTokenProvider provider = new AuthTokenProvider(
-					signingCredentials,
-					serviceInvoker
-					);
-
-				provider.ProvisionAccessToken( PROVISIONING_PARAMS );
+				generatedProvisioningParams = PROVISIONING_PARAMS( rsaService );
+				provider.ProvisionAccessToken( generatedProvisioningParams );
 			}
 		}
 
