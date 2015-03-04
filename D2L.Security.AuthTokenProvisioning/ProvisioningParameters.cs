@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using D2L.Security.AuthTokenProvisioning.Invocation;
 
 namespace D2L.Security.AuthTokenProvisioning {
@@ -17,12 +18,15 @@ namespace D2L.Security.AuthTokenProvisioning {
 		private readonly string m_tenantUrl;
 		private readonly DateTime m_expiry;
 
+		private readonly RSA m_signingKey;
+
 		public ProvisioningParameters( 
 			string clientId, 
 			string clientSecret, 
 			IEnumerable<string> scopes, 
 			string tenantId,
-			string tenantUrl
+			string tenantUrl,
+			RSA signingKey
 			) {
 
 			m_clientId = clientId;
@@ -30,6 +34,7 @@ namespace D2L.Security.AuthTokenProvisioning {
 			m_scopes = scopes;
 			m_tenantId = tenantId;
 			m_tenantUrl = tenantUrl;
+			m_signingKey = signingKey;
 
 			m_expiry = DateTime.UtcNow + Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME;
 		}
@@ -59,6 +64,10 @@ namespace D2L.Security.AuthTokenProvisioning {
 
 		public DateTime Expiry {
 			get { return m_expiry; }
+		}
+
+		public RSA SigningKey {
+			get { return m_signingKey; }
 		}
 
 		internal InvocationParameters ToInvocationParameters(
