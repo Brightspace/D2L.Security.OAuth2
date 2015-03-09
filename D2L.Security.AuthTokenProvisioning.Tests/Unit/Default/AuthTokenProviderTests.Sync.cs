@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.ServiceModel.Security;
 using D2L.Security.AuthTokenProvisioning.Default;
 using D2L.Security.AuthTokenProvisioning.Invocation;
+using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
@@ -17,18 +18,6 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 		// we need one containing valid JSON
 		private const string ASSERTION_GRANT_RESPONSE = "{\"access_token\":\"bogus\",\"expires_in\":3600}";
 
-		private static ProvisioningParameters PROVISIONING_PARAMS( RSA signingKey ) {
-			return new ProvisioningParameters(
-				"some_client_id",
-				"some_client_secret",
-				new string[] { "https://api.brightspace.com/auth/lores.manage" },
-				"some_tenant_id",
-				"some_tenant_url",
-				signingKey
-				) {
-					UserId = "some_user_id"
-				};
-		}
 
 		[Test]
 		public void ProvisionAccessToken_AssertionTokenIsSigned() {
@@ -62,7 +51,7 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
 				rsaService.ImportCspBlob( signingKey );
 
-				generatedProvisioningParams = PROVISIONING_PARAMS( rsaService );
+				generatedProvisioningParams = TestParameters.MakeValidProvisioningParams( rsaService );
 				provider.ProvisionAccessToken( generatedProvisioningParams );
 			}
 		}
