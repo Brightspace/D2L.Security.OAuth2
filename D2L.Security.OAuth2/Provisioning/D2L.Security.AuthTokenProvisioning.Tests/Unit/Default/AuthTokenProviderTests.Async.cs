@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.AuthTokenProvisioning.Default;
 using D2L.Security.AuthTokenProvisioning.Invocation;
+using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
@@ -23,33 +24,20 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 				.Setup( x => x.ProvisionAccessTokenAsync( It.IsAny<InvocationParameters>() ) )
 				.Callback<InvocationParameters>( x => actualInvocationParams = x )
 				.Returns( () => Task.FromResult<string>( ASSERTION_GRANT_RESPONSE ) );
+			IAuthTokenProvider provider = new AuthTokenProvider( invokerMock.Object );
 
-			await SignTokenAsync( invokerMock.Object, privateKey );
+			ProvisioningParameters provisioningParams;
+			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
+				rsaService.ImportCspBlob( privateKey );
+
+				provisioningParams = TestParameters.MakeValidProvisioningParams( rsaService );
+				await provider.ProvisionAccessTokenAsync( provisioningParams );
+			}
+
 			string signedToken = actualInvocationParams.Assertion;
 
 			JwtSecurityToken signatureCheckedToken = CheckSignatureAndGetToken( signedToken, publicKey );
-			Assert.AreEqual( PROVISIONING_PARAMS.UserId, signatureCheckedToken.Subject );
-		}
-
-		private async static Task SignTokenAsync( IAuthServiceInvoker serviceInvoker, byte[] signingKey ) {
-
-			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
-				rsaService.ImportCspBlob( signingKey );
-
-				RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( rsaService );
-				SigningCredentials signingCredentials = new SigningCredentials(
-					rsaSecurityKey,
-					SecurityAlgorithms.RsaSha256Signature,
-					SecurityAlgorithms.Sha256Digest
-					);
-
-				IAuthTokenProvider provider = new AuthTokenProvider(
-					signingCredentials,
-					serviceInvoker
-					);
-
-				await provider.ProvisionAccessTokenAsync( PROVISIONING_PARAMS );
-			}
+			Assert.AreEqual( provisioningParams.UserId, signatureCheckedToken.Subject );
 		}
 	}
 }
