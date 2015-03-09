@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.AuthTokenProvisioning.Default;
 using D2L.Security.AuthTokenProvisioning.Invocation;
+using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
@@ -29,7 +30,7 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
 				rsaService.ImportCspBlob( privateKey );
 
-				provisioningParams = PROVISIONING_PARAMS( rsaService );
+				provisioningParams = TestParameters.MakeValidProvisioningParams( rsaService );
 				await provider.ProvisionAccessTokenAsync( provisioningParams );
 			}
 
