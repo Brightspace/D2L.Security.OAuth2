@@ -18,9 +18,11 @@ namespace D2L.Security.ScopeAuthorization.Tests {
 
 		[TestCase( "g:r:p", "g:r:p", Description = "Grant exact scope" )]
 		[TestCase( "g:r:p,p2", "g:r:p", Description = "Grant extra permissions" )]
-		[TestCase( "g:r:*", "g:r:p", Description = "Grant all permissions" )]
-		[TestCase( "g:*:*", "g:r:p", Description = "Grant all permissions on all resources" )]
+		[TestCase( "g:r:*", "g:r:p", Description = "Grant all permissions on exact resource in exact group" )]
+		[TestCase( "g:*:*", "g:r:p", Description = "Grant all permissions on all resources in exact group" )]
 		[TestCase( "*:*:*", "g:r:p", Description = "Grant all permissions on all resources in all groups" )]
+		[TestCase( "*:*:p", "g:r:p", Description = "Grant exact permission on all resources in all groups" )]
+		[TestCase( "*:r:p", "g:r:p", Description = "Grant exact permission on exact resource in all groups" )]
 		public void RequiredScopeIsGranted_AuthorizationShouldBeGranted(
 			string grantedScopePattern,
 			string requiredScopePattern) {
