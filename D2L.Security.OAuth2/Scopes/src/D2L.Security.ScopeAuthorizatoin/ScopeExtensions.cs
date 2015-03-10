@@ -10,17 +10,14 @@ namespace D2L.Security.ScopeAuthorization {
 		/// <param name="scopePattern">The scope pattern in the form of
 		/// "group:resource:permission[,permission]*.</param>
 		/// <example>
-		/// lores:*:*                  => Full access to all lores resources
-		/// lores:objective:*          => Full access to objectives resources in lores
-		/// lores:objective:read       => Read only for objectives in lores
-		/// lores:*:read               => Read only for all resources in lores
-		/// lores:*:create             => Create only for all resources in lores
-		/// lores:*:read,create,update => Read, create, or update for all resources in lores
-		/// insights:events:read       => Read raw events in Insights
-		/// insights:aggregates:read   => Read aggregates in Insights
-		/// insights:*:read            => Read all data in insights
-		/// *:*:*                      => Full access to all services
-		/// *:*:read                   => Read only for all services
+		/// groupA:*:*                  => Full access to all groupA resources
+		/// groupA:resourceX:*          => Full access to resourceX in groupA
+		/// groupA:resourceX:read       => Read only for resourceX in groupA
+		/// groupA:*:read               => Read only for all resources in groupA
+		/// groupA:*:create             => Create only for all resources in groupA
+		/// groupA:*:read,create,update => Read, create, or update for all resources in groupA
+		/// *:*:*                       => Full access to all resources in all groups
+		/// *:*:read                    => Read only for all resources in all groups
 		/// </example>>
 		public static Scope ToScope( this string scopePattern ) {
 
