@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace D2L.Security.ScopeAuthorization.Tests {
 
-	internal sealed class ScopeExtensionsTests {
+	internal sealed class ScopeConversionTests {
 
 		[TestCase( null, Description = "Null" )]
 		[TestCase( "", Description = "Empty" )]
@@ -27,7 +27,7 @@ namespace D2L.Security.ScopeAuthorization.Tests {
 		[TestCase( "g:r:,", Description = "Three parts, invalid permissions" )]
 		public void InvalidScopePattern_Throws( string scopePattern ) {
 
-			scopePattern.Invoking( s => s.ToScope() )
+			scopePattern.Invoking( s => Scope.FromString( s ) )
 				.ShouldThrow<ArgumentException>();
 		}
 
@@ -39,7 +39,7 @@ namespace D2L.Security.ScopeAuthorization.Tests {
 			string resource,
 			string[] permissions ) {
 
-			var scope = scopePattern.ToScope();
+			var scope = Scope.FromString( scopePattern );
 
 			scope.Group.Should().Be( group );
 			scope.Resource.Should().Be( resource );

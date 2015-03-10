@@ -54,7 +54,6 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Properties\FriendAssemblies.cs" />
     <Compile Include="ScopeAuthorizer.cs" />
-    <Compile Include="ScopeExtensions.cs" />
     <Compile Include="ScopeAuthorizeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scope.cs" />

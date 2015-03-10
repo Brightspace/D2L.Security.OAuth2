@@ -27,9 +27,9 @@ namespace D2L.Security.ScopeAuthorization.Tests {
 			string grantedScopePattern,
 			string requiredScopePattern) {
 
-			var grantedScopes = new[] { grantedScopePattern.ToScope() };
+			var grantedScopes = new[] { Scope.FromString( grantedScopePattern ) };
 
-			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, requiredScopePattern.ToScope() );
+			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.FromString( requiredScopePattern ) );
 
 			isAuthorized.Should().BeTrue();
 		}
@@ -37,13 +37,16 @@ namespace D2L.Security.ScopeAuthorization.Tests {
 		[TestCase( "g:r:p2", "g:r:p", Description = "Permission does not match" )]
 		[TestCase( "g:r2:p", "g:r:p", Description = "Resource does not match" )]
 		[TestCase( "g2:r:p", "g:r:p", Description = "Group does not match" )]
+		[TestCase( "*:*:p2", "g:r:p", Description = "Permission does not match - with wildcards" )]
+		[TestCase( "*:r2:*", "g:r:p", Description = "Permission does not match - with wildcards" )]
+		[TestCase( "g2*:*:*", "g:r:p", Description = "Permission does not match - with wildcards" )]
 		public void RequiredScopeIsNotGranted_AuthorizationShouldBeDenied(
 			string grantedScopePattern,
 			string requiredScopePattern ) {
 
-			var grantedScopes = new[] { grantedScopePattern.ToScope() };
+			var grantedScopes = new[] { Scope.FromString( grantedScopePattern ) };
 
-			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, requiredScopePattern.ToScope() );
+			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.FromString( requiredScopePattern ) );
 
 			isAuthorized.Should().BeFalse();
 		}
