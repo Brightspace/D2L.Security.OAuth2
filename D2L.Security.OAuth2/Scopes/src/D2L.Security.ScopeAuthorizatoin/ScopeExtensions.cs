@@ -29,7 +29,7 @@ namespace D2L.Security.ScopeAuthorization {
 			if( scopeParts.Length != 3 || scopeParts.Any( String.IsNullOrWhiteSpace ) ) {
 				throw new ArgumentException(
 					String.Format( "scopePattern '{0}' format is invalid." +
-					" Expected format is '" + SCOPE_PATTERN + "'.", scopePattern ),
+						" Expected format is '" + SCOPE_PATTERN + "'.", scopePattern ),
 					"scopePattern" );
 			}
 
@@ -37,7 +37,7 @@ namespace D2L.Security.ScopeAuthorization {
 			if( permissionParts.Length < 1 ) {
 				throw new ArgumentException(
 					String.Format( "scopePattern '{0}' has invalid permission format." +
-					" Expected format is '" + SCOPE_PATTERN + "'.", scopePattern ),
+						" Expected format is '" + SCOPE_PATTERN + "'.", scopePattern ),
 					"scopePattern" );
 			}
 
