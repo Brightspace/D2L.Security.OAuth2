@@ -32,10 +32,11 @@ namespace D2L.Security.ScopeAuthorization {
 		}
 
 		/// <summary>
-		/// Converts a scope pattern to a <see cref="Scope"/> object.
+		/// Parses a scope pattern into a <see cref="Scope"/> object.
 		/// </summary>
 		/// <param name="scopePattern">The scope pattern in the form of
 		/// "group:resource:permission[,permission]*.</param>
+		/// <param name="scope">The <see cref="Scope"/> object</param>
 		/// <example>
 		/// groupA:*:*                  => Full access to all groupA resources
 		/// groupA:resourceX:*          => Full access to resourceX in groupA
@@ -46,32 +47,39 @@ namespace D2L.Security.ScopeAuthorization {
 		/// *:*:*                       => Full access to all resources in all groups
 		/// *:*:read                    => Read only for all resources in all groups
 		/// </example>
-		public static Scope FromString( string scopePattern ) {
+		public static bool TryParse( string scopePattern, out Scope scope ) {
 
-			const string SCOPE_PATTERN = "group:resource:permission[,permission]*";
+			scope = null;
 
 			if( String.IsNullOrWhiteSpace( scopePattern ) ) {
-				throw new ArgumentException( "scopePattern cannot be null or empty.", "scopePattern" );
+				return false;
 			}
 
 			string[] scopeParts = scopePattern.Split( ":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
 			if( scopeParts.Length != 3 || scopeParts.Any( String.IsNullOrWhiteSpace ) ) {
-				throw new ArgumentException(
-					String.Format( "scopePattern '{0}' format is invalid." +
-						" Expected format is '" + SCOPE_PATTERN + "'.", scopePattern ),
-					"scopePattern" );
+				return false;
 			}
 
 			string[] permissionParts = scopeParts[2].Split( ",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
 			if( permissionParts.Length < 1 ) {
-				throw new ArgumentException(
-					String.Format( "scopePattern '{0}' has invalid permission format." +
-						" Expected format is '" + SCOPE_PATTERN + "'.", scopePattern ),
-					"scopePattern" );
+				return false;
 			}
 
-			var scope = new Scope( scopeParts[0], scopeParts[1], permissionParts );
+			scope = new Scope( scopeParts[0], scopeParts[1], permissionParts );
 
+			return true;
+		}
+
+		/// <summary>
+		/// Parses a scope pattern into a <see cref="Scope"/> object.
+		/// </summary>
+		/// <param name="scopePattern">The scope pattern in the form of
+		/// "group:resource:permission[,permission]*.</param>
+		/// <returns>If the scope is properly parsed, returns the <see cref="Scope"/> object;
+		/// otherwise <see langword="null"/>.</returns>
+		public static Scope Parse( string scopePattern ) {
+			Scope scope = null;
+			Scope.TryParse( scopePattern, out scope );
 			return scope;
 		}
 

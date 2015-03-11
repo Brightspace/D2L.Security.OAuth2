@@ -27,9 +27,9 @@ namespace D2L.Security.ScopeAuthorization.Tests {
 			string grantedScopePattern,
 			string requiredScopePattern) {
 
-			var grantedScopes = new[] { Scope.FromString( grantedScopePattern ) };
+			var grantedScopes = new[] { Scope.Parse( grantedScopePattern ) };
 
-			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.FromString( requiredScopePattern ) );
+			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.Parse( requiredScopePattern ) );
 
 			isAuthorized.Should().BeTrue();
 		}
@@ -44,9 +44,9 @@ namespace D2L.Security.ScopeAuthorization.Tests {
 			string grantedScopePattern,
 			string requiredScopePattern ) {
 
-			var grantedScopes = new[] { Scope.FromString( grantedScopePattern ) };
+			var grantedScopes = new[] { Scope.Parse( grantedScopePattern ) };
 
-			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.FromString( requiredScopePattern ) );
+			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.Parse( requiredScopePattern ) );
 
 			isAuthorized.Should().BeFalse();
 		}
