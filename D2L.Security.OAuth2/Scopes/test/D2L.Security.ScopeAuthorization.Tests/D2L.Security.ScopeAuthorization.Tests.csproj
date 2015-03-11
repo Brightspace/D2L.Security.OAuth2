@@ -69,7 +69,7 @@
     <Compile Include="ContextUtils.cs" />
     <Compile Include="ScopeAuthorizerTests.cs" />
     <Compile Include="ScopeAuthorizeAttributeTests.cs" />
-    <Compile Include="ScopeConversionTests.cs" />
+    <Compile Include="ScopeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

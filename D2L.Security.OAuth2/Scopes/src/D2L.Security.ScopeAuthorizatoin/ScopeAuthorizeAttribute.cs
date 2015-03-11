@@ -35,7 +35,8 @@ namespace D2L.Security.ScopeAuthorization {
 			}
 
 			var grantedScopes = principal.FindAll( Constants.ClaimTypes.Scope )
-				.Select( c => Scope.FromString( c.Value ) );
+				.Select( c => Scope.Parse( c.Value ) )
+				.Where( s => s != null );
 
 			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, m_requiredScope );
 
