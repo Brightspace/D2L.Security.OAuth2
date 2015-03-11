@@ -32,11 +32,13 @@ namespace D2L.Security.ScopeAuthorization {
 		}
 
 		/// <summary>
-		/// Parses a scope pattern into a <see cref="Scope"/> object.
+		/// Tries to parse a scope pattern into a <see cref="Scope"/> object.
 		/// </summary>
 		/// <param name="scopePattern">The scope pattern in the form of
 		/// "group:resource:permission[,permission]*.</param>
 		/// <param name="scope">The <see cref="Scope"/> object</param>
+		/// <returns><see langword="true"/> if the scope pattern was properly
+		/// parsed; <see langword="false"/> otherwise.</returns>
 		/// <example>
 		/// groupA:*:*                  => Full access to all groupA resources
 		/// groupA:resourceX:*          => Full access to resourceX in groupA
@@ -79,7 +81,7 @@ namespace D2L.Security.ScopeAuthorization {
 		/// otherwise <see langword="null"/>.</returns>
 		public static Scope Parse( string scopePattern ) {
 			Scope scope = null;
-			Scope.TryParse( scopePattern, out scope );
+			TryParse( scopePattern, out scope );
 			return scope;
 		}
 
