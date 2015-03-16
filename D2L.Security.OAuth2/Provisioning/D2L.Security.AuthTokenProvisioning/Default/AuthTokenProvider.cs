@@ -33,11 +33,11 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 
 		private InvocationParameters CreateInvocationParams( ProvisioningParameters provisioningParams ) {
 			IEnumerable<Claim> claims = BuildClaims( provisioningParams );
-
 			SigningCredentials signingCredentials = BuildSigningCredentials( provisioningParams );
+			string issuer = "tenant:" + provisioningParams.TenantId;
 
 			JwtSecurityToken jwt = new JwtSecurityToken(
-				provisioningParams.ClientId,
+				issuer,
 				Constants.AssertionGrant.AUDIENCE,
 				claims,
 				null,
