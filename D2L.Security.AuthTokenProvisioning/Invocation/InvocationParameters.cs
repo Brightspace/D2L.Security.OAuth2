@@ -9,19 +9,19 @@ namespace D2L.Security.AuthTokenProvisioning.Invocation {
 	/// Configures an access token provision invocation
 	/// </summary>
 	internal sealed class InvocationParameters {
-
+		
 		private readonly string m_authorization;
 		private readonly string m_scopes;
 		private readonly string m_assertionToken;
 
 		internal InvocationParameters( 
-			string clientId, 
-			string clientSecret, 
 			IEnumerable<string> scopes, 
 			string assertionToken 
 			) {
 
-			m_authorization = WebUtility.UrlEncode( clientId ) + ":" + WebUtility.UrlEncode( clientSecret );
+			// TODO: If we can solve US49562 we can get rid of this authorization header
+			m_authorization = "lms.dev.d2l:lms_secret";
+			
 			m_authorization = ToBase64( m_authorization );
 			m_authorization = "Basic " + m_authorization;
 

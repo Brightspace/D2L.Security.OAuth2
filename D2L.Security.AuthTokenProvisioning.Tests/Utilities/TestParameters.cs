@@ -12,8 +12,6 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Utilities {
 			) {
 
 			ProvisioningParameters provisioningParams = new ProvisioningParameters(
-				TestCredentials.LMS.CLIENT_ID,
-				TestCredentials.LMS.CLIENT_SECRET,
 				new string[] { TestCredentials.LOReSScopes.MANAGE },
 				tenantId,
 				tenantUrl,
