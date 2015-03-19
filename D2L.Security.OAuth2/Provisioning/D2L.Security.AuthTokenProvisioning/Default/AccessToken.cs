@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace D2L.Security.AuthTokenProvisioning.Client {
+namespace D2L.Security.AuthTokenProvisioning.Default {
 	internal sealed class AccessToken : IAccessToken {
 
 		private readonly string m_token;

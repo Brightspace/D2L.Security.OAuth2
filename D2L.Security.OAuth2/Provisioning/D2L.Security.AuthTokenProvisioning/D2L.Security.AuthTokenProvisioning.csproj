@@ -56,16 +56,14 @@
   <ItemGroup>
     <Compile Include="ClaimSet.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Client\AccessToken.cs" />
+    <Compile Include="Default\AccessToken.cs" />
     <Compile Include="Default\AuthTokenProvider.cs" />
-    <Compile Include="AuthTokenProviderFactory.cs" />
-    <Compile Include="Client\SerializationHelper.cs" />
+    <Compile Include="Default\SerializationHelper.cs" />
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="IAccessToken.cs" />
     <Compile Include="IAuthTokenProvider.cs" />
-    <Compile Include="Client\AuthServiceClientFactory.cs" />
-    <Compile Include="Client\Default\AuthServiceClient.cs" />
-    <Compile Include="Client\IAuthServiceClient.cs" />
+    <Compile Include="Default\AuthServiceClient.cs" />
+    <Compile Include="IAuthServiceClient.cs" />
     <Compile Include="IAuthTokenProviderExtensions.cs" />
     <Compile Include="KidSecurityToken.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
