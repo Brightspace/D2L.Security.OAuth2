@@ -59,22 +59,35 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 
 			var key = signingToken.SecurityKeys[0];
 
-			var supportsRsa = key.IsSupportedAlgorithm( SecurityAlgorithms.RsaSha256Signature );
-			if( !supportsRsa ) {
+			var supportedAlgorithm = FindSupportedAlgorithm( key );
+			if( supportedAlgorithm == null ) {
 				throw new ArgumentException(
-					String.Format( "Token must support \"{0}\"", SecurityAlgorithms.RsaSha256Signature ),
+					"Token does not provide a supported signing algorithm",
 					"signingToken"
 				);
 			}
 
 			SigningCredentials signingCredentials = new SigningCredentials(
 				key,
-				SecurityAlgorithms.RsaSha256Signature,
+				supportedAlgorithm,
 				SecurityAlgorithms.Sha256Digest,
 				new SecurityKeyIdentifier( keyName )
 			);
 
 			return signingCredentials;
+		}
+
+		private static string[] SUPPORTED_ALGORITHMS = new string[] {
+			SecurityAlgorithms.RsaSha256Signature
+		};
+		private static string FindSupportedAlgorithm( SecurityKey key ) {
+			foreach( var algorithm in SUPPORTED_ALGORITHMS ) {
+				if( key.IsSupportedAlgorithm( algorithm ) ) {
+					return algorithm;
+				}
+			}
+
+			return null;
 		}
 	}
 }
