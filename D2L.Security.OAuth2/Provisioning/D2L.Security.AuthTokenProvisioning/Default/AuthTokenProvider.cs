@@ -20,6 +20,16 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 			IEnumerable<Scope> scopes,
 			SecurityToken signingToken
 		) {
+			if( claimSet == null ) {
+				throw new ArgumentNullException( "claimSet" );
+			}
+
+			if( signingToken == null ) {
+				throw new ArgumentNullException( "signingToken" );
+			}
+
+			scopes = scopes ?? Enumerable.Empty<Scope>();
+
 			var signingCredentials = BuildSigningCredentials( signingToken );
 			var claims = claimSet.ToClaims();
 			var expiry = DateTime.UtcNow.Add( Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
