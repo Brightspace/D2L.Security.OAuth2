@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using D2L.Security.AuthTokenProvisioning.Client;
+using D2L.Security.AuthTokenProvisioning.Default;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
@@ -116,7 +116,11 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 				} ); ;
 
 			var httpClient = new HttpClient( messageHandler.Object, true );
-			var client = AuthServiceClientFactory.Create( httpClient, true, new Uri( "http://foo.d2l" ) );
+			var client = new AuthServiceClient(
+				httpClient: httpClient,
+				disposeHttpClient: true,
+				tokenProvisioningEndpoint: new Uri( "http://foo.d2l" )
+			);
 
 			return client;
 		}
