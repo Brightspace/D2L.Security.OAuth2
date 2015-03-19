@@ -17,9 +17,22 @@ namespace D2L.Security.AuthTokenProvisioning.Client.Default {
 		private readonly bool m_disposeClient;
 		private readonly Uri m_tokenProvisioningEndpoint;
 
-		internal AuthServiceClient( Uri tokenProvisioningEndpoint ) {
-			m_client = new HttpClient();
-			m_disposeClient = true;
+		internal AuthServiceClient(
+			Uri tokenProvisioningEndpoint
+		)
+			: this(
+			  client: new HttpClient(),
+			  disposeHttpClient: true,
+			  tokenProvisioningEndpoint: tokenProvisioningEndpoint
+			) { }
+
+		internal AuthServiceClient(
+			HttpClient client,
+			Uri tokenProvisioningEndpoint,
+			bool disposeHttpClient = false
+		) {
+			m_client = client;
+			m_disposeClient = disposeHttpClient;
 			m_tokenProvisioningEndpoint = tokenProvisioningEndpoint;
 		}
 
