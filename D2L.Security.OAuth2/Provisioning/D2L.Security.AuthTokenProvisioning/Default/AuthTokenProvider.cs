@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Linq;
-using D2L.Security.AuthTokenProvisioning.Client;
 
 namespace D2L.Security.AuthTokenProvisioning.Default {
-	internal sealed class AuthTokenProvider : IAuthTokenProvider {
+	public sealed class AuthTokenProvider : IAuthTokenProvider {
 
 		private readonly IAuthServiceClient m_client;
+		private readonly bool m_disposeClient;
 
-		internal AuthTokenProvider(	IAuthServiceClient serviceInvoker ) {
-			m_client = serviceInvoker;
+		public AuthTokenProvider(
+			IAuthServiceClient authServiceClient,
+			bool disposeAuthServiceClient = true
+		) {
+			m_client = authServiceClient;
+			m_disposeClient = disposeAuthServiceClient;
 		}
 
 		Task<IAccessToken> IAuthTokenProvider.ProvisionAccessTokenAsync(
@@ -36,7 +40,9 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 		}
 
 		void IDisposable.Dispose() {
-			m_client.Dispose();
+			if( m_disposeClient ) {
+				m_client.Dispose();
+			}
 		}
 
 		private static string BuildAssertion( ClaimSet claimSet, SecurityToken signingToken ) {

@@ -4,10 +4,6 @@ using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.ServiceModel.Security;
-using D2L.Security.AuthTokenProvisioning.Default;
-using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
-using Moq;
-using NUnit.Framework;
 
 namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 	

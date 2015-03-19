@@ -6,9 +6,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace D2L.Security.AuthTokenProvisioning.Client.Default {
+namespace D2L.Security.AuthTokenProvisioning.Default {
 	
-	internal sealed class AuthServiceClient : IAuthServiceClient {
+	public sealed class AuthServiceClient : IAuthServiceClient {
 
 		private static AuthenticationHeaderValue m_authorization =
 			new AuthenticationHeaderValue( "Basic", ToBase64( "lms.dev.d2l:lms_secret" ) );
@@ -17,21 +17,21 @@ namespace D2L.Security.AuthTokenProvisioning.Client.Default {
 		private readonly bool m_disposeClient;
 		private readonly Uri m_tokenProvisioningEndpoint;
 
-		internal AuthServiceClient(
+		public AuthServiceClient(
 			Uri tokenProvisioningEndpoint
 		)
 			: this(
-			  client: new HttpClient(),
+			  httpClient: new HttpClient(),
 			  disposeHttpClient: true,
 			  tokenProvisioningEndpoint: tokenProvisioningEndpoint
 			) { }
 
-		internal AuthServiceClient(
-			HttpClient client,
+		public AuthServiceClient(
+			HttpClient httpClient,
 			Uri tokenProvisioningEndpoint,
-			bool disposeHttpClient = false
+			bool disposeHttpClient = true
 		) {
-			m_client = client;
+			m_client = httpClient;
 			m_disposeClient = disposeHttpClient;
 			m_tokenProvisioningEndpoint = tokenProvisioningEndpoint;
 		}

@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
-using System.Net;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
-using D2L.Security.AuthTokenProvisioning.Client;
 using D2L.Security.AuthTokenProvisioning.Default;
 using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
 using Moq;
