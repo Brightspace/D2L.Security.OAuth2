@@ -1,83 +1,80 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Security.AuthTokenProvisioning.Invocation;
+using System.Linq;
+using D2L.Security.AuthTokenProvisioning.Client;
 
 namespace D2L.Security.AuthTokenProvisioning.Default {
 	internal sealed class AuthTokenProvider : IAuthTokenProvider {
 
-		private readonly IAuthServiceInvoker m_serviceInvoker;
+		private readonly IAuthServiceClient m_client;
 
-		internal AuthTokenProvider(	IAuthServiceInvoker serviceInvoker ) {
-			m_serviceInvoker = serviceInvoker;
+		internal AuthTokenProvider(	IAuthServiceClient serviceInvoker ) {
+			m_client = serviceInvoker;
 		}
 
-		async Task<IAccessToken> IAuthTokenProvider.ProvisionAccessTokenAsync( ProvisioningParameters provisioningParams ) {
-			InvocationParameters invocationParams = CreateInvocationParams( provisioningParams );
-			string assertionGrantResponse = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
+		Task<IAccessToken> IAuthTokenProvider.ProvisionAccessTokenAsync(
+			ClaimSet claimSet,
+			IEnumerable<Scope> scopes,
+			SecurityToken signingToken
+		) {
+			var signingCredentials = BuildSigningCredentials( signingToken );
+			var claims = claimSet.ToClaims();
+			var expiry = DateTime.UtcNow.Add( Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
 
-			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
+			var jwt = new JwtSecurityToken(
+				audience: Constants.AssertionGrant.AUDIENCE,
+				claims: claimSet.ToClaims(),
+				expires: expiry,
+				signingCredentials: signingCredentials
+			);
 
-			return accessToken;
+			var jwtHandler = new JwtSecurityTokenHandler();
+			var assertion = jwtHandler.WriteToken( jwt );
+
+			return m_client.ProvisionAccessTokenAsync( assertion, scopes );
 		}
 
-		IAccessToken IAuthTokenProvider.ProvisionAccessToken( ProvisioningParameters provisioningParams ) {
-			InvocationParameters invocationParams = CreateInvocationParams( provisioningParams );
-			string assertionGrantResponse = m_serviceInvoker.ProvisionAccessToken( invocationParams );
+		private static SigningCredentials BuildSigningCredentials( SecurityToken signingToken ) {
+			if( !signingToken.CanCreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>() ) {
+				throw new ArgumentException( "Token must be named", "signingToken" );
+			}
 
-			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
-
-			return accessToken;
-		}
-
-		private InvocationParameters CreateInvocationParams( ProvisioningParameters provisioningParams ) {
-			IEnumerable<Claim> claims = BuildClaims( provisioningParams );
-			SigningCredentials signingCredentials = BuildSigningCredentials( provisioningParams );
-			string issuer = "tenant:" + provisioningParams.TenantId;
-
-			JwtSecurityToken jwt = new JwtSecurityToken(
-				issuer,
-				Constants.AssertionGrant.AUDIENCE,
-				claims,
-				null,
-				provisioningParams.Expiry,
-				signingCredentials
+			var keyName = signingToken.CreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>();
+			if( keyName.Name != Constants.AssertionGrant.KEY_ID_NAME ) {
+				throw new ArgumentException(
+					String.Format("Token must be named \"{0}\"", Constants.AssertionGrant.KEY_ID_NAME),
+					"signingToken"
 				);
+			}
 
-			JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-			string assertionToken = handler.WriteToken( jwt );
+			if( signingToken.SecurityKeys.Count != 1 ) {
+				throw new ArgumentException(
+					"Token must contain a single SecurityKey",
+					"signingToken"
+				);
+			}
 
-			InvocationParameters invocationParams = provisioningParams.ToInvocationParameters( assertionToken );
+			var key = signingToken.SecurityKeys[0];
 
-			return invocationParams;
-		}
+			var supportsRsa = key.IsSupportedAlgorithm( SecurityAlgorithms.RsaSha256Signature );
+			if( !supportsRsa ) {
+				throw new ArgumentException(
+					String.Format( "Token must support \"{0}\"", SecurityAlgorithms.RsaSha256Signature ),
+					"signingToken"
+				);
+			}
 
-		private static SigningCredentials BuildSigningCredentials( ProvisioningParameters provisioningParams ) {
-			RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( provisioningParams.SigningKey );
 			SigningCredentials signingCredentials = new SigningCredentials(
-				rsaSecurityKey,
+				key,
 				SecurityAlgorithms.RsaSha256Signature,
-				SecurityAlgorithms.Sha256Digest
-				);
+				SecurityAlgorithms.Sha256Digest,
+				new SecurityKeyIdentifier( keyName )
+			);
 
 			return signingCredentials;
-		}
-
-		private static IEnumerable<Claim> BuildClaims( ProvisioningParameters provisioningParams ) {
-			IList<Claim> claims = new List<Claim>();
-			AddClaim( claims, Constants.Claims.USER, provisioningParams.UserId );
-			AddClaim( claims, Constants.Claims.TENANT_ID, provisioningParams.TenantId );
-			AddClaim( claims, Constants.Claims.TENANT_URL, provisioningParams.TenantUrl );
-			AddClaim( claims, Constants.Claims.XSRF, provisioningParams.Xsrf );
-
-			return claims;
-		}
-
-		private static void AddClaim( IList<Claim> claims, string type, string value ) {
-			if( value != null ) {
-				claims.Add( new Claim( type, value ) );
-			}
 		}
 	}
 }
