@@ -51,7 +51,7 @@ namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
 					xsrfToken: TestData.XSRF_TOKEN
 				);
 				var scopes = new Scope[] { };
-				var signingToken = provider.CreateSigningToken( key, keyId );
+				var signingToken = SigningTokenFactory.CreateSigningToken( key, keyId );
 
 				await provider.ProvisionAccessTokenAsync( claims, scopes, signingToken );
 			}
