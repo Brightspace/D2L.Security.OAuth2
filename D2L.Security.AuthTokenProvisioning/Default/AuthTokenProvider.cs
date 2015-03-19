@@ -47,6 +47,10 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 			return m_client.ProvisionAccessTokenAsync( assertion, scopes );
 		}
 
+		void IDisposable.Dispose() {
+			m_client.Dispose();
+		}
+
 		private static SigningCredentials BuildSigningCredentials( SecurityToken signingToken ) {
 			if( !signingToken.CanCreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>() ) {
 				throw new ArgumentException( "Token must be named", "signingToken" );
