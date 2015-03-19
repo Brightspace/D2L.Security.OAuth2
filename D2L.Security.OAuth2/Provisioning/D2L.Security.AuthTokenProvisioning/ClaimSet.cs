@@ -12,7 +12,7 @@ namespace D2L.Security.AuthTokenProvisioning {
 
 		public ClaimSet(
 			string issuer,
-			string tenant = null,
+			string tenantId = null,
 			Uri tenantUrl = null,
 			string user = null,
 			string xsrfToken = null
@@ -25,8 +25,8 @@ namespace D2L.Security.AuthTokenProvisioning {
 
 			m_claims.Add( new Claim( Constants.Claims.ISSUER, issuer ) );
 
-			if( !string.IsNullOrWhiteSpace( tenant ) ) {
-				m_claims.Add( new Claim( Constants.Claims.TENANT_ID, tenant ) );
+			if( !string.IsNullOrWhiteSpace( tenantId ) ) {
+				m_claims.Add( new Claim( Constants.Claims.TENANT_ID, tenantId ) );
 			}
 
 			if( tenantUrl != null ) {
