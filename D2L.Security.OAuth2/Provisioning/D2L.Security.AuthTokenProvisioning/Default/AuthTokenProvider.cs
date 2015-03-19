@@ -30,9 +30,19 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 
 			scopes = scopes ?? Enumerable.Empty<Scope>();
 
-			var signingCredentials = BuildSigningCredentials( signingToken );
-			var claims = claimSet.ToClaims();
-			var expiry = DateTime.UtcNow.Add( Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
+			string assertion = BuildAssertion( claimSet, signingToken );
+
+			return m_client.ProvisionAccessTokenAsync( assertion, scopes );
+		}
+
+		void IDisposable.Dispose() {
+			m_client.Dispose();
+		}
+
+		private static string BuildAssertion( ClaimSet claimSet, SecurityToken signingToken ) {
+			SigningCredentials signingCredentials = BuildSigningCredentials( signingToken );
+			IEnumerable<Claim> claims = claimSet.ToClaims();
+			DateTime expiry = DateTime.UtcNow.Add( Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
 
 			var jwt = new JwtSecurityToken(
 				audience: Constants.AssertionGrant.AUDIENCE,
@@ -42,13 +52,9 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 			);
 
 			var jwtHandler = new JwtSecurityTokenHandler();
-			var assertion = jwtHandler.WriteToken( jwt );
+			string assertion = jwtHandler.WriteToken( jwt );
 
-			return m_client.ProvisionAccessTokenAsync( assertion, scopes );
-		}
-
-		void IDisposable.Dispose() {
-			m_client.Dispose();
+			return assertion;
 		}
 
 		private static SigningCredentials BuildSigningCredentials( SecurityToken signingToken ) {
@@ -71,9 +77,9 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 				);
 			}
 
-			var key = signingToken.SecurityKeys[0];
+			SecurityKey key = signingToken.SecurityKeys[0];
 
-			var supportedAlgorithm = FindSupportedAlgorithm( key );
+			string supportedAlgorithm = FindSupportedAlgorithm( key );
 			if( supportedAlgorithm == null ) {
 				throw new ArgumentException(
 					"Token does not provide a supported signing algorithm",
@@ -103,5 +109,6 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 
 			return null;
 		}
+
 	}
 }
