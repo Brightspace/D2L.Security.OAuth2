@@ -40,12 +40,12 @@ namespace D2L.Security.AuthTokenProvisioning.Client.Default {
 			string assertion,
 			IEnumerable<Scope> scopes
 		) {
-			var requestBody = BuildFormContents( assertion, scopes );
-			using( var response = await MakeRequest( requestBody ) ) {
+			string requestBody = BuildFormContents( assertion, scopes );
+			using( HttpResponseMessage response = await MakeRequest( requestBody ) ) {
 				response.EnsureSuccessStatusCode();
 
 				using( var resultStream = await response.Content.ReadAsStreamAsync() ) {
-					var accessToken = SerializationHelper.ExtractAccessToken( resultStream );
+					IAccessToken accessToken = SerializationHelper.ExtractAccessToken( resultStream );
 					return accessToken;
 				}
 			}
@@ -87,5 +87,6 @@ namespace D2L.Security.AuthTokenProvisioning.Client.Default {
 			byte[] plainTextBytes = Encoding.UTF8.GetBytes( me );
 			return Convert.ToBase64String( plainTextBytes );
 		}
+
 	}
 }
