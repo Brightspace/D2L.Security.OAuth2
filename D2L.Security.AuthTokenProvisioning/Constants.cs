@@ -8,7 +8,8 @@ namespace D2L.Security.AuthTokenProvisioning {
 			internal const string USER = "sub";
 			internal const string TENANT_ID = "tenantid";
 			internal const string TENANT_URL = "tenanturl";
-			internal const string XSRF = "xt";
+			internal const string XSRF_TOKEN = "xt";
+			internal const string ISSUER = "iss";
 		}
 
 		internal static class AssertionGrant {
@@ -16,6 +17,7 @@ namespace D2L.Security.AuthTokenProvisioning {
 			internal static readonly string GRANT_TYPE =
 				WebUtility.UrlEncode( "urn:ietf:params:oauth:grant-type:jwt-bearer" );
 			internal static readonly TimeSpan ASSERTION_TOKEN_LIFETIME = TimeSpan.FromMinutes( 30 );
+			internal const string KEY_ID_NAME = "kid";
 		}
 	}
 }
