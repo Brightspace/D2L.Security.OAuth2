@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using D2L.Security.OAuth2.Validation.Token;
 
 namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
@@ -11,6 +12,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 		private readonly string m_tenantUrl;
 		private readonly IEnumerable<string> m_scopes;
 		private readonly PrincipalType m_type;
+		private readonly IEnumerable<Claim> m_allClaims;
 		
 		private readonly string m_xsrf;
 		private readonly string m_accessToken;
@@ -26,6 +28,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 
 			m_xsrf = validatedToken.GetXsrfToken();
 			m_accessToken = accessToken;
+			m_allClaims = validatedToken.Claims;
 		}
 
 		DateTime ID2LPrincipal.AccessTokenExpiry {
@@ -58,6 +61,10 @@ namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 
 		string ID2LPrincipal.AccessToken {
 			get { return m_accessToken; }
+		}
+
+		IEnumerable<Claim> ID2LPrincipal.AllClaims {
+			get { return m_allClaims; }
 		}
 	}
 }

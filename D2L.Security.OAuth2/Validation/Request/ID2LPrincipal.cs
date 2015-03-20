@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	public interface ID2LPrincipal {
@@ -10,6 +11,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		PrincipalType Type { get; }
 
 		IEnumerable<string> Scopes { get; }
+		IEnumerable<Claim> AllClaims { get; }
 
 		/// <summary>
 		/// The expiration date of the access token provided with the request
