@@ -22,7 +22,9 @@ namespace D2L.Security.AuthTokenProvisioning {
 			IEnumerable<string> scopes,
 			SecurityToken signingToken
 		) {
-			var token = @this.ProvisionAccessTokenAsync( claimSet, scopes, signingToken ).Result;
+			IEnumerable<Scope> strongScopes = ParseScopes( scopes );
+
+			var token = @this.ProvisionAccessToken( claimSet, strongScopes, signingToken );
 			return token;
 		}
 
