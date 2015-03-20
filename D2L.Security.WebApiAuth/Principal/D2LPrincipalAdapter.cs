@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
 
@@ -72,6 +71,13 @@ namespace D2L.Security.WebApiAuth.Principal {
 		public override IEnumerable<Claim> Claims {
 			get {
 				return m_principal.Value.AllClaims;
+			}
+		}
+
+		public override IEnumerable<ClaimsIdentity> Identities {
+			get {
+				ClaimsIdentity identity = new ClaimsIdentity( Claims );
+				return new ClaimsIdentity[] { identity };
 			}
 		}
 
