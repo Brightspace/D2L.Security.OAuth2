@@ -19,16 +19,6 @@ namespace D2L.Security.AuthTokenProvisioning {
 		public static IAccessToken ProvisionAccessToken(
 			this IAuthTokenProvider @this,
 			ClaimSet claimSet,
-			IEnumerable<Scope> scopes,
-			SecurityToken signingToken
-		) {
-			var token = @this.ProvisionAccessTokenAsync( claimSet, scopes, signingToken ).Result;
-			return token;
-		}
-
-		public static IAccessToken ProvisionAccessToken(
-			this IAuthTokenProvider @this,
-			ClaimSet claimSet,
 			IEnumerable<string> scopes,
 			SecurityToken signingToken
 		) {

@@ -13,5 +13,11 @@ namespace D2L.Security.AuthTokenProvisioning {
 			SecurityToken signingToken
 		);
 
+		IAccessToken ProvisionAccessToken(
+			ClaimSet claimSet,
+			IEnumerable<Scope> scopes,
+			SecurityToken signingToken
+		);
+
 	}
 }
