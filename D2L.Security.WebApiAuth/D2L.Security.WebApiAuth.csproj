@@ -77,7 +77,6 @@
     <Compile Include="FriendAssemblies.cs" />
     <Compile Include="Principal\D2LPrincipalAdapter.cs" />
     <Compile Include="Handler\IAuthenticationMessageHandlerFactory.cs" />
-    <Compile Include="Principal\ID2LPrincipalAdapter.cs" />
     <Compile Include="Principal\PrincipalNotAssignedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

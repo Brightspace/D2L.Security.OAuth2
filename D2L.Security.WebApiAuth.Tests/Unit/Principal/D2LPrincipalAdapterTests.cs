@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
@@ -21,6 +22,7 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 		private const string XSRF = "xsrf";
 
 		private readonly IEnumerable<string> m_scopes = new[] { "scope1", "scope2" };
+		private readonly IEnumerable<Claim> m_claims = new[] { new Claim( "claim1", "claimvalue1" ) };
 		private readonly DateTime m_accessTokenExpiry = DateTime.Now;
 
 		[Test]
@@ -33,6 +35,7 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 			Assert.AreEqual( ACCESS_TOKEN, principal.AccessToken );
 			Assert.AreEqual( PRINCIPAL_TYPE, principal.Type );
 			Assert.AreEqual( m_scopes, principal.Scopes );
+			Assert.AreEqual( m_claims, principal.AllClaims );
 			Assert.AreEqual( m_accessTokenExpiry, principal.AccessTokenExpiry );
 			Assert.AreEqual( TENANT_ID, principal.TenantId );
 			Assert.AreEqual( TENANT_URL, principal.TenantUrl );
@@ -59,19 +62,20 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 			Assert.Throws<PrincipalNotAssignedException>( () => { var tenant = principal.TenantId; } );
 		}
 
-		private ID2LPrincipalAdapter CreateMockPrincipal() {
+		private D2LPrincipalAdapter CreateMockPrincipal() {
 
-			Mock<ID2LPrincipalAdapter> principalMock = new Mock<ID2LPrincipalAdapter>();
+			Mock<ID2LPrincipal> principalMock = new Mock<ID2LPrincipal>();
 			principalMock.Setup( x => x.AccessToken ).Returns( ACCESS_TOKEN );
 			principalMock.Setup( x => x.AccessTokenExpiry ).Returns( m_accessTokenExpiry );
 			principalMock.Setup( x => x.Type ).Returns( PRINCIPAL_TYPE );
 			principalMock.Setup( x => x.Scopes ).Returns( m_scopes );
+			principalMock.Setup( x => x.AllClaims ).Returns( m_claims );
 			principalMock.Setup( x => x.TenantId ).Returns( TENANT_ID );
 			principalMock.Setup( x => x.TenantUrl ).Returns( TENANT_URL );
 			principalMock.Setup( x => x.UserId ).Returns( USER_ID );
 			principalMock.Setup( x => x.Xsrf ).Returns( XSRF );
 
-			return principalMock.Object;
+			return new D2LPrincipalAdapter( principalMock.Object );
 		}
 	}
 }
