@@ -1,22 +1,17 @@
 ﻿using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
-using System.Text;
 
 namespace D2L.Security.AuthTokenProvisioning.Default {
 	internal static class SerializationHelper {
 
-		internal static IAccessToken ExtractAccessToken( string serializedAssertionGrantResponse ) {
+		internal static IAccessToken ExtractAccessToken( Stream assertionGrantResponseStream ) {
 			DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( AssertionGrantResponse ) );
 
-			byte[] rawData = Encoding.UTF8.GetBytes( serializedAssertionGrantResponse );
+			AssertionGrantResponse response = (AssertionGrantResponse)serializer.ReadObject( assertionGrantResponseStream );
+			IAccessToken token = new AccessToken( response.access_token, response.expires_in );
 
-			using( MemoryStream stream = new MemoryStream( rawData ) ) {
-				AssertionGrantResponse response = (AssertionGrantResponse)serializer.ReadObject( stream );
-				IAccessToken token = new AccessToken( response.access_token, response.expires_in );
-
-				return token;
-			}
+			return token;
 		}
 
 		[DataContract]

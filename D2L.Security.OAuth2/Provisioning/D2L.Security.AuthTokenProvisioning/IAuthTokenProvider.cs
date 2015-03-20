@@ -1,10 +1,23 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens;
+using System.Threading.Tasks;
 
 namespace D2L.Security.AuthTokenProvisioning {
 	
-	public interface IAuthTokenProvider {
+	public interface IAuthTokenProvider : IDisposable {
 
-		Task<IAccessToken> ProvisionAccessTokenAsync( ProvisioningParameters provisioningParams );
-		IAccessToken ProvisionAccessToken( ProvisioningParameters provisioningParams );
+		Task<IAccessToken> ProvisionAccessTokenAsync(
+			ClaimSet claimSet,
+			IEnumerable<Scope> scopes,
+			SecurityToken signingToken
+		);
+
+		IAccessToken ProvisionAccessToken(
+			ClaimSet claimSet,
+			IEnumerable<Scope> scopes,
+			SecurityToken signingToken
+		);
+
 	}
 }

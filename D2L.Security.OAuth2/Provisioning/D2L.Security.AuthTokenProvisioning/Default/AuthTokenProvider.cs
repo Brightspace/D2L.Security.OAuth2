@@ -1,83 +1,130 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Security.AuthTokenProvisioning.Invocation;
 
 namespace D2L.Security.AuthTokenProvisioning.Default {
-	internal sealed class AuthTokenProvider : IAuthTokenProvider {
+	public sealed class AuthTokenProvider : IAuthTokenProvider {
 
-		private readonly IAuthServiceInvoker m_serviceInvoker;
+		private readonly IAuthServiceClient m_client;
+		private readonly bool m_disposeClient;
 
-		internal AuthTokenProvider(	IAuthServiceInvoker serviceInvoker ) {
-			m_serviceInvoker = serviceInvoker;
+		public AuthTokenProvider(
+			IAuthServiceClient authServiceClient,
+			bool disposeAuthServiceClient = true
+		) {
+			m_client = authServiceClient;
+			m_disposeClient = disposeAuthServiceClient;
 		}
 
-		async Task<IAccessToken> IAuthTokenProvider.ProvisionAccessTokenAsync( ProvisioningParameters provisioningParams ) {
-			InvocationParameters invocationParams = CreateInvocationParams( provisioningParams );
-			string assertionGrantResponse = await m_serviceInvoker.ProvisionAccessTokenAsync( invocationParams );
+		Task<IAccessToken> IAuthTokenProvider.ProvisionAccessTokenAsync(
+			ClaimSet claimSet,
+			IEnumerable<Scope> scopes,
+			SecurityToken signingToken
+		) {
+			if( claimSet == null ) {
+				throw new ArgumentNullException( "claimSet" );
+			}
 
-			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
+			if( signingToken == null ) {
+				throw new ArgumentNullException( "signingToken" );
+			}
 
-			return accessToken;
+			scopes = scopes ?? Enumerable.Empty<Scope>();
+
+			string assertion = BuildAssertion( claimSet, signingToken );
+
+			return m_client.ProvisionAccessTokenAsync( assertion, scopes );
 		}
 
-		IAccessToken IAuthTokenProvider.ProvisionAccessToken( ProvisioningParameters provisioningParams ) {
-			InvocationParameters invocationParams = CreateInvocationParams( provisioningParams );
-			string assertionGrantResponse = m_serviceInvoker.ProvisionAccessToken( invocationParams );
+		IAccessToken IAuthTokenProvider.ProvisionAccessToken(
+			ClaimSet claimSet,
+			IEnumerable<Scope> scopes,
+			SecurityToken signingToken
+		) {
+			var @this = this as IAuthTokenProvider;
 
-			IAccessToken accessToken = SerializationHelper.ExtractAccessToken( assertionGrantResponse );
-
-			return accessToken;
+			var token = @this.ProvisionAccessTokenAsync( claimSet, scopes, signingToken ).Result;
+			return token;
 		}
 
-		private InvocationParameters CreateInvocationParams( ProvisioningParameters provisioningParams ) {
-			IEnumerable<Claim> claims = BuildClaims( provisioningParams );
-			SigningCredentials signingCredentials = BuildSigningCredentials( provisioningParams );
-			string issuer = "tenant:" + provisioningParams.TenantId;
+		void IDisposable.Dispose() {
+			if( m_disposeClient ) {
+				m_client.Dispose();
+			}
+		}
 
-			JwtSecurityToken jwt = new JwtSecurityToken(
-				issuer,
-				Constants.AssertionGrant.AUDIENCE,
-				claims,
-				null,
-				provisioningParams.Expiry,
-				signingCredentials
+		private static string BuildAssertion( ClaimSet claimSet, SecurityToken signingToken ) {
+			SigningCredentials signingCredentials = BuildSigningCredentials( signingToken );
+			IEnumerable<Claim> claims = claimSet.ToClaims();
+			DateTime expiry = DateTime.UtcNow.Add( Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
+
+			var jwt = new JwtSecurityToken(
+				audience: Constants.AssertionGrant.AUDIENCE,
+				claims: claimSet.ToClaims(),
+				expires: expiry,
+				signingCredentials: signingCredentials
+			);
+
+			var jwtHandler = new JwtSecurityTokenHandler();
+			string assertion = jwtHandler.WriteToken( jwt );
+
+			return assertion;
+		}
+
+		private static SigningCredentials BuildSigningCredentials( SecurityToken signingToken ) {
+			if( !signingToken.CanCreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>() ) {
+				throw new ArgumentException( "Token must be named", "signingToken" );
+			}
+
+			var keyName = signingToken.CreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>();
+			if( keyName.Name != Constants.AssertionGrant.KEY_ID_NAME ) {
+				throw new ArgumentException(
+					String.Format("Token must be named \"{0}\"", Constants.AssertionGrant.KEY_ID_NAME),
+					"signingToken"
 				);
+			}
 
-			JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-			string assertionToken = handler.WriteToken( jwt );
+			if( signingToken.SecurityKeys.Count != 1 ) {
+				throw new ArgumentException(
+					"Token must contain a single SecurityKey",
+					"signingToken"
+				);
+			}
 
-			InvocationParameters invocationParams = provisioningParams.ToInvocationParameters( assertionToken );
+			SecurityKey key = signingToken.SecurityKeys[0];
 
-			return invocationParams;
-		}
+			string supportedAlgorithm = FindSupportedAlgorithm( key );
+			if( supportedAlgorithm == null ) {
+				throw new ArgumentException(
+					"Token does not provide a supported signing algorithm",
+					"signingToken"
+				);
+			}
 
-		private static SigningCredentials BuildSigningCredentials( ProvisioningParameters provisioningParams ) {
-			RsaSecurityKey rsaSecurityKey = new RsaSecurityKey( provisioningParams.SigningKey );
 			SigningCredentials signingCredentials = new SigningCredentials(
-				rsaSecurityKey,
-				SecurityAlgorithms.RsaSha256Signature,
-				SecurityAlgorithms.Sha256Digest
-				);
+				key,
+				supportedAlgorithm,
+				SecurityAlgorithms.Sha256Digest,
+				new SecurityKeyIdentifier( keyName )
+			);
 
 			return signingCredentials;
 		}
 
-		private static IEnumerable<Claim> BuildClaims( ProvisioningParameters provisioningParams ) {
-			IList<Claim> claims = new List<Claim>();
-			AddClaim( claims, Constants.Claims.USER, provisioningParams.UserId );
-			AddClaim( claims, Constants.Claims.TENANT_ID, provisioningParams.TenantId );
-			AddClaim( claims, Constants.Claims.TENANT_URL, provisioningParams.TenantUrl );
-			AddClaim( claims, Constants.Claims.XSRF, provisioningParams.Xsrf );
-
-			return claims;
-		}
-
-		private static void AddClaim( IList<Claim> claims, string type, string value ) {
-			if( value != null ) {
-				claims.Add( new Claim( type, value ) );
+		private static string[] SUPPORTED_ALGORITHMS = new string[] {
+			SecurityAlgorithms.RsaSha256Signature
+		};
+		private static string FindSupportedAlgorithm( SecurityKey key ) {
+			foreach( var algorithm in SUPPORTED_ALGORITHMS ) {
+				if( key.IsSupportedAlgorithm( algorithm ) ) {
+					return algorithm;
+				}
 			}
+
+			return null;
 		}
 	}
 }
