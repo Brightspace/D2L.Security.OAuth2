@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
 using D2L.Security.RequestAuthentication;
@@ -12,7 +13,7 @@ namespace D2L.Security.WebApiAuth.Principal {
 	/// at the time the principal is injected, which is before the authentication message handler and 
 	/// controller are even created.
 	/// </summary>
-	public sealed class D2LPrincipalAdapter : ID2LPrincipalAdapter {
+	public sealed class D2LPrincipalAdapter : ClaimsPrincipal, ID2LPrincipal {
 
 		private readonly Lazy<ID2LPrincipal> m_principal;
 
@@ -58,6 +59,9 @@ namespace D2L.Security.WebApiAuth.Principal {
 			get { return m_principal.Value.UserId; }
 		}
 
+		IEnumerable<Claim> ID2LPrincipal.AllClaims {
+			get { return m_principal.Value.AllClaims; }
+		}
 
 		string ID2LPrincipal.Xsrf {
 			get { return m_principal.Value.Xsrf; }
@@ -65,24 +69,15 @@ namespace D2L.Security.WebApiAuth.Principal {
 
 		#endregion ID2LPrincipal Passthrough Members
 
-		#region IPrincipal Members (Not Implemented)
+		public override IEnumerable<Claim> Claims {
+			get {
+				return m_principal.Value.AllClaims;
+			}
+		}
 
-		/// <summary>
-		/// Do not use. Throws NotImplementedException.
-		/// </summary>
-		bool IPrincipal.IsInRole( string role ) {
+		public override bool IsInRole( string role ) {
 			throw new NotImplementedException();
 		}
-
-		/// <summary>
-		/// Do not use. Returns null.
-		/// </summary>
-		/// <remarks>Null due to logging framework attempting to access the principal.</remarks>
-		IIdentity IPrincipal.Identity {
-			get { return null; }
-		}
-
-		#endregion IPrincipal Members (Not Implemented)
 
 		#region Private Methods
 
