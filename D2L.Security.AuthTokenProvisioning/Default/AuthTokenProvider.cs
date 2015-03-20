@@ -39,6 +39,17 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 			return m_client.ProvisionAccessTokenAsync( assertion, scopes );
 		}
 
+		IAccessToken IAuthTokenProvider.ProvisionAccessToken(
+			ClaimSet claimSet,
+			IEnumerable<Scope> scopes,
+			SecurityToken signingToken
+		) {
+			var @this = this as IAuthTokenProvider;
+
+			var token = @this.ProvisionAccessTokenAsync( claimSet, scopes, signingToken ).Result;
+			return token;
+		}
+
 		void IDisposable.Dispose() {
 			if( m_disposeClient ) {
 				m_client.Dispose();
@@ -115,6 +126,5 @@ namespace D2L.Security.AuthTokenProvisioning.Default {
 
 			return null;
 		}
-
 	}
 }
