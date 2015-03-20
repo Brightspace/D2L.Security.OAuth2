@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace D2L.Security.ScopeAuthorization {
 
-	internal sealed class Scope {
+	public sealed class Scope {
 
 		private readonly string m_group;
 		private readonly string m_resource;
