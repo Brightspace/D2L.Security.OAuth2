@@ -62,48 +62,5 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.USER, TestData.USER );
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN );
 		}
-
-		[Test]
-		public async void ProvisionAccessTokenAsync_ConvertsStringScopes() {
-			byte[] privateKey;
-			byte[] publicKey;
-			Guid keyId;
-			MakeKeyPair( out privateKey, out publicKey, out keyId );
-
-			IEnumerable<Scope> actualScopes = null;
-			Mock<IAuthServiceClient> clientMock = new Mock<IAuthServiceClient>();
-			clientMock
-				.Setup( x => x.ProvisionAccessTokenAsync( It.IsAny<string>(), It.IsAny<IEnumerable<Scope>>() ) )
-				.Callback<string, IEnumerable<Scope>>( ( _, scopes ) => actualScopes = scopes )
-				.ReturnsAsync( null );
-
-			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
-				rsaService.ImportCspBlob( privateKey );
-
-				var key = new RsaSecurityKey( rsaService );
-
-				var claims = new ClaimSet(
-					issuer: TestData.ISSUER,
-					tenantId: TestData.TENANT_ID,
-					tenantUrl: TestData.TENANT_URL,
-					user: TestData.USER,
-					xsrfToken: TestData.XSRF_TOKEN
-				);
-				var scopes = new string[] {
-					"foo:bar:baz",
-					"quux:mrr:rawr,meh",
-					"things!:andstuff!"
-				};
-				var signingToken = SigningTokenFactory.CreateSigningToken( key, keyId );
-
-				using( IAuthTokenProvider provider = new AuthTokenProvider( clientMock.Object ) ) {
-					await provider.ProvisionAccessTokenAsync( claims, scopes, signingToken );
-				}
-			}
-
-			Assert.AreEqual( 2, actualScopes.Count() );
-			Assert.IsTrue( actualScopes.Contains( new Scope( "foo", "bar", "baz" ) ) );
-			Assert.IsTrue( actualScopes.Contains( new Scope( "quux", "mrr", new string[] { "meh", "rawr" } ) ) );
-		}
 	}
 }
