@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
-using D2L.Security.AuthTokenValidation.Default;
-using D2L.Security.AuthTokenValidation.JwtValidation;
+using D2L.Security.OAuth2.Validation.Token.Default;
+using D2L.Security.OAuth2.Validation.Token.JwtValidation;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Unit.Default {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.Default {
 
 	[TestFixture]
 	internal sealed class AuthTokenValidatorTests {

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
-using D2L.Security.AuthTokenValidation.JwtValidation;
-using D2L.Security.AuthTokenValidation.JwtValidation.Default;
-using D2L.Security.AuthTokenValidation.PublicKeys;
-using D2L.Security.AuthTokenValidation.PublicKeys.Default;
-using D2L.Security.AuthTokenValidation.Tests.Utilities;
+using D2L.Security.OAuth2.Validation.Token.JwtValidation;
+using D2L.Security.OAuth2.Validation.Token.JwtValidation.Default;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys.Default;
+using D2L.Security.OAuth2.Validation.Token.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Integration.JwtValidation {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Integration.JwtValidation {
 
 	[TestFixture]
 	internal sealed class JwtValidation {

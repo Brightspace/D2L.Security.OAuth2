@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using D2L.Security.AuthTokenValidation;
-using D2L.Security.RequestAuthentication.Core.Default;
+using D2L.Security.OAuth2.Validation.Token;
+using D2L.Security.OAuth2.Validation.Request.Core.Default;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.RequestAuthentication.Tests.Unit.Core.Default {
+namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 	
 	[TestFixture]
 	internal sealed class IValidatedTokenExtensionsTests {

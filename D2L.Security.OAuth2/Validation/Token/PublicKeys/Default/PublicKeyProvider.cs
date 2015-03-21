@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys.OpenIdConfigurations;
 using Microsoft.IdentityModel.Protocols;
 
-namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
+namespace D2L.Security.OAuth2.Validation.Token.PublicKeys.Default {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
 		private readonly IOpenIdConfigurationFetcher m_configurationFetcher;

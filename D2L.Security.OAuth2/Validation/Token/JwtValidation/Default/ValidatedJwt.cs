@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 
-namespace D2L.Security.AuthTokenValidation.JwtValidation {
+namespace D2L.Security.OAuth2.Validation.Token.JwtValidation {
 
 	internal sealed class ValidatedJwt : IValidatedToken {
 

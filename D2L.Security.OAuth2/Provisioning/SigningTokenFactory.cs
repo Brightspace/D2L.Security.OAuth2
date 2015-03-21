@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 
-namespace D2L.Security.AuthTokenProvisioning {
+namespace D2L.Security.OAuth2.Provisioning {
 	public static class SigningTokenFactory {
 
 		public static SecurityToken CreateSigningToken(

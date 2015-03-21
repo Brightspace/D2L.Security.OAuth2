@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Cryptography;
-using D2L.Security.AuthTokenProvisioning.Default;
-using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
+using D2L.Security.OAuth2.Provisioning.Default;
+using D2L.Security.OAuth2.Provisioning.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
+namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 	
 	[TestFixture]
 	internal sealed partial class AuthTokenProviderTests {

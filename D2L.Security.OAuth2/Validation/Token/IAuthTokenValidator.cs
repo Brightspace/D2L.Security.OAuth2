@@ -1,6 +1,6 @@
-﻿using D2L.Security.AuthTokenValidation.JwtValidation;
+﻿using D2L.Security.OAuth2.Validation.Token.JwtValidation;
 
-namespace D2L.Security.AuthTokenValidation {
+namespace D2L.Security.OAuth2.Validation.Token {
 
 	public interface IAuthTokenValidator {
 		ValidationResult VerifyAndDecode( string token, out IValidatedToken validatedToken );

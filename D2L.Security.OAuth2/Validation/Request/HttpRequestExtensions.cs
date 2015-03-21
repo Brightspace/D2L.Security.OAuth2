@@ -1,6 +1,6 @@
 ﻿using System.Web;
 
-namespace D2L.Security.RequestAuthentication {
+namespace D2L.Security.OAuth2.Validation.Request {
 	internal static class HttpRequestExtensions {
 
 		/// <param name="request">The request</param>

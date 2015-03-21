@@ -1,8 +1,8 @@
 ﻿using System.Net.Http;
 using System.Web;
-using D2L.Security.RequestAuthentication.Core;
+using D2L.Security.OAuth2.Validation.Request.Core;
 
-namespace D2L.Security.RequestAuthentication.Default {
+namespace D2L.Security.OAuth2.Validation.Request.Default {
 	internal sealed class RequestAuthenticator : IRequestAuthenticator {
 
 		private readonly ICoreAuthenticator m_coreAuthenticator;

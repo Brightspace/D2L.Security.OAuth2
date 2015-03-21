@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
 
-namespace D2L.Security.AuthTokenProvisioning {
+namespace D2L.Security.OAuth2.Provisioning {
 	public static class IAuthTokenProviderExtensions {
 
 		public static Task<IAccessToken> ProvisionAccessTokenAsync(

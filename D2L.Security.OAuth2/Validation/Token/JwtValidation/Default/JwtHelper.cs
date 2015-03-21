@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Security;
 
-namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
+namespace D2L.Security.OAuth2.Validation.Token.JwtValidation.Default {
 	internal static class JwtHelper {
 
 		internal static ISecurityTokenValidator CreateTokenHandler() {

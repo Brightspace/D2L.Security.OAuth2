@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace D2L.Security.AuthTokenProvisioning {
+namespace D2L.Security.OAuth2.Provisioning {
 	
 	/// <summary>
 	/// Makes invocations on the Auth Service to provision access tokens

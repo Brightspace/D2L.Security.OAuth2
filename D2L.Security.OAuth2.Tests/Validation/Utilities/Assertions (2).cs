@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace D2L.Security.RequestAuthentication.Tests.Utilities {
+namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 	internal static class Assertions {
 		
 		/// <summary>

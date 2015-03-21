@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace D2L.Security.RequestAuthentication.Tests.Utilities {
+namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 	internal static class TestUris {
 
 		private static readonly Uri AUTH_SERVER_SITE = new Uri( "https://auth.proddev.d2l:44331" );

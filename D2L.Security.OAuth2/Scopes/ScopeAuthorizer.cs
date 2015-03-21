@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace D2L.Security.ScopeAuthorization {
+namespace D2L.Security.OAuth2.Scopes {
 
 	internal static class ScopeAuthorizer {
 

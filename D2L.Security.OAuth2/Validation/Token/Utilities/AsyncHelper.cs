@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace D2L.Security.AuthTokenValidation.Utilities {
+namespace D2L.Security.OAuth2.Validation.Token.Utilities {
 	internal static class AsyncHelper {
 
 		private static readonly TaskFactory MyTaskFactory = new TaskFactory( 

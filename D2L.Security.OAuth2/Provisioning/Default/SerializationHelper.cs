@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 
-namespace D2L.Security.AuthTokenProvisioning.Default {
+namespace D2L.Security.OAuth2.Provisioning.Default {
 	internal static class SerializationHelper {
 
 		internal static IAccessToken ExtractAccessToken( Stream assertionGrantResponseStream ) {

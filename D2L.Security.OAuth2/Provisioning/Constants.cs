@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace D2L.Security.AuthTokenProvisioning {
+namespace D2L.Security.OAuth2.Provisioning {
 	internal static class Constants {
 
 		internal static class Claims {

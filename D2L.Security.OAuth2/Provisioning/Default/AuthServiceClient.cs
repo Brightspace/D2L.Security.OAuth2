@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace D2L.Security.AuthTokenProvisioning.Default {
+namespace D2L.Security.OAuth2.Provisioning.Default {
 	
 	public sealed class AuthServiceClient : IAuthServiceClient {
 

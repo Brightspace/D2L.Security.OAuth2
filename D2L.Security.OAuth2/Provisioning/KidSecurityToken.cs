@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace D2L.Security.AuthTokenProvisioning {
+namespace D2L.Security.OAuth2.Provisioning {
 	internal class KidSecurityToken : NamedKeySecurityToken {
 
 		public KidSecurityToken( string kid, SecurityKey key )

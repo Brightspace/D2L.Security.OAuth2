@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Net;
-using D2L.Security.AuthTokenProvisioning.Tests.Utilities;
+using D2L.Security.OAuth2.Provisioning.Tests.Utilities;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenProvisioning.Tests.Integration.FullStack {
+namespace D2L.Security.OAuth2.Provisioning.Tests.Integration.FullStack {
 
 	[Ignore( "Needs a new strategy of becoming trusted by the auth service" )]
 	[TestFixture]
