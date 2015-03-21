@@ -61,7 +61,6 @@
     <Compile Include="Provisioning\IAccessToken.cs" />
     <Compile Include="Provisioning\IAuthServiceClient.cs" />
     <Compile Include="Provisioning\IAuthTokenProvider.cs" />
-    <Compile Include="Provisioning\IAuthTokenProviderExtensions.cs" />
     <Compile Include="Provisioning\KidSecurityToken.cs" />
     <Compile Include="Provisioning\Scope.cs" />
     <Compile Include="Provisioning\SigningTokenFactory.cs" />
