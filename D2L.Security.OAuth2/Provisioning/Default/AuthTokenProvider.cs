@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace D2L.Security.AuthTokenProvisioning.Default {
+namespace D2L.Security.OAuth2.Provisioning.Default {
 	public sealed class AuthTokenProvider : IAuthTokenProvider {
 
 		private readonly IAuthServiceClient m_client;

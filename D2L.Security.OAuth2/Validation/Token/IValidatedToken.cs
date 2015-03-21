@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace D2L.Security.AuthTokenValidation {
+namespace D2L.Security.OAuth2.Validation.Token {
 	
 	/// <summary>
 	/// A token which can be trusted to have been validated

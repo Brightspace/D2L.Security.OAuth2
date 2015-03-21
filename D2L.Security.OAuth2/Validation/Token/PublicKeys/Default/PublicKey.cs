@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
 
-namespace D2L.Security.AuthTokenValidation.PublicKeys.Default {
+namespace D2L.Security.OAuth2.Validation.Token.PublicKeys.Default {
 	internal sealed class PublicKey : IPublicKey {
 
 		private readonly SecurityKey m_securityKey;

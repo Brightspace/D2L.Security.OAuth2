@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 	internal static class TestTokenProvider {
 
 		private static readonly DateTime UNIX_EPOCH_BEGINNING = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );

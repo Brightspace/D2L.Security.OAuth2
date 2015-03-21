@@ -1,7 +1,7 @@
-﻿using D2L.Security.AuthTokenValidation;
-using D2L.Security.RequestAuthentication.Core.Default;
+﻿using D2L.Security.OAuth2.Validation.Token;
+using D2L.Security.OAuth2.Validation.Request.Core.Default;
 
-namespace D2L.Security.RequestAuthentication.Core {
+namespace D2L.Security.OAuth2.Validation.Request.Core {
 	internal static class CoreAuthenticatorFactory {
 
 		internal static ICoreAuthenticator Create( IAuthTokenValidator tokenValidator, bool mustValidateXsrf ) {

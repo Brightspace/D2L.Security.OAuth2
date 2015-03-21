@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Http;
-using D2L.Security.RequestAuthentication.Tests.Utilities;
+using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using NUnit.Framework;
 
-namespace D2L.Security.RequestAuthentication.Tests.Unit {
+namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 	
 	[TestFixture]
 	internal partial class HttpRequestMessageExtensionsTests {

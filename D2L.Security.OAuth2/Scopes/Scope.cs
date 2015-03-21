@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace D2L.Security.ScopeAuthorization {
+namespace D2L.Security.OAuth2.Scopes {
 
 	public sealed class Scope {
 

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
-using D2L.Security.AuthTokenValidation.PublicKeys;
-using D2L.Security.AuthTokenValidation.JwtValidation.Default;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys;
+using D2L.Security.OAuth2.Validation.Token.JwtValidation.Default;
 
-namespace D2L.Security.AuthTokenValidation.JwtValidation {
+namespace D2L.Security.OAuth2.Validation.Token.JwtValidation {
 	internal static class JwtValidatorFactory {
 
 		internal static IJwtValidator Create( Uri authority ) {

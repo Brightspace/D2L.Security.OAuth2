@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Net.Http;
-using D2L.Security.RequestAuthentication.Tests.Utilities;
+using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using NUnit.Framework;
 
-namespace D2L.Security.RequestAuthentication.Tests.Integration.FullStack {
+namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 	
 	[TestFixture]
 	internal sealed partial class FullStackTests {

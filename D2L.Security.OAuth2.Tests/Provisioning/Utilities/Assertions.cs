@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenProvisioning.Tests.Utilities {
+namespace D2L.Security.OAuth2.Provisioning.Tests.Utilities {
 	internal static class Assertions {
 
 		internal static void AssertHasClaim( this JwtSecurityToken me, string type, string value ) {

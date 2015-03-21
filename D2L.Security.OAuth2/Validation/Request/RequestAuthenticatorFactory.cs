@@ -1,9 +1,9 @@
 ﻿using System;
-using D2L.Security.AuthTokenValidation;
-using D2L.Security.RequestAuthentication.Core;
-using D2L.Security.RequestAuthentication.Default;
+using D2L.Security.OAuth2.Validation.Token;
+using D2L.Security.OAuth2.Validation.Request.Core;
+using D2L.Security.OAuth2.Validation.Request.Default;
 
-namespace D2L.Security.RequestAuthentication {
+namespace D2L.Security.OAuth2.Validation.Request {
 	public static class RequestAuthenticatorFactory {
 
 		/// <summary>

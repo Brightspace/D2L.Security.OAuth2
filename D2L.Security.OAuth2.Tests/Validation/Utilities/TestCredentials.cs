@@ -1,4 +1,4 @@
-﻿namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
+﻿namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 	
 	internal static class TestCredentials {
 		

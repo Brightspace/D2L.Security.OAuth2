@@ -1,4 +1,4 @@
-﻿namespace D2L.Security.AuthTokenProvisioning.Tests.Utilities {
+﻿namespace D2L.Security.OAuth2.Provisioning.Tests.Utilities {
 	internal static class TestCredentials {
 
 		internal static class LOReSScopes {

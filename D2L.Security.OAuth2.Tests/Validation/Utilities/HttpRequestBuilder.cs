@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Web;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 	internal static class HttpRequestBuilder {
 
 		internal static void AddAuthHeader( HttpRequest httpRequest, string authHeaderValue ) {

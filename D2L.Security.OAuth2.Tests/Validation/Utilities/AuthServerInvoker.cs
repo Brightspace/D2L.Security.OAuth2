@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Web;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Utilities {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 
 	internal static class AuthServerInvoker {
 		

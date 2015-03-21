@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using D2L.Security.AuthTokenValidation;
+using D2L.Security.OAuth2.Validation.Token;
 
-namespace D2L.Security.RequestAuthentication.Core.Default {
+namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 	internal sealed class ValidatedTokenToD2LPrincipalAdapter : ID2LPrincipal {
 
 		private readonly DateTime m_expiry;
