@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning {
 	
