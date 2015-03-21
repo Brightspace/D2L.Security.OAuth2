@@ -1,10 +1,10 @@
 ﻿using System;
-using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations;
-using D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Default;
-using D2L.Security.AuthTokenValidation.Tests.Utilities;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys.OpenIdConfigurations;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys.OpenIdConfigurations.Default;
+using D2L.Security.OAuth2.Validation.Token.Tests.Utilities;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Integration.PublicKeys.OpenIdConfigurations.Default {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Integration.PublicKeys.OpenIdConfigurations.Default {
 	
 	[TestFixture]
 	internal sealed class OpenIdConfigurationFetcherTests {

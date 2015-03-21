@@ -1,13 +1,13 @@
 ﻿using System.Net.Http;
 using System.Web;
-using D2L.Security.AuthTokenValidation;
-using D2L.Security.RequestAuthentication.Core;
-using D2L.Security.RequestAuthentication.Default;
-using D2L.Security.RequestAuthentication.Tests.Utilities;
+using D2L.Security.OAuth2.Validation.Token;
+using D2L.Security.OAuth2.Validation.Request.Core;
+using D2L.Security.OAuth2.Validation.Request.Default;
+using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.RequestAuthentication.Tests.Integration.Default {
+namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.Default {
 	
 	[TestFixture]
 	internal sealed class RequestAuthenticatorTests {

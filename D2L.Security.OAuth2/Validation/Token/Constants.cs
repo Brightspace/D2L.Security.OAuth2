@@ -1,4 +1,4 @@
-﻿namespace D2L.Security.AuthTokenValidation {
+﻿namespace D2L.Security.OAuth2.Validation.Token {
 	
 	internal static class Constants {
 		internal const string ALLOWED_SIGNATURE_ALGORITHM = "RS256";

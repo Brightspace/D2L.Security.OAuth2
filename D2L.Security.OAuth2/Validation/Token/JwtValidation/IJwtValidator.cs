@@ -1,4 +1,4 @@
-﻿namespace D2L.Security.AuthTokenValidation.JwtValidation {
+﻿namespace D2L.Security.OAuth2.Validation.Token.JwtValidation {
 	
 	/// <summary>
 	/// Entry point into validating a jwt

@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens;
-using D2L.Security.AuthTokenValidation.JwtValidation;
+using D2L.Security.OAuth2.Validation.Token.JwtValidation;
 
-namespace D2L.Security.AuthTokenValidation.Default {
+namespace D2L.Security.OAuth2.Validation.Token.Default {
 
 	internal sealed class AuthTokenValidator : IAuthTokenValidator {
 

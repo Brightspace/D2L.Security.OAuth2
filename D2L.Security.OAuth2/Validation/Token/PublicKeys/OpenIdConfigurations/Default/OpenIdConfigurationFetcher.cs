@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net.Http;
-using D2L.Security.AuthTokenValidation.Utilities;
+using D2L.Security.OAuth2.Validation.Token.Utilities;
 using Microsoft.IdentityModel.Protocols;
 
-namespace D2L.Security.AuthTokenValidation.PublicKeys.OpenIdConfigurations.Default {
+namespace D2L.Security.OAuth2.Validation.Token.PublicKeys.OpenIdConfigurations.Default {
 	internal sealed class OpenIdConfigurationFetcher : IOpenIdConfigurationFetcher {
 
 		private readonly Uri m_authority;

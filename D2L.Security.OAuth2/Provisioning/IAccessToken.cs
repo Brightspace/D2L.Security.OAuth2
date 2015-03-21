@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace D2L.Security.AuthTokenProvisioning {
+namespace D2L.Security.OAuth2.Provisioning {
 	
 	public interface IAccessToken {
 		string Token { get; }

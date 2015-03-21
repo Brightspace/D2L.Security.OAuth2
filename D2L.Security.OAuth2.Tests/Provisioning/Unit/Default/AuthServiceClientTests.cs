@@ -4,12 +4,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using D2L.Security.AuthTokenProvisioning.Default;
+using D2L.Security.OAuth2.Provisioning.Default;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenProvisioning.Tests.Unit.Default {
+namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 
 	[TestFixture]
 	internal sealed class AuthServiceClientTests {

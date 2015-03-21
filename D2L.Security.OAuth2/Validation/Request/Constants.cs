@@ -1,4 +1,4 @@
-﻿namespace D2L.Security.RequestAuthentication {
+﻿namespace D2L.Security.OAuth2.Validation.Request {
 	internal static class Constants {
 
 		internal static class Headers {

@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 
-namespace D2L.Security.ScopeAuthorization.Tests {
+namespace D2L.Security.OAuth2.Scopes.Tests {
 
 	internal sealed class ScopeTests {
 

@@ -1,4 +1,4 @@
-﻿namespace D2L.Security.RequestAuthentication.Core {
+﻿namespace D2L.Security.OAuth2.Validation.Request.Core {
 	
 	/// <summary>
 	/// Verifies authenticity via the basic components of a request

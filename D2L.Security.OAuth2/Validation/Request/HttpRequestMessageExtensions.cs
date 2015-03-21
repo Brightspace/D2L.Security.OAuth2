@@ -2,7 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 
-namespace D2L.Security.RequestAuthentication {
+namespace D2L.Security.OAuth2.Validation.Request {
 	internal static class HttpRequestMessageExtensions {
 
 		/// <param name="request">The request</param>

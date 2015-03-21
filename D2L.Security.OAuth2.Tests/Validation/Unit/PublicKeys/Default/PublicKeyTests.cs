@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
 using System.Linq;
-using D2L.Security.AuthTokenValidation.PublicKeys;
-using D2L.Security.AuthTokenValidation.PublicKeys.Default;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys.Default;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Unit.PublicKeys.Default {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.PublicKeys.Default {
 	
 	[TestFixture]
 	internal sealed class PublicKeyTests {

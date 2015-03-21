@@ -1,7 +1,7 @@
-﻿using D2L.Security.AuthTokenValidation.Tests.Utilities;
+﻿using D2L.Security.OAuth2.Validation.Token.Tests.Utilities;
 using NUnit.Framework;
 
-namespace D2L.Security.AuthTokenValidation.Tests.Integration.FullStack {
+namespace D2L.Security.OAuth2.Validation.Token.Tests.Integration.FullStack {
 	
 	[TestFixture]
 	internal sealed class FullStackTests {

@@ -1,6 +1,6 @@
-﻿using D2L.Security.AuthTokenValidation;
+﻿using D2L.Security.OAuth2.Validation.Token;
 
-namespace D2L.Security.RequestAuthentication.Core.Default {
+namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 	internal sealed class CoreAuthenticator : ICoreAuthenticator {
 
 		private readonly bool m_mustValidateXsrf;

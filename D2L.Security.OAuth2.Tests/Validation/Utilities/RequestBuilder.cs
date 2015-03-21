@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 
-namespace D2L.Security.RequestAuthentication.Tests.Utilities {
+namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 	internal static class RequestBuilder {
 
 		#region HttpRequestMessage

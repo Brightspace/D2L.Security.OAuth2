@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
-using D2L.Security.AuthTokenValidation.JwtValidation.Exceptions;
-using D2L.Security.AuthTokenValidation.PublicKeys;
+using D2L.Security.OAuth2.Validation.Token.JwtValidation.Exceptions;
+using D2L.Security.OAuth2.Validation.Token.PublicKeys;
 
-namespace D2L.Security.AuthTokenValidation.JwtValidation.Default {
+namespace D2L.Security.OAuth2.Validation.Token.JwtValidation.Default {
 	internal sealed class JwtValidator : IJwtValidator {
 
 		private readonly IPublicKeyProvider m_keyProvider;

@@ -1,8 +1,8 @@
 ﻿using System;
-using D2L.Security.AuthTokenValidation.Default;
-using D2L.Security.AuthTokenValidation.JwtValidation;
+using D2L.Security.OAuth2.Validation.Token.Default;
+using D2L.Security.OAuth2.Validation.Token.JwtValidation;
 
-namespace D2L.Security.AuthTokenValidation {
+namespace D2L.Security.OAuth2.Validation.Token {
 
 	public static class AuthTokenValidatorFactory {
 

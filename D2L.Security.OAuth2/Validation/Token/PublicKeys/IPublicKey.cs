@@ -1,6 +1,6 @@
 ﻿using System.IdentityModel.Tokens;
 
-namespace D2L.Security.AuthTokenValidation.PublicKeys {
+namespace D2L.Security.OAuth2.Validation.Token.PublicKeys {
 	
 	/// <summary>
 	/// Used to decrypt tokens

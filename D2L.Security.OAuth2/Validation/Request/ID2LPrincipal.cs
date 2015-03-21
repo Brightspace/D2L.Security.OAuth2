@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace D2L.Security.RequestAuthentication {
+namespace D2L.Security.OAuth2.Validation.Request {
 	public interface ID2LPrincipal {
 		string UserId { get; }
 		string TenantId { get; }
