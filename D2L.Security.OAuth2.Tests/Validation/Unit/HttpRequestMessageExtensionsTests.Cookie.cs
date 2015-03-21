@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 		public void GetCookieValue_Many_FirstMatches_Success() {
 			string expected = "goodcookievalue";
 			string headerValue = CookieHeaderMaker.MakeCookieHeader(
-				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected ),
+				new Tuple<string, string>( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, expected ),
 				new Tuple<string, string>( "first", "value1" ),
 				new Tuple<string, string>( "second", "value2" )
 				);
@@ -53,7 +53,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 			string expected = "goodcookievalue";
 			string headerValue = CookieHeaderMaker.MakeCookieHeader(
 				new Tuple<string, string>( "first", "value1" ),
-				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected ),
+				new Tuple<string, string>( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, expected ),
 				new Tuple<string, string>( "second", "value2" )
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
@@ -67,7 +67,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 			string headerValue = CookieHeaderMaker.MakeCookieHeader(
 				new Tuple<string, string>( "first", "value1" ),
 				new Tuple<string, string>( "second", "value2" ),
-				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected )
+				new Tuple<string, string>( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, expected )
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
@@ -79,7 +79,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 			string expected = "goodcookievalue";
 			string headerValue = CookieHeaderMaker.MakeCookieHeader(
 				new Tuple<string, string>( "first", string.Empty ),
-				new Tuple<string, string>( Constants.D2L_AUTH_COOKIE_NAME, expected )
+				new Tuple<string, string>( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, expected )
 				);
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
 				.WithCookieHeader( headerValue );
@@ -115,7 +115,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 		[Test]
 		public void GetCookieValue_NoCookies_ExpectNull() {
 			HttpRequestMessage request = new HttpRequestMessage();
-			request.Headers.Add( Constants.Headers.COOKIE, new string[] { } );
+			request.Headers.Add( RequestValidationConstants.Headers.COOKIE, new string[] { } );
 			Assert.IsNull( request.GetCookieValue() );
 		}
 	}

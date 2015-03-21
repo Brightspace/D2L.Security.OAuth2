@@ -34,7 +34,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			}
 
 			if( !string.IsNullOrWhiteSpace( user ) ) {
-				m_claims.Add( new Claim( Constants.Claims.USER, user ) );
+				m_claims.Add( new Claim( Constants.Claims.USER_ID, user ) );
 			}
 
 			if( !string.IsNullOrWhiteSpace( xsrfToken ) ) {

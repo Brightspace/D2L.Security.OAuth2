@@ -35,9 +35,9 @@ namespace D2L.Security.OAuth2.Validation.Token.PublicKeys.Default {
 
 		private X509SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
 			
-			if( jsonWebKey.Kty != Constants.ALLOWED_KEY_TYPE ) {
+			if( jsonWebKey.Kty != TokenValidationConstants.ALLOWED_KEY_TYPE ) {
 				throw new Exception( 
-					string.Format( "Expected key type to be {0} but was {1}", Constants.ALLOWED_KEY_TYPE, jsonWebKey.Kty ) 
+					string.Format( "Expected key type to be {0} but was {1}", TokenValidationConstants.ALLOWED_KEY_TYPE, jsonWebKey.Kty ) 
 					);
 			}
 

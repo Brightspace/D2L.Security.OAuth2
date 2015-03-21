@@ -50,10 +50,11 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\FriendAssemblies.cs" />
     <Compile Include="Provisioning\ClaimSet.cs" />
-    <Compile Include="Provisioning\Constants.cs" />
+    <Compile Include="Provisioning\ProvisioningConstants.cs" />
     <Compile Include="Provisioning\Default\AccessToken.cs" />
     <Compile Include="Provisioning\Default\AuthServiceClient.cs" />
     <Compile Include="Provisioning\Default\AuthTokenProvider.cs" />
@@ -67,7 +68,7 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResult.cs" />
-    <Compile Include="Validation\Request\Constants.cs" />
+    <Compile Include="Validation\Request\RequestValidationConstants.cs" />
     <Compile Include="Validation\Request\Core\CoreAuthenticatorFactory.cs" />
     <Compile Include="Validation\Request\Core\Default\CoreAuthenticator.cs" />
     <Compile Include="Validation\Request\Core\Default\IValidatedTokenExtensions.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Validation\Request\PrincipalType.cs" />
     <Compile Include="Validation\Request\RequestAuthenticatorFactory.cs" />
     <Compile Include="Validation\Token\AuthTokenValidatorFactory.cs" />
-    <Compile Include="Validation\Token\Constants.cs" />
+    <Compile Include="Validation\Token\TokenValidationConstants.cs" />
     <Compile Include="Validation\Token\Default\AuthTokenValidator.cs" />
     <Compile Include="Validation\Token\IAuthTokenValidator.cs" />
     <Compile Include="Validation\Token\IDisposableExtensions.cs" />

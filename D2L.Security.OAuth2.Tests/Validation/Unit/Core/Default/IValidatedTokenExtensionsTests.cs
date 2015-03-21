@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 		public void GetXsrfToken_Success() {
 			string expected = "somexsrf";
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			MockClaim( validatedTokenMock, Constants.Claims.XSRF, expected );
+			MockClaim( validatedTokenMock, Constants.Claims.XSRF_TOKEN, expected );
 			Assert.AreEqual( expected, validatedTokenMock.Object.GetXsrfToken() );
 		}
 

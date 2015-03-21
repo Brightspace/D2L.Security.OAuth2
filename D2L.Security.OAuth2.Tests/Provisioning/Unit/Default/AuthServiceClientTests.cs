@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 					.Select( x => x.Split( '=' ) )
 					.ToDictionary( x => x[0], x => x[1] );
 
-				Assert.AreEqual( Constants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
+				Assert.AreEqual( ProvisioningConstants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
 				Assert.AreEqual( assertion, parameters["assertion"] );
 				Assert.AreEqual( string.Empty, parameters["scope"] );
 			}
@@ -55,7 +55,7 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 					.Select( x => x.Split( '=' ) )
 					.ToDictionary( x => x[0], x => x[1] );
 
-				Assert.AreEqual( Constants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
+				Assert.AreEqual( ProvisioningConstants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
 				Assert.AreEqual( assertion, parameters["assertion"] );
 				Assert.AreEqual( "foo%3Abar%3Abaz", parameters["scope"] );
 			}
@@ -78,7 +78,7 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 					.Select( x => x.Split( '=' ) )
 					.ToDictionary( x => x[0], x => x[1] );
 
-				Assert.AreEqual( Constants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
+				Assert.AreEqual( ProvisioningConstants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
 				Assert.AreEqual( assertion, parameters["assertion"] );
 				Assert.AreEqual( "foo%3Abar%3Abaz+quux%3Amrr%3Arawr", parameters["scope"] );
 			}

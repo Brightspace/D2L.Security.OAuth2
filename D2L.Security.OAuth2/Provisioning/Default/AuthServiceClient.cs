@@ -70,7 +70,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 		private static string BuildFormContents( string assertion, IEnumerable<Scope> scopes ) {
 			StringBuilder builder = new StringBuilder( "grant_type=" );
-			builder.Append( Constants.AssertionGrant.GRANT_TYPE );
+			builder.Append( ProvisioningConstants.AssertionGrant.GRANT_TYPE );
 
 			builder.Append( "&assertion=" );
 			builder.Append( assertion );

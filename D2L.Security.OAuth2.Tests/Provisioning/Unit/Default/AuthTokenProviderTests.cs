@@ -57,10 +57,10 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 
 			JwtSecurityToken signatureCheckedAssertion = CheckSignatureAndGetToken( actualAssertion, publicKey );
 			Assert.AreEqual( TestData.ISSUER, signatureCheckedAssertion.Issuer );
-			Assert.AreEqual( keyId.ToString(), signatureCheckedAssertion.Header[Constants.AssertionGrant.KEY_ID_NAME] );
+			Assert.AreEqual( keyId.ToString(), signatureCheckedAssertion.Header[ProvisioningConstants.AssertionGrant.KEY_ID_NAME] );
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.TENANT_ID, TestData.TENANT_ID );
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.TENANT_URL, TestData.TENANT_URL.AbsoluteUri );
-			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.USER, TestData.USER );
+			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.USER_ID, TestData.USER );
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN );
 		}
 	}

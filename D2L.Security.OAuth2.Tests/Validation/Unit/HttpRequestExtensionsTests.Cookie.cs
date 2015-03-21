@@ -35,7 +35,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 		public void GetCookieValue_Many_FirstMatches_Success() {
 			string expected = "goodcookie";
 			HttpRequest httpRequest = RequestBuilder.Create()
-				.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, expected )
+				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, expected )
 				.WithCookie( "first", "somevalue" )
 				.WithCookie( "second", "somevalue" );
 			Assert.AreEqual( expected, httpRequest.GetCookieValue() );
@@ -46,7 +46,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 			string expected = "goodcookie";
 			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithCookie( "first", "somevalue" )
-				.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, expected )
+				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, expected )
 				.WithCookie( "second", "somevalue" );
 			Assert.AreEqual( expected, httpRequest.GetCookieValue() );
 		}
@@ -57,7 +57,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
 			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithCookie( "first", "somevalue" )
 				.WithCookie( "second", "somevalue" )
-				.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, expected );
+				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, expected );
 			Assert.AreEqual( expected, httpRequest.GetCookieValue() );
 		}
 		
