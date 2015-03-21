@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		public Scope( string group, string resource, string[] permissions ) {
 			m_group = group;
 			m_resource = resource;
-			m_permissions = permissions;
+			m_permissions = permissions.OrderBy( x => x ).ToArray();
 		}
 
 		public string Group {
@@ -29,6 +29,29 @@ namespace D2L.Security.OAuth2.Scopes {
 
 		public string[] Permissions {
 			get { return m_permissions; }
+		}
+
+		public override string ToString() {
+			var permissionsString = string.Join( ",", m_permissions );
+			var result = string.Join( ":", m_group, m_resource, permissionsString );
+			return result;
+		}
+
+		public override bool Equals( object obj ) {
+			if( ReferenceEquals( this, obj ) ) {
+				return true;
+			}
+
+			var otherScope = obj as Scope;
+			if( otherScope == null ) {
+				return false;
+			}
+
+			return this.GetHashCode() == otherScope.GetHashCode();
+		}
+
+		public override int GetHashCode() {
+			return this.ToString().GetHashCode();
 		}
 
 		/// <summary>
