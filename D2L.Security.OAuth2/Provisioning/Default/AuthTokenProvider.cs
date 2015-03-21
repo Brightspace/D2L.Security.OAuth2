@@ -60,10 +60,10 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		private static string BuildAssertion( ClaimSet claimSet, SecurityToken signingToken ) {
 			SigningCredentials signingCredentials = BuildSigningCredentials( signingToken );
 			IEnumerable<Claim> claims = claimSet.ToClaims();
-			DateTime expiry = DateTime.UtcNow.Add( Constants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
+			DateTime expiry = DateTime.UtcNow.Add( ProvisioningConstants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
 
 			var jwt = new JwtSecurityToken(
-				audience: Constants.AssertionGrant.AUDIENCE,
+				audience: ProvisioningConstants.AssertionGrant.AUDIENCE,
 				claims: claimSet.ToClaims(),
 				expires: expiry,
 				signingCredentials: signingCredentials
@@ -81,9 +81,9 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 
 			var keyName = signingToken.CreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>();
-			if( keyName.Name != Constants.AssertionGrant.KEY_ID_NAME ) {
+			if( keyName.Name != ProvisioningConstants.AssertionGrant.KEY_ID_NAME ) {
 				throw new ArgumentException(
-					String.Format("Token must be named \"{0}\"", Constants.AssertionGrant.KEY_ID_NAME),
+					String.Format("Token must be named \"{0}\"", ProvisioningConstants.AssertionGrant.KEY_ID_NAME),
 					"signingToken"
 				);
 			}

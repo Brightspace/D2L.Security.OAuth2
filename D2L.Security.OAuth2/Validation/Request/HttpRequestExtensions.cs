@@ -6,7 +6,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the auth cookie, or null if one was not found</returns>
 		internal static string GetCookieValue( this HttpRequest request ) {
-			HttpCookie cookie = request.Cookies.Get( Constants.D2L_AUTH_COOKIE_NAME );
+			HttpCookie cookie = request.Cookies.Get( RequestValidationConstants.D2L_AUTH_COOKIE_NAME );
 			if( cookie == null ) {
 				return null;
 			}
@@ -17,23 +17,23 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the bearer token, or null if the bearer token is not set</returns>
 		internal static string GetBearerTokenValue( this HttpRequest request ) {
-			string headerValue = request.Headers[Constants.Headers.AUTHORIZATION];
+			string headerValue = request.Headers[RequestValidationConstants.Headers.AUTHORIZATION];
 			if( headerValue == null ) {
 				return null;
 			}
 
-			if( !headerValue.StartsWith( Constants.BearerTokens.SCHEME_PREFIX ) ) {
+			if( !headerValue.StartsWith( RequestValidationConstants.BearerTokens.SCHEME_PREFIX ) ) {
 				return null;
 			}
 
-			string bearerToken = headerValue.Substring( Constants.BearerTokens.SCHEME_PREFIX.Length );
+			string bearerToken = headerValue.Substring( RequestValidationConstants.BearerTokens.SCHEME_PREFIX.Length );
 			return bearerToken;
 		}
 
 		/// <param name="request">The request</param>
 		/// <returns>The value of the Xsrf header, or null if the Xsrf header was not found</returns>
 		internal static string GetXsrfValue( this HttpRequest request ) {
-			return request.Headers[Constants.Headers.XSRF];
+			return request.Headers[RequestValidationConstants.Headers.XSRF];
 		}
 	}
 }

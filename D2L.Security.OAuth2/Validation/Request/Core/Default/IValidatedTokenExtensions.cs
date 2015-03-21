@@ -9,7 +9,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 		/// <param name="token">A validated token</param>
 		/// <returns>The value of the Xsrf token. Returns null if one was not found.</returns>
 		internal static string GetXsrfToken( this IValidatedToken token ) {
-			return token.GetClaimValue( Constants.Claims.XSRF );
+			return token.GetClaimValue( Constants.Claims.XSRF_TOKEN );
 		}
 
 		/// <param name="token">A validated token</param>

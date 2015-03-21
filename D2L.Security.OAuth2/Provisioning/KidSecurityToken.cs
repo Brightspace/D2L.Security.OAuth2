@@ -9,7 +9,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 	internal class KidSecurityToken : NamedKeySecurityToken {
 
 		public KidSecurityToken( string kid, SecurityKey key )
-			: base( Constants.AssertionGrant.KEY_ID_NAME, kid, key ) { }
+			: base( ProvisioningConstants.AssertionGrant.KEY_ID_NAME, kid, key ) { }
 
 		public override bool CanCreateKeyIdentifierClause<T>() {
 			if( typeof( T ) == typeof( NamedKeySecurityKeyIdentifierClause  ) ) {
