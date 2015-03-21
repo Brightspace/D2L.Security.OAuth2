@@ -17,8 +17,8 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.JwtValidation.Default 
 		[Test]
 		public void Validate_Success() {
 			string jwt = TestTokenProvider.MakeJwt(
-				Constants.ALLOWED_SIGNATURE_ALGORITHM,
-				Constants.ALLOWED_TOKEN_TYPE,
+				TokenValidationConstants.ALLOWED_SIGNATURE_ALGORITHM,
+				TokenValidationConstants.ALLOWED_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);
@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.JwtValidation.Default 
 		public void Validate_InvalidAlgorithm_Failure() {
 			string jwt = TestTokenProvider.MakeJwt(
 				"INVALIDALGORITHM",
-				Constants.ALLOWED_TOKEN_TYPE,
+				TokenValidationConstants.ALLOWED_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);
@@ -42,8 +42,8 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.JwtValidation.Default 
 		public void Validate_InvalidDotNetSecurityTokenType_Failure() {
 			Mock<SecurityToken> securityTokenMock = new Mock<SecurityToken>();
 			string jwt = TestTokenProvider.MakeJwt(
-				Constants.ALLOWED_SIGNATURE_ALGORITHM,
-				Constants.ALLOWED_TOKEN_TYPE,
+				TokenValidationConstants.ALLOWED_SIGNATURE_ALGORITHM,
+				TokenValidationConstants.ALLOWED_TOKEN_TYPE,
 				"{}",
 				TestTokenProvider.CreateRSAParams()
 				);

@@ -33,10 +33,10 @@ namespace D2L.Security.OAuth2.Validation.Token.JwtValidation.Default {
 			
 			JwtSecurityToken jwtSecurityToken = (JwtSecurityToken)securityToken;
 
-			if( jwtSecurityToken.SignatureAlgorithm != Constants.ALLOWED_SIGNATURE_ALGORITHM ) {
+			if( jwtSecurityToken.SignatureAlgorithm != TokenValidationConstants.ALLOWED_SIGNATURE_ALGORITHM ) {
 				string message = string.Format(
 					"Expected signature algorithm {0} but was {1}",
-					Constants.ALLOWED_SIGNATURE_ALGORITHM,
+					TokenValidationConstants.ALLOWED_SIGNATURE_ALGORITHM,
 					jwtSecurityToken.SignatureAlgorithm
 					);
 				throw new InvalidTokenTypeException( message );

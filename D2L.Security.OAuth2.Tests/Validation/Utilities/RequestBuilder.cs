@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 		#region HttpRequestMessage
 		
 		internal static HttpRequestMessage WithAuthHeader( this HttpRequestMessage httpRequestMessage, string authHeaderValue ) {
-			return httpRequestMessage.WithAuthHeader( Constants.BearerTokens.SCHEME, authHeaderValue );
+			return httpRequestMessage.WithAuthHeader( RequestValidationConstants.BearerTokens.SCHEME, authHeaderValue );
 		}
 
 		internal static HttpRequestMessage WithAuthHeader( this HttpRequestMessage httpRequestMessage, string scheme, string authHeaderValue ) {
@@ -22,12 +22,12 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 		}
 
 		internal static HttpRequestMessage WithXsrfHeader( this HttpRequestMessage httpRequestMessage, string xsrfHeaderValue ) {
-			httpRequestMessage.Headers.Add( Constants.Headers.XSRF, xsrfHeaderValue );
+			httpRequestMessage.Headers.Add( RequestValidationConstants.Headers.XSRF, xsrfHeaderValue );
 			return httpRequestMessage;
 		}
 
 		internal static HttpRequestMessage WithCookie( this HttpRequestMessage httpRequestMessage, string cookieValue ) {
-			return httpRequestMessage.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, cookieValue );
+			return httpRequestMessage.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, cookieValue );
 		}
 
 		internal static HttpRequestMessage WithCookie( this HttpRequestMessage httpRequestMessage, string cookieName, string cookieValue ) {
@@ -36,7 +36,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 		}
 
 		internal static HttpRequestMessage WithCookieHeader( this HttpRequestMessage httpRequestMessage, string cookieHeaderValue ) {
-			httpRequestMessage.Headers.Add( Constants.Headers.COOKIE, cookieHeaderValue );
+			httpRequestMessage.Headers.Add( RequestValidationConstants.Headers.COOKIE, cookieHeaderValue );
 			return httpRequestMessage;
 		}
 
@@ -49,22 +49,22 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 		}
 
 		internal static HttpRequest WithAuthHeader( this HttpRequest httpRequest, string authHeaderValue ) {
-			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, Constants.BearerTokens.SCHEME_PREFIX + authHeaderValue );
+			AddHeader( httpRequest, RequestValidationConstants.Headers.AUTHORIZATION, RequestValidationConstants.BearerTokens.SCHEME_PREFIX + authHeaderValue );
 			return httpRequest;
 		}
 
 		internal static HttpRequest WithAuthHeader( this HttpRequest httpRequest, string scheme, string authHeaderValue ) {
-			AddHeader( httpRequest, Constants.Headers.AUTHORIZATION, scheme + " " + authHeaderValue );
+			AddHeader( httpRequest, RequestValidationConstants.Headers.AUTHORIZATION, scheme + " " + authHeaderValue );
 			return httpRequest;
 		}
 
 		internal static HttpRequest WithXsrfHeader( this HttpRequest httpRequest, string xsrfHeaderValue ) {
-			AddHeader( httpRequest, Constants.Headers.XSRF, xsrfHeaderValue );
+			AddHeader( httpRequest, RequestValidationConstants.Headers.XSRF, xsrfHeaderValue );
 			return httpRequest;
 		}
 
 		internal static HttpRequest WithCookie( this HttpRequest httpRequest, string cookieValue ) {
-			return httpRequest.WithCookie( Constants.D2L_AUTH_COOKIE_NAME, cookieValue );
+			return httpRequest.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, cookieValue );
 		}
 
 		internal static HttpRequest WithCookie( this HttpRequest httpRequest, string cookieName, string cookieValue ) {

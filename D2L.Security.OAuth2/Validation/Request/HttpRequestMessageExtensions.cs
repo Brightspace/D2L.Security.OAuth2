@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the auth cookie, or null if one was not found</returns>
 		internal static string GetCookieValue( this HttpRequestMessage request ) {
-			string cookiesHeaderValue = request.GetHeaderValue( Constants.Headers.COOKIE );
+			string cookiesHeaderValue = request.GetHeaderValue( RequestValidationConstants.Headers.COOKIE );
 			if( cookiesHeaderValue == null ) {
 				return null;
 			}
@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 					continue;
 				}
 
-				if( nameValuePair[0].Trim() == Constants.D2L_AUTH_COOKIE_NAME ) {
+				if( nameValuePair[0].Trim() == RequestValidationConstants.D2L_AUTH_COOKIE_NAME ) {
 					return nameValuePair[1].Trim();
 				}
 			}
@@ -31,7 +31,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the Xsrf header, or null if the Xsrf header was not found</returns>
 		internal static string GetXsrfValue( this HttpRequestMessage request ) {
-			return request.GetHeaderValue( Constants.Headers.XSRF );
+			return request.GetHeaderValue( RequestValidationConstants.Headers.XSRF );
 		}
 
 		/// <param name="request">The request</param>
@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				return null;
 			}
 
-			if( authHeader.Scheme != Constants.BearerTokens.SCHEME ) {
+			if( authHeader.Scheme != RequestValidationConstants.BearerTokens.SCHEME ) {
 				return null;
 			}
 
