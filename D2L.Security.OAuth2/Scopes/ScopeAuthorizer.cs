@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace D2L.Security.OAuth2.Scopes {
 
-	internal static class ScopeAuthorizer {
+	public static class ScopeAuthorizer {
 
 		public static bool IsAuthorized( IEnumerable<Scope> grantedScopes, Scope requiredScope ) {
 
