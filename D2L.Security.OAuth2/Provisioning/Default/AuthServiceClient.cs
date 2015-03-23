@@ -11,9 +11,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 	
 	public sealed class AuthServiceClient : IAuthServiceClient {
 
-		private static AuthenticationHeaderValue m_authorization =
-			new AuthenticationHeaderValue( "Basic", ToBase64( "lms.dev.d2l:lms_secret" ) );
-
 		private readonly HttpClient m_client;
 		private readonly bool m_disposeClient;
 		private readonly Uri m_tokenProvisioningEndpoint;
@@ -61,9 +58,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		private Task<HttpResponseMessage> MakeRequest( string body ) {
 			var request = new HttpRequestMessage( HttpMethod.Post, m_tokenProvisioningEndpoint );
 			request.Content = new StringContent( body, Encoding.UTF8, "application/x-www-form-urlencoded" );
-			
-			// TODO: If we can solve US49562 we can get rid of this authorization header
-			request.Headers.Authorization = m_authorization;
 
 			return m_client.SendAsync( request );
 		}
