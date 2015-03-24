@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.Token;
 
 namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
@@ -10,7 +11,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 		private readonly string m_userId;
 		private readonly string m_tenantId;
 		private readonly string m_tenantUrl;
-		private readonly IEnumerable<string> m_scopes;
+		private readonly IEnumerable<Scope> m_scopes;
 		private readonly PrincipalType m_type;
 		private readonly IEnumerable<Claim> m_allClaims;
 		
@@ -47,7 +48,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 			get { return m_tenantUrl; }
 		}
 		
-		IEnumerable<string> ID2LPrincipal.Scopes {
+		IEnumerable<Scope> ID2LPrincipal.Scopes {
 			get { return m_scopes; }
 		}
 
