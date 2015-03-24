@@ -7,6 +7,7 @@ using NUnit.Framework;
 namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 	
 	[TestFixture]
+	[Explicit]
 	internal sealed partial class FullStackTests {
 
 		private readonly IRequestAuthenticator m_authenticator = RequestAuthenticatorFactory.Create(
