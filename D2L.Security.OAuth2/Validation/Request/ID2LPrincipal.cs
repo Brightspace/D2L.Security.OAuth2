@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	public interface ID2LPrincipal {
@@ -10,7 +11,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 		PrincipalType Type { get; }
 
-		IEnumerable<string> Scopes { get; }
+		IEnumerable<Scope> Scopes { get; }
 		IEnumerable<Claim> AllClaims { get; }
 
 		/// <summary>

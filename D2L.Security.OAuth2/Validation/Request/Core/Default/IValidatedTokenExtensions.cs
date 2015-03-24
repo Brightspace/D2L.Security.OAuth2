@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.Token;
 
 namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
@@ -26,14 +27,18 @@ namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
 
 		/// <param name="token">A validated token</param>
 		/// <returns>The scopes</returns>
-		internal static IEnumerable<string> GetScopes( this IValidatedToken token ) {
+		internal static IEnumerable<Scope> GetScopes( this IValidatedToken token ) {
 			string scopes = token.GetClaimValue( Constants.Claims.SCOPE );
 
 			if( string.IsNullOrEmpty( scopes ) ) {
-				return new string[] { };
+				return new Scope[] { };
 			}
 
-			string[] scopesArray = scopes.Split( ' ' );
+			Scope[] scopesArray = scopes
+				.Split( ' ' )
+				.Select( scopeString => Scope.Parse( scopeString ) )
+				.Where( x => x != null )
+				.ToArray();
 			return scopesArray;
 		}
 
