@@ -5,6 +5,7 @@ using D2L.Security.OAuth2.Validation.Token;
 using D2L.Security.OAuth2.Validation.Request.Core.Default;
 using Moq;
 using NUnit.Framework;
+using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 	
@@ -47,21 +48,21 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 
 		[Test]
 		public void GetScopes_One_Success() {
-			string expected = "somescope";
+			var expected = new Scope( "some", "random", "scope" );
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			MockClaim( validatedTokenMock, Constants.Claims.SCOPE, expected );
-			IEnumerable<string> scopes = validatedTokenMock.Object.GetScopes();
+			MockClaim( validatedTokenMock, Constants.Claims.SCOPE, expected.ToString() );
+			IEnumerable<Scope> scopes = validatedTokenMock.Object.GetScopes();
 			Assert.AreEqual( 1, scopes.Count() );
 			Assert.AreEqual( expected, scopes.First() );
 		}
 
 		[Test]
 		public void GetScopes_Many_Success() {
-			string scope1 = "somescope1";
-			string scope2 = "somescope2";
+			var scope1 = new Scope( "some", "scope", "1" );
+			var scope2 = new Scope( "some", "scope", "2" );
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.SCOPE, scope1 + " " + scope2 );
-			IEnumerable<string> scopes = validatedTokenMock.Object.GetScopes();
+			IEnumerable<Scope> scopes = validatedTokenMock.Object.GetScopes();
 			Assert.AreEqual( 2, scopes.Count() );
 			Assert.IsTrue( scopes.Contains( scope1 ) );
 			Assert.IsTrue( scopes.Contains( scope2 ) );
@@ -70,7 +71,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 		[Test]
 		public void GetScopes_None_ReturnsEmpty() {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
-			IEnumerable<string> scopes = validatedTokenMock.Object.GetScopes();
+			IEnumerable<Scope> scopes = validatedTokenMock.Object.GetScopes();
 			Assert.IsFalse( scopes.Any() );
 		}
 
