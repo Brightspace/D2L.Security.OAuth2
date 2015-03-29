@@ -5,14 +5,12 @@ using System.Linq;
 using System.Security.Cryptography;
 
 using D2L.Security.OAuth2.SecurityTokens;
+using D2L.Security.OAuth2.SecurityTokens.Default;
 
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 	internal static class Utilities {
-		public static readonly TimeSpan ROTATION_BUFFER = TimeSpan.FromMinutes( 10 );
-		public static readonly TimeSpan TOKEN_LIFETIME = TimeSpan.FromHours( 1 );
-
 		public static void AssertNumberOfTokensStored(
 			ISecurityTokenManager manager,
 			long num
@@ -31,19 +29,20 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 		public static D2LSecurityToken CreateExpiringToken() {
 			return CreateTokenWithTimeRemaining(
-				ROTATION_BUFFER - TimeSpan.FromSeconds( 30 )
-				);
+				RotatingSecurityTokenManager.DEFAULT_ROTATION_BUFFER
+				- TimeSpan.FromSeconds( 30 )
+			);
 		}
 
 		public static D2LSecurityToken CreateActiveToken() {
 			return CreateTokenWithTimeRemaining(
-				TOKEN_LIFETIME - TimeSpan.FromSeconds( 1 )
+				RotatingSecurityTokenManager.DEFAULT_TOKEN_LIFETIME - TimeSpan.FromSeconds( 1 )
 			);
 		}
 
 		public static D2LSecurityToken CreateTokenWithTimeRemaining( TimeSpan remaining ) {
 			var validTo = DateTime.UtcNow + remaining;
-			var validFrom = validTo - TOKEN_LIFETIME;
+			var validFrom = validTo - RotatingSecurityTokenManager.DEFAULT_TOKEN_LIFETIME;
 			var csp = new RSACryptoServiceProvider( 2048 ) {
 				PersistKeyInCsp = false
 			};
@@ -77,7 +76,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 		public static void AssertTokenActive( D2LSecurityToken token ) {
 			Assert.False( token.IsExpired() );
-			Assert.False( token.IsExpiringSoon( ROTATION_BUFFER ) );
+			Assert.False( token.IsExpiringSoon( RotatingSecurityTokenManager.DEFAULT_ROTATION_BUFFER ) );
 		}
 
 		public static void AssertTokensHavePrivateKeys( IEnumerable<D2LSecurityToken> tokens ) {
