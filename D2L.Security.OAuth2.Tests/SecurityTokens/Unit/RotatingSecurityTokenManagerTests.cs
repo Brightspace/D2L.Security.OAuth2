@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		private ISecurityTokenManager m_securityTokenManager;
 
 		public RotatingSecurityTokenManagerTests() {
-			m_securityTokenFactory = new RsaSecurityTokenFactory( Utilities.TOKEN_LIFETIME );
+			m_securityTokenFactory = new RsaSecurityTokenFactory();
 		}
 
 		[SetUp]
@@ -25,8 +25,8 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			m_securityTokenManager = new RotatingSecurityTokenManager(
 				m_innerSecurityTokenManager,
 				m_securityTokenFactory,
-				Utilities.ROTATION_BUFFER,
-				Utilities.TOKEN_LIFETIME
+				RotatingSecurityTokenManager.DEFAULT_ROTATION_BUFFER,
+				RotatingSecurityTokenManager.DEFAULT_TOKEN_LIFETIME
 			);
 		}
 

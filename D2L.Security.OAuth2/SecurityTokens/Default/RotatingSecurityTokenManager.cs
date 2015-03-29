@@ -9,10 +9,13 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		private readonly ISecurityTokenManager m_inner;
 		private readonly ISecurityTokenFactory m_securityTokenFactory;
 		private readonly TimeSpan m_rotationBuffer;
-		private readonly TimeSpan? m_tokenLifetime;
+		private readonly TimeSpan m_tokenLifetime;
 
-		private static readonly TimeSpan DEFAULT_ROTATION_BUFFER
+		public static readonly TimeSpan DEFAULT_ROTATION_BUFFER
 			= TimeSpan.FromMinutes( 10 );
+
+		public static readonly TimeSpan DEFAULT_TOKEN_LIFETIME
+			= TimeSpan.FromHours( 1 );
 
 		/// <summary>
 		/// Callers should prefer this constructor because it uses a
@@ -23,17 +26,17 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		public RotatingSecurityTokenManager(
 			ISecurityTokenManager inner,
 			ISecurityTokenFactory securityTokenFactory
-		) : this( inner, securityTokenFactory, DEFAULT_ROTATION_BUFFER, null ) { }
+		) : this( inner, securityTokenFactory, DEFAULT_ROTATION_BUFFER, DEFAULT_TOKEN_LIFETIME ) { }
 
 		/// <summary>
 		/// Do not use this overload unless you need to customize the token
-		/// rotation buffer.
+		/// rotation buffer and lifetimes.
 		/// </summary>
 		public RotatingSecurityTokenManager(
 			ISecurityTokenManager inner,
 			ISecurityTokenFactory securityTokenFactory,
 			TimeSpan rotationBuffer,
-			TimeSpan? tokenLifetime
+			TimeSpan tokenLifetime
 		) {
 			m_inner = inner;
 			m_securityTokenFactory = securityTokenFactory;
@@ -65,7 +68,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			// At this point we either didn't get a token, it was expiring or
 			// it was expired (and we deleted it.)
 
-			token = m_securityTokenFactory.Create();
+			token = m_securityTokenFactory.Create( m_tokenLifetime );
 
 			// Wait for the token to be created: we do this so that we don't
 			// use a token before its available via GetAllTokens().

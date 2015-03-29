@@ -12,13 +12,14 @@ Services will need to sign assertions for the JWT bearer token grant using the o
 Steps:
 
 1. Implemenent an `ISecurityTokenManager` that persists keys.
-   - You can *prototype* with the `InMemorySecurityTokenManager` provided by this library.
+    - You can *prototype* with the `InMemorySecurityTokenManager` provided by this library.
 2. Dependency inject `ISecurityTokenManager` using the `RollingSecurityTokenManager` implementation (defined in this library) passing your `ISecurityTokenManager` as its inner implementation.
 
 Consider using the `LocalPrivateKeySecurityTokenManager` provided by this library.
 When paired with an `ISecurityTokenManager` that only persists public keys (a requirement) `LocalPrivateKeySecurityTokenManager` keeps a single private key in-memory but is still able to return all public keys via the `GetAllTokens()` function.
 This protects the system from read-only access to the database (but not write-access: the attacker could install their own public keys.)
 Note: `LocalPrivateKeySecurityTokenManager` should still be wrapped in `RollingSecurityTokenmanager`.
+
 
 Theory of key rotation
 ----------------------
