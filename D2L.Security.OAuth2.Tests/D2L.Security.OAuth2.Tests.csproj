@@ -73,6 +73,9 @@
     <Compile Include="Provisioning\Utilities\TestUris.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
+    <Compile Include="SecurityTokens\Unit\LocalPrivateKeySecurityTokenManagerTests.cs" />
+    <Compile Include="SecurityTokens\Unit\RotatingSecurityTokenManagerTests.cs" />
+    <Compile Include="SecurityTokens\Unit\Utilities.cs" />
     <Compile Include="Validation\Integration\Default\RequestAuthenticatorTests.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.HttpRequest.cs" />
@@ -116,6 +119,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
