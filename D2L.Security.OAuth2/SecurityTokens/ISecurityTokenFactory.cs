@@ -3,14 +3,14 @@
 namespace D2L.Security.OAuth2.SecurityTokens {
 	public interface ISecurityTokenFactory {
 		/// <summary>
-		/// Creates a security token with the default lifespan.
+		/// Creates a new D2LSecurityToken
 		/// </summary>
-		D2LSecurityToken Create();
-
-		/// <summary>
-		/// Creates a token with an explicit lifespan.
-		/// Prefer the default overload.
-		/// </summary>
+		/// <param name="lifespan">
+		/// The length of time the token will be valid for
+		/// </param>
+		/// <returns>
+		/// A token ValidFrom now with a fresh KeyId
+		/// </returns>
 		D2LSecurityToken Create( TimeSpan lifespan );
 	}
 }
