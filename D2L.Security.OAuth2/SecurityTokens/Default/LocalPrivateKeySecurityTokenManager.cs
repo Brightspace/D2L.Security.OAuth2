@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 	///
 	/// See the README.md for the detailed theory behind this class.
 	/// </remarks>
-	internal sealed class LocalPrivateKeySecurityTokenManager : ISecurityTokenManager {
+	internal sealed class LocalPrivateKeySecurityTokenManager : ISecurityTokenManager, IDisposable {
 		private readonly ISecurityTokenManager m_inner;
 		private D2LSecurityToken m_securityToken;
 
@@ -51,6 +51,12 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			}
 			m_securityToken = token;
 			await m_inner.SaveAsync( token );
+		}
+
+		public void Dispose() {
+			if( m_securityToken != null ) {
+				m_securityToken.Dispose();
+			}
 		}
 	}
 }

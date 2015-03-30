@@ -24,6 +24,12 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			);
 		}
 
+		[TearDown]
+		public void TearDown() {
+			( m_innerSecurityTokenManager as IDisposable ).Dispose();
+			( m_securityTokenManager as IDisposable ).Dispose();
+		}
+
 		[Test]
 		public async void GetLastestToken_NoTokens_ReturnsNull() {
 			D2LSecurityToken token = await m_securityTokenManager.GetLatestTokenAsync();
