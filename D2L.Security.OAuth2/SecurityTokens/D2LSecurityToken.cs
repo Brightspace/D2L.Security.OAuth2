@@ -7,7 +7,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 	/// <summary>
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
-	public sealed class D2LSecurityToken : SecurityToken {
+	public sealed class D2LSecurityToken : SecurityToken, IDisposable {
 		private readonly Guid m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
@@ -15,6 +15,9 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 
 		private string m_idAsString;
 
+		/// <remarks>
+		/// This class takes ownership of the AsymmetricSecurityKey
+		/// </remarks>
 		public D2LSecurityToken(
 			TimeSpan lifespan,
 			AsymmetricSecurityKey key
@@ -25,6 +28,9 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			m_securityKeys = new[] {key};
 		}
 
+		/// <remarks>
+		/// This class takes ownership of the AsymmetricSecurityKey
+		/// </remarks>
 		public D2LSecurityToken(
 			Guid id,
 			DateTime validFrom,
@@ -80,6 +86,14 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 
 		public bool HasPrivateKey() {
 			return m_securityKeys[ 0 ].HasPrivateKey();
+		}
+
+		public void Dispose() {
+			if( !( m_securityKeys[ 0 ] is IDisposable ) ) {
+				return;
+			}
+			var disposableKey = m_securityKeys[ 0 ] as IDisposable;
+			disposableKey.Dispose();
 		}
 	}
 }
