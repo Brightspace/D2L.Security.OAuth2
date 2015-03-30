@@ -19,10 +19,8 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// </summary>
 		DateTime AccessTokenExpiry { get; }
 
-		[Obsolete("Temporary")]
 		string Xsrf { get; }
 
-		[Obsolete( "Temporary" )]
 		string AccessToken { get; }
 	}
 }
