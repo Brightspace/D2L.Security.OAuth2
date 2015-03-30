@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
 
 namespace D2L.Security.OAuth2.SecurityTokens {
 	/// <summary>
@@ -91,11 +92,24 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			return m_key.HasPrivateKey();
 		}
 
-		public void Dispose() {
+		public AsymmetricAlgorithm GetAsymmetricAlgorithm() {
+			if( m_key is X509AsymmetricSecurityKey ) {
+				throw new InvalidOperationException(
+					"This hacky thing is not applicable to the X509AsymmetricSecurityKey implementation"
+				);
+			}
+
 			// Note: RsaSecurityKey ignores the "algorithm" parameter here.
 			// See http://referencesource.microsoft.com/#System.IdentityModel/System/IdentityModel/Tokens/RsaSecurityKey.cs,63
 
-			var alg = m_key.GetAsymmetricAlgorithm( "", HasPrivateKey() );
+			AsymmetricAlgorithm alg = m_key
+				.GetAsymmetricAlgorithm( "", HasPrivateKey() );
+
+			return alg;
+		}
+
+		public void Dispose() {
+			var alg = GetAsymmetricAlgorithm();
 			alg.Dispose();
 		}
 	}
