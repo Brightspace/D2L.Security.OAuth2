@@ -15,6 +15,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 	/// storage (or, in this implementation, get the List of SecurityTokens 
 	/// and go wild.) Callers should ensure this doesn't happen.
 	/// </remarks>
+	[Obsolete("Only use this implementation for prototyping and tests.")]
 	internal sealed class InMemorySecurityTokenManager : ISecurityTokenManager {
 		private readonly List<D2LSecurityToken> m_tokens = new List<D2LSecurityToken>();
 
