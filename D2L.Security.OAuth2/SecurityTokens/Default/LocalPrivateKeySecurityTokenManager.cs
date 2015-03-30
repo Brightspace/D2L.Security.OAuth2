@@ -32,6 +32,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 
 		async Task ISecurityTokenManager.DeleteAsync( Guid id ) {
 			if( m_securityToken.KeyId == id ) {
+				m_securityToken.Dispose();
 				m_securityToken = null;
 			}
 			await m_inner.DeleteAsync( id );
