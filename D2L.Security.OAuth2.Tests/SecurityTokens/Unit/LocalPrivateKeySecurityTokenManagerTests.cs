@@ -15,7 +15,9 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[SetUp]
 		public void SetUp() {
 			// Each test gets a fresh key store
+#pragma warning disable 0618
 			m_innerSecurityTokenManager = new InMemorySecurityTokenManager();
+#pragma warning restore 0618
 
 			m_securityTokenManager = new LocalPrivateKeySecurityTokenManager(
 				m_innerSecurityTokenManager
