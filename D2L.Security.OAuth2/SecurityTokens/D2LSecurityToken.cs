@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
 
@@ -10,7 +11,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		private readonly Guid m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
-		private readonly AsymmetricSecurityKey[] m_securityKeys;
+		private readonly AsymmetricSecurityKey m_key;
 
 		private string m_idAsString;
 
@@ -24,7 +25,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			m_id = Guid.NewGuid();
 			m_validFrom = DateTime.UtcNow;
 			m_validTo = m_validFrom + lifespan;
-			m_securityKeys = new[] {key};
+			m_key = key;
 		}
 
 		/// <remarks>
@@ -39,7 +40,6 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			if( id == new Guid() ) {
 				throw new ArgumentException( "Use Guid.NewGuid() to create Guids - the default constructor always creates the same one." );
 			}
-
 			if( validFrom >= validTo ) {
 				throw new ArgumentException( "validFrom must be before validTo" );
 			}
@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			m_id = id;
 			m_validFrom = validFrom;
 			m_validTo = validTo;
-			m_securityKeys = new[] {key};
+			m_key = key;
 		}
 
 		public override string Id {
@@ -59,8 +59,16 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			}
 		}
 
+		public Guid KeyId {
+			get { return m_id; }
+		}
+
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
-			get { return new ReadOnlyCollection<SecurityKey>( m_securityKeys ); }
+			get {
+				return new ReadOnlyCollection<SecurityKey>(
+					new List<SecurityKey> { m_key }
+				);
+			}
 		}
 
 		public override DateTime ValidFrom {
@@ -69,10 +77,6 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 
 		public override DateTime ValidTo {
 			get { return m_validTo; }
-		}
-
-		public Guid KeyId {
-			get { return m_id; }
 		}
 
 		public bool IsExpired() {
@@ -84,15 +88,15 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		}
 
 		public bool HasPrivateKey() {
-			return m_securityKeys[ 0 ].HasPrivateKey();
+			return m_key.HasPrivateKey();
 		}
 
 		public void Dispose() {
-			if( !( m_securityKeys[ 0 ] is IDisposable ) ) {
-				return;
-			}
-			var disposableKey = m_securityKeys[ 0 ] as IDisposable;
-			disposableKey.Dispose();
+			// Note: RsaSecurityKey ignores the "algorithm" parameter here.
+			// See http://referencesource.microsoft.com/#System.IdentityModel/System/IdentityModel/Tokens/RsaSecurityKey.cs,63
+
+			var alg = m_key.GetAsymmetricAlgorithm( "", HasPrivateKey() );
+			alg.Dispose();
 		}
 	}
 }

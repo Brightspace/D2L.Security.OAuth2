@@ -35,7 +35,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 		[TearDown]
 		public void TearDown() {
-			(m_innerSecurityTokenManager as IDisposable).Dispose();
+			( m_innerSecurityTokenManager as IDisposable ).Dispose();
 		}
 
 		[Test]
