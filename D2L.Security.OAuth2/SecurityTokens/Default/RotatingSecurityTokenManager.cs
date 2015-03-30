@@ -87,7 +87,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			// Immediately ToList() this to avoid any problems with invalid
 			// iterators (depending on how m_inner is implemented, calling
 			// Delete while iterating could be problematic.
-			IEnumerable<D2LSecurityToken> tokens = m_inner
+			List<D2LSecurityToken> tokens = m_inner
 				.GetAllTokens()
 				.ToList();
 
