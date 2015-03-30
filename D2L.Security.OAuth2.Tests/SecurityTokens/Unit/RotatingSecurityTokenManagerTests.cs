@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using D2L.Security.OAuth2.SecurityTokens;
 using D2L.Security.OAuth2.SecurityTokens.Default;
@@ -30,6 +31,11 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 				RotatingSecurityTokenManager.DEFAULT_ROTATION_BUFFER,
 				RotatingSecurityTokenManager.DEFAULT_TOKEN_LIFETIME
 			);
+		}
+
+		[TearDown]
+		public void TearDown() {
+			(m_innerSecurityTokenManager as IDisposable).Dispose();
 		}
 
 		[Test]

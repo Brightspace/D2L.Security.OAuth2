@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 	/// and go wild.) Callers should ensure this doesn't happen.
 	/// </remarks>
 	[Obsolete("Only use this implementation for prototyping and tests.")]
-	internal sealed class InMemorySecurityTokenManager : ISecurityTokenManager {
+	internal sealed class InMemorySecurityTokenManager : ISecurityTokenManager, IDisposable {
 		private readonly List<D2LSecurityToken> m_tokens = new List<D2LSecurityToken>();
 
 		Task<D2LSecurityToken> ISecurityTokenManager.GetLatestTokenAsync() {
@@ -44,6 +44,13 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			m_tokens[ index ].Dispose();
 			m_tokens.RemoveAt( index );
 			return Task.Delay( 0 );
+		}
+
+		public void Dispose() {
+			foreach( var token in m_tokens ) {
+				token.Dispose();
+			}
+			m_tokens.Clear();
 		}
 	}
 }
