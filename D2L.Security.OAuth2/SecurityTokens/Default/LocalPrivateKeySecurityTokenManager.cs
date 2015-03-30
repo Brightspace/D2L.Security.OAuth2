@@ -44,11 +44,17 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 					"Saving tokens without private keys is not supported by this implementation of ISecurityTokenManager"
 				);
 			}
+
 			if( m_securityToken != null && token.ValidTo < m_securityToken.ValidTo ) {
 				throw new InvalidOperationException(
 					"Saving tokens that expires before the currently stored token is not supported by this implementation of ISecurityTokenManager"
 				);
 			}
+
+			if( m_securityToken != null ) {
+				m_securityToken.Dispose();
+			}
+
 			m_securityToken = token;
 			await m_inner.SaveAsync( token );
 		}
