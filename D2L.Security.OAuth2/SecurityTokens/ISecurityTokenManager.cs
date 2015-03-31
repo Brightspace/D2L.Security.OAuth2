@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		/// Get all security tokens.
 		/// </summary>
 		/// <remarks>
-		/// Wether the D2LSecurityTokens returned by this function have private
+		/// Whether the D2LSecurityTokens returned by this function have private
 		/// key material is implementation-defined.
 		/// </remarks>
 		IEnumerable<D2LSecurityToken> GetAllTokens();
