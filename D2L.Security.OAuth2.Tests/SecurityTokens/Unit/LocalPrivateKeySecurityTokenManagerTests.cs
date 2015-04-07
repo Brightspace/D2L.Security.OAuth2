@@ -32,7 +32,9 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 		[Test]
 		public async void GetLastestToken_NoTokens_ReturnsNull() {
-			D2LSecurityToken token = await m_securityTokenManager.GetLatestTokenAsync();
+			D2LSecurityToken token = await m_securityTokenManager
+				.GetLatestTokenAsync()
+				.ConfigureAwait( false );
 
 			Assert.IsNull( token );
 		}
@@ -40,9 +42,13 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetLatestToken_NoTokenButSomeInInner_ReturnsNull() {
 			var activeToken = Utilities.CreateActiveToken();
-			await m_innerSecurityTokenManager.SaveAsync( activeToken );
+			await m_innerSecurityTokenManager
+				.SaveAsync( activeToken )
+				.ConfigureAwait( false );
 
-			D2LSecurityToken token = await m_securityTokenManager.GetLatestTokenAsync();
+			D2LSecurityToken token = await m_securityTokenManager
+				.GetLatestTokenAsync()
+				.ConfigureAwait( false );
 
 			Assert.IsNull( token );
 			AssertNumberOfTokensStored( 1 );
@@ -51,9 +57,13 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetLatestToken_HasActiveToken_ReturnsToken() {
 			var activeToken = Utilities.CreateActiveToken();
-			await m_securityTokenManager.SaveAsync( activeToken );
+			await m_securityTokenManager
+				.SaveAsync( activeToken )
+				.ConfigureAwait( false );
 
-			D2LSecurityToken token = await m_securityTokenManager.GetLatestTokenAsync();
+			D2LSecurityToken token = await m_securityTokenManager
+				.GetLatestTokenAsync()
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( token );
 			Assert.AreEqual( activeToken.KeyId, token.KeyId );
@@ -63,9 +73,13 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetLatestToken_HasExpiredToken_ReturnsToken() {
 			var expiredToken = Utilities.CreateExpiredToken();
-			await m_securityTokenManager.SaveAsync( expiredToken );
+			await m_securityTokenManager
+				.SaveAsync( expiredToken )
+				.ConfigureAwait( false );
 
-			D2LSecurityToken token = await m_securityTokenManager.GetLatestTokenAsync();
+			D2LSecurityToken token = await m_securityTokenManager
+				.GetLatestTokenAsync()
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( token );
 			Assert.AreEqual( expiredToken.KeyId, token.KeyId );
@@ -75,12 +89,18 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void SaveAsyncTwiceGetLatestTokenInOrder_ReturnsLatestToken() {
 			var expiredToken = Utilities.CreateExpiredToken();
-			await m_securityTokenManager.SaveAsync( expiredToken );
+			await m_securityTokenManager
+				.SaveAsync( expiredToken )
+				.ConfigureAwait( false );
 
 			var activeToken = Utilities.CreateActiveToken();
-			await m_securityTokenManager.SaveAsync( activeToken );
+			await m_securityTokenManager
+				.SaveAsync( activeToken )
+				.ConfigureAwait( false );
 
-			D2LSecurityToken token = await m_securityTokenManager.GetLatestTokenAsync();
+			D2LSecurityToken token = await m_securityTokenManager
+				.GetLatestTokenAsync()
+				.ConfigureAwait( false );
 
 			Utilities.AssertNumberOfTokensStored( m_innerSecurityTokenManager, 2 );
 			Assert.AreEqual( activeToken.KeyId, token.KeyId );
@@ -92,27 +112,39 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[ExpectedException(typeof(InvalidOperationException))]
 		public async void SaveAsyncTwiceGetLatestTokenBackwards_Throws() {
 			var activeToken = Utilities.CreateActiveToken();
-			await m_securityTokenManager.SaveAsync( activeToken );
+			await m_securityTokenManager
+				.SaveAsync( activeToken )
+				.ConfigureAwait( false );
 
 			var expiredToken = Utilities.CreateExpiredToken();
-			await m_securityTokenManager.SaveAsync( expiredToken );
+			await m_securityTokenManager
+				.SaveAsync( expiredToken )
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		[ExpectedException( typeof( InvalidOperationException ) )]
 		public async void SaveAsync_PublicKeyOnly_Throws() {
 			var token = Utilities.CreateTokenWithoutPrivateKey();
-			await m_securityTokenManager.SaveAsync( token );
+			await m_securityTokenManager
+				.SaveAsync( token )
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		public async void DeleteAsyncGetLatestToken_ReturnsNull() {
 			var activeToken = Utilities.CreateActiveToken();
-			await m_securityTokenManager.SaveAsync( activeToken );
+			await m_securityTokenManager
+				.SaveAsync( activeToken )
+				.ConfigureAwait( false );
 
-			await m_securityTokenManager.DeleteAsync( activeToken.KeyId );
+			await m_securityTokenManager
+				.DeleteAsync( activeToken.KeyId )
+				.ConfigureAwait( false );
 
-			D2LSecurityToken token = await m_securityTokenManager.GetLatestTokenAsync();
+			D2LSecurityToken token = await m_securityTokenManager
+				.GetLatestTokenAsync()
+				.ConfigureAwait( false );
 
 			Assert.IsNull( token );
 		}

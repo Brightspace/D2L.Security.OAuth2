@@ -26,19 +26,21 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			return Task.FromResult( m_securityToken );
 		}
 
-		IEnumerable<D2LSecurityToken> ISecurityTokenManager.GetAllTokens() {
+		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenManager.GetAllTokens() {
 			return m_inner.GetAllTokens();
 		}
 
-		async Task ISecurityTokenManager.DeleteAsync( Guid id ) {
-			if( m_securityToken.KeyId == id ) {
-				m_securityToken.Dispose();
-				m_securityToken = null;
+		Task ISecurityTokenManager.DeleteAsync( Guid id ) {
+			if( m_securityToken.KeyId != id ) {
+				return m_inner.DeleteAsync( id );
 			}
-			await m_inner.DeleteAsync( id );
+
+			m_securityToken.Dispose();
+			m_securityToken = null;
+			return m_inner.DeleteAsync( id );
 		}
 
-		async Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
+		Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
 			if( !token.HasPrivateKey() ) {
 				throw new InvalidOperationException(
 					"Saving tokens without private keys is not supported by this implementation of ISecurityTokenManager"
@@ -56,7 +58,8 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			}
 
 			m_securityToken = token;
-			await m_inner.SaveAsync( token );
+
+			return m_inner.SaveAsync( token );
 		}
 
 		public void Dispose() {

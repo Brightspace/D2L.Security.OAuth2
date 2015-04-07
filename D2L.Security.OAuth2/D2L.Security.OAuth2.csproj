@@ -55,7 +55,6 @@
     <Compile Include="SecurityTokens\Default\InMemorySecurityTokenManager.cs" />
     <Compile Include="SecurityTokens\Default\LocalPrivateKeySecurityTokenManager.cs" />
     <Compile Include="SecurityTokens\Default\RsaSecurityTokenFactory.cs" />
-    <Compile Include="SecurityTokens\ISecurityTokenManagerExtensions.cs" />
     <Compile Include="SecurityTokens\ISecurityTokenFactory.cs" />
     <Compile Include="SecurityTokens\ISecurityTokenManager.cs" />
     <Compile Include="SecurityTokens\Default\RotatingSecurityTokenManager.cs" />
