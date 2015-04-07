@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.SecurityTokens {
-	public interface ISecurityTokenManager {
+	public interface ISecurityTokenProvider {
 		/// <summary>
 		/// Get the latest security token (determined by the ValidTo property.)
 		/// </summary>

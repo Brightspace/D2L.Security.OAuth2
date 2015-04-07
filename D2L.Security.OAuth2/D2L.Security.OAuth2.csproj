@@ -52,12 +52,12 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="SecurityTokens\D2LSecurityToken.cs" />
-    <Compile Include="SecurityTokens\Default\InMemorySecurityTokenManager.cs" />
-    <Compile Include="SecurityTokens\Default\LocalPrivateKeySecurityTokenManager.cs" />
+    <Compile Include="SecurityTokens\Default\InMemorySecurityTokenProvider.cs" />
+    <Compile Include="SecurityTokens\Default\LocalPrivateKeySecurityTokenProvider.cs" />
     <Compile Include="SecurityTokens\Default\RsaSecurityTokenFactory.cs" />
     <Compile Include="SecurityTokens\ISecurityTokenFactory.cs" />
-    <Compile Include="SecurityTokens\ISecurityTokenManager.cs" />
-    <Compile Include="SecurityTokens\Default\RotatingSecurityTokenManager.cs" />
+    <Compile Include="SecurityTokens\ISecurityTokenProvider.cs" />
+    <Compile Include="SecurityTokens\Default\RotatingSecurityTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\FriendAssemblies.cs" />
     <Compile Include="Provisioning\ClaimSet.cs" />

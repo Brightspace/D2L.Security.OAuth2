@@ -8,18 +8,18 @@ using NUnit.Framework;
 namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 	[TestFixture]
 	[Category("Unit")]
-	internal sealed class LocalPrivateKeySecurityTokenManagerTests {
-		private ISecurityTokenManager m_innerSecurityTokenManager;
-		private ISecurityTokenManager m_securityTokenManager;
+	internal sealed class LocalPrivateKeySecurityTokenProviderTests {
+		private ISecurityTokenProvider m_innerSecurityTokenManager;
+		private ISecurityTokenProvider m_securityTokenManager;
 
 		[SetUp]
 		public void SetUp() {
 			// Each test gets a fresh key store
 #pragma warning disable 0618
-			m_innerSecurityTokenManager = new InMemorySecurityTokenManager();
+			m_innerSecurityTokenManager = new InMemorySecurityTokenProvider();
 #pragma warning restore 0618
 
-			m_securityTokenManager = new LocalPrivateKeySecurityTokenManager(
+			m_securityTokenManager = new LocalPrivateKeySecurityTokenProvider(
 				m_innerSecurityTokenManager
 			);
 		}

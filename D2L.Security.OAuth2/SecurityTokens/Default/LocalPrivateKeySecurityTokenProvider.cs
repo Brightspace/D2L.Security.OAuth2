@@ -12,25 +12,25 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 	///
 	/// See the README.md for the detailed theory behind this class.
 	/// </remarks>
-	internal sealed class LocalPrivateKeySecurityTokenManager : ISecurityTokenManager, IDisposable {
-		private readonly ISecurityTokenManager m_inner;
+	internal sealed class LocalPrivateKeySecurityTokenProvider : ISecurityTokenProvider, IDisposable {
+		private readonly ISecurityTokenProvider m_inner;
 		private D2LSecurityToken m_securityToken;
 
-		public LocalPrivateKeySecurityTokenManager(
-			ISecurityTokenManager inner	
+		public LocalPrivateKeySecurityTokenProvider(
+			ISecurityTokenProvider inner	
 		) {
 			m_inner = inner;
 		}
 
-		Task<D2LSecurityToken> ISecurityTokenManager.GetLatestTokenAsync() {
+		Task<D2LSecurityToken> ISecurityTokenProvider.GetLatestTokenAsync() {
 			return Task.FromResult( m_securityToken );
 		}
 
-		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenManager.GetAllTokens() {
+		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenProvider.GetAllTokens() {
 			return m_inner.GetAllTokens();
 		}
 
-		Task ISecurityTokenManager.DeleteAsync( Guid id ) {
+		Task ISecurityTokenProvider.DeleteAsync( Guid id ) {
 			if( m_securityToken.KeyId != id ) {
 				return m_inner.DeleteAsync( id );
 			}
@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			return m_inner.DeleteAsync( id );
 		}
 
-		Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
+		Task ISecurityTokenProvider.SaveAsync( D2LSecurityToken token ) {
 			if( !token.HasPrivateKey() ) {
 				throw new InvalidOperationException(
 					"Saving tokens without private keys is not supported by this implementation of ISecurityTokenManager" );

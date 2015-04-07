@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.SecurityTokens.Default {
-	public sealed class RotatingSecurityTokenManager : ISecurityTokenManager {
-		private readonly ISecurityTokenManager m_inner;
+	public sealed class RotatingSecurityTokenProvider : ISecurityTokenProvider {
+		private readonly ISecurityTokenProvider m_inner;
 		private readonly ISecurityTokenFactory m_securityTokenFactory;
 		private readonly TimeSpan m_rotationBuffer;
 		private readonly TimeSpan m_tokenLifetime;
@@ -22,8 +22,8 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		/// bearer token grant then your SecurityTokens don't need to live long
 		/// and you should use the value chosen by this library.
 		/// </summary>
-		public RotatingSecurityTokenManager(
-			ISecurityTokenManager inner,
+		public RotatingSecurityTokenProvider(
+			ISecurityTokenProvider inner,
 			ISecurityTokenFactory securityTokenFactory
 		) : this( inner, securityTokenFactory, DEFAULT_ROTATION_BUFFER, DEFAULT_TOKEN_LIFETIME ) { }
 
@@ -31,8 +31,8 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		/// Do not use this overload unless you need to customize the token
 		/// rotation buffer and lifetimes.
 		/// </summary>
-		public RotatingSecurityTokenManager(
-			ISecurityTokenManager inner,
+		public RotatingSecurityTokenProvider(
+			ISecurityTokenProvider inner,
 			ISecurityTokenFactory securityTokenFactory,
 			TimeSpan rotationBuffer,
 			TimeSpan tokenLifetime
@@ -43,7 +43,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			m_tokenLifetime = tokenLifetime;
 		}
 
-		async Task<D2LSecurityToken> ISecurityTokenManager.GetLatestTokenAsync() {
+		async Task<D2LSecurityToken> ISecurityTokenProvider.GetLatestTokenAsync() {
 			D2LSecurityToken token = await m_inner
 				.GetLatestTokenAsync()
 				.ConfigureAwait( false );
@@ -86,7 +86,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		/// This implementation makes no garuntees about wether the security
 		/// tokens it returns have their private key.
 		/// </remarks>
-		async Task<IEnumerable<D2LSecurityToken>> ISecurityTokenManager.GetAllTokens() {
+		async Task<IEnumerable<D2LSecurityToken>> ISecurityTokenProvider.GetAllTokens() {
 			// Immediately ToList() this to avoid any problems with invalid
 			// iterators (depending on how m_inner is implemented, calling
 			// Delete while iterating could be problematic.
@@ -111,11 +111,11 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			return result;
 		}
 
-		Task ISecurityTokenManager.DeleteAsync( Guid id ) {
+		Task ISecurityTokenProvider.DeleteAsync( Guid id ) {
 			return m_inner.DeleteAsync( id );
 		}
 
-		Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
+		Task ISecurityTokenProvider.SaveAsync( D2LSecurityToken token ) {
 			return m_inner.SaveAsync( token );
 		}
 	}
