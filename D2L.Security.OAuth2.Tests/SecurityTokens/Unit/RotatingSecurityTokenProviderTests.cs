@@ -11,12 +11,12 @@ using NUnit.Framework;
 namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 	[TestFixture]
 	[Category( "Unit" )]
-	internal sealed class RotatingSecurityTokenManagerTests {
+	internal sealed class RotatingSecurityTokenProviderTests {
 		private readonly ISecurityTokenFactory m_securityTokenFactory;
-		private ISecurityTokenManager m_innerSecurityTokenManager;
-		private ISecurityTokenManager m_securityTokenManager;
+		private ISecurityTokenProvider m_innerSecurityTokenManager;
+		private ISecurityTokenProvider m_securityTokenManager;
 
-		public RotatingSecurityTokenManagerTests() {
+		public RotatingSecurityTokenProviderTests() {
 			m_securityTokenFactory = new RsaSecurityTokenFactory();
 		}
 
@@ -24,14 +24,14 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		public void SetUp() {
 			// Each test gets a fresh key store
 #pragma warning disable 0618
-			m_innerSecurityTokenManager = new InMemorySecurityTokenManager();
+			m_innerSecurityTokenManager = new InMemorySecurityTokenProvider();
 #pragma warning restore 0618
 
-			m_securityTokenManager = new RotatingSecurityTokenManager(
+			m_securityTokenManager = new RotatingSecurityTokenProvider(
 				m_innerSecurityTokenManager,
 				m_securityTokenFactory,
-				RotatingSecurityTokenManager.DEFAULT_ROTATION_BUFFER,
-				RotatingSecurityTokenManager.DEFAULT_TOKEN_LIFETIME
+				RotatingSecurityTokenProvider.DEFAULT_ROTATION_BUFFER,
+				RotatingSecurityTokenProvider.DEFAULT_TOKEN_LIFETIME
 			);
 		}
 

@@ -73,8 +73,8 @@
     <Compile Include="Provisioning\Utilities\TestUris.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
-    <Compile Include="SecurityTokens\Unit\LocalPrivateKeySecurityTokenManagerTests.cs" />
-    <Compile Include="SecurityTokens\Unit\RotatingSecurityTokenManagerTests.cs" />
+    <Compile Include="SecurityTokens\Unit\LocalPrivateKeySecurityTokenProviderTests.cs" />
+    <Compile Include="SecurityTokens\Unit\RotatingSecurityTokenProviderTests.cs" />
     <Compile Include="SecurityTokens\Unit\Utilities.cs" />
     <Compile Include="Validation\Integration\Default\RequestAuthenticatorTests.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.cs" />
