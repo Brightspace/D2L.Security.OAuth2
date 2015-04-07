@@ -25,8 +25,11 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			);
 		}
 
-		IEnumerable<D2LSecurityToken> ISecurityTokenManager.GetAllTokens() {
-			return new ReadOnlyCollection<D2LSecurityToken>( m_tokens );
+		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenManager.GetAllTokens() {
+			IEnumerable<D2LSecurityToken> result
+				= new ReadOnlyCollection<D2LSecurityToken>( m_tokens );
+
+			return Task.FromResult( result );
 		}
 
 		Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {

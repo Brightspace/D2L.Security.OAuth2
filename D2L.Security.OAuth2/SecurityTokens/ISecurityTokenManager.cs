@@ -9,9 +9,6 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		/// </summary>
 		/// <remarks>
 		/// They SecurityToken inside this token will have private key material.
-		///
-		/// This is conceptually equivalent to
-		/// GetAllTokens().OrderByDescending( t => t.ValidTo ).FirstOrDefault()
 		/// </remarks>
 		Task<D2LSecurityToken> GetLatestTokenAsync();
 
@@ -22,7 +19,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		/// Whether the D2LSecurityTokens returned by this function have private
 		/// key material is implementation-defined.
 		/// </remarks>
-		IEnumerable<D2LSecurityToken> GetAllTokens();
+		Task<IEnumerable<D2LSecurityToken>> GetAllTokens();
 
 		Task DeleteAsync( Guid id );
 

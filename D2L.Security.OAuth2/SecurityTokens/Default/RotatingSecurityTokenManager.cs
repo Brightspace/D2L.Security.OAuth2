@@ -44,7 +44,9 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		}
 
 		async Task<D2LSecurityToken> ISecurityTokenManager.GetLatestTokenAsync() {
-			D2LSecurityToken token = await m_inner.GetLatestTokenAsync();
+			D2LSecurityToken token = await m_inner
+				.GetLatestTokenAsync()
+				.ConfigureAwait( false );
 
 			if( token != null ) {
 				if( !token.HasPrivateKey() ) {
@@ -60,7 +62,9 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 				// We are eagerly flushing expired tokens here; not strictly
 				// required.
 				if( token.IsExpired() ) {
-					m_inner.DeleteFireAndForget( token.KeyId );
+					await m_inner
+						.DeleteAsync( token.KeyId )
+						.ConfigureAwait( false );
 				}
 			}
 
@@ -69,9 +73,9 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 
 			token = m_securityTokenFactory.Create( m_tokenLifetime );
 
-			// Wait for the token to be created: we do this so that we don't
-			// use a token before its available via GetAllTokens().
-			await m_inner.SaveAsync( token );
+			await m_inner
+				.SaveAsync( token )
+				.ConfigureAwait( false );
 
 			return token;
 		}
@@ -83,30 +87,37 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		/// This implementation makes no garuntees about wether the security
 		/// tokens it returns have their private key.
 		/// </remarks>
-		IEnumerable<D2LSecurityToken> ISecurityTokenManager.GetAllTokens() {
+		async Task<IEnumerable<D2LSecurityToken>> ISecurityTokenManager.GetAllTokens() {
 			// Immediately ToList() this to avoid any problems with invalid
 			// iterators (depending on how m_inner is implemented, calling
 			// Delete while iterating could be problematic.
-			List<D2LSecurityToken> tokens = m_inner
+			IEnumerable<D2LSecurityToken> tokens = ( await m_inner
 				.GetAllTokens()
+				.ConfigureAwait( false ) )
 				.ToList();
+
+			List<D2LSecurityToken> result = new List<D2LSecurityToken>();
 
 			// Don't expose any expired tokens to the caller
 			foreach( D2LSecurityToken token in tokens ) {
 				if( token.IsExpired() ) {
-					m_inner.DeleteFireAndForget( token.KeyId );
+					await m_inner
+						.DeleteAsync( token.KeyId )
+						.ConfigureAwait( false );
 				} else {
-					yield return token;
+					result.Add( token );
 				}
 			}
+
+			return result;
 		}
 
-		async Task ISecurityTokenManager.DeleteAsync( Guid id ) {
-			await m_inner.DeleteAsync( id );
+		Task ISecurityTokenManager.DeleteAsync( Guid id ) {
+			return m_inner.DeleteAsync( id );
 		}
 
-		async Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
-			await m_inner.SaveAsync( token );
+		Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
+			return m_inner.SaveAsync( token );
 		}
 	}
 }
