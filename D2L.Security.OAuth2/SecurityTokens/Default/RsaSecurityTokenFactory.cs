@@ -15,8 +15,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 
 			var token = new D2LSecurityToken(
 				lifespan,
-				key
-			);
+				key );
 
 			return token;
 		}
