@@ -21,8 +21,9 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 
 		Task<D2LSecurityToken> ISecurityTokenManager.GetLatestTokenAsync() {
 			return Task.FromResult(
-				m_tokens.OrderBy( t => t.ValidTo ).FirstOrDefault()
-			);
+				m_tokens
+					.OrderBy( t => t.ValidTo )
+					.FirstOrDefault() );
 		}
 
 		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenManager.GetAllTokens() {
@@ -35,8 +36,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
 			if( !token.HasPrivateKey() ) {
 				throw new InvalidOperationException(
-					"Storing tokens without private keys is not supported by this implementation of ISecurityTokenManager"	
-				);
+					"Storing tokens without private keys is not supported by this implementation of ISecurityTokenManager"	 );
 			}
 			m_tokens.Add( token );
 			return Task.Delay( 0 );

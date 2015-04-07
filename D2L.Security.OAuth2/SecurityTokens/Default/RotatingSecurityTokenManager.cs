@@ -51,8 +51,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			if( token != null ) {
 				if( !token.HasPrivateKey() ) {
 					throw new InvalidOperationException(
-						"token from inner ISecurityTokenManager.GetLatestTokenAsync didn't contain a private key"
-					);
+						"token from inner ISecurityTokenManager.GetLatestTokenAsync didn't contain a private key" );
 				}
 
 				if( !token.IsExpiringSoon( m_rotationBuffer ) ) {
