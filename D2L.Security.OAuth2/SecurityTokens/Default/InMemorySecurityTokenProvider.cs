@@ -16,24 +16,24 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 	/// and go wild.) Callers should ensure this doesn't happen.
 	/// </remarks>
 	[Obsolete("Only use this implementation for prototyping and tests.")]
-	internal sealed class InMemorySecurityTokenManager : ISecurityTokenManager, IDisposable {
+	internal sealed class InMemorySecurityTokenProvider : ISecurityTokenProvider, IDisposable {
 		private readonly List<D2LSecurityToken> m_tokens = new List<D2LSecurityToken>();
 
-		Task<D2LSecurityToken> ISecurityTokenManager.GetLatestTokenAsync() {
+		Task<D2LSecurityToken> ISecurityTokenProvider.GetLatestTokenAsync() {
 			return Task.FromResult(
 				m_tokens
 					.OrderBy( t => t.ValidTo )
 					.FirstOrDefault() );
 		}
 
-		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenManager.GetAllTokens() {
+		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenProvider.GetAllTokens() {
 			IEnumerable<D2LSecurityToken> result
 				= new ReadOnlyCollection<D2LSecurityToken>( m_tokens );
 
 			return Task.FromResult( result );
 		}
 
-		Task ISecurityTokenManager.SaveAsync( D2LSecurityToken token ) {
+		Task ISecurityTokenProvider.SaveAsync( D2LSecurityToken token ) {
 			if( !token.HasPrivateKey() ) {
 				throw new InvalidOperationException(
 					"Storing tokens without private keys is not supported by this implementation of ISecurityTokenManager"	 );
@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			return Task.Delay( 0 );
 		}
 
-		Task ISecurityTokenManager.DeleteAsync( Guid id ) {
+		Task ISecurityTokenProvider.DeleteAsync( Guid id ) {
 			int index = m_tokens.FindIndex( t => t.KeyId == id );
 			m_tokens[ index ].Dispose();
 			m_tokens.RemoveAt( index );
