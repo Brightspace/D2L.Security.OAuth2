@@ -21,27 +21,23 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 			Assert.AreEqual(
 				num,
-				tokens.Count()
-			);
+				tokens.Count() );
 		}
 
 		public static D2LSecurityToken CreateExpiredToken() {
 			return CreateTokenWithTimeRemaining(
-				-TimeSpan.FromHours( 10 )
-			);
+				-TimeSpan.FromHours( 10 ) );
 		}
 
 		public static D2LSecurityToken CreateExpiringToken() {
 			return CreateTokenWithTimeRemaining(
 				RotatingSecurityTokenManager.DEFAULT_ROTATION_BUFFER
-				- TimeSpan.FromSeconds( 30 )
-			);
+				- TimeSpan.FromSeconds( 30 ) );
 		}
 
 		public static D2LSecurityToken CreateActiveToken() {
 			return CreateTokenWithTimeRemaining(
-				RotatingSecurityTokenManager.DEFAULT_TOKEN_LIFETIME - TimeSpan.FromSeconds( 1 )
-			);
+				RotatingSecurityTokenManager.DEFAULT_TOKEN_LIFETIME - TimeSpan.FromSeconds( 1 ) );
 		}
 
 		public static D2LSecurityToken CreateTokenWithTimeRemaining( TimeSpan remaining ) {
@@ -56,8 +52,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 				Guid.NewGuid(),
 				validFrom,
 				validTo,
-				key
-			);
+				key );
 		}
 
 		public static D2LSecurityToken CreateTokenWithoutPrivateKey() {
@@ -74,8 +69,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 				Guid.NewGuid(),
 				validFrom,
 				validTo,
-				key
-			);
+				key );
 		}
 
 		public static void AssertTokenActive( D2LSecurityToken token ) {
