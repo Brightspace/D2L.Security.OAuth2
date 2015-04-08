@@ -1,5 +1,5 @@
 ﻿namespace D2L.Security.OAuth2.Validation.Request {
-	public enum AuthenticationResult {
+	public enum AuthenticationStatus {
 		
 		/// <summary>
 		/// Authentication was successful

@@ -20,8 +20,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 				.WithCookie( TestTokens.ValidNoXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
-			Assert.AreEqual( AuthenticationResult.XsrfMismatch, result );
+			AuthenticationStatus result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
+			Assert.AreEqual( AuthenticationStatus.XsrfMismatch, result );
 		}
 		
 		[Test]
@@ -31,8 +31,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 				.WithXsrfHeader( TestTokens.ValidWithXsrfOneScope.Xt );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Sub, principal.UserId );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Tenantid, principal.TenantId );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Tenanturl, principal.TenantUrl );
@@ -55,8 +55,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 				.WithAuthHeader( TestTokens.ValidNoXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 		}
 
 		[Test]
@@ -65,8 +65,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 				.WithAuthHeader( TestTokens.ValidWithXsrfOneScope.Jwt );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 		}
 
 		[Test]
@@ -94,8 +94,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 				.WithXsrfHeader( "bogusxsrfheader" );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
-			Assert.AreEqual( AuthenticationResult.XsrfMismatch, result );
+			AuthenticationStatus result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
+			Assert.AreEqual( AuthenticationStatus.XsrfMismatch, result );
 		}
 
 		[Test]
@@ -110,8 +110,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 				);
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 		}
 	}
 }
