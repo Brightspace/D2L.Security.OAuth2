@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace D2L.Security.OAuth2.Validation {
+﻿namespace D2L.Security.OAuth2.Validation {
 	public enum ValidationStatus {
 		Success,
 		Expired
