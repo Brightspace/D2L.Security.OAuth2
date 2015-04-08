@@ -32,9 +32,9 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.Default {
 			IRequestAuthenticator authenticator = new RequestAuthenticator( coreAuthenticatorMock.Object );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = authenticator.AuthenticateAndExtract( httpRequestMessage, out principal );
+			AuthenticationStatus result = authenticator.AuthenticateAndExtract( httpRequestMessage, out principal );
 
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 			coreAuthenticatorMock.Verify( x => x.Authenticate(
 					DUMMY_JWT,
 					DUMMY_XSRF,
@@ -61,9 +61,9 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.Default {
 			IRequestAuthenticator authenticator = new RequestAuthenticator( coreAuthenticatorMock.Object );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = authenticator.AuthenticateAndExtract( httpRequest, out principal );
+			AuthenticationStatus result = authenticator.AuthenticateAndExtract( httpRequest, out principal );
 
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 			coreAuthenticatorMock.Verify( x => x.Authenticate(
 				DUMMY_JWT,
 				DUMMY_XSRF,

@@ -8,13 +8,13 @@ using D2L.Security.OAuth2.Validation.Token.JwtValidation;
 namespace D2L.Security.OAuth2.Validation {
 	internal sealed class AccessTokenValidator : IAccessTokenValidator {
 
-		private readonly ISecurityKeyProvider m_securityKeyProvider;
+		private readonly ISecurityTokenProvider m_securityTokenProvider;
 		private readonly JwtSecurityTokenHandler m_tokenHandler = new JwtSecurityTokenHandler();
 
 		public AccessTokenValidator(
-			ISecurityKeyProvider securityKeyProvider
+			ISecurityTokenProvider securityTokenProvider
 		) {
-			m_securityKeyProvider = securityKeyProvider;
+			m_securityTokenProvider = securityTokenProvider;
 		}
 
 		async Task<ValidationResponse> IAccessTokenValidator.ValidateAsync(
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Validation {
 			// TODO should this be ToString?
 			var keyId = (string)unvalidatedToken.Header["kid"];
 
-			SecurityKey securityKey = await m_securityKeyProvider.GetSecurityKeyAsync(
+			SecurityToken signingToken = await m_securityTokenProvider.GetSecurityTokenAsync(
 				jwksEndPoint: jwksEndPoint,
 				keyId: keyId
 			).ConfigureAwait( false );
@@ -41,7 +41,7 @@ namespace D2L.Security.OAuth2.Validation {
 			// TODO ... do we validate audience, issuer, or anything else?
 			var validationParameters = new TokenValidationParameters() {
 				RequireSignedTokens = true,
-				IssuerSigningKey = securityKey
+				IssuerSigningKeys = signingToken.SecurityKeys
 			};
 			
 			IValidatedToken validatedToken = null;
