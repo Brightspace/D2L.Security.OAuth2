@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Validation.Jwks {
-	public interface ISecurityKeyProvider {
-		Task<SecurityKey> GetSecurityKeyAsync( Uri jwksEndPoint, string keyId );
+	public interface ISecurityTokenProvider {
+		Task<SecurityToken> GetSecurityTokenAsync( Uri jwksEndPoint, string keyId );
 	}
 }

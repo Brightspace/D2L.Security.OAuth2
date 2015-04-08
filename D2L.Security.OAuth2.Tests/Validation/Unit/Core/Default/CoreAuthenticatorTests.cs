@@ -21,8 +21,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			ICoreAuthenticator authenticator = new CoreAuthenticator( null, true );
 			ID2LPrincipal principal;
 			
-			AuthenticationResult result = authenticator.Authenticate( cookie, "dummyxsrf", bearerToken, out principal );
-			Assert.AreEqual( AuthenticationResult.Anonymous, result );
+			AuthenticationStatus result = authenticator.Authenticate( cookie, "dummyxsrf", bearerToken, out principal );
+			Assert.AreEqual( AuthenticationStatus.Anonymous, result );
 		}
 
 		[TestCase( "jwt", "jwt" )]
@@ -31,8 +31,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			ICoreAuthenticator authenticator = new CoreAuthenticator( null, true );
 			ID2LPrincipal principal;
 
-			AuthenticationResult result = authenticator.Authenticate( cookie, "dummyxsrftoken", bearerToken, out principal );
-			Assert.AreEqual( AuthenticationResult.LocationConflict, result );
+			AuthenticationStatus result = authenticator.Authenticate( cookie, "dummyxsrftoken", bearerToken, out principal );
+			Assert.AreEqual( AuthenticationStatus.LocationConflict, result );
 		}
 
 		[Test]
@@ -46,8 +46,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			
 			ID2LPrincipal principal;
 			string cookie = "jwt_in_cookie";
-			AuthenticationResult result = authenticator.Authenticate( cookie, "dummyxsrftoken", null, out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = authenticator.Authenticate( cookie, "dummyxsrftoken", null, out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 			validator.Verify( x => x.VerifyAndDecode( cookie, out validatedToken ), Times.Once );
 		}
 
@@ -62,8 +62,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 
 			ID2LPrincipal principal;
 			string bearerToken = "jwt_in_bearer";
-			AuthenticationResult result = authenticator.Authenticate( null, "dummyxsrftoken", bearerToken, out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = authenticator.Authenticate( null, "dummyxsrftoken", bearerToken, out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 			validator.Verify( x => x.VerifyAndDecode( bearerToken, out validatedToken ), Times.Once );
 		}
 
@@ -72,8 +72,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			ICoreAuthenticator authenticator = MakeAuthenticator( false, ValidationResult.TokenExpired );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = authenticator.Authenticate( null, "dummyxsrftoken", "bearerToken", out principal );
-			Assert.AreEqual( AuthenticationResult.Expired, result );
+			AuthenticationStatus result = authenticator.Authenticate( null, "dummyxsrftoken", "bearerToken", out principal );
+			Assert.AreEqual( AuthenticationStatus.Expired, result );
 		}
 
 		[TestCase( "", "" )]
@@ -90,8 +90,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			ICoreAuthenticator authenticator = MakeAuthenticator( true, ValidationResult.Success, validatedTokenMock.Object );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = authenticator.Authenticate( "dummycookie", xsrfInHeader, "", out principal );
-			Assert.AreEqual( AuthenticationResult.XsrfMismatch, result );
+			AuthenticationStatus result = authenticator.Authenticate( "dummycookie", xsrfInHeader, "", out principal );
+			Assert.AreEqual( AuthenticationStatus.XsrfMismatch, result );
 		}
 
 		[Test]
@@ -101,8 +101,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			ICoreAuthenticator authenticator = MakeAuthenticator( true, ValidationResult.Success, validatedTokenMock.Object );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = authenticator.Authenticate( "dummycookie", "somexsrf", "", out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = authenticator.Authenticate( "dummycookie", "somexsrf", "", out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 		}
 
 		[Test]
@@ -110,8 +110,8 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			ICoreAuthenticator authenticator = MakeAuthenticator( true, ValidationResult.Success );
 
 			ID2LPrincipal principal;
-			AuthenticationResult result = authenticator.Authenticate( "", "somexsrf", "somebearertoken", out principal );
-			Assert.AreEqual( AuthenticationResult.Success, result );
+			AuthenticationStatus result = authenticator.Authenticate( "", "somexsrf", "somebearertoken", out principal );
+			Assert.AreEqual( AuthenticationStatus.Success, result );
 		}
 		
 		ICoreAuthenticator MakeAuthenticator( bool checkXsrf, ValidationResult resultFromJwtValidation, IValidatedToken validatedToken = null ) {
