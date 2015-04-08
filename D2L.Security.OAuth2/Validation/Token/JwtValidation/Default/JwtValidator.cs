@@ -13,7 +13,7 @@ namespace D2L.Security.OAuth2.Validation.Token.JwtValidation.Default {
 		internal JwtValidator( 
 			IPublicKeyProvider keyProvider,
 			ISecurityTokenValidator tokenHandler
-		) {
+			) {
 			m_keyProvider = keyProvider;
 			m_tokenHandler = tokenHandler;
 		}
@@ -25,7 +25,6 @@ namespace D2L.Security.OAuth2.Validation.Token.JwtValidation.Default {
 			}
 
 			IPublicKey key = m_keyProvider.Get();
-			
 			TokenValidationParameters validationParameters =
 				JwtHelper.CreateValidationParameters( key.Issuer, key.SecurityKey );
 

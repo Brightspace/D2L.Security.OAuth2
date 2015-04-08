@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Validation.Jwks;
-using D2L.Security.OAuth2.Validation.Request.Core.Default;
 using D2L.Security.OAuth2.Validation.Token;
 using D2L.Security.OAuth2.Validation.Token.JwtValidation;
 
@@ -42,7 +36,7 @@ namespace D2L.Security.OAuth2.Validation {
 			SecurityKey securityKey = await m_securityKeyProvider.GetSecurityKeyAsync(
 				jwksEndPoint: jwksEndPoint,
 				keyId: keyId
-			);
+			).ConfigureAwait( false );
 			
 			// TODO ... do we validate audience, issuer, or anything else?
 			var validationParameters = new TokenValidationParameters() {
