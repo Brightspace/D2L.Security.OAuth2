@@ -39,6 +39,15 @@
     <Reference Include="FluentAssertions.Core">
       <HintPath>..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.Core.dll</HintPath>
     </Reference>
+    <Reference Include="HttpMock">
+      <HintPath>..\packages\HttpMock.1.1.5\lib\net40\HttpMock.dll</HintPath>
+    </Reference>
+    <Reference Include="Kayak">
+      <HintPath>..\packages\Kayak.0.7.2\lib\Kayak.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
       <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.1\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
     </Reference>
@@ -62,6 +71,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mocks\HttpMockFactory.cs" />
+    <Compile Include="Mocks\ISecurityKeyProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provisioning\Integration\FullStack\AsyncFullStackTests.cs" />
     <Compile Include="Provisioning\Integration\FullStack\SyncFullStackTests.cs" />
@@ -77,9 +88,11 @@
     <Compile Include="Validation\Integration\FullStack\FullStackTests.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.HttpRequest.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.HttpRequestMessage.cs" />
+    <Compile Include="Validation\Integration\Jwks\Data\JwksProviderTests.cs" />
     <Compile Include="Validation\Integration\JwtValidation\JwtValidationTests.cs" />
     <Compile Include="Validation\Integration\PublicKeys\OpenIdConfigurations\Default\OpenIdConfigurationFetcherTests.cs" />
     <Compile Include="Validation\StringExtensions.cs" />
+    <Compile Include="Validation\Unit\AccessTokenValidatorTests.cs" />
     <Compile Include="Validation\Unit\Core\Default\CoreAuthenticatorTests.cs" />
     <Compile Include="Validation\Unit\Core\Default\IValidatedTokenExtensionsTests.cs" />
     <Compile Include="Validation\Unit\Default\AuthTokenValidatorTests.cs" />

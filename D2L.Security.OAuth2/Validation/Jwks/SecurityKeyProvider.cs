@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 
 		public async Task<SecurityKey> GetSecurityKeyAsync( Uri jwksEndPoint, string keyId ) {
 
-			string jwksJson = await m_jwksProvider.RequestJwksAsync( jwksEndPoint );
+			string jwksJson = await m_jwksProvider.RequestJwksAsync( jwksEndPoint ).ConfigureAwait( false );
 			
 			var jwks = new JsonWebKeySet( jwksJson );
 			
@@ -41,12 +41,12 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 				);
 			}
 
-			IList<string> x5cEntries = jsonWebKey.X5c;
-			if( x5cEntries.Count != 1 ) {
-				throw new Exception( string.Format( "Expected one x5c entry but got {0}", x5cEntries.Count ) );
+			IList<string> x5CEntries = jsonWebKey.X5c;
+			if( x5CEntries.Count != 1 ) {
+				throw new Exception( string.Format( "Expected one x5c entry but got {0}", x5CEntries.Count ) );
 			}
 
-			byte[] payload = Convert.FromBase64String( x5cEntries.First() );
+			byte[] payload = Convert.FromBase64String( x5CEntries.First() );
 			var certificate = new X509Certificate2( payload );
 			var token = new X509SecurityToken( certificate );
 			

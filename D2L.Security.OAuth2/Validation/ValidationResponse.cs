@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using D2L.Security.OAuth2.Validation.Request.Core.Default;
-using D2L.Security.OAuth2.Validation.Token;
+﻿using D2L.Security.OAuth2.Validation.Token;
 
 namespace D2L.Security.OAuth2.Validation {
 	public class ValidationResponse {
