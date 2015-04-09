@@ -20,18 +20,46 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			string keyId
 		) {
 
-			string jwksJson = await m_jwksProvider.RequestJwksAsync( jwksEndPoint ).ConfigureAwait( false );
+			string jwksJson = await m_jwksProvider.RequestJwksAsync( 
+				jwksEndPoint,
+				skipCache: false
+			).ConfigureAwait( false );
 			
 			var jwks = new JsonWebKeySet( jwksJson );
-			
-			foreach( JsonWebKey key in jwks.Keys ) {
-				if( key.Kid == keyId ) {
-					SecurityToken securityToken = JsonWebKeyToSecurityToken( key );
-					return securityToken;
+			JsonWebKey key;
+			if( !TryGetJsonWebKey( jwks, keyId, out key ) ) {
+				
+				// If the key is not found, maybe our cache is just 
+				// stale.  Let's try again.
+				// TODO ... DOS concerns?  This could force us to lookup the key a lot
+				jwksJson = await m_jwksProvider.RequestJwksAsync( 
+					jwksEndPoint,
+					skipCache: true
+				).ConfigureAwait( false );
+
+				jwks = new JsonWebKeySet( jwksJson );
+
+				if( !TryGetJsonWebKey( jwks, keyId, out key ) ) {
+					throw new KeyNotFoundException(
+						string.Format( "Could not find jwk with id '{0}'", keyId )
+					);
 				}
 			}
-			
-			throw new Exception( string.Format( "Could not find keyId {0}", keyId ) );
+
+			SecurityToken securityToken = JsonWebKeyToSecurityToken( key );
+			return securityToken;
+		}
+		
+		private bool TryGetJsonWebKey( JsonWebKeySet keySet, string keyId, out JsonWebKey key ) {
+			foreach( JsonWebKey currentKey in keySet.Keys ) {
+				if( currentKey.Kid == keyId ) {
+					key = currentKey;
+					return true;
+				}
+			}
+
+			key = null;
+			return false;
 		}
 
 		private SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
@@ -54,7 +82,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 				Modulus = n
 			};
 
-			// TODO dispose?
+			// TODO dispose.  Or probably use jparker's ID2LSecurityToken
 			var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 			rsa.ImportParameters( rsaParams );
 			var key = new RsaSecurityKey( rsa );

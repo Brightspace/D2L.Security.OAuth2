@@ -9,19 +9,18 @@ using System.Web.Script.Serialization;
 
 namespace D2L.Security.OAuth2.Validation.Jwks.Data {
 	internal sealed class JwksProvider : IJwksProvider {
-
-		async Task<string> IJwksProvider.RequestJwksAsync( Uri endpoint ) {
+		
+		async Task<string> IJwksProvider.RequestJwksAsync( Uri endpoint, bool skipCache ) {
 
 			// TODO: control httpclient creation?
 			using( var httpClient = new HttpClient() ) {
 
-				string jsonResponse;
-				using( HttpResponseMessage response = await httpClient.GetAsync( endpoint ) ) {
+				using( HttpResponseMessage response = await httpClient.GetAsync( endpoint ).ConfigureAwait( false ) ) {
 					response.EnsureSuccessStatusCode();
-					jsonResponse = await response.Content.ReadAsStringAsync();
+					string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+					return jsonResponse;
 				}
 
-				return jsonResponse;
 			}
 		}
 	}

@@ -51,6 +51,8 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\FriendAssemblies.cs" />
@@ -67,10 +69,11 @@
     <Compile Include="Provisioning\SigningTokenFactory.cs" />
     <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
+    <Compile Include="Validation\Jwks\Data\CachedJwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\IJwksProvider.cs" />
-    <Compile Include="Validation\Jwks\Data\JwkDto.cs" />
     <Compile Include="Validation\Jwks\Data\JwksProvider.cs" />
     <Compile Include="Validation\Jwks\ISecurityTokenProvider.cs" />
+    <Compile Include="Validation\Jwks\KeyNotFoundException.cs" />
     <Compile Include="Validation\Jwks\SecurityTokenProvider.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResponse.cs" />
