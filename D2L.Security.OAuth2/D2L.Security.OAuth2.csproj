@@ -53,7 +53,6 @@
     <Compile Include="Constants.cs" />
     <Compile Include="SecurityTokens\D2LSecurityToken.cs" />
     <Compile Include="SecurityTokens\Default\InMemorySecurityTokenProvider.cs" />
-    <Compile Include="SecurityTokens\Default\LocalPrivateKeySecurityTokenProvider.cs" />
     <Compile Include="SecurityTokens\Default\RsaSecurityTokenFactory.cs" />
     <Compile Include="SecurityTokens\ISecurityTokenFactory.cs" />
     <Compile Include="SecurityTokens\ISecurityTokenProvider.cs" />
