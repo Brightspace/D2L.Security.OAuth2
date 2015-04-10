@@ -12,11 +12,11 @@ using NUnit.Framework;
 namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 	internal static class Utilities {
 		public async static void AssertNumberOfTokensStored(
-			ISecurityTokenProvider manager,
+			ISecurityTokenProvider securityTokenProvider,
 			long num
 		) {
-			var tokens = await manager
-				.GetAllTokens()
+			var tokens = await securityTokenProvider
+				.GetAllTokensAsync()
 				.ConfigureAwait( false );
 
 			Assert.AreEqual(

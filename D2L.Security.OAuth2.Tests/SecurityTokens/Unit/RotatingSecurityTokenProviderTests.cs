@@ -147,7 +147,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 		private async Task<List<D2LSecurityToken>> GetTokens() {
 			IEnumerable<D2LSecurityToken> tokens = await m_securityTokenManager
-				.GetAllTokens()
+				.GetAllTokensAsync()
 				.ConfigureAwait( false );
 
 			return tokens.ToList();

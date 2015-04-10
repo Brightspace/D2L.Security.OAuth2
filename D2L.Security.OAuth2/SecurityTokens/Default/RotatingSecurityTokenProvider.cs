@@ -86,12 +86,12 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		/// This implementation makes no garuntees about wether the security
 		/// tokens it returns have their private key.
 		/// </remarks>
-		async Task<IEnumerable<D2LSecurityToken>> ISecurityTokenProvider.GetAllTokens() {
+		async Task<IEnumerable<D2LSecurityToken>> ISecurityTokenProvider.GetAllTokensAsync() {
 			// Immediately ToList() this to avoid any problems with invalid
 			// iterators (depending on how m_inner is implemented, calling
 			// Delete while iterating could be problematic.
 			IEnumerable<D2LSecurityToken> tokens = ( await m_inner
-				.GetAllTokens()
+				.GetAllTokensAsync()
 				.ConfigureAwait( false ) )
 				.ToList();
 

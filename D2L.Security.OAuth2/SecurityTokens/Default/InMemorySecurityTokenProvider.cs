@@ -26,7 +26,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 					.FirstOrDefault() );
 		}
 
-		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenProvider.GetAllTokens() {
+		Task<IEnumerable<D2LSecurityToken>> ISecurityTokenProvider.GetAllTokensAsync() {
 			IEnumerable<D2LSecurityToken> result
 				= new ReadOnlyCollection<D2LSecurityToken>( m_tokens );
 
