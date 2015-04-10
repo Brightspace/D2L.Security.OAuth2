@@ -36,7 +36,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		Task ISecurityTokenProvider.SaveAsync( D2LSecurityToken token ) {
 			if( !token.HasPrivateKey() ) {
 				throw new InvalidOperationException(
-					"Storing tokens without private keys is not supported by this implementation of ISecurityTokenManager"	 );
+					"Storing tokens without private keys is not supported by this implementation of ISecurityTokenProvider"	 );
 			}
 			m_tokens.Add( token );
 			return Task.Delay( 0 );
