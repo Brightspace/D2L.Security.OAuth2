@@ -7,19 +7,13 @@ This functionality is used, for example, by the auth service to sign access toke
 
 Intended use
 ------------
-Services will need to sign assertions for the JWT bearer token grant using the output of `ISecurityTokenManager.GetLatestTokenAsync()` and they need to broadcast the public keys they get from `ISecurityTokenManager.GetAllTokens()` via a JWKS route.
+Services will need to sign assertions for the JWT bearer token grant using the output of `ISecurityTokenProvider.GetLatestTokenAsync()` and they need to broadcast the public keys they get from `ISecurityTokenProvider.GetAllTokens()` via a JWKS route.
 
 Steps:
 
-1. Implemenent an `ISecurityTokenManager` that persists keys.
-    - You can *prototype* with the `InMemorySecurityTokenManager` provided by this library.
-2. Dependency inject `ISecurityTokenManager` using the `RollingSecurityTokenManager` implementation (defined in this library) passing your `ISecurityTokenManager` as its inner implementation.
-
-Consider using the `LocalPrivateKeySecurityTokenManager` provided by this library.
-When paired with an `ISecurityTokenManager` that only persists public keys (a requirement) `LocalPrivateKeySecurityTokenManager` keeps a single private key in-memory but is still able to return all public keys via the `GetAllTokens()` function.
-This protects the system from read-only access to the database (but not write-access: the attacker could install their own public keys.)
-Note: `LocalPrivateKeySecurityTokenManager` should still be wrapped in `RollingSecurityTokenmanager`.
-
+1. Implemenent an `ISecurityTokenProvider` that persists keys.
+    - You can *prototype* with the `InMemorySecurityTokenProvider` provided by this library.
+2. Dependency inject `ISecurityTokenProvider` using the `RollingSecurityTokenProvider` implementation (defined in this library) passing your `ISecurityTokenProvider` as its inner implementation.
 
 Theory of key rotation
 ----------------------
