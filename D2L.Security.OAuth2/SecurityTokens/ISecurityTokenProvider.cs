@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		/// Whether the D2LSecurityTokens returned by this function have private
 		/// key material is implementation-defined.
 		/// </remarks>
-		Task<IEnumerable<D2LSecurityToken>> GetAllTokens();
+		Task<IEnumerable<D2LSecurityToken>> GetAllTokensAsync();
 
 		Task DeleteAsync( Guid id );
 
