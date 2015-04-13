@@ -6,6 +6,8 @@ using System.Web;
 
 namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 
+	//  Goes against actual auth service in Dev .. delete 
+	/*
 	internal static class AuthServerInvoker {
 		
 		public static string AuthenticateAndGetJwt( string clientId, string clientSecret, string scope ) {
@@ -40,5 +42,5 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 			[DataMember]
 			public string expires_in { get; set; }
 		}
-	}
+	}*/
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Net.Http;
+using D2L.Security.OAuth2.Validation.Request;
 using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit {
+namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 	
 	[TestFixture]
+	[Category( "Unit" )]
 	internal partial class HttpRequestMessageExtensionsTests {
 
 		private readonly HttpRequestMessage m_bareHttpRequestMessage = new HttpRequestMessage();

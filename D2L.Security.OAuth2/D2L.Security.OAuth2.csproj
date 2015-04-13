@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\auth-service\approot\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -69,12 +69,13 @@
     <Compile Include="Provisioning\SigningTokenFactory.cs" />
     <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
+    <Compile Include="Validation\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\Jwks\Data\CachedJwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\IJwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\JwksProvider.cs" />
-    <Compile Include="Validation\Jwks\ISecurityTokenProvider.cs" />
+    <Compile Include="Validation\Jwks\IPublicKeyProvider.cs" />
     <Compile Include="Validation\Jwks\KeyNotFoundException.cs" />
-    <Compile Include="Validation\Jwks\SecurityTokenProvider.cs" />
+    <Compile Include="Validation\Jwks\PublicKeyProvider.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResponse.cs" />
     <Compile Include="Validation\Request\AuthenticationStatus.cs" />

@@ -1,7 +1,5 @@
 ﻿using System;
 using D2L.Security.OAuth2.Caching;
-using D2L.Security.OAuth2.Validation.Jwks;
-using D2L.Security.OAuth2.Validation.Jwks.Data;
 using D2L.Security.OAuth2.Validation.Request.Default;
 
 namespace D2L.Security.OAuth2.Validation.Request {
@@ -12,11 +10,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				cache = new NullCache();
 			}
 
-			IJwksProvider jwksProvider = new JwksProvider();
-			IJwksProvider cacheJwksProvider = new CachedJwksProvider( cache, jwksProvider );
-			
-			ISecurityTokenProvider tokenProvider = new SecurityTokenProvider( cacheJwksProvider );
-			IAccessTokenValidator validator = new AccessTokenValidator( tokenProvider );
+			IAccessTokenValidator validator = AccessTokenValidatorFactory.Create( cache );
 			IRequestAuthenticator authenticator = new RequestAuthenticator( validator );
 			return authenticator;
 		}

@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 	
+	/*
 	[TestFixture]
 	internal sealed class CoreAuthenticatorTests {
 
@@ -132,5 +133,5 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			Claim[] claims = new Claim[] { xsrfClaim };
 			validatedTokenMock.SetupGet( x => x.Claims ).Returns( claims );
 		}
-	}
+	}*/
 }

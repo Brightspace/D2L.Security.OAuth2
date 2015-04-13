@@ -9,7 +9,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 	[TestFixture]
 	[Explicit]
 	internal sealed partial class FullStackTests {
-
+		/*
 		private readonly IRequestAuthenticator m_authenticator = RequestAuthenticatorFactory.Create(
 			TestUris.TOKEN_VERIFICATION_AUTHORITY_URI
 			);
@@ -112,6 +112,6 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 			ID2LPrincipal principal;
 			AuthenticationStatus result = m_authenticator.AuthenticateAndExtract( httpRequest, out principal );
 			Assert.AreEqual( AuthenticationStatus.Success, result );
-		}
+		}*/
 	}
 }
