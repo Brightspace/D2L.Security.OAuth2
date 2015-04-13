@@ -5,7 +5,7 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Integration.FullStack {
 	
 	[TestFixture]
 	internal sealed class FullStackTests {
-
+		/*
 		[Test]
 		public void IAuthTokenValidator_VerifyAndDecode_Success() {
 			string expectedScope = TestCredentials.LOReSScopes.MANAGE;
@@ -35,6 +35,6 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Integration.FullStack {
 
 			IValidatedToken validatedToken;
 			Assertions.Throws( () => validator.VerifyAndDecode( "dummyjwt", out validatedToken ) );
-		}
+		}*/
 	}
 }

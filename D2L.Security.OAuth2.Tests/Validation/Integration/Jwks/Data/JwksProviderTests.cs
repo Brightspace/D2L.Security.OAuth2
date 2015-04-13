@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.Tests.Validation.Integration.Jwks.Data {
 	[TestFixture]
 	[Category( "Integration" )]
 	internal sealed class JwksProviderTests {
-
+		/*
 		private readonly JwkDto m_goodJwk1 =
 			new JwkDto(
 				kty: "RSA",
@@ -26,7 +26,7 @@ namespace D2L.Security.OAuth2.Tests.Validation.Integration.Jwks.Data {
 				e: "AQAB",
 				n: "zJhkrKJBR28GMGWbAAlWRENmn2UyP3s5DAddha0KW9ncntC4OydJpr4KxFUuntN_Tl2KNnczewe5JKLbC60Y5sT29-i4zCUIj8ijoaU14T4YBsmm8D1BBK7dV-4hMghUIbqM_eBiAI9-RuK0Vd9MG3mlxShbqgAw2MrD14_iEkbOB3auFq_szuwG8jmk58sSqaqf1clzrniJZLBHZ8zMHxxrF3Wd3N6DPkyxj_r9F9JI6-aGspqHsXOGHD0zwuk_oNTHzqNQxFcOXDHE6TtWLN58GrCmEcAedUgrzen_GQ08HQKJ7sY3mRCABPEQWsPx9Ef_MuO_Si-RJtZHJyMktw"
 				);
-
+		*/
 		private readonly IJwksProvider m_provider = new JwksProvider();
 		private readonly string m_host;
 		private readonly IHttpServer m_lms;
