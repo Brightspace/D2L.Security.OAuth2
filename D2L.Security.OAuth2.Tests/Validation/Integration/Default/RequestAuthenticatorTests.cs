@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.Default {
 		private const string DUMMY_JWT = "dummyjwt";
 		private const string DUMMY_XSRF = "dummyxsrf";
 		private const string DUMMY_BEARER_TOKEN = "dummybearertoken";
-
+		/*  
 		[Test]
 		public void AuthenticateAndExtract_HttpRequestMessage_ExtractsComponentsProperly() {
 			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
@@ -71,6 +71,6 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.Default {
 				out principal
 				), Times.Once
 				);
-		}
+		}*/
 	}
 }

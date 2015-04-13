@@ -7,15 +7,15 @@ using D2L.Security.OAuth2.Validation.Token;
 using Microsoft.IdentityModel.Protocols;
 
 namespace D2L.Security.OAuth2.Validation.Jwks {
-	internal sealed class SecurityTokenProvider : ISecurityTokenProvider {
+	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
 		private readonly IJwksProvider m_jwksProvider;
 		
-		public SecurityTokenProvider( IJwksProvider jwksProvider ) {
+		public PublicKeyProvider( IJwksProvider jwksProvider ) {
 			m_jwksProvider = jwksProvider;
 		}
 
-		async Task<SecurityToken> ISecurityTokenProvider.GetSecurityTokenAsync(
+		async Task<SecurityToken> IPublicKeyProvider.GetSecurityTokenAsync(
 			Uri jwksEndPoint,
 			string keyId
 		) {
