@@ -1,19 +1,29 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Caching {
 	internal sealed class NullCache : ICache {
 
-		bool ICache.TryGet( string key, out string value ) {
-			value = default( string );
-			return false;
+		Task<CacheResponse> ICache.GetAsync( string key ) {
+			
+			return Task.FromResult(
+				new CacheResponse(
+					success: false,
+					value: null
+				)
+			); 
 		}
 
-		void ICache.Set(
+		Task ICache.SetAsync(
 			string key,
 			string value,
 			TimeSpan expiry
-		) { }
+		) {
+			return Task.FromResult( 0 );
+		}
 
-		void ICache.Remove( string key ) { }
+		Task ICache.RemoveAsync( string key ) {
+			return Task.FromResult( 0 );
+		}
 	}
 }

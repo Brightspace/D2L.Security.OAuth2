@@ -1,22 +1,21 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Caching {
 
-	// TODO async?
 	public interface ICache {
 
-		bool TryGet(
-			string key,
-			out string value
+		Task<CacheResponse> GetAsync(
+			string key
 		);
 
-		void Set(
+		Task SetAsync(
 			string key,
 			string value,
 			TimeSpan expiry
 		);
 
-		void Remove(
+		Task RemoveAsync(
 			string key
 		);
 	}
