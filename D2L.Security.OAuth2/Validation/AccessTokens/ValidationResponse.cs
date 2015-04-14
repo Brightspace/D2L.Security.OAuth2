@@ -1,6 +1,4 @@
-﻿using D2L.Security.OAuth2.Validation.Token;
-
-namespace D2L.Security.OAuth2.Validation {
+﻿namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	public class ValidationResponse {
 
 		private readonly ValidationStatus m_status;

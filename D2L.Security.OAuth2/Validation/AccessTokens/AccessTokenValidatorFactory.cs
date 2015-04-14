@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using D2L.Security.OAuth2.Caching;
+﻿using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Validation.Jwks;
 using D2L.Security.OAuth2.Validation.Jwks.Data;
 
-namespace D2L.Security.OAuth2.Validation {
+namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	public static class AccessTokenValidatorFactory {
 		
 		public static IAccessTokenValidator Create( ICache cache = null ) {

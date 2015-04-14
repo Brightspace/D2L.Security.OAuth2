@@ -1,7 +1,5 @@
 ﻿using System.Security.Claims;
 using D2L.Security.OAuth2.Validation.Token;
-using D2L.Security.OAuth2.Validation.Request.Core;
-using D2L.Security.OAuth2.Validation.Request.Core.Default;
 using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
