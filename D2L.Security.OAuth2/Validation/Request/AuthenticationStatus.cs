@@ -2,11 +2,6 @@
 	public enum AuthenticationStatus {
 		
 		/// <summary>
-		/// Authentication was successful
-		/// </summary>
-		Success,
-		
-		/// <summary>
 		/// Security token is expired
 		/// </summary>
 		Expired,
@@ -24,6 +19,11 @@
 		/// <summary>
 		/// Xsrf token did not match
 		/// </summary>
-		XsrfMismatch
+		XsrfMismatch,
+
+		/// <summary>
+		/// Authentication was successful
+		/// </summary>
+		Success
 	}
 }
