@@ -45,55 +45,55 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			AuthenticationMode authMode
 		) {
 		
-			var status = AuthenticationStatus.Success;
-
 			bool cookieExists = !string.IsNullOrEmpty( cookie );
 			bool bearerTokenExists = !string.IsNullOrEmpty( bearerToken );
 
 			if( !cookieExists && !bearerTokenExists ) {
-				status = AuthenticationStatus.Anonymous;
+				return new AuthenticationResponse(
+					AuthenticationStatus.Anonymous,
+					principal: null
+				);
 			}
 
 			if( cookieExists && bearerTokenExists ) {
-				status = AuthenticationStatus.LocationConflict;
+				return new AuthenticationResponse(
+					AuthenticationStatus.LocationConflict,
+					principal: null
+				);
 			}
 
 			string token = cookieExists ? cookie : bearerToken;
 			
 			ValidationResponse validationResponse = await m_accessTokenValidator.ValidateAsync(
 				jwksEndpoint,
-				bearerToken
+				token
 			).ConfigureAwait( false );
 
 			if( validationResponse.Status == ValidationStatus.Expired ) {
-				status = AuthenticationStatus.Expired;
-			}
-
-			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, validationResponse.Token, authMode );
-			if( !isXsrfSafe ) {
-				status = AuthenticationStatus.XsrfMismatch;
-			}
-
-			AuthenticationResponse response;
-			if( status != AuthenticationStatus.Success ) {
-
-				// TODO When things go wrong like expired, xsrf mismatch, etc .. do we
-				// still return the principal?   Or give them null?  
-				// for now giving them null to match what was done before
-				response = new AuthenticationResponse(
-					status,
+				return new AuthenticationResponse(
+					AuthenticationStatus.Expired,
 					principal: null
 				);
+			}
 
-			} else {
+			// TODO .. we should consider doing the xsrf check without validating the jwt
+			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, validationResponse.Token, authMode );
+			if( !isXsrfSafe ) {
+				return new AuthenticationResponse(
+					AuthenticationStatus.XsrfMismatch,
+					principal: null
+				);
+			}
+
+			if( validationResponse.Status == ValidationStatus.Success ) {
 				ID2LPrincipal principal = new ValidatedTokenToD2LPrincipalAdapter( validationResponse.Token, token );
-				response = new AuthenticationResponse(
-					status,
+				return new AuthenticationResponse(
+					AuthenticationStatus.Success,
 					principal
 				);
 			}
-			
-			return response;
+
+			throw new Exception( "Unknown validation status: " + validationResponse.Status );
 		}
 
 		private bool IsXsrfSafe(
