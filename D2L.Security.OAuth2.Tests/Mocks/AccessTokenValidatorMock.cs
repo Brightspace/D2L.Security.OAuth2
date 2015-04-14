@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Validation;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 
 namespace D2L.Security.OAuth2.Tests.Mocks {

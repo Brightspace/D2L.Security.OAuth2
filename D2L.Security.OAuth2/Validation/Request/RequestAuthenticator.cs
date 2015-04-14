@@ -2,10 +2,9 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
-using D2L.Security.OAuth2.Validation.Request.Core.Default;
-using D2L.Security.OAuth2.Validation.Token;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 
-namespace D2L.Security.OAuth2.Validation.Request.Default {
+namespace D2L.Security.OAuth2.Validation.Request {
 	internal sealed class RequestAuthenticator : IRequestAuthenticator {
 
 		private readonly IAccessTokenValidator m_accessTokenValidator;

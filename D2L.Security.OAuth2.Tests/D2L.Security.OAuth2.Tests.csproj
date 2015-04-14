@@ -94,12 +94,9 @@
     <Compile Include="Validation\Integration\FullStack\FullStackTests.HttpRequestMessage.cs" />
     <Compile Include="Validation\Integration\Jwks\Data\JwksProviderTests.cs" />
     <Compile Include="Validation\Integration\JwtValidation\JwtValidationTests.cs" />
-    <Compile Include="Validation\Integration\PublicKeys\OpenIdConfigurations\Default\OpenIdConfigurationFetcherTests.cs" />
     <Compile Include="Validation\StringExtensions.cs" />
-    <Compile Include="Validation\Unit\AccessTokenValidatorTests.cs" />
     <Compile Include="Validation\Unit\Core\Default\CoreAuthenticatorTests.cs" />
     <Compile Include="Validation\Unit\Core\Default\IValidatedTokenExtensionsTests.cs" />
-    <Compile Include="Validation\Unit\Default\AuthTokenValidatorTests.cs" />
     <Compile Include="Unit\Validation\Request\HttpRequestExtensionsTests.AuthHeader.cs" />
     <Compile Include="Unit\Validation\Request\HttpRequestExtensionsTests.Cookie.cs" />
     <Compile Include="Unit\Validation\Request\HttpRequestExtensionsTests.Xsrf.cs" />
@@ -108,7 +105,6 @@
     <Compile Include="Unit\Validation\Request\HttpRequestMessageExtensionsTests.Xsrf.cs" />
     <Compile Include="Validation\Unit\JwtValidation\Default\JwtValidatorTests.cs" />
     <Compile Include="Validation\Unit\PublicKeys\Default\PublicKeyProviderTests.cs" />
-    <Compile Include="Validation\Unit\PublicKeys\Default\PublicKeyTests.cs" />
     <Compile Include="Unit\Validation\Request\Default\RequestAuthenticatorTests.cs" />
     <Compile Include="Validation\Utilities\Assertions %282%29.cs" />
     <Compile Include="Validation\Utilities\Assertions.cs" />
@@ -133,6 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Validation\Unit\Default\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

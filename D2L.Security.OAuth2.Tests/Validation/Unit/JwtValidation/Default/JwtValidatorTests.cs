@@ -1,16 +1,13 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
-using D2L.Security.OAuth2.Validation.Token.JwtValidation;
-using D2L.Security.OAuth2.Validation.Token.JwtValidation.Default;
-using D2L.Security.OAuth2.Validation.Token.JwtValidation.Exceptions;
-using D2L.Security.OAuth2.Validation.Token.PublicKeys;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Token.Tests.Utilities;
 using Moq;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.JwtValidation.Default {
-	
+	/*
 	[TestFixture]
 	internal sealed class JwtValidatorTests {
 
@@ -82,5 +79,5 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.JwtValidation.Default 
 			IJwtValidator validator = new JwtValidator( keyProviderMock.Object, tokenValidatorMock.Object );
 			return validator;
 		}
-	}
+	}*/
 }

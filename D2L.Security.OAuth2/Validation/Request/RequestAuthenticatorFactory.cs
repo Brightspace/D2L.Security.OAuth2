@@ -1,6 +1,6 @@
 ﻿using System;
 using D2L.Security.OAuth2.Caching;
-using D2L.Security.OAuth2.Validation.Request.Default;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	public static class RequestAuthenticatorFactory {

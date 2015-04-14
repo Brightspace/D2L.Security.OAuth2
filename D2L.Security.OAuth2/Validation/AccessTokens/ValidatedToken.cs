@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 
-namespace D2L.Security.OAuth2.Validation.Token.JwtValidation {
+namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
-	internal sealed class ValidatedJwt : IValidatedToken {
+	internal sealed class ValidatedToken : IValidatedToken {
 
 		private readonly JwtSecurityToken m_inner;
 
-		internal ValidatedJwt( JwtSecurityToken jwtSecurityToken ) {
+		internal ValidatedToken( JwtSecurityToken jwtSecurityToken ) {
 			m_inner = jwtSecurityToken;
 		}
 
