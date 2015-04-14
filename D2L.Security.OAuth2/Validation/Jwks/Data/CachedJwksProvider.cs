@@ -25,16 +25,18 @@ namespace D2L.Security.OAuth2.Validation.Jwks.Data {
 			string key = jwksEndpoint.ToString();
 
 			if( !skipCache ) {
-				string jwksJson;
-				if( m_cache.TryGet( key, out jwksJson ) ) {
+				CacheResponse cacheResponse = await m_cache.GetAsync( key );
+				if( cacheResponse.Success ) {
 					return new JwksResponse(
 						fromCache: true,
-						jwksJson: jwksJson );
+						jwksJson: cacheResponse.Value );
 				}
 			}
 
 			JwksResponse response = await m_innerProvider.RequestJwksAsync( jwksEndpoint ).ConfigureAwait( false );
-			m_cache.Set( key, response.JwksJson, DEFAULT_EXPIRY );
+			
+			// TODO .. can I fire and forget here?  
+			await m_cache.SetAsync( key, response.JwksJson, DEFAULT_EXPIRY ).ConfigureAwait( false );
 			return response;
 		}
 		
