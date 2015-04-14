@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\auth-service\approot\bin\</OutputPath>
+    <OutputPath>bin\debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -73,6 +73,7 @@
     <Compile Include="Validation\Jwks\Data\CachedJwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\IJwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\JwksProvider.cs" />
+    <Compile Include="Validation\Jwks\Data\JwksResponse.cs" />
     <Compile Include="Validation\Jwks\IPublicKeyProvider.cs" />
     <Compile Include="Validation\Jwks\KeyNotFoundException.cs" />
     <Compile Include="Validation\Jwks\PublicKeyProvider.cs" />

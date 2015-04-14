@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Validation.Jwks.Data {
 	internal interface IJwksProvider {
-		Task<string> RequestJwksAsync( Uri jwksEndpoint, bool skipCache = false );
+		Task<JwksResponse> RequestJwksAsync( Uri jwksEndpoint, bool skipCache = false );
 	}
 }

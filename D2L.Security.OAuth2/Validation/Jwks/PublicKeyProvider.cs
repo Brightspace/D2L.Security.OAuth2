@@ -20,24 +20,27 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			string keyId
 		) {
 
-			string jwksJson = await m_jwksProvider.RequestJwksAsync( 
+			JwksResponse jwksResponse = await m_jwksProvider.RequestJwksAsync( 
 				jwksEndPoint,
 				skipCache: false
 			).ConfigureAwait( false );
 			
-			var jwks = new JsonWebKeySet( jwksJson );
+			var jwks = new JsonWebKeySet( jwksResponse.JwksJson );
 			JsonWebKey key;
+
 			if( !TryGetJsonWebKey( jwks, keyId, out key ) ) {
 				
-				// If the key is not found, maybe our cache is just 
-				// stale.  Let's try again.
+				// If the key is not found and the jwks came from the cache,
+				// maybe our cache is just stale.  Let's try again.
 				// TODO ... DOS concerns?  This could force us to lookup the key a lot
-				jwksJson = await m_jwksProvider.RequestJwksAsync( 
-					jwksEndPoint,
-					skipCache: true
-				).ConfigureAwait( false );
-
-				jwks = new JsonWebKeySet( jwksJson );
+				if( jwksResponse.FromCache ) {
+					jwksResponse = await m_jwksProvider.RequestJwksAsync( 
+						jwksEndPoint,
+						skipCache: true
+					).ConfigureAwait( false );
+				}
+				
+				jwks = new JsonWebKeySet( jwksResponse.JwksJson );
 
 				if( !TryGetJsonWebKey( jwks, keyId, out key ) ) {
 					throw new KeyNotFoundException(

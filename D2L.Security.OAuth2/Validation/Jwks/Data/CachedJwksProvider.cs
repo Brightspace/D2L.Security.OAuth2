@@ -21,19 +21,21 @@ namespace D2L.Security.OAuth2.Validation.Jwks.Data {
 			m_innerProvider = innerProvider;
 		}
 
-		async Task<string> IJwksProvider.RequestJwksAsync( Uri jwksEndpoint, bool skipCache ) {
-			string jwksJson;
+		async Task<JwksResponse> IJwksProvider.RequestJwksAsync( Uri jwksEndpoint, bool skipCache ) {
 			string key = jwksEndpoint.ToString();
 
 			if( !skipCache ) {
+				string jwksJson;
 				if( m_cache.TryGet( key, out jwksJson ) ) {
-					return jwksJson;
+					return new JwksResponse(
+						fromCache: true,
+						jwksJson: jwksJson );
 				}
 			}
 
-			jwksJson = await m_innerProvider.RequestJwksAsync( jwksEndpoint ).ConfigureAwait( false );
-			m_cache.Set( key, jwksJson, DEFAULT_EXPIRY );
-			return jwksJson;
+			JwksResponse response = await m_innerProvider.RequestJwksAsync( jwksEndpoint ).ConfigureAwait( false );
+			m_cache.Set( key, response.JwksJson, DEFAULT_EXPIRY );
+			return response;
 		}
 		
 	}
