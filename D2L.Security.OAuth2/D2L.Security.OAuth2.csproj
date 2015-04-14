@@ -51,6 +51,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CacheResponse.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Constants.cs" />
