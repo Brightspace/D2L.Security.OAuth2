@@ -1,13 +1,15 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Validation.Jwks.Data;
-using D2L.Security.OAuth2.Validation.Token;
 using Microsoft.IdentityModel.Protocols;
 
 namespace D2L.Security.OAuth2.Validation.Jwks {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
+
+		private const string ALLOWED_KEY_TYPE = "RSA";
 
 		private readonly IJwksProvider m_jwksProvider;
 		
@@ -67,11 +69,11 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 
 		private SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
 			
-			if( jsonWebKey.Kty != TokenValidationConstants.ALLOWED_KEY_TYPE ) {
+			if( jsonWebKey.Kty != ALLOWED_KEY_TYPE ) {
 				throw new Exception( 
 					string.Format(
 						"Expected key type to be {0} but was {1}",
-						TokenValidationConstants.ALLOWED_KEY_TYPE,
+						ALLOWED_KEY_TYPE,
 						jsonWebKey.Kty
 					) 
 				);
@@ -95,7 +97,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 				id: jsonWebKey.Kid,
 				key: key
 			);
-
+			
 			return token;
 
 		}

@@ -2,8 +2,8 @@
 using System.Net.Http;
 using D2L.Security.OAuth2.Tests.Mocks;
 using D2L.Security.OAuth2.Validation;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Request;
-using D2L.Security.OAuth2.Validation.Request.Default;
 using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using D2L.Security.OAuth2.Validation.Token;
 using NUnit.Framework;

@@ -2,9 +2,8 @@
 using System.Linq;
 using System.Security.Claims;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Security.OAuth2.Validation.Token;
 
-namespace D2L.Security.OAuth2.Validation.Request.Core.Default {
+namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal static class IValidatedTokenExtensions {
 
 		/// <param name="token">A validated token</param>
