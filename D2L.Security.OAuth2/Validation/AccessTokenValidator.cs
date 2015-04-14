@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Validation.Jwks;
 using D2L.Security.OAuth2.Validation.Token;
@@ -38,10 +39,12 @@ namespace D2L.Security.OAuth2.Validation {
 				keyId: keyId
 			).ConfigureAwait( false );
 			
-			// TODO ... do we validate audience, issuer, or anything else?
+			// TODO ... should we validate audience, issuer, or anything else?
 			var validationParameters = new TokenValidationParameters() {
+				ValidateAudience = false,
+				ValidateIssuer = false,
 				RequireSignedTokens = true,
-				IssuerSigningKeys = signingToken.SecurityKeys
+				IssuerSigningToken = signingToken
 			};
 			
 			IValidatedToken validatedToken = null;
