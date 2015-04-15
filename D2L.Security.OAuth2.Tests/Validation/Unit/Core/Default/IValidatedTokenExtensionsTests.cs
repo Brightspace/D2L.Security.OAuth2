@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using D2L.Security.OAuth2.Validation.Token;
-using D2L.Security.OAuth2.Validation.Request.Core.Default;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 using NUnit.Framework;
 using D2L.Security.OAuth2.Scopes;
