@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
