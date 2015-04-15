@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 
+using D2L.Security.OAuth2.Provisioning;
+
 namespace D2L.Security.OAuth2.SecurityTokens {
 	/// <summary>
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
@@ -38,7 +40,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			DateTime validTo,
 			AsymmetricSecurityKey key
 		) : base(
-			name: "kid",
+			name: ProvisioningConstants.AssertionGrant.KEY_ID_NAME,
 			id: id.ToString(),
 			key: key
 		) {
