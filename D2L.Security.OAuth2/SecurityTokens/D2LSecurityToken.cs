@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 	/// <summary>
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
-	public class D2LSecurityToken : SecurityToken, IDisposable {
+	public class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
 		private readonly Guid m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
@@ -22,12 +22,12 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		public D2LSecurityToken(
 			TimeSpan lifespan,
 			AsymmetricSecurityKey key
-		) {
-			m_id = Guid.NewGuid();
-			m_validFrom = DateTime.UtcNow;
-			m_validTo = m_validFrom + lifespan;
-			m_key = key;
-		}
+		) : this(
+			id: Guid.NewGuid(),
+			validFrom: DateTime.UtcNow,
+			validTo: DateTime.UtcNow + lifespan, // Technically it's gross that we did DateTime.UtcNow twice here
+			key: key
+		) {}
 
 		/// <remarks>
 		/// This class takes ownership of the AsymmetricSecurityKey
@@ -37,7 +37,12 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			DateTime validFrom,
 			DateTime validTo,
 			AsymmetricSecurityKey key
+		) : base(
+			name: "kid",
+			id: id.ToString(),
+			key: key
 		) {
+
 			if( id == new Guid() ) {
 				throw new ArgumentException( "Use Guid.NewGuid() to create Guids - the default constructor always creates the same one." );
 			}
