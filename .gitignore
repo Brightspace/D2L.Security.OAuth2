@@ -4,3 +4,4 @@ packages
 *.suo
 *.user
 *.nupkg
+*.orig
