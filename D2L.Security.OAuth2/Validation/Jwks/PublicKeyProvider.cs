@@ -3,13 +3,14 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Jwks.Data;
 using Microsoft.IdentityModel.Protocols;
 
 namespace D2L.Security.OAuth2.Validation.Jwks {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
-		private const string ALLOWED_KEY_TYPE = "RSA";
+		internal const string ALLOWED_KEY_TYPE = "RSA";
 
 		private readonly IJwksProvider m_jwksProvider;
 		
@@ -45,7 +46,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 				jwks = new JsonWebKeySet( jwksResponse.JwksJson );
 
 				if( !TryGetJsonWebKey( jwks, keyId, out key ) ) {
-					throw new KeyNotFoundException(
+					throw new PublicKeyNotFoundException(
 						string.Format( "Could not find jwk with id '{0}'", keyId )
 					);
 				}
@@ -70,7 +71,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 		private SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
 			
 			if( jsonWebKey.Kty != ALLOWED_KEY_TYPE ) {
-				throw new Exception( 
+				throw new InvalidKeyTypeException( 
 					string.Format(
 						"Expected key type to be {0} but was {1}",
 						ALLOWED_KEY_TYPE,
