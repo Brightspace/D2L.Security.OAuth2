@@ -11,12 +11,10 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
 	public class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
-		private readonly Guid m_id;
+		private Guid? m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
 		private readonly AsymmetricSecurityKey m_key;
-
-		private string m_idAsString;
 
 		/// <remarks>
 		/// This class takes ownership of the AsymmetricSecurityKey
@@ -24,12 +22,15 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		public D2LSecurityToken(
 			TimeSpan lifespan,
 			AsymmetricSecurityKey key
-		) : this(
-			id: Guid.NewGuid(),
-			validFrom: DateTime.UtcNow,
-			validTo: DateTime.UtcNow + lifespan, // Technically it's gross that we did DateTime.UtcNow twice here
+		) : base(
+			name: ProvisioningConstants.AssertionGrant.KEY_ID_NAME,
+			id: Guid.NewGuid().ToString(),
 			key: key
-		) {}
+		) {
+			m_validFrom = DateTime.UtcNow;
+			m_validTo = m_validFrom + lifespan;
+			m_key = key;
+		}
 
 		/// <remarks>
 		/// This class takes ownership of the AsymmetricSecurityKey
@@ -44,7 +45,6 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			id: id.ToString(),
 			key: key
 		) {
-
 			if( id == new Guid() ) {
 				throw new ArgumentException( "Use Guid.NewGuid() to create Guids - the default constructor always creates the same one." );
 			}
@@ -58,17 +58,13 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			m_key = key;
 		}
 
-		public override string Id {
-			get {
-				if( m_idAsString == null ) {
-					m_idAsString = m_id.ToString();
-				}
-				return m_idAsString;
-			}
-		}
-
 		public virtual Guid KeyId {
-			get { return m_id; }
+			get {
+				if( m_id == null ) {
+					m_id = Guid.Parse( Id );
+				}
+				return m_id.Value;
+			}
 		}
 
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
