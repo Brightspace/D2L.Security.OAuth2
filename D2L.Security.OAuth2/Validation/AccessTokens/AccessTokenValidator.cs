@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Jwks;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
@@ -26,20 +27,17 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				token
 			);
 			
-			// TODO is this check necessary?
 			if( unvalidatedToken.SignatureAlgorithm != ALLOWED_SIGNATURE_ALGORITHM ) {
 				string message = string.Format(
-					"Expected signature algorithm {0} but was {1}",
-					ALLOWED_SIGNATURE_ALGORITHM,
-					unvalidatedToken.SignatureAlgorithm
+					"Signature algorithm '{0}' is not supported.  Permitted algorithm is '{1}'",
+					unvalidatedToken.SignatureAlgorithm,
+					ALLOWED_SIGNATURE_ALGORITHM
 				);
-				//throw new InvalidTokenTypeException( message );
-				// If we keep this check we could recreate the above exception type
-				throw new Exception( message );
+				throw new InvalidSignatureAlgorithmException( message );
 			}
 
 			if( !unvalidatedToken.Header.ContainsKey( "kid" ) ) {
-				throw new Exception( "KeyId not found in token" );
+				throw new MissingKeyIdException( "KeyId not found in token" );
 			}
 
 			string keyId = unvalidatedToken.Header["kid"].ToString();
@@ -47,9 +45,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			SecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
 				jwksEndPoint: jwksEndPoint,
 				keyId: keyId
-			).ConfigureAwait( false );
+			).SafeAsync();
 			
-			// TODO ... should we validate audience, issuer, or anything else?
 			var validationParameters = new TokenValidationParameters() {
 				ValidateAudience = false,
 				ValidateIssuer = false,
@@ -71,7 +68,11 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				validatedToken = new ValidatedToken( (JwtSecurityToken)securityToken );
 
 			} catch( SecurityTokenExpiredException ) {
-				status = ValidationStatus.Expired;
+
+				return new ValidationResponse(
+					ValidationStatus.Expired,
+					token: null
+				);
 			}
 
 			return new ValidationResponse(

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Validation;
@@ -11,6 +12,7 @@ namespace D2L.Security.OAuth2.Tests.Mocks {
 	public static class AccessTokenValidatorMock {
 
 		public static Mock<IAccessTokenValidator> Create(
+			string accessToken,
 			ValidationResponse response
 		) {
 			var mock = new Mock<IAccessTokenValidator>();
@@ -18,7 +20,7 @@ namespace D2L.Security.OAuth2.Tests.Mocks {
 			mock.Setup(
 				v => v.ValidateAsync(
 					It.IsAny<Uri>(),
-					It.IsAny<string>()
+					accessToken
 				)
 			).ReturnsAsync( response );
 
