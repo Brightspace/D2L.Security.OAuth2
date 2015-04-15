@@ -68,6 +68,7 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResult.cs" />
+    <Compile Include="Validation\Request\ID2LPrincipalExtensions.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
     <Compile Include="Validation\Request\Core\CoreAuthenticatorFactory.cs" />
     <Compile Include="Validation\Request\Core\Default\CoreAuthenticator.cs" />
@@ -106,6 +107,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

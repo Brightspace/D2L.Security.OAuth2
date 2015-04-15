@@ -92,6 +92,7 @@
     <Compile Include="Validation\Unit\JwtValidation\Default\JwtValidatorTests.cs" />
     <Compile Include="Validation\Unit\PublicKeys\Default\PublicKeyProviderTests.cs" />
     <Compile Include="Validation\Unit\PublicKeys\Default\PublicKeyTests.cs" />
+    <Compile Include="Validation\Unit\Request\ID2LPrincipalExtensionsTests.cs" />
     <Compile Include="Validation\Utilities\Assertions %282%29.cs" />
     <Compile Include="Validation\Utilities\Assertions.cs" />
     <Compile Include="Validation\Utilities\AuthServerInvoker.cs" />
