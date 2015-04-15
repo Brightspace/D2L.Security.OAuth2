@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
@@ -34,8 +35,8 @@ namespace D2L.Security.OAuth2.Validation.Jwks.Data {
 			}
 
 			JwksResponse response = await m_innerProvider.RequestJwksAsync( jwksEndpoint ).SafeAsync();
-			m_cache.SetAsync( key, response.JwksJson, DEFAULT_EXPIRY ).CallSync();
-
+			await m_cache.SetAsync( key, response.JwksJson, DEFAULT_EXPIRY ).SafeAsync();
+			
 			return response;
 		}
 		
