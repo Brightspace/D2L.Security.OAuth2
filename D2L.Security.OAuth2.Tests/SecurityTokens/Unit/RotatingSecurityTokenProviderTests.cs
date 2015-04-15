@@ -42,9 +42,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 		[Test]
 		public async void GetLatestToken_NoTokens_CreatesToken() {
-			D2LSecurityToken token = await m_securityTokenProvider
-				.GetLatestTokenAsync()
-				.ConfigureAwait( false );
+			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
 			Utilities.AssertTokenActive( token );
@@ -54,13 +52,9 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetLatestToken_ExpiredToken_DeletesTokenCreatesAndReturnsNewToken() {
 			var oldToken = Utilities.CreateExpiredToken();
-			await m_innerSecurityTokenProvider
-				.SaveAsync( oldToken )
-				.ConfigureAwait( false );
+			await m_innerSecurityTokenProvider.SaveAsync( oldToken ).SafeAsync();
 
-			D2LSecurityToken token = await m_securityTokenProvider
-				.GetLatestTokenAsync()
-				.ConfigureAwait( false );
+			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
 			Assert.AreNotEqual( oldToken.KeyId, token.KeyId );
@@ -74,9 +68,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			var oldishToken = Utilities.CreateExpiringToken();
 			await m_innerSecurityTokenProvider.SaveAsync( oldishToken );
 
-			D2LSecurityToken token = await m_securityTokenProvider
-				.GetLatestTokenAsync()
-				.ConfigureAwait( false );
+			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
 			Assert.AreNotEqual( oldishToken.KeyId, token.KeyId );
@@ -88,13 +80,9 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetLatestToken_ActiveToken_SimplyReturns() {
 			var currentToken = Utilities.CreateActiveToken();
-			await m_innerSecurityTokenProvider
-				.SaveAsync( currentToken )
-				.ConfigureAwait( false );
+			await m_innerSecurityTokenProvider.SaveAsync( currentToken ).SafeAsync();
 
-			D2LSecurityToken token = await m_securityTokenProvider
-				.GetLatestTokenAsync()
-				.ConfigureAwait( false );
+			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
 			Assert.AreEqual( currentToken.KeyId, token.KeyId );
@@ -106,9 +94,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetAllTokens_DeletesExpiringTokens() {
 			var oldToken = Utilities.CreateExpiredToken();
-			await m_innerSecurityTokenProvider
-				.SaveAsync( oldToken )
-				.ConfigureAwait( false );
+			await m_innerSecurityTokenProvider.SaveAsync( oldToken ).SafeAsync();
 
 			var tokens = await GetTokens();
 
@@ -120,9 +106,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetAllTokens_DoesntIgnoreExpiringTokens() {
 			var oldishToken = Utilities.CreateExpiringToken();
-			await m_innerSecurityTokenProvider
-				.SaveAsync( oldishToken )
-				.ConfigureAwait( false );
+			await m_innerSecurityTokenProvider.SaveAsync( oldishToken ).SafeAsync();
 
 			var tokens = await GetTokens();
 
@@ -134,9 +118,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		[Test]
 		public async void GetAllTokens_DoesntIgnoreActiveTokens() {
 			var activeToken = Utilities.CreateActiveToken();
-			await m_innerSecurityTokenProvider
-				.SaveAsync( activeToken )
-				.ConfigureAwait( false );
+			await m_innerSecurityTokenProvider.SaveAsync( activeToken ).SafeAsync();
 
 			var tokens = await GetTokens();
 
@@ -146,9 +128,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		}
 
 		private async Task<List<D2LSecurityToken>> GetTokens() {
-			IEnumerable<D2LSecurityToken> tokens = await m_securityTokenProvider
-				.GetAllTokensAsync()
-				.ConfigureAwait( false );
+			IEnumerable<D2LSecurityToken> tokens = await m_securityTokenProvider.GetAllTokensAsync().SafeAsync();
 
 			return tokens.ToList();
 		}

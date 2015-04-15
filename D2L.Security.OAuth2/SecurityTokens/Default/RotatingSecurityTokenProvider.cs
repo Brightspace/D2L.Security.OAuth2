@@ -44,9 +44,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 		}
 
 		async Task<D2LSecurityToken> ISecurityTokenProvider.GetLatestTokenAsync() {
-			D2LSecurityToken token = await m_inner
-				.GetLatestTokenAsync()
-				.ConfigureAwait( false );
+			D2LSecurityToken token = await m_inner.GetLatestTokenAsync().SafeAsync();
 
 			if( token != null ) {
 				if( !token.HasPrivateKey() ) {
@@ -61,9 +59,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 				// We are eagerly flushing expired tokens here; not strictly
 				// required.
 				if( token.IsExpired() ) {
-					await m_inner
-						.DeleteAsync( token.KeyId )
-						.ConfigureAwait( false );
+					await m_inner.DeleteAsync( token.KeyId ).SafeAsync();
 				}
 			}
 
@@ -72,9 +68,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 
 			token = m_securityTokenFactory.Create( m_tokenLifetime );
 
-			await m_inner
-				.SaveAsync( token )
-				.ConfigureAwait( false );
+			await m_inner.SaveAsync( token ).SafeAsync();
 
 			return token;
 		}
@@ -90,19 +84,15 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			// Immediately ToList() this to avoid any problems with invalid
 			// iterators (depending on how m_inner is implemented, calling
 			// Delete while iterating could be problematic.
-			IEnumerable<D2LSecurityToken> tokens = ( await m_inner
-				.GetAllTokensAsync()
-				.ConfigureAwait( false ) )
-				.ToList();
+			IEnumerable<D2LSecurityToken> tokens = await m_inner.GetAllTokensAsync().SafeAsync();
+			tokens = tokens.ToList();
 
 			List<D2LSecurityToken> result = new List<D2LSecurityToken>();
 
 			// Don't expose any expired tokens to the caller
 			foreach( D2LSecurityToken token in tokens ) {
 				if( token.IsExpired() ) {
-					await m_inner
-						.DeleteAsync( token.KeyId )
-						.ConfigureAwait( false );
+					await m_inner.DeleteAsync( token.KeyId ).SafeAsync();
 				} else {
 					result.Add( token );
 				}
