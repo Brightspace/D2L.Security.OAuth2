@@ -105,7 +105,7 @@
     <Compile Include="Unit\Validation\Request\HttpRequestMessageExtensionsTests.Xsrf.cs" />
     <Compile Include="Validation\Unit\JwtValidation\Default\JwtValidatorTests.cs" />
     <Compile Include="Validation\Unit\PublicKeys\Default\PublicKeyProviderTests.cs" />
-    <Compile Include="Unit\Validation\Request\Default\RequestAuthenticatorTests.cs" />
+    <Compile Include="Unit\Validation\Request\RequestAuthenticatorTests.cs" />
     <Compile Include="Validation\Utilities\Assertions %282%29.cs" />
     <Compile Include="Validation\Utilities\Assertions.cs" />
     <Compile Include="Validation\Utilities\AuthServerInvoker.cs" />

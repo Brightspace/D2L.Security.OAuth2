@@ -67,7 +67,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			ValidationResponse validationResponse = await m_accessTokenValidator.ValidateAsync(
 				jwksEndpoint,
 				token
-			).ConfigureAwait( false );
+			).SafeAsync();
 
 			if( validationResponse.Status == ValidationStatus.Expired ) {
 				return new AuthenticationResponse(

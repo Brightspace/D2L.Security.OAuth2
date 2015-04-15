@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Tests.Mocks {
 			).Returns( authorizationHeaderValue );
 
 			headers.Setup(
-				h => h.Get( RequestValidationConstants.Headers.AUTHORIZATION )
+				h => h.Get( RequestValidationConstants.Headers.XSRF )
 			).Returns( xsrfHeaderValue );
 			
 			return mock;
