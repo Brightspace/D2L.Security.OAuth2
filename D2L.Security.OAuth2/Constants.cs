@@ -9,6 +9,7 @@ namespace D2L.Security.OAuth2 {
 			internal const string TENANT_URL = "tenanturl";
 			internal const string SCOPE = "scope";
 			internal const string ISSUER = "iss";
+			internal const string TOKEN_ID = "jti";
 		}
 
 	}
