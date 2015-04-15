@@ -1,13 +1,10 @@
 ﻿using System;
-using D2L.Security.OAuth2.Validation.Token.PublicKeys;
-using D2L.Security.OAuth2.Validation.Token.PublicKeys.Default;
-using D2L.Security.OAuth2.Validation.Token.PublicKeys.OpenIdConfigurations;
 using Microsoft.IdentityModel.Protocols;
 using Moq;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.PublicKeys.Default {
-	
+	/*
 	[TestFixture]
 	internal sealed class PublicKeyProviderTests {
 
@@ -66,5 +63,5 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Unit.PublicKeys.Default {
 			IPublicKeyProvider provider = MakePublicKeyProvider( keysJson );
 			Assert.Throws<Exception>( () => provider.Get() );
 		}
-	}
+	}*/
 }
