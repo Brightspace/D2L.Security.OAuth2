@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\auth-service\approot\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -73,6 +73,7 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\TokenValidationConstants.cs" />
+    <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
     <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
     <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyLookupFailureException.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Validation\Jwks\Data\JwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\JwksResponse.cs" />
     <Compile Include="Validation\Jwks\IPublicKeyProvider.cs" />
-    <Compile Include="Validation\Jwks\KeyNotFoundException.cs" />
+    <Compile Include="Validation\Exceptions\PublicKeyNotFoundException.cs" />
     <Compile Include="Validation\Jwks\PublicKeyProvider.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResponse.cs" />

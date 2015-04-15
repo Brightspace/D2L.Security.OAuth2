@@ -163,9 +163,15 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				xsrfHeaderValue: request_xsrfHeader
 			).Object;
 
+			authResponse = await authenticator.AuthenticateAsync(
+				new Uri( "https://somewhere.something" ),
+				httpRequest,
+				authMode: authMode
+			).SafeAsync();
+			
 			Assert.AreEqual( expected_authenticationStatus, authResponse.Status, "Using HttpRequest" );
 			Assert.AreEqual( expected_nullPrincipal, authResponse.Principal == null, "Using HttpRequest" );
 		}
-
+		
 	}
 }
