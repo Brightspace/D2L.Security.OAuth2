@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 	/// <summary>
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
-	public sealed class D2LSecurityToken : SecurityToken, IDisposable {
+	public class D2LSecurityToken : SecurityToken, IDisposable {
 		private readonly Guid m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
@@ -60,7 +60,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			}
 		}
 
-		public Guid KeyId {
+		public virtual Guid KeyId {
 			get { return m_id; }
 		}
 
@@ -80,19 +80,19 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			get { return m_validTo; }
 		}
 
-		public bool IsExpired() {
+		public virtual bool IsExpired() {
 			return DateTime.UtcNow > m_validTo;
 		}
 
-		public bool IsExpiringSoon( TimeSpan rolloverWindow ) {
+		public virtual bool IsExpiringSoon( TimeSpan rolloverWindow ) {
 			return DateTime.UtcNow >= m_validTo - rolloverWindow;
 		}
 
-		public bool HasPrivateKey() {
+		public virtual bool HasPrivateKey() {
 			return m_key.HasPrivateKey();
 		}
 
-		public AsymmetricAlgorithm GetAsymmetricAlgorithm() {
+		public virtual AsymmetricAlgorithm GetAsymmetricAlgorithm() {
 			if( m_key is X509AsymmetricSecurityKey ) {
 				throw new InvalidOperationException(
 					"This hacky thing is not applicable to the X509AsymmetricSecurityKey implementation"
@@ -108,7 +108,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			return alg;
 		}
 
-		public void Dispose() {
+		public virtual void Dispose() {
 			var alg = GetAsymmetricAlgorithm();
 			alg.Dispose();
 		}
