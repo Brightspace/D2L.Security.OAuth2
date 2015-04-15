@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,7 +60,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.1\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -87,6 +87,8 @@
     <Compile Include="Provisioning\Utilities\TestUris.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
+    <Compile Include="SecurityTokens\Unit\RotatingSecurityTokenProviderTests.cs" />
+    <Compile Include="SecurityTokens\Unit\Utilities.cs" />
     <Compile Include="Unit\Validation\AccessTokenValidatorTests.cs" />
     <Compile Include="Unit\Validation\Jwks\PublicKeyProviderTests.cs" />
     <Compile Include="Validation\Integration\Default\RequestAuthenticatorTests.cs" />
