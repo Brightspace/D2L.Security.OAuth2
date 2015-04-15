@@ -15,9 +15,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			ISecurityTokenProvider securityTokenProvider,
 			long num
 		) {
-			var tokens = await securityTokenProvider
-				.GetAllTokensAsync()
-				.ConfigureAwait( false );
+			var tokens = await securityTokenProvider.GetAllTokensAsync().SafeAsync();
 
 			Assert.AreEqual(
 				num,

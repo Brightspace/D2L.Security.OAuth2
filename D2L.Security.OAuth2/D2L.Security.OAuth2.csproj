@@ -72,6 +72,7 @@
     <Compile Include="Provisioning\SigningTokenFactory.cs" />
     <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
+    <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResult.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
