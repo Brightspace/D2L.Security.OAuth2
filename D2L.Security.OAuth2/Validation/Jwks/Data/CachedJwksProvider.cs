@@ -8,7 +8,7 @@ using D2L.Security.OAuth2.Caching;
 namespace D2L.Security.OAuth2.Validation.Jwks.Data {
 	internal sealed class CachedJwksProvider : IJwksProvider {
 
-		private static readonly TimeSpan DEFAULT_EXPIRY = TimeSpan.FromDays( 1 );
+		private static readonly TimeSpan DEFAULT_EXPIRY = TimeSpan.FromHours( 1 );
 		
 		private readonly ICache m_cache;
 		private readonly IJwksProvider m_innerProvider;
@@ -33,10 +33,9 @@ namespace D2L.Security.OAuth2.Validation.Jwks.Data {
 				}
 			}
 
-			JwksResponse response = await m_innerProvider.RequestJwksAsync( jwksEndpoint ).ConfigureAwait( false );
-			
-			// TODO .. can I fire and forget here?  
-			await m_cache.SetAsync( key, response.JwksJson, DEFAULT_EXPIRY ).ConfigureAwait( false );
+			JwksResponse response = await m_innerProvider.RequestJwksAsync( jwksEndpoint ).SafeAsync();
+			m_cache.SetAsync( key, response.JwksJson, DEFAULT_EXPIRY ).CallSync();
+
 			return response;
 		}
 		

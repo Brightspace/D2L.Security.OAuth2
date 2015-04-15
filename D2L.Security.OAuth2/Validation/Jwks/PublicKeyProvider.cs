@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			JwksResponse jwksResponse = await m_jwksProvider.RequestJwksAsync( 
 				jwksEndPoint,
 				skipCache: false
-			).ConfigureAwait( false );
+			).SafeAsync();
 			
 			var jwks = new JsonWebKeySet( jwksResponse.JwksJson );
 			JsonWebKey key;
@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 					jwksResponse = await m_jwksProvider.RequestJwksAsync( 
 						jwksEndPoint,
 						skipCache: true
-					).ConfigureAwait( false );
+					).SafeAsync();
 				}
 				
 				jwks = new JsonWebKeySet( jwksResponse.JwksJson );
