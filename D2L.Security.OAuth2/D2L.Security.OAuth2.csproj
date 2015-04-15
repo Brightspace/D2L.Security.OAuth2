@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -38,7 +39,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IdentityModel.Tokens.Jwt">
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.1\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
@@ -47,10 +47,20 @@
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CacheResponse.cs" />
+    <Compile Include="Caching\ICache.cs" />
+    <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="SecurityTokens\D2LSecurityToken.cs" />
+    <Compile Include="SecurityTokens\Default\InMemorySecurityTokenProvider.cs" />
+    <Compile Include="SecurityTokens\Default\RsaSecurityTokenFactory.cs" />
+    <Compile Include="SecurityTokens\ISecurityTokenFactory.cs" />
+    <Compile Include="SecurityTokens\ISecurityTokenProvider.cs" />
+    <Compile Include="SecurityTokens\Default\RotatingSecurityTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\FriendAssemblies.cs" />
     <Compile Include="Provisioning\ClaimSet.cs" />
@@ -66,46 +76,44 @@
     <Compile Include="Provisioning\SigningTokenFactory.cs" />
     <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
+    <Compile Include="Utilities\TaskExtensions.cs" />
+    <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
+    <Compile Include="Validation\AccessTokens\TokenValidationConstants.cs" />
+    <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
+    <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
+    <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
+    <Compile Include="Validation\Exceptions\PublicKeyLookupFailureException.cs" />
+    <Compile Include="Validation\Jwks\Data\CachedJwksProvider.cs" />
+    <Compile Include="Validation\Jwks\Data\IJwksProvider.cs" />
+    <Compile Include="Validation\Jwks\Data\JwksProvider.cs" />
+    <Compile Include="Validation\Jwks\Data\JwksResponse.cs" />
+    <Compile Include="Validation\Jwks\IPublicKeyProvider.cs" />
+    <Compile Include="Validation\Exceptions\PublicKeyNotFoundException.cs" />
+    <Compile Include="Validation\Jwks\PublicKeyProvider.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
-    <Compile Include="Validation\Request\AuthenticationResult.cs" />
+    <Compile Include="Validation\Request\AuthenticationResponse.cs" />
+    <Compile Include="Validation\Request\AuthenticationStatus.cs" />
     <Compile Include="Validation\Request\ID2LPrincipalExtensions.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
-    <Compile Include="Validation\Request\Core\CoreAuthenticatorFactory.cs" />
-    <Compile Include="Validation\Request\Core\Default\CoreAuthenticator.cs" />
-    <Compile Include="Validation\Request\Core\Default\IValidatedTokenExtensions.cs" />
-    <Compile Include="Validation\Request\Core\Default\ValidatedTokenToD2LPrincipalAdapter.cs" />
-    <Compile Include="Validation\Request\Core\ICoreAuthenticator.cs" />
-    <Compile Include="Validation\Request\Default\RequestAuthenticator.cs" />
+    <Compile Include="Validation\AccessTokens\IValidatedTokenExtensions.cs" />
+    <Compile Include="Validation\AccessTokens\ValidatedTokenToD2LPrincipalAdapter.cs" />
+    <Compile Include="Validation\Request\RequestAuthenticator.cs" />
     <Compile Include="Validation\Request\HttpRequestExtensions.cs" />
     <Compile Include="Validation\Request\HttpRequestMessageExtensions.cs" />
-    <Compile Include="Validation\Request\ID2LPrincipal.cs" />
+    <Compile Include="ID2LPrincipal.cs" />
     <Compile Include="Validation\Request\IRequestAuthenticator.cs" />
-    <Compile Include="Validation\Request\PrincipalType.cs" />
+    <Compile Include="PrincipalType.cs" />
     <Compile Include="Validation\Request\RequestAuthenticatorFactory.cs" />
-    <Compile Include="Validation\Token\AuthTokenValidatorFactory.cs" />
-    <Compile Include="Validation\Token\TokenValidationConstants.cs" />
-    <Compile Include="Validation\Token\Default\AuthTokenValidator.cs" />
-    <Compile Include="Validation\Token\IAuthTokenValidator.cs" />
-    <Compile Include="Validation\Token\IDisposableExtensions.cs" />
-    <Compile Include="Validation\Token\IValidatedToken.cs" />
-    <Compile Include="Validation\Token\JwtValidation\Default\JwtHelper.cs" />
-    <Compile Include="Validation\Token\JwtValidation\Default\JwtValidator.cs" />
-    <Compile Include="Validation\Token\JwtValidation\Default\ValidatedJwt.cs" />
-    <Compile Include="Validation\Token\JwtValidation\Exceptions\InvalidTokenTypeException.cs" />
-    <Compile Include="Validation\Token\JwtValidation\IJwtValidator.cs" />
-    <Compile Include="Validation\Token\JwtValidation\JwtValidatorFactory.cs" />
-    <Compile Include="Validation\Token\PublicKeys\Default\PublicKey.cs" />
-    <Compile Include="Validation\Token\PublicKeys\Default\PublicKeyProvider.cs" />
-    <Compile Include="Validation\Token\PublicKeys\IPublicKey.cs" />
-    <Compile Include="Validation\Token\PublicKeys\IPublicKeyProvider.cs" />
-    <Compile Include="Validation\Token\PublicKeys\OpenIdConfigurations\Default\OpenIdConfigurationFetcher.cs" />
-    <Compile Include="Validation\Token\PublicKeys\OpenIdConfigurations\IOpenIdConfigurationFetcher.cs" />
-    <Compile Include="Validation\Token\PublicKeys\PublicKeyProviderFactory.cs" />
-    <Compile Include="Validation\Token\Utilities\AsyncHelper.cs" />
-    <Compile Include="Validation\Token\ValidationResult.cs" />
+    <Compile Include="Validation\AccessTokens\AccessTokenValidator.cs" />
+    <Compile Include="Validation\AccessTokens\IAccessTokenValidator.cs" />
+    <Compile Include="Validation\AccessTokens\IValidatedToken.cs" />
+    <Compile Include="Validation\AccessTokens\ValidatedToken.cs" />
+    <Compile Include="Validation\AccessTokens\ValidationResponse.cs" />
+    <Compile Include="Validation\AccessTokens\ValidationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="SecurityTokens\README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
