@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		/// </remarks>
 		Task<IEnumerable<D2LSecurityToken>> GetAllTokensAsync();
 
-		Task DeleteAsync( Guid id );
+		Task DeleteAsync( string id );
 
 		Task SaveAsync( D2LSecurityToken token );
 	}
