@@ -168,7 +168,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Jwks {
 			);
 			
 			Assert.AreEqual( 1, token.SecurityKeys.Count() );
-			// TODO .. better assestions once we are using D2LSecurityToken
+			Assert.AreEqual( keyId, token.Id );
 		}
 
 	}
