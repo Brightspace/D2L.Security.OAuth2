@@ -57,7 +57,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
-			Assert.AreNotEqual( oldToken.KeyId, token.KeyId );
+			Assert.AreNotEqual( oldToken.Id, token.Id );
 			Utilities.AssertTokenActive( token );
 			Assert.IsTrue( token.HasPrivateKey() );
 			AssertNumberOfTokensStored( 1 );
@@ -71,7 +71,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
-			Assert.AreNotEqual( oldishToken.KeyId, token.KeyId );
+			Assert.AreNotEqual( oldishToken.Id, token.Id );
 			Utilities.AssertTokenActive( token );
 			Assert.IsTrue( token.HasPrivateKey() );
 			AssertNumberOfTokensStored( 2 );
@@ -85,7 +85,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
-			Assert.AreEqual( currentToken.KeyId, token.KeyId );
+			Assert.AreEqual( currentToken.Id, token.Id );
 			Utilities.AssertTokenActive( token );
 			Assert.IsTrue( token.HasPrivateKey() );
 			AssertNumberOfTokensStored( 1 );
@@ -111,7 +111,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			var tokens = await GetTokens();
 
 			Assert.AreEqual( 1, tokens.Count );
-			Assert.AreEqual( oldishToken.KeyId, tokens[ 0 ].KeyId );
+			Assert.AreEqual( oldishToken.Id, tokens[ 0 ].Id );
 			AssertNumberOfTokensStored( 1 );
 		}
 
@@ -123,7 +123,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			var tokens = await GetTokens();
 
 			Assert.AreEqual( 1, tokens.Count );
-			Assert.AreEqual( activeToken.KeyId, tokens[ 0 ].KeyId );
+			Assert.AreEqual( activeToken.Id, tokens[ 0 ].Id );
 			AssertNumberOfTokensStored( 1 );
 		}
 

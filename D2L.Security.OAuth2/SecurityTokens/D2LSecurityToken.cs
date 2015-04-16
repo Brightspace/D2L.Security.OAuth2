@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
 	public class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
-		private Guid? m_id;
+
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
 		private readonly AsymmetricSecurityKey m_key;
@@ -36,35 +36,23 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 		/// This class takes ownership of the AsymmetricSecurityKey
 		/// </remarks>
 		public D2LSecurityToken(
-			Guid id,
+			string id,
 			DateTime validFrom,
 			DateTime validTo,
 			AsymmetricSecurityKey key
 		) : base(
 			name: ProvisioningConstants.AssertionGrant.KEY_ID_NAME,
-			id: id.ToString(),
+			id: id,
 			key: key
 		) {
-			if( id == new Guid() ) {
-				throw new ArgumentException( "Use Guid.NewGuid() to create Guids - the default constructor always creates the same one." );
-			}
+			
 			if( validFrom >= validTo ) {
 				throw new ArgumentException( "validFrom must be before validTo" );
 			}
 
-			m_id = id;
 			m_validFrom = validFrom;
 			m_validTo = validTo;
 			m_key = key;
-		}
-
-		public virtual Guid KeyId {
-			get {
-				if( m_id == null ) {
-					m_id = Guid.Parse( Id );
-				}
-				return m_id.Value;
-			}
 		}
 
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
@@ -74,7 +62,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 				);
 			}
 		}
-
+		
 		public override DateTime ValidFrom {
 			get { return m_validFrom; }
 		}
