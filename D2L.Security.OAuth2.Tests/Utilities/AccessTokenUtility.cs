@@ -25,14 +25,12 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 			claims = claims ?? Enumerable.Empty<Claim>();
 			
 			expiry = expiry ?? DateTime.UtcNow.Add( TimeSpan.FromHours( 1 ) );
-
-			SigningCredentials credentials = null;
-
+			
 			var token = new JwtSecurityToken(
 				issuer: issuer,
 				audience: audience,
 				claims: claims,
-				signingCredentials: credentials,
+				signingCredentials: signingToken.GetSigningCredentials(),
 				expires: expiry
 			);
 

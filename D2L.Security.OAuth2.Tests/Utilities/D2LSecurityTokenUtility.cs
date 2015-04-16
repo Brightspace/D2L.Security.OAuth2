@@ -20,23 +20,32 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 				tokens.Count() );
 		}
 
-		public static D2LSecurityToken CreateExpiredToken() {
+		public static D2LSecurityToken CreateExpiredToken( string id = null ) {
 			return CreateTokenWithTimeRemaining(
-				-TimeSpan.FromHours( 10 ) );
+				-TimeSpan.FromHours( 10 ),
+				id );
 		}
 
-		public static D2LSecurityToken CreateExpiringToken() {
+		public static D2LSecurityToken CreateExpiringToken( string id = null ) {
 			return CreateTokenWithTimeRemaining(
 				RotatingSecurityTokenProvider.DEFAULT_ROTATION_BUFFER
-				- TimeSpan.FromSeconds( 30 ) );
+				- TimeSpan.FromSeconds( 30 ),
+				id );
 		}
 
-		public static D2LSecurityToken CreateActiveToken() {
+		public static D2LSecurityToken CreateActiveToken( string id = null ) {
 			return CreateTokenWithTimeRemaining(
-				RotatingSecurityTokenProvider.DEFAULT_TOKEN_LIFETIME - TimeSpan.FromSeconds( 1 ) );
+				RotatingSecurityTokenProvider.DEFAULT_TOKEN_LIFETIME - TimeSpan.FromSeconds( 1 ),
+				id );
 		}
 
-		public static D2LSecurityToken CreateTokenWithTimeRemaining( TimeSpan remaining ) {
+		public static D2LSecurityToken CreateTokenWithTimeRemaining(
+			TimeSpan remaining,
+			string id = null
+		) {
+
+			id = id ?? Guid.NewGuid().ToString();
+
 			var validTo = DateTime.UtcNow + remaining;
 			var validFrom = validTo - RotatingSecurityTokenProvider.DEFAULT_TOKEN_LIFETIME;
 			var csp = new RSACryptoServiceProvider( 2048 ) {
@@ -45,13 +54,15 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 			var key = new RsaSecurityKey( csp );
 
 			return new D2LSecurityToken(
-				Guid.NewGuid().ToString(),
+				id,
 				validFrom,
 				validTo,
 				key );
 		}
 
-		public static D2LSecurityToken CreateTokenWithoutPrivateKey() {
+		public static D2LSecurityToken CreateTokenWithoutPrivateKey( string id = null ) {
+			id = id ?? Guid.NewGuid().ToString();
+
 			var validTo = DateTime.UtcNow + TimeSpan.FromHours( 1 );
 			var validFrom = DateTime.UtcNow - TimeSpan.FromHours( 1 );
 			var csp = new RSACryptoServiceProvider( 2048 ) {
@@ -62,7 +73,7 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 			var key = new RsaSecurityKey( csp );
 
 			return new D2LSecurityToken(
-				Guid.NewGuid().ToString(),
+				id,
 				validFrom,
 				validTo,
 				key );
