@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Security.OAuth2.Validation.Request;
 
 namespace D2L.Security.OAuth2 {
 	public interface ID2LPrincipal {
@@ -23,5 +22,6 @@ namespace D2L.Security.OAuth2 {
 		string Xsrf { get; }
 
 		string AccessToken { get; }
+		string AccessTokenId { get; }
 	}
 }
