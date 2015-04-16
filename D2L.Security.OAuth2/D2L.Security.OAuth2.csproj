@@ -93,7 +93,6 @@
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResponse.cs" />
     <Compile Include="Validation\Request\AuthenticationStatus.cs" />
-    <Compile Include="Validation\Request\ID2LPrincipalExtensions.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
     <Compile Include="Validation\AccessTokens\IValidatedTokenExtensions.cs" />
     <Compile Include="Validation\AccessTokens\ValidatedTokenToD2LPrincipalAdapter.cs" />

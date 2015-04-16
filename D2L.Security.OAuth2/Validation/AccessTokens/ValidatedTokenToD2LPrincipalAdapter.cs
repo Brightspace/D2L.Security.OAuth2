@@ -16,6 +16,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		
 		private readonly string m_xsrf;
 		private readonly string m_accessToken;
+		private readonly string m_accessTokenId;
 
 		internal ValidatedTokenToD2LPrincipalAdapter( IValidatedToken validatedToken, string accessToken ) {
 			m_expiry = validatedToken.Expiry;
@@ -29,6 +30,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_xsrf = validatedToken.GetXsrfToken();
 			m_accessToken = accessToken;
 			m_allClaims = validatedToken.Claims;
+			m_accessTokenId = validatedToken.GetAccessTokenId();
 		}
 
 		DateTime ID2LPrincipal.AccessTokenExpiry {
@@ -65,6 +67,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 		IEnumerable<Claim> ID2LPrincipal.AllClaims {
 			get { return m_allClaims; }
+		}
+
+		string ID2LPrincipal.AccessTokenId {
+			get { return m_accessTokenId; }
 		}
 	}
 }
