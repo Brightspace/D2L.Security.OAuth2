@@ -99,6 +99,29 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			return alg;
 		}
 
+		public virtual SigningCredentials GetSigningCredentials() {
+			string signatureAlgorithm;
+			string digestAlgorithm;
+
+			if( m_key is RsaSecurityKey ) {
+				signatureAlgorithm = SecurityAlgorithms.RsaSha256Signature;
+				digestAlgorithm = SecurityAlgorithms.Sha256Digest;
+			} else {
+				throw new NotImplementedException();
+			}
+
+			var keyIdentifierClause = CreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>();
+			var securityKeyIdentifier = new SecurityKeyIdentifier( keyIdentifierClause );
+
+			var signingCredentials = new SigningCredentials(
+				m_key,
+				signatureAlgorithm,
+				digestAlgorithm,
+				securityKeyIdentifier );
+
+			return signingCredentials;
+		}
+
 		public virtual void Dispose() {
 			var alg = GetAsymmetricAlgorithm();
 			alg.Dispose();
