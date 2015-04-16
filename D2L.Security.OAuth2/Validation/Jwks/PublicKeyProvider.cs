@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.SecurityTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Jwks.Data;
 using Microsoft.IdentityModel.Protocols;
@@ -18,7 +19,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			m_jwksProvider = jwksProvider;
 		}
 
-		async Task<SecurityToken> IPublicKeyProvider.GetSecurityTokenAsync(
+		async Task<D2LSecurityToken> IPublicKeyProvider.GetSecurityTokenAsync(
 			Uri jwksEndPoint,
 			string keyId
 		) {
@@ -52,7 +53,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 				}
 			}
 
-			SecurityToken securityToken = JsonWebKeyToSecurityToken( key );
+			D2LSecurityToken securityToken = JsonWebKeyToSecurityToken( key );
 			return securityToken;
 		}
 		
@@ -68,7 +69,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			return false;
 		}
 
-		private SecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
+		private  D2LSecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
 			
 			if( jsonWebKey.Kty != ALLOWED_KEY_TYPE ) {
 				throw new InvalidKeyTypeException( 
@@ -88,14 +89,14 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 				Modulus = n
 			};
 
-			// TODO dispose.  Or probably use jparker's ID2LSecurityToken
 			var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 			rsa.ImportParameters( rsaParams );
 			var key = new RsaSecurityKey( rsa );
-			
-			var token = new NamedKeySecurityToken(
-				name: JsonWebKeyParameterNames.Kid,
+
+			var token = new D2LSecurityToken(
 				id: jsonWebKey.Kid,
+				validFrom: DateTime.Now,
+				validTo: DateTime.Now.AddSeconds( Constants.KEY_MAXAGE_SECONDS ),
 				key: key
 			);
 			

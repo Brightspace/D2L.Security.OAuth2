@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.SecurityTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Jwks;
 
@@ -41,42 +42,41 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 
 			string keyId = unvalidatedToken.Header["kid"].ToString();
+			IValidatedToken validatedToken = null;
 
-			SecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
+			using( D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
 				jwksEndPoint: jwksEndPoint,
 				keyId: keyId
-			).SafeAsync();
-			
-			var validationParameters = new TokenValidationParameters() {
-				ValidateAudience = false,
-				ValidateIssuer = false,
-				RequireSignedTokens = true,
-				IssuerSigningToken = signingToken
-			};
-			
-			IValidatedToken validatedToken = null;
-			var status = ValidationStatus.Success;
+			).SafeAsync() ) {
 
-			try {
+				var validationParameters = new TokenValidationParameters() {
+					ValidateAudience = false,
+					ValidateIssuer = false,
+					RequireSignedTokens = true,
+					IssuerSigningToken = signingToken
+				};
+				
+				try {
 
-				SecurityToken securityToken;
-				m_tokenHandler.ValidateToken(
-					token,
-					validationParameters,
-					out securityToken
-				);
-				validatedToken = new ValidatedToken( (JwtSecurityToken)securityToken );
+					SecurityToken securityToken;
+					m_tokenHandler.ValidateToken(
+						token,
+						validationParameters,
+						out securityToken
+						);
+					validatedToken = new ValidatedToken( (JwtSecurityToken) securityToken );
 
-			} catch( SecurityTokenExpiredException ) {
+				} catch( SecurityTokenExpiredException ) {
 
-				return new ValidationResponse(
-					ValidationStatus.Expired,
-					token: null
-				);
+					return new ValidationResponse(
+						ValidationStatus.Expired,
+						token: null
+						);
+				}
 			}
 
 			return new ValidationResponse(
-				status,
+				ValidationStatus.Success,
 				validatedToken
 			);
 

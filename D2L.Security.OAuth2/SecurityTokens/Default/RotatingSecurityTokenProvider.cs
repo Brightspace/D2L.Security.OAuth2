@@ -59,7 +59,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 				// We are eagerly flushing expired tokens here; not strictly
 				// required.
 				if( token.IsExpired() ) {
-					await m_inner.DeleteAsync( token.KeyId ).SafeAsync();
+					await m_inner.DeleteAsync( token.Id ).SafeAsync();
 				}
 			}
 
@@ -92,7 +92,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			// Don't expose any expired tokens to the caller
 			foreach( D2LSecurityToken token in tokens ) {
 				if( token.IsExpired() ) {
-					await m_inner.DeleteAsync( token.KeyId ).SafeAsync();
+					await m_inner.DeleteAsync( token.Id ).SafeAsync();
 				} else {
 					result.Add( token );
 				}
@@ -101,7 +101,7 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			return result;
 		}
 
-		Task ISecurityTokenProvider.DeleteAsync( Guid id ) {
+		Task ISecurityTokenProvider.DeleteAsync( string id ) {
 			return m_inner.DeleteAsync( id );
 		}
 
