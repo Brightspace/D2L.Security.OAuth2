@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Cryptography;
-
 using D2L.Security.OAuth2.SecurityTokens;
 using D2L.Security.OAuth2.SecurityTokens.Default;
-
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
-	internal static class Utilities {
+namespace D2L.Security.OAuth2.Tests.Utilities {
+	internal static class D2LSecurityTokenUtility {
 		public async static void AssertNumberOfTokensStored(
 			ISecurityTokenProvider securityTokenProvider,
 			long num
