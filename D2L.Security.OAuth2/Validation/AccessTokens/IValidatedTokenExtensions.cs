@@ -13,6 +13,12 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		}
 
 		/// <param name="token">A validated token</param>
+		/// <returns>The access token id. Returns null if one was not found.</returns>
+		internal static string GetAccessTokenId( this IValidatedToken token ) {
+			return token.GetClaimValue( Constants.Claims.TOKEN_ID );
+		}
+
+		/// <param name="token">A validated token</param>
 		/// <returns>The tenant id. Returns null if one was not found.</returns>
 		internal static string GetTenantId( this IValidatedToken token ) {
 			return token.GetClaimValue( Constants.Claims.TENANT_ID );

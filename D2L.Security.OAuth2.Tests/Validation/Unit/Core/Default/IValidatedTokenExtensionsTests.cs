@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 using NUnit.Framework;
-using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 	
@@ -37,6 +37,14 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
 			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
 			MockClaim( validatedTokenMock, Constants.Claims.TENANT_ID, expected );
 			Assert.AreEqual( expected, validatedTokenMock.Object.GetTenantId() );
+		}
+
+		[Test]
+		public void GetAccessTokenId_Success() {
+			string expected = "sometokenid";
+			Mock<IValidatedToken> validatedTokenMock = new Mock<IValidatedToken>();
+			MockClaim( validatedTokenMock, Constants.Claims.TOKEN_ID, expected );
+			Assert.AreEqual( expected, validatedTokenMock.Object.GetAccessTokenId() );
 		}
 
 		[Test]
