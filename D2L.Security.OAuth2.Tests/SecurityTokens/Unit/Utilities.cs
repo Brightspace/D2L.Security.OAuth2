@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			var key = new RsaSecurityKey( csp );
 
 			return new D2LSecurityToken(
-				Guid.NewGuid(),
+				Guid.NewGuid().ToString(),
 				validFrom,
 				validTo,
 				key );
@@ -64,7 +64,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			var key = new RsaSecurityKey( csp );
 
 			return new D2LSecurityToken(
-				Guid.NewGuid(),
+				Guid.NewGuid().ToString(),
 				validFrom,
 				validTo,
 				key );

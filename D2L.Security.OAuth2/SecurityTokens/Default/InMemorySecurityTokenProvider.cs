@@ -42,8 +42,8 @@ namespace D2L.Security.OAuth2.SecurityTokens.Default {
 			return Task.Delay( 0 );
 		}
 
-		Task ISecurityTokenProvider.DeleteAsync( Guid id ) {
-			int index = m_tokens.FindIndex( t => t.KeyId == id );
+		Task ISecurityTokenProvider.DeleteAsync( string id ) {
+			int index = m_tokens.FindIndex( t => t.Id == id );
 			if( index != -1 ) {
 				m_tokens[ index ].Dispose();
 				m_tokens.RemoveAt( index );

@@ -84,6 +84,7 @@
     <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyLookupFailureException.cs" />
     <Compile Include="Validation\Jwks\Data\CachedJwksProvider.cs" />
+    <Compile Include="Validation\Jwks\Constants.cs" />
     <Compile Include="Validation\Jwks\Data\IJwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\JwksProvider.cs" />
     <Compile Include="Validation\Jwks\Data\JwksResponse.cs" />
