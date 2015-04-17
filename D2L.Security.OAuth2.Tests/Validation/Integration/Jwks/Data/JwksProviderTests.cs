@@ -1,5 +1,6 @@
-﻿using D2L.Security.OAuth2.Tests.Mocks;
-using D2L.Security.OAuth2.Validation.Jwks.Data;
+﻿using D2L.Security.OAuth2.Keys.Remote.Data;
+using D2L.Security.OAuth2.Tests.Mocks;
+
 using HttpMock;
 using NUnit.Framework;
 

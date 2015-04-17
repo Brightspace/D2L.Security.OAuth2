@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.SecurityTokens;
-using D2L.Security.OAuth2.Validation.Jwks;
+
+using D2L.Security.OAuth2.Keys;
+using D2L.Security.OAuth2.Keys.Remote;
+
 using Moq;
 
 namespace D2L.Security.OAuth2.Tests.Mocks {
