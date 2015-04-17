@@ -9,7 +9,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		private readonly DateTime m_expiry;
 		private readonly string m_userId;
 		private readonly string m_tenantId;
-		private readonly string m_tenantUrl;
 		private readonly IEnumerable<Scope> m_scopes;
 		private readonly PrincipalType m_type;
 		private readonly IEnumerable<Claim> m_allClaims;
@@ -21,7 +20,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		internal ValidatedTokenToD2LPrincipalAdapter( IValidatedToken validatedToken, string accessToken ) {
 			m_expiry = validatedToken.Expiry;
 			m_tenantId = validatedToken.GetTenantId();
-			m_tenantUrl = validatedToken.GetTenantUrl();
 			m_scopes = validatedToken.GetScopes();
 
 			m_userId = validatedToken.GetUserId();
@@ -43,10 +41,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		
 		string ID2LPrincipal.TenantId {
 			get { return m_tenantId; }
-		}
-
-		string ID2LPrincipal.TenantUrl {
-			get { return m_tenantUrl; }
 		}
 		
 		IEnumerable<Scope> ID2LPrincipal.Scopes {

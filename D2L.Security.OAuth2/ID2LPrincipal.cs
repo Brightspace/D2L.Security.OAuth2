@@ -5,10 +5,10 @@ using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2 {
 	public interface ID2LPrincipal {
+		
 		string UserId { get; }
 		string TenantId { get; }
-		string TenantUrl { get; }
-
+		
 		PrincipalType Type { get; }
 
 		IEnumerable<Scope> Scopes { get; }
