@@ -71,6 +71,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Integration\Validation\Jwks\Data\JwksProviderTests.cs" />
     <Compile Include="Mocks\AccessTokenValidatorMock.cs" />
     <Compile Include="Mocks\HttpMockFactory.cs" />
     <Compile Include="Mocks\HttpRequestMock.cs" />
@@ -87,7 +88,7 @@
     <Compile Include="Provisioning\Utilities\TestUris.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
-    <Compile Include="SecurityTokens\Unit\RotatingSecurityTokenProviderTests.cs" />
+    <Compile Include="Unit\SecurityTokens\Default\RotatingSecurityTokenProviderTests.cs" />
     <Compile Include="Unit\Validation\AccessTokenValidatorTests.cs" />
     <Compile Include="Unit\Validation\Jwks\PublicKeyProviderTests.cs" />
     <Compile Include="Utilities\D2LSecurityTokenUtility.cs" />

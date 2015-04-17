@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using D2L.Security.OAuth2.SecurityTokens;
 using D2L.Security.OAuth2.SecurityTokens.Default;
 using D2L.Security.OAuth2.Tests.Utilities;
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
+namespace D2L.Security.OAuth2.Tests.Unit.SecurityTokens.Default {
 	[TestFixture]
 	[Category( "Unit" )]
 	internal sealed class RotatingSecurityTokenProviderTests {
