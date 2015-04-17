@@ -23,13 +23,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		internal static string GetTenantId( this IValidatedToken token ) {
 			return token.GetClaimValue( Constants.Claims.TENANT_ID );
 		}
-
-		/// <param name="token">A validated token</param>
-		/// <returns>The tenant url. Returns null if one was not found.</returns>
-		internal static string GetTenantUrl( this IValidatedToken token ) {
-			return token.GetClaimValue( Constants.Claims.TENANT_URL );
-		}
-
+		
 		/// <param name="token">A validated token</param>
 		/// <returns>The scopes</returns>
 		internal static IEnumerable<Scope> GetScopes( this IValidatedToken token ) {
@@ -58,7 +52,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		/// <returns>The claim value</returns>
 		private static string GetClaimValue( this IValidatedToken token, string claimName ) {
 			string claimValue = null;
-			Claim claim = token.Claims.Where( x => x.Type == claimName ).FirstOrDefault();
+			Claim claim = token.Claims.FirstOrDefault( x => x.Type == claimName );
 			if( claim != null ) {
 				claimValue = claim.Value;
 			}

@@ -7,6 +7,8 @@ using D2L.Security.OAuth2.Validation.AccessTokens;
 namespace D2L.Security.OAuth2.Validation.Request {
 	internal sealed class RequestAuthenticator : IRequestAuthenticator {
 
+		private static readonly ID2LPrincipal ANONYMOUS_PRINCIPAL = new AnonymousPrincipal();
+
 		private readonly IAccessTokenValidator m_accessTokenValidator;
 		
 		internal RequestAuthenticator( IAccessTokenValidator accessTokenValidator ) {
@@ -51,7 +53,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			if( !cookieExists && !bearerTokenExists ) {
 				return new AuthenticationResponse(
 					AuthenticationStatus.Anonymous,
-					principal: null
+					principal: ANONYMOUS_PRINCIPAL
 				);
 			}
 
