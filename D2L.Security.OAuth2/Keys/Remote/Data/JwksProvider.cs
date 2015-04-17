@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+
 using D2L.Security.OAuth2.Validation.Exceptions;
 
-namespace D2L.Security.OAuth2.Validation.Jwks.Data {
+namespace D2L.Security.OAuth2.Keys.Remote.Data {
 	internal sealed class JwksProvider : IJwksProvider {
 		
 		async Task<JwksResponse> IJwksProvider.RequestJwksAsync( Uri endpoint, bool skipCache ) {

@@ -51,7 +51,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			return token;
 		}
 
-		void IDisposable.Dispose() {
+		public void Dispose() {
 			if( m_disposeClient ) {
 				m_client.Dispose();
 			}

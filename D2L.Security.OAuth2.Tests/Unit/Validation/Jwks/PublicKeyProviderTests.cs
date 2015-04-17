@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
+
+using D2L.Security.OAuth2.Keys.Remote;
+using D2L.Security.OAuth2.Keys.Remote.Data;
 using D2L.Security.OAuth2.Tests.Mocks;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Security.OAuth2.Validation.Jwks;
-using D2L.Security.OAuth2.Validation.Jwks.Data;
+
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;

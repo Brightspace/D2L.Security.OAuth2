@@ -1,4 +1,4 @@
-﻿namespace D2L.Security.OAuth2.Validation.Jwks {
+﻿namespace D2L.Security.OAuth2.Keys.Remote {
 	internal static class Constants {
 
 		// Keys are good for one hour from when they are fetched

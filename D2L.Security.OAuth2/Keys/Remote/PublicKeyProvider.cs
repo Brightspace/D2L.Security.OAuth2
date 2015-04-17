@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.SecurityTokens;
+
+using D2L.Security.OAuth2.Keys.Remote.Data;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Security.OAuth2.Validation.Jwks.Data;
+
 using Microsoft.IdentityModel.Protocols;
 
-namespace D2L.Security.OAuth2.Validation.Jwks {
+namespace D2L.Security.OAuth2.Keys.Remote {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
 		internal const string ALLOWED_KEY_TYPE = "RSA";
@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			).SafeAsync();
 			
 			var jwks = new JsonWebKeySet( jwksResponse.JwksJson );
-			JsonWebKey key;
+			Microsoft.IdentityModel.Protocols.JsonWebKey key;
 
 			if( !TryGetJsonWebKey( jwks, keyId, out key ) ) {
 				
@@ -57,8 +57,8 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			return securityToken;
 		}
 		
-		private bool TryGetJsonWebKey( JsonWebKeySet keySet, string keyId, out JsonWebKey key ) {
-			foreach( JsonWebKey currentKey in keySet.Keys ) {
+		private bool TryGetJsonWebKey( JsonWebKeySet keySet, string keyId, out Microsoft.IdentityModel.Protocols.JsonWebKey key ) {
+			foreach( Microsoft.IdentityModel.Protocols.JsonWebKey currentKey in keySet.Keys ) {
 				if( currentKey.Kid == keyId ) {
 					key = currentKey;
 					return true;
@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			return false;
 		}
 
-		private  D2LSecurityToken JsonWebKeyToSecurityToken( JsonWebKey jsonWebKey ) {
+		private  D2LSecurityToken JsonWebKeyToSecurityToken( Microsoft.IdentityModel.Protocols.JsonWebKey jsonWebKey ) {
 			
 			if( jsonWebKey.Kty != ALLOWED_KEY_TYPE ) {
 				throw new InvalidKeyTypeException( 
@@ -96,7 +96,7 @@ namespace D2L.Security.OAuth2.Validation.Jwks {
 			var token = new D2LSecurityToken(
 				id: jsonWebKey.Kid,
 				validFrom: DateTime.Now,
-				validTo: DateTime.Now.AddSeconds( Constants.KEY_MAXAGE_SECONDS ),
+				validTo: DateTime.Now.AddSeconds( Keys.Remote.Constants.KEY_MAXAGE_SECONDS ),
 				key: key
 			);
 			

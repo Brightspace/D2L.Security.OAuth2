@@ -1,6 +1,6 @@
 ﻿using D2L.Security.OAuth2.Caching;
-using D2L.Security.OAuth2.Validation.Jwks;
-using D2L.Security.OAuth2.Validation.Jwks.Data;
+using D2L.Security.OAuth2.Keys.Remote;
+using D2L.Security.OAuth2.Keys.Remote.Data;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	public static class AccessTokenValidatorFactory {
