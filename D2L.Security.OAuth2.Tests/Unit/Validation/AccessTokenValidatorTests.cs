@@ -1,38 +1,119 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.SecurityTokens;
 using D2L.Security.OAuth2.Tests.Mocks;
-using D2L.Security.OAuth2.Validation;
+using D2L.Security.OAuth2.Tests.Utilities;
+using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Jwks;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Validation {
-	
+
 	[TestFixture]
 	[Category( "Unit" )]
 	public class AccessTokenValidatorTests {
 
+		private readonly Uri m_jwksEndpoint = new Uri( "http://someplace.somewhere" );
+
 		[Test]
-		public void test() {
+		[ExpectedException( typeof( InvalidSignatureAlgorithmException ) )]
+		public async Task UnsignedJwt() {
+
+			await RunTest(
+				signJwt: false,
+				jwtExpiry: DateTime.Now.AddSeconds( 10 )
+			).SafeAsync();
+		}
+
+		[Test]
+		public async Task ExpiredJwt() {
+
+			await RunTest(
+				signJwt: true,
+				jwtExpiry: DateTime.Now.AddSeconds( -301 ),
+				expected_validationStatus: ValidationStatus.Expired,
+				expected_validatedTokenNull: true
+			).SafeAsync();
+		}
+		
+		[Test]
+		public async Task VeryExpiredJwt() {
+
+			await RunTest(
+				signJwt: true,
+				jwtExpiry: DateTime.Now.AddMonths( -2 ),
+				expected_validationStatus: ValidationStatus.Expired,
+				expected_validatedTokenNull: true
+			).SafeAsync();
+		}
+
+		[Test]
+		[Description( "Jwt expiry will not be triggered until the token is at least 5 minutes past its expiry" )]
+		public async Task ExpiredJwt_ButWithinGracePeriod() {
+
+			await RunTest(
+				signJwt: true,
+				jwtExpiry: DateTime.Now.AddSeconds( -295 ),
+				expected_validationStatus: ValidationStatus.Success,
+				expected_validatedTokenNull: false
+			).SafeAsync();
+		}
+		
+		[Test]
+		public async Task SuccessCase() {
+
+			await RunTest(
+				signJwt: true,
+				jwtExpiry: DateTime.Now.AddSeconds( 10 ),
+				expected_validationStatus: ValidationStatus.Success,
+				expected_validatedTokenNull: false
+			).SafeAsync();
+		}
+		
+		private async Task RunTest(
+			bool signJwt,
+			DateTime jwtExpiry,
+			ValidationStatus? expected_validationStatus = null,
+			bool? expected_validatedTokenNull = null
+		) {
 			
-			/*
+			string keyId = "thekeyid";
+			D2LSecurityToken signingToken = D2LSecurityTokenUtility.CreateActiveToken( id: keyId );
+			SigningCredentials signingCredentials = null;
+			if( signJwt ) {
+				signingCredentials = signingToken.GetSigningCredentials();
+			}
+
+			var jwtToken = new JwtSecurityToken(
+				issuer: "someissuer",
+				signingCredentials: signingCredentials,
+				expires: jwtExpiry
+			);
+
+			var tokenHandler = new JwtSecurityTokenHandler();
+			string serializedJwt = tokenHandler.WriteToken( jwtToken );
+			
 			IPublicKeyProvider publicKeyProvider = PublicKeyProviderMock.Create(
-				keyId: keyId,
-
+				m_jwksEndpoint,
+				keyId,
+				signingToken
 			).Object;
-
-			publicKeyProvider.
 
 			IAccessTokenValidator tokenValidator = new AccessTokenValidator(
 				publicKeyProvider
 			);
-			*/
 
+			ValidationResponse response = await tokenValidator.ValidateAsync(
+				jwksEndPoint: m_jwksEndpoint,
+				accessToken: serializedJwt
+			).SafeAsync();
+			
+			Assert.AreEqual( expected_validationStatus, response.Status );
+			Assert.AreEqual( expected_validatedTokenNull, response.Token == null );
 
 		}
-
+		
 	}
 }

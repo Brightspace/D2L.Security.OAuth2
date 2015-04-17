@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.SecurityTokens;
 using D2L.Security.OAuth2.SecurityTokens.Default;
-
+using D2L.Security.OAuth2.Tests.Utilities;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
@@ -45,67 +45,67 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
-			Utilities.AssertTokenActive( token );
+			D2LSecurityTokenUtility.AssertTokenActive( token );
 			Assert.IsTrue( token.HasPrivateKey() );
 		}
 
 		[Test]
 		public async void GetLatestToken_ExpiredToken_DeletesTokenCreatesAndReturnsNewToken() {
-			var oldToken = Utilities.CreateExpiredToken();
+			var oldToken = D2LSecurityTokenUtility.CreateExpiredToken();
 			await m_innerSecurityTokenProvider.SaveAsync( oldToken ).SafeAsync();
 
 			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
 			Assert.AreNotEqual( oldToken.Id, token.Id );
-			Utilities.AssertTokenActive( token );
+			D2LSecurityTokenUtility.AssertTokenActive( token );
 			Assert.IsTrue( token.HasPrivateKey() );
 			AssertNumberOfTokensStored( 1 );
 		}
 
 		[Test]
 		public async void GetLatestToken_ExpiringToken_IgnoresAndCreatesNewToken() {
-			var oldishToken = Utilities.CreateExpiringToken();
+			var oldishToken = D2LSecurityTokenUtility.CreateExpiringToken();
 			await m_innerSecurityTokenProvider.SaveAsync( oldishToken );
 
 			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
 			Assert.AreNotEqual( oldishToken.Id, token.Id );
-			Utilities.AssertTokenActive( token );
+			D2LSecurityTokenUtility.AssertTokenActive( token );
 			Assert.IsTrue( token.HasPrivateKey() );
 			AssertNumberOfTokensStored( 2 );
 		}
 
 		[Test]
 		public async void GetLatestToken_ActiveToken_SimplyReturns() {
-			var currentToken = Utilities.CreateActiveToken();
+			var currentToken = D2LSecurityTokenUtility.CreateActiveToken();
 			await m_innerSecurityTokenProvider.SaveAsync( currentToken ).SafeAsync();
 
 			D2LSecurityToken token = await m_securityTokenProvider.GetLatestTokenAsync().SafeAsync();
 
 			Assert.NotNull( token );
 			Assert.AreEqual( currentToken.Id, token.Id );
-			Utilities.AssertTokenActive( token );
+			D2LSecurityTokenUtility.AssertTokenActive( token );
 			Assert.IsTrue( token.HasPrivateKey() );
 			AssertNumberOfTokensStored( 1 );
 		}
 
 		[Test]
 		public async void GetAllTokens_DeletesExpiringTokens() {
-			var oldToken = Utilities.CreateExpiredToken();
+			var oldToken = D2LSecurityTokenUtility.CreateExpiredToken();
 			await m_innerSecurityTokenProvider.SaveAsync( oldToken ).SafeAsync();
 
 			var tokens = await GetTokens();
 
 			Assert.AreEqual( 0, tokens.Count );
-			Utilities.AssertTokensDoNotHavePrivateKeys( tokens );
+			D2LSecurityTokenUtility.AssertTokensDoNotHavePrivateKeys( tokens );
 			AssertNumberOfTokensStored( 0 );
 		}
 
 		[Test]
 		public async void GetAllTokens_DoesntIgnoreExpiringTokens() {
-			var oldishToken = Utilities.CreateExpiringToken();
+			var oldishToken = D2LSecurityTokenUtility.CreateExpiringToken();
 			await m_innerSecurityTokenProvider.SaveAsync( oldishToken ).SafeAsync();
 
 			var tokens = await GetTokens();
@@ -117,7 +117,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 
 		[Test]
 		public async void GetAllTokens_DoesntIgnoreActiveTokens() {
-			var activeToken = Utilities.CreateActiveToken();
+			var activeToken = D2LSecurityTokenUtility.CreateActiveToken();
 			await m_innerSecurityTokenProvider.SaveAsync( activeToken ).SafeAsync();
 
 			var tokens = await GetTokens();
@@ -134,7 +134,7 @@ namespace D2L.Security.OAuth2.Tests.SecurityTokens.Unit {
 		}
 
 		private void AssertNumberOfTokensStored( int num ) {
-			Utilities.AssertNumberOfTokensStored( m_innerSecurityTokenProvider, num );
+			D2LSecurityTokenUtility.AssertNumberOfTokensStored( m_innerSecurityTokenProvider, num );
 		}
 
 	}

@@ -23,7 +23,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			Uri jwksEndPoint,
 			string token
 		) {
-
+			
 			var unvalidatedToken = (JwtSecurityToken)m_tokenHandler.ReadToken(
 				token
 			);
