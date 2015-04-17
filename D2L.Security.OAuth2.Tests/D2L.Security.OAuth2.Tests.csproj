@@ -90,6 +90,7 @@
     <Compile Include="Scopes\ScopeTests.cs" />
     <Compile Include="Unit\SecurityTokens\Default\RotatingSecurityTokenProviderTests.cs" />
     <Compile Include="Unit\Validation\AccessTokenValidatorTests.cs" />
+    <Compile Include="Unit\Validation\Jwks\Data\CachedJwksProviderTests.cs" />
     <Compile Include="Unit\Validation\Jwks\PublicKeyProviderTests.cs" />
     <Compile Include="Utilities\D2LSecurityTokenUtility.cs" />
     <Compile Include="Validation\Integration\Default\RequestAuthenticatorTests.cs" />
