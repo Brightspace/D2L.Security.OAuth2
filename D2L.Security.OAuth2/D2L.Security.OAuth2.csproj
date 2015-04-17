@@ -79,6 +79,7 @@
     <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\TokenValidationConstants.cs" />
+    <Compile Include="Validation\AnonymousPrincipal.cs" />
     <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
     <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
     <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
