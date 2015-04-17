@@ -110,7 +110,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 				throw new NotImplementedException();
 			}
 
-			var keyIdentifierClause = CreateKeyIdentifierClause<NamedKeySecurityKeyIdentifierClause>();
+			var keyIdentifierClause = new NamedKeySecurityKeyIdentifierClause( name: "kid", id: Id );
 			var securityKeyIdentifier = new SecurityKeyIdentifier( keyIdentifierClause );
 
 			var signingCredentials = new SigningCredentials(
