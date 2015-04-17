@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 		}
 
-		void IDisposable.Dispose() {
+		public void Dispose() {
 			if( m_disposeClient ) {
 				m_client.Dispose();
 			}

@@ -2,31 +2,34 @@
 using System.Security.Cryptography;
 using System.Text;
 
+using D2L.Security.OAuth2.Utilities;
+
 namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 	internal static class TestTokenProvider {
 
 		private static readonly DateTime UNIX_EPOCH_BEGINNING = new DateTime( 1970, 1, 1, 0, 0, 0, DateTimeKind.Utc );
 
 		internal static string MakeJwt( string algorithm, string tokenType, string payload, RSAParameters rsaParams ) {
-			string header = MakeHeader( algorithm, tokenType );
+			byte[] header = MakeHeader( algorithm, tokenType );
+
+			byte[] payloadBytes = Encoding.UTF8.GetBytes( payload );
 
 			byte[] signature;
 			using( RSACryptoServiceProvider rsaService = new RSACryptoServiceProvider() ) {
 				rsaService.PersistKeyInCsp = false;
 				rsaService.ImportParameters( rsaParams );
-				byte[] payloadBytes = Encoding.UTF8.GetBytes( payload );
 				string oid = CryptoConfig.MapNameToOID( "SHA256" );
 
-				string base64UrlHeader = Base64Url( header );
-				string base64UrlPayload = Base64Url( payload );
+				string base64UrlHeader = Base64Url.Encode( header );
+				string base64UrlPayload = Base64Url.Encode( payloadBytes );
 				signature = rsaService.SignData( Encoding.UTF8.GetBytes( base64UrlHeader + "." + base64UrlPayload ), oid );
 			}
 
 			string jwt = String.Format( 
 				"{0}.{1}.{2}",
-				Base64Url( header.ToString() ),
-				Base64Url( payload ),
-				Base64Url( signature ) 
+				Base64Url.Encode( header ),
+				Base64Url.Encode( payloadBytes ),
+				Base64Url.Encode( signature ) 
 				);
 
 			return jwt;
@@ -69,7 +72,7 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 			return seconds;
 		}
 
-		private static string MakeHeader( string alg, string typ ) {
+		private static byte[] MakeHeader( string alg, string typ ) {
 			StringBuilder header = new StringBuilder( "{" );
 			if( alg != null ) {
 				header.Append( "\"alg\":\"" );
@@ -86,20 +89,7 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 			}
 			header.Append( '}' );
 
-			return header.ToString();
+			return Encoding.UTF8.GetBytes( header.ToString() );
 		}
-
-		private static string Base64Url( string s ) {
-			return Base64Url( Encoding.UTF8.GetBytes( s ) );
-		}
-
-		private static string Base64Url( byte[] s ) {
-			return Convert
-				.ToBase64String( s )
-				.Replace( '+', '-' )
-				.Replace( '/', '_' )
-				.Trim( '=' );
-		}
-
 	}
 }

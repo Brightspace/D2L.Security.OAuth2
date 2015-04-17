@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 
 using D2L.Security.OAuth2.Provisioning;
 
-namespace D2L.Security.OAuth2.SecurityTokens {
+namespace D2L.Security.OAuth2.Keys {
 	/// <summary>
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
@@ -30,6 +30,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			m_validFrom = DateTime.UtcNow;
 			m_validTo = m_validFrom + lifespan;
 			m_key = key;
+			DisposeOfKey = true;
 		}
 
 		/// <remarks>
@@ -45,7 +46,6 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			id: id,
 			key: key
 		) {
-			
 			if( validFrom >= validTo ) {
 				throw new ArgumentException( "validFrom must be before validTo" );
 			}
@@ -53,6 +53,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			m_validFrom = validFrom;
 			m_validTo = validTo;
 			m_key = key;
+			DisposeOfKey = true;
 		}
 
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
@@ -71,17 +72,19 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			get { return m_validTo; }
 		}
 
-		public virtual bool IsExpired() {
-			return DateTime.UtcNow > m_validTo;
+		public virtual bool IsExpired {
+			get { return DateTime.UtcNow > m_validTo; }
 		}
 
 		public virtual bool IsExpiringSoon( TimeSpan rolloverWindow ) {
 			return DateTime.UtcNow >= m_validTo - rolloverWindow;
 		}
 
-		public virtual bool HasPrivateKey() {
-			return m_key.HasPrivateKey();
+		public virtual bool HasPrivateKey {
+			get { return m_key.HasPrivateKey(); }	
 		}
+
+		public bool DisposeOfKey { get; set; }
 
 		public virtual AsymmetricAlgorithm GetAsymmetricAlgorithm() {
 			if( m_key is X509AsymmetricSecurityKey ) {
@@ -94,7 +97,7 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			// See http://referencesource.microsoft.com/#System.IdentityModel/System/IdentityModel/Tokens/RsaSecurityKey.cs,63
 
 			AsymmetricAlgorithm alg = m_key
-				.GetAsymmetricAlgorithm( "", HasPrivateKey() );
+				.GetAsymmetricAlgorithm( "", HasPrivateKey );
 
 			return alg;
 		}
@@ -122,7 +125,11 @@ namespace D2L.Security.OAuth2.SecurityTokens {
 			return signingCredentials;
 		}
 
-		public virtual void Dispose() {
+		public void Dispose() {
+			if( !DisposeOfKey ) {
+				return;
+			}
+
 			var alg = GetAsymmetricAlgorithm();
 			alg.Dispose();
 		}
