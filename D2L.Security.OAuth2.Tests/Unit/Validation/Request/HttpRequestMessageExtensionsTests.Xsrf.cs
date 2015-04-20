@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using D2L.Security.OAuth2.Tests.Utilities;
 using D2L.Security.OAuth2.Validation.Request;
 using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using NUnit.Framework;

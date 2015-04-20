@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
+namespace D2L.Security.OAuth2.Tests.Utilities {
 	internal static class CookieHeaderMaker {
 		internal static string MakeCookieHeader( params Tuple<string, string>[] cookies ){
 			StringBuilder builder = new StringBuilder();
