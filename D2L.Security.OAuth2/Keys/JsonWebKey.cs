@@ -64,7 +64,7 @@ namespace D2L.Security.OAuth2.Keys {
 						e: data[ "e" ] );
 
 				default:
-					string msg = String.Format( "'{0}' is not a supported JSON eb key type" );
+					string msg = String.Format( "'{0}' is not a supported JSON eb key type", data[ "kty" ] );
 					throw new JsonWebKeyParseException( msg );
 
 			}
