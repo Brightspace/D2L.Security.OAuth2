@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 
 namespace D2L.Security.OAuth2.Validation.Request {
@@ -79,7 +80,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			}
 
 			// TODO .. we should consider doing the xsrf check without validating the jwt
-			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, validationResponse.Token, authMode );
+			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, validationResponse.AccessToken, authMode );
 			if( !isXsrfSafe ) {
 				return new AuthenticationResponse(
 					AuthenticationStatus.XsrfMismatch,
@@ -88,7 +89,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			}
 
 			if( validationResponse.Status == ValidationStatus.Success ) {
-				ID2LPrincipal principal = new ValidatedTokenToD2LPrincipalAdapter( validationResponse.Token, token );
+				ID2LPrincipal principal = new D2LPrincipal( validationResponse.AccessToken );
 				return new AuthenticationResponse(
 					AuthenticationStatus.Success,
 					principal
@@ -101,7 +102,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		private bool IsXsrfSafe(
 			string cookie,
 			string xsrfToken,
-			IValidatedToken validatedToken,
+			IAccessToken accessToken,
 			AuthenticationMode authMode
 		) {
 
@@ -116,9 +117,9 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			// we must now validate that the xsrf tokens match
 
-			string xsrfTokenFromValidatedToken = validatedToken.GetXsrfToken();
+			string xsrfTokenFromAccessToken = accessToken.GetXsrfToken();
 
-			bool xsrfTokensEqual = xsrfTokenFromValidatedToken == xsrfToken;
+			bool xsrfTokensEqual = xsrfTokenFromAccessToken == xsrfToken;
 			bool xsrfTokenContainsValue = !string.IsNullOrEmpty( xsrfToken );
 
 			if( !xsrfTokensEqual || !xsrfTokenContainsValue ) {

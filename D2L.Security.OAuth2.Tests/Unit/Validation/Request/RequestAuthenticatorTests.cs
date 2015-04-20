@@ -127,7 +127,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 			bool expected_nullPrincipal
 		) {
 			
-			IValidatedToken token = ValidatedTokenMock.Create(
+			IAccessToken token = AccessTokenMock.Create(
 				xsrfClaim: accessToken_xsrfClaim
 			).Object;
 
