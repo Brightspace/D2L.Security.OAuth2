@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	public interface IAccessToken {
@@ -12,15 +8,14 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		string Id { get; }
 
 		/// <summary>
-		/// The raw, signed access token.  Sensitive information since it is all that is needed for authentication.
+		/// The raw, signed access token.  Treat it like a password (for example, do not Log).
 		/// </summary>
 		string SensitiveRawAccessToken { get; }
 		
-		IEnumerable<Scope> Scopes { get; }
 		IEnumerable<Claim> Claims { get; }
 
 		/// <summary>
-		/// Expiry in UTC standard time
+		/// Expiry in UTC
 		/// </summary>
 		DateTime Expiry { get; }
 
