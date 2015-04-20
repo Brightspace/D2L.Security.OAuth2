@@ -52,8 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Keys\D2LSecurityToken.cs" />
-    <Compile Include="Keys\Local\Default\JsonWebTokenSigner.cs" />
-    <Compile Include="Keys\Local\IJsonWebTokenSigner.cs" />
     <Compile Include="Caching\CacheResponse.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
