@@ -9,16 +9,16 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 		/// <summary>
 		/// Asserts that the "scope" claim contains the specified value
 		/// </summary>
-		/// <param name="validatedToken">A validated token</param>
+		/// <param name="accessToken">A validated access token</param>
 		/// <param name="scopeValue">The value to use when checking</param>
-		internal static void ContainsScopeValue( IValidatedToken validatedToken, string scopeValue ) {
-			string scopeValueFromClaim = validatedToken.Claims.First( x => x.Type == "scope" ).Value;
+		internal static void ContainsScopeValue( IAccessToken accessToken, string scopeValue ) {
+			string scopeValueFromClaim = accessToken.Claims.First( x => x.Type == "scope" ).Value;
 			Assert.AreEqual( scopeValue, scopeValueFromClaim );
 		}
 
-		internal static void ScopeClaimsCountIsExactly( IValidatedToken validatedToken, long count ) {
-			string scopeValueFromClaim = validatedToken.Claims.First( x => x.Type == "scope" ).Value;
-			Assert.AreEqual( count, validatedToken.Claims.Count( x => x.Type == "scope" ) );
+		internal static void ScopeClaimsCountIsExactly( IAccessToken accessToken, long count ) {
+			string scopeValueFromClaim = accessToken.Claims.First( x => x.Type == "scope" ).Value;
+			Assert.AreEqual( count, accessToken.Claims.Count( x => x.Type == "scope" ) );
 		}
 
 		/// <summary>
@@ -55,7 +55,7 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 		/// whose immediate inner exception is as specified
 		/// </summary>
 		/// <param name="action">Action to perform</param>
-		/// <param name="action">Inner exception instance</param>
+		/// <param name="inner">Inner exception instance</param>
 		internal static void ThrowsWithInner<TOuter>( Action action, Exception inner ) 
 			where TOuter : Exception 
 			{
