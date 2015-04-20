@@ -29,7 +29,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Jwks.Data {
 				innerProviderRequestCalls: Times.Never(),
 				cacheGetCalls: Times.Once(),
 				cacheSetCalls: Times.Never()
-			);
+			).SafeAsync();
 
 		}
 		
@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Jwks.Data {
 				innerProviderRequestCalls: Times.Once(),
 				cacheGetCalls: Times.Once(),
 				cacheSetCalls: Times.Once()
-			);
+			).SafeAsync();
 
 		}
 
@@ -55,7 +55,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Jwks.Data {
 				innerProviderRequestCalls: Times.Once(),
 				cacheGetCalls: Times.Never(),
 				cacheSetCalls: Times.Once()
-			);
+			).SafeAsync();
 
 		}
 

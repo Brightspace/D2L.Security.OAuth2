@@ -17,7 +17,6 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 		private static class TestData {
 			public const string ISSUER = "someIssuer";
 			public const string TENANT_ID = "someTenant";
-			public static Uri TENANT_URL = new Uri( "https://someTenant.d2l" );
 			public const string USER = "someUser";
 			public const string XSRF_TOKEN = "someXsrfToken";
 		}
@@ -45,7 +44,6 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 				var claims = new ClaimSet(
 					issuer: TestData.ISSUER,
 					tenantId: TestData.TENANT_ID,
-					tenantUrl: TestData.TENANT_URL,
 					user: TestData.USER,
 					xsrfToken: TestData.XSRF_TOKEN
 				);
@@ -59,7 +57,6 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
 			Assert.AreEqual( TestData.ISSUER, signatureCheckedAssertion.Issuer );
 			Assert.AreEqual( keyId.ToString(), signatureCheckedAssertion.Header[ProvisioningConstants.AssertionGrant.KEY_ID_NAME] );
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.TENANT_ID, TestData.TENANT_ID );
-			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.TENANT_URL, TestData.TENANT_URL.AbsoluteUri );
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.USER_ID, TestData.USER );
 			signatureCheckedAssertion.AssertHasClaim( Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN );
 		}
