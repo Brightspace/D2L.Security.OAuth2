@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Keys {
 			string kid,
 			string n,
 			string e
-		) : base( Guid.Parse( kid ), null ) {
+		) : base( id: Guid.Parse( kid ), expiresAt: null ) {
 			m_modulus = n;
 			m_exponent = e;
 		}

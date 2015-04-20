@@ -27,25 +27,61 @@ namespace D2L.Security.OAuth2.Keys {
 		public static JsonWebKey FromJson( string json ) {
 			var data = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>( json );
 
-			if( !data.ContainsKey( "use" ) || data[ "use" ] != "sig" ) {
-				throw new Exception();
+			if( !data.ContainsKey( "use" ) ) {
+				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
+			}
+
+			if ( data[ "use " ] != null && data[ "use" ] != "sig" ) {
+				string msg = String.Format( "invalid 'use' value in JSON web key: {0}", data[ "use" ] );
+				throw new JsonWebKeyParseException( msg );
 			}
 
 			if( !data.ContainsKey( "kty" ) ) {
-				throw new Exception();
+				throw new JsonWebKeyParseException( "missing 'kty' parameter in JSON web key" );
+			}
+
+			if( !data.ContainsKey( "kid" ) ) {
+				throw new JsonWebKeyParseException( "missing 'kid' parameter in JSON web key" );
 			}
 
 			switch( data[ "kty" ] ) {
 				case "RSA":
+					if( data[ "n" ] != null ) {
+						throw new JsonWebKeyParseException( "missing 'n' parameter in RSA JSON web key" );
+					}
+
+					if( data[ "e" ] != null ) {
+						throw new JsonWebKeyParseException( "missing 'e' parameter in RSA JSON web key" );
+					}
+
+					if( HasRsaPrivateKeyMaterial( data ) ) {
+						throw new JsonWebKeyParseException( "RSA JSON web key has private key material" );
+					}
+
 					return new RsaJsonWebKey(
 						kid: data[ "kid" ],
 						n: data[ "n" ],
 						e: data[ "e" ] );
 
 				default:
-					throw new NotImplementedException();
+					string msg = String.Format( "'{0}' is not a supported JSON eb key type" );
+					throw new JsonWebKeyParseException( msg );
 
 			}
 		}
+
+		private static bool HasRsaPrivateKeyMaterial( IReadOnlyDictionary<string, string> data ) {
+			return data.ContainsKey( "d" )
+			    || data.ContainsKey( "p" )
+			    || data.ContainsKey( "q" )
+			    || data.ContainsKey( "dp" )
+			    || data.ContainsKey( "dq" )
+			    || data.ContainsKey( "qi" )
+			    || data.ContainsKey( "oth" );
+		}
+	}
+
+	public class JsonWebKeyParseException : Exception {
+		public JsonWebKeyParseException( string msg ) : base( msg ) {}
 	}
 }
