@@ -78,6 +78,7 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
+    <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
     <Compile Include="Validation\AccessTokens\TokenValidationConstants.cs" />
     <Compile Include="Validation\AnonymousPrincipal.cs" />
     <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
