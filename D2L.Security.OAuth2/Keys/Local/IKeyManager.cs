@@ -1,5 +1,7 @@
-﻿namespace D2L.Security.OAuth2.Keys.Local {
+﻿using System.Threading.Tasks;
+
+namespace D2L.Security.OAuth2.Keys.Local {
 	public interface IKeyManager : IPublicKeyProvider {
-		IJsonWebTokenSigner CreateJsonWebTokenSigner( string issuer );
+		Task<string> SignAsync( UnsignedToken token );
 	}
 }
