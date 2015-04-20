@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Tests.Mocks;
 using D2L.Security.OAuth2.Tests.Utilities;
 using D2L.Security.OAuth2.Validation.AccessTokens;
@@ -69,11 +70,11 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				accessToken_validationStatus: ValidationStatus.Success,
 				authMode: AuthenticationMode.Full,
  				expected_authenticationStatus: AuthenticationStatus.Anonymous,
-				expected_nullPrincipal: false
+				expected_nullPrincipal: false,
+				expected_principalType: PrincipalType.Anonymous
 			).SafeAsync();
 		}
-
-
+		
 		[Test]
 		public async Task Xsrf_DoesNotMatch() {
 			await RunTest(
@@ -124,7 +125,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 			ValidationStatus accessToken_validationStatus,
 			AuthenticationMode authMode,
 			AuthenticationStatus expected_authenticationStatus,
-			bool expected_nullPrincipal
+			bool expected_nullPrincipal,
+			PrincipalType? expected_principalType = null
 		) {
 
 			IAccessToken token = AccessTokenMock.Create(
@@ -154,8 +156,11 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				authMode: authMode
 			).SafeAsync();
 			
-			Assert.AreEqual( expected_authenticationStatus, authResponse.Status, "Using HttpRequestMessage" );
-			Assert.AreEqual( expected_nullPrincipal, authResponse.Principal == null, "Using HttpRequestMessage" );
+			CheckExpectations(
+				authResponse,
+				expected_authenticationStatus,
+				expected_nullPrincipal,
+				expected_principalType );
 
 			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithAuthHeader( request_authorizationHeader )
@@ -168,9 +173,29 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				authMode: authMode
 			).SafeAsync();
 			
+			CheckExpectations(
+				authResponse,
+				expected_authenticationStatus,
+				expected_nullPrincipal,
+				expected_principalType );
+
 			Assert.AreEqual( expected_authenticationStatus, authResponse.Status, "Using HttpRequest" );
 			Assert.AreEqual( expected_nullPrincipal, authResponse.Principal == null, "Using HttpRequest" );
 		}
-		
+
+		private void CheckExpectations(
+			AuthenticationResponse authResponse,
+			AuthenticationStatus expected_authenticationStatus,
+			bool expected_nullPrincipal,
+			PrincipalType? expected_principalType
+		) {
+
+			Assert.AreEqual( expected_authenticationStatus, authResponse.Status, "Using HttpRequest" );
+			Assert.AreEqual( expected_nullPrincipal, authResponse.Principal == null, "Using HttpRequest" );
+
+			if( expected_principalType.HasValue ) {
+				Assert.AreEqual( expected_principalType, authResponse.Principal.Type );
+			}
+		}
 	}
 }
