@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Principal {
 			get { throw new InvalidOperationException( "Cannot access UserId for an Anonymous Principal" ); }
 		}
 
-		string ID2LPrincipal.TenantId {
+		Guid ID2LPrincipal.TenantId {
 			get { throw new InvalidOperationException( "Cannot access TenantId for an Anonymous Principal" ); }
 		}
 

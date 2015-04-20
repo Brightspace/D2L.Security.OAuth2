@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.Principal {
 		private readonly IAccessToken m_accessToken;
 
 		private readonly string m_userId;
-		private readonly string m_tenantId;
+		private readonly Lazy<Guid> m_tenantId;
 		private readonly PrincipalType m_principalType;
 		private readonly Lazy<List<Scope>> m_scopes;
 
@@ -19,9 +19,20 @@ namespace D2L.Security.OAuth2.Principal {
 			m_accessToken = accessToken;
 
 			m_userId = accessToken.GetUserId();
-			m_tenantId = accessToken.GetTenantId();
+			m_tenantId = new Lazy<Guid>( GetTenantId );
 			m_principalType = string.IsNullOrEmpty( m_userId ) ? PrincipalType.Service : PrincipalType.User;
 			m_scopes = new Lazy<List<Scope>>( () => m_accessToken.GetScopes().ToList() );
+		}
+
+		private Guid GetTenantId() {
+			string strTenantId = m_accessToken.GetTenantId();
+
+			Guid tenantId;
+			if( !Guid.TryParse( strTenantId, out tenantId ) ) {
+				string message = string.Format( "TenantId '{0}' is not a valid Guid", strTenantId );
+				throw new Exception( message );
+			}
+			return tenantId;
 		}
 
 		string ID2LPrincipal.UserId {
@@ -37,8 +48,8 @@ namespace D2L.Security.OAuth2.Principal {
 			}
 		}
 
-		string ID2LPrincipal.TenantId {
-			get { return m_tenantId; }
+		Guid ID2LPrincipal.TenantId {
+			get { return m_tenantId.Value; }
 		}
 
 		PrincipalType ID2LPrincipal.Type {
