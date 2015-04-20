@@ -19,8 +19,6 @@ namespace D2L.Security.OAuth2 {
 		/// </summary>
 		DateTime AccessTokenExpiry { get; }
 
-		string Xsrf { get; }
-
 		string AccessToken { get; }
 		string AccessTokenId { get; }
 	}

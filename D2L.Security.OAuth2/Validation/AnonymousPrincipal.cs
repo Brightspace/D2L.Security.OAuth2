@@ -16,11 +16,11 @@ namespace D2L.Security.OAuth2.Validation {
 		}
 
 		public string UserId {
-			get { return ""; }
+			get { throw new InvalidOperationException( "Cannot access UserId for an Anonymous Principal" ); }
 		}
 
 		public string TenantId {
-			get { return ""; }
+			get { throw new InvalidOperationException( "Cannot access TenantId for an Anonymous Principal" ); }
 		}
 
 		public PrincipalType Type {
