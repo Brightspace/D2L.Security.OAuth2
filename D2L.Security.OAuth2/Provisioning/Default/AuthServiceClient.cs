@@ -39,10 +39,10 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			IEnumerable<Scope> scopes
 		) {
 			string requestBody = BuildFormContents( assertion, scopes );
-			using( HttpResponseMessage response = await MakeRequest( requestBody ) ) {
+			using( HttpResponseMessage response = await MakeRequest( requestBody ).SafeAsync() ) {
 				response.EnsureSuccessStatusCode();
 
-				using( var resultStream = await response.Content.ReadAsStreamAsync() ) {
+				using( var resultStream = await response.Content.ReadAsStreamAsync().SafeAsync() ) {
 					IAccessToken accessToken = SerializationHelper.ExtractAccessToken( resultStream );
 					return accessToken;
 				}

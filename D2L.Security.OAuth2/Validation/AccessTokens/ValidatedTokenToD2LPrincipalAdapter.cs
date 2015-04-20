@@ -13,7 +13,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		private readonly PrincipalType m_type;
 		private readonly IEnumerable<Claim> m_allClaims;
 		
-		private readonly string m_xsrf;
 		private readonly string m_accessToken;
 		private readonly string m_accessTokenId;
 
@@ -25,7 +24,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_userId = validatedToken.GetUserId();
 			m_type = string.IsNullOrEmpty( m_userId ) ? PrincipalType.Service : PrincipalType.User;
 
-			m_xsrf = validatedToken.GetXsrfToken();
 			m_accessToken = accessToken;
 			m_allClaims = validatedToken.Claims;
 			m_accessTokenId = validatedToken.GetAccessTokenId();
@@ -50,11 +48,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		PrincipalType ID2LPrincipal.Type {
 			get { return m_type; }
 		}
-
-		string ID2LPrincipal.Xsrf {
-			get { return m_xsrf;  }
-		}
-
+		
 		string ID2LPrincipal.AccessToken {
 			get { return m_accessToken; }
 		}
