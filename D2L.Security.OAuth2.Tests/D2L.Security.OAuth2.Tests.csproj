@@ -74,7 +74,6 @@
     <Compile Include="Integration\Validation\Jwks\Data\JwksProviderTests.cs" />
     <Compile Include="Mocks\AccessTokenValidatorMock.cs" />
     <Compile Include="Mocks\HttpMockFactory.cs" />
-    <Compile Include="Mocks\HttpRequestMock.cs" />
     <Compile Include="Mocks\PublicKeyProviderMock.cs" />
     <Compile Include="Mocks\AccessTokenMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,9 +111,9 @@
     <Compile Include="Validation\Utilities\Assertions %282%29.cs" />
     <Compile Include="Validation\Utilities\Assertions.cs" />
     <Compile Include="Validation\Utilities\AuthServerInvoker.cs" />
-    <Compile Include="Validation\Utilities\CookieHeaderMaker.cs" />
-    <Compile Include="Validation\Utilities\HttpRequestBuilder.cs" />
-    <Compile Include="Validation\Utilities\RequestBuilder.cs" />
+    <Compile Include="Utilities\CookieHeaderMaker.cs" />
+    <Compile Include="Utilities\HttpRequestBuilder.cs" />
+    <Compile Include="Utilities\RequestBuilder.cs" />
     <Compile Include="Validation\Utilities\TestCredentials.cs" />
     <Compile Include="Validation\Utilities\TestTokenProvider.cs" />
     <Compile Include="Validation\Utilities\TestTokens.cs" />
