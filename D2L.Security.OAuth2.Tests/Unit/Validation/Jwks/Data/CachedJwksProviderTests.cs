@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
-using D2L.Security.OAuth2.Validation.Jwks.Data;
+using D2L.Security.OAuth2.Keys.Remote.Data;
 using Moq;
 using NUnit.Framework;
 
@@ -88,7 +88,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Jwks.Data {
 				c => c.SetAsync(
 					m_cacheKey,
 					JWKS_JSON,
-					TimeSpan.FromSeconds( OAuth2.Validation.Jwks.Constants.KEY_MAXAGE_SECONDS )
+					TimeSpan.FromSeconds( Keys.Remote.Constants.KEY_MAXAGE_SECONDS )
 				),
 				times: cacheSetCalls
 			);
