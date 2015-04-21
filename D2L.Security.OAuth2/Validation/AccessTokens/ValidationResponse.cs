@@ -2,22 +2,22 @@
 	public class ValidationResponse {
 
 		private readonly ValidationStatus m_status;
-		private readonly IValidatedToken m_token;
+		private readonly IAccessToken m_accessToken;
 
 		internal ValidationResponse(
 			ValidationStatus status,
-			IValidatedToken token
+			IAccessToken accessToken
 		) {
 			m_status = status;
-			m_token = token;
+			m_accessToken = accessToken;
 		}
 
 		public ValidationStatus Status {
 			get { return m_status; }
 		}
 
-		public IValidatedToken Token {
-			get { return m_token; }
+		public IAccessToken AccessToken {
+			get { return m_accessToken; }
 		}
 
 	}
