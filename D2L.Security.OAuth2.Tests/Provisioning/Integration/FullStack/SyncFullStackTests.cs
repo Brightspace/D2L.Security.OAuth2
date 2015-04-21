@@ -12,7 +12,6 @@ namespace D2L.Security.OAuth2.Provisioning.Tests.Integration.FullStack {
 
 		//private const string USER_ID = "someValidUser";
 		//private const string TENANT_ID = "someValidTenantId";
-		//private const string TENANT_URL = "someValidTenantUrl";
 		//private const string XSRF = "someValidXsrf";
 
 		//private readonly IAuthTokenProvider m_tokenProvider =

@@ -35,7 +35,6 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Integration.FullStack {
 			Assert.AreEqual( AuthenticationStatus.Success, result );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Sub, principal.UserId );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Tenantid, principal.TenantId );
-			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Tenanturl, principal.TenantUrl );
 
 			Assert.AreEqual( 1, principal.Scopes.Count() );
 			Assert.AreEqual( TestTokens.ValidWithXsrfOneScope.Scope, principal.Scopes.First() );

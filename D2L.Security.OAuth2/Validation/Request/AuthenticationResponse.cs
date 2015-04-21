@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	public class AuthenticationResponse {
