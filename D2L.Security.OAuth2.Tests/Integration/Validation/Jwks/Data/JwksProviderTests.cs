@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Runtime;
-using System.Text;
 using System.Threading.Tasks;
+
+using D2L.Security.OAuth2.Keys.Remote.Data;
 using D2L.Security.OAuth2.Tests.Mocks;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Security.OAuth2.Validation.Jwks.Data;
 using HttpMock;
 using NUnit.Framework;
 

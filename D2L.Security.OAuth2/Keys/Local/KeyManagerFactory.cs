@@ -9,18 +9,15 @@ namespace D2L.Security.OAuth2.Keys.Local {
 		private static readonly TimeSpan DEFAULT_KEY_ROTATION_PERIOD = TimeSpan.FromMinutes( 10 );
 
 		public static IKeyManager Create(
-			string issuer,
 			IPublicKeyDataProvider publicKeyDataProvider
 		) {
 			return Create(
-				issuer,
 				publicKeyDataProvider,
 				keyLifetime: DEFAULT_KEY_LIFETIME,
 				keyRotationPeriod: DEFAULT_KEY_ROTATION_PERIOD );
 		}
 
 		public static IKeyManager Create(
-			string issuer,
 			IPublicKeyDataProvider publicKeyDataProvider,
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
@@ -34,7 +31,7 @@ namespace D2L.Security.OAuth2.Keys.Local {
 				keyLifetime: keyLifetime,
 				keyRotationPeriod: keyRotationPeriod );
 
-			return new KeyManager( issuer, publicKeyProvider, privateKeyProvider );
+			return new KeyManager( publicKeyProvider, privateKeyProvider );
 		}
 	}
 }
