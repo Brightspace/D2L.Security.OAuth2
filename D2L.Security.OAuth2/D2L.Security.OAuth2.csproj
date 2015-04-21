@@ -67,6 +67,7 @@
     <Compile Include="Keys\Local\IPublicKeyProvider.cs" />
     <Compile Include="Keys\Local\KeyManagerFactory.cs" />
     <Compile Include="Keys\Local\UnsignedToken.cs" />
+    <Compile Include="Principal\D2LPrincipal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\FriendAssemblies.cs" />
     <Compile Include="Provisioning\ClaimSet.cs" />
@@ -87,7 +88,8 @@
     <Compile Include="Utilities\Base64Url.cs" />
     <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
-    <Compile Include="Validation\AccessTokens\TokenValidationConstants.cs" />
+    <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
+    <Compile Include="Principal\AnonymousPrincipal.cs" />
     <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
     <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
     <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
@@ -104,19 +106,17 @@
     <Compile Include="Validation\Request\AuthenticationResponse.cs" />
     <Compile Include="Validation\Request\AuthenticationStatus.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
-    <Compile Include="Validation\AccessTokens\IValidatedTokenExtensions.cs" />
-    <Compile Include="Validation\AccessTokens\ValidatedTokenToD2LPrincipalAdapter.cs" />
+    <Compile Include="Validation\AccessTokens\AccessTokenExtensions.cs" />
     <Compile Include="Validation\Request\RequestAuthenticator.cs" />
     <Compile Include="Validation\Request\HttpRequestExtensions.cs" />
     <Compile Include="Validation\Request\HttpRequestMessageExtensions.cs" />
-    <Compile Include="ID2LPrincipal.cs" />
+    <Compile Include="Principal\ID2LPrincipal.cs" />
     <Compile Include="Validation\Request\IRequestAuthenticator.cs" />
-    <Compile Include="PrincipalType.cs" />
+    <Compile Include="Principal\PrincipalType.cs" />
     <Compile Include="Validation\Request\RequestAuthenticatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidator.cs" />
     <Compile Include="Validation\AccessTokens\IAccessTokenValidator.cs" />
-    <Compile Include="Validation\AccessTokens\IValidatedToken.cs" />
-    <Compile Include="Validation\AccessTokens\ValidatedToken.cs" />
+    <Compile Include="Validation\AccessTokens\AccessToken.cs" />
     <Compile Include="Validation\AccessTokens\ValidationResponse.cs" />
     <Compile Include="Validation\AccessTokens\ValidationStatus.cs" />
   </ItemGroup>

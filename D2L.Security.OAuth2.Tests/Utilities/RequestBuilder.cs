@@ -5,8 +5,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
+using D2L.Security.OAuth2.Validation.Request;
 
-namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
+namespace D2L.Security.OAuth2.Tests.Utilities {
 	internal static class RequestBuilder {
 
 		#region HttpRequestMessage
@@ -16,7 +17,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 		}
 
 		internal static HttpRequestMessage WithAuthHeader( this HttpRequestMessage httpRequestMessage, string scheme, string authHeaderValue ) {
-			AuthenticationHeaderValue authHeaderVal = new AuthenticationHeaderValue( scheme, authHeaderValue );
+			var authHeaderVal = new AuthenticationHeaderValue( scheme, authHeaderValue );
 			httpRequestMessage.Headers.Authorization = authHeaderVal;
 			return httpRequestMessage;
 		}
@@ -77,7 +78,7 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 			// A hack for modifying http headers in an HttpRequest: http://stackoverflow.com/a/13307238
 			NameValueCollection headers = httpRequest.Headers;
 			Type headerCollectionType = headers.GetType();
-			ArrayList item = new ArrayList();
+			var item = new ArrayList();
 
 			const BindingFlags flags = BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance;
 

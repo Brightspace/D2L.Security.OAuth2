@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Keys.Remote.Data {
 			string key = jwksEndpoint.ToString();
 
 			if( !skipCache ) {
-				CacheResponse cacheResponse = await m_cache.GetAsync( key );
+				CacheResponse cacheResponse = await m_cache.GetAsync( key ).SafeAsync();
 				if( cacheResponse.Success ) {
 					return new JwksResponse(
 						fromCache: true,
