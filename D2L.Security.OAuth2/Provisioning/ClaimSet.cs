@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Provisioning {
 	public class ClaimSet {
@@ -13,7 +11,6 @@ namespace D2L.Security.OAuth2.Provisioning {
 		public ClaimSet(
 			string issuer,
 			string tenantId = null,
-			Uri tenantUrl = null,
 			string user = null,
 			string xsrfToken = null
 		) {
@@ -28,11 +25,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			if( !string.IsNullOrWhiteSpace( tenantId ) ) {
 				m_claims.Add( new Claim( Constants.Claims.TENANT_ID, tenantId ) );
 			}
-
-			if( tenantUrl != null ) {
-				m_claims.Add( new Claim( Constants.Claims.TENANT_URL, tenantUrl.AbsoluteUri ) );
-			}
-
+			
 			if( !string.IsNullOrWhiteSpace( user ) ) {
 				m_claims.Add( new Claim( Constants.Claims.USER_ID, user ) );
 			}

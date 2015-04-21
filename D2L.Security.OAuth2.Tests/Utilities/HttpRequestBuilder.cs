@@ -4,7 +4,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Web;
 
-namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
+namespace D2L.Security.OAuth2.Tests.Utilities {
 	internal static class HttpRequestBuilder {
 
 		internal static void AddAuthHeader( HttpRequest httpRequest, string authHeaderValue ) {
@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 			// A hack for modifying http headers in an HttpRequest: http://stackoverflow.com/a/13307238
 			NameValueCollection headers = httpRequest.Headers;
 			Type headerCollectionType = headers.GetType();
-			ArrayList item = new ArrayList();
+			var item = new ArrayList();
 
 			const BindingFlags flags = BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance;
 

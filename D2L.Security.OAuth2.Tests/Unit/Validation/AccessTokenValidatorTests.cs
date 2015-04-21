@@ -36,7 +36,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 				signJwt: true,
 				jwtExpiry: DateTime.Now.AddSeconds( -301 ),
 				expected_validationStatus: ValidationStatus.Expired,
-				expected_validatedTokenNull: true
+				expected_accessTokenNull: true
 			).SafeAsync();
 		}
 		
@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 				signJwt: true,
 				jwtExpiry: DateTime.Now.AddMonths( -2 ),
 				expected_validationStatus: ValidationStatus.Expired,
-				expected_validatedTokenNull: true
+				expected_accessTokenNull: true
 			).SafeAsync();
 		}
 
@@ -59,7 +59,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 				signJwt: true,
 				jwtExpiry: DateTime.Now.AddSeconds( -295 ),
 				expected_validationStatus: ValidationStatus.Success,
-				expected_validatedTokenNull: false
+				expected_accessTokenNull: false
 			).SafeAsync();
 		}
 		
@@ -70,7 +70,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 				signJwt: true,
 				jwtExpiry: DateTime.Now.AddSeconds( 10 ),
 				expected_validationStatus: ValidationStatus.Success,
-				expected_validatedTokenNull: false
+				expected_accessTokenNull: false
 			).SafeAsync();
 		}
 		
@@ -78,7 +78,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 			bool signJwt,
 			DateTime jwtExpiry,
 			ValidationStatus? expected_validationStatus = null,
-			bool? expected_validatedTokenNull = null
+			bool? expected_accessTokenNull = null
 		) {
 			
 			string keyId = "thekeyid";
@@ -113,7 +113,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 			).SafeAsync();
 			
 			Assert.AreEqual( expected_validationStatus, response.Status );
-			Assert.AreEqual( expected_validatedTokenNull, response.Token == null );
+			Assert.AreEqual( expected_accessTokenNull, response.AccessToken == null );
 
 		}
 		
