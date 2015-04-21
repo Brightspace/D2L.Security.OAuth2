@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 
 			string keyId = unvalidatedToken.Header["kid"].ToString();
-			IValidatedToken validatedToken = null;
+			IAccessToken accessToken = null;
 
 			using( D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
 				jwksEndPoint: jwksEndPoint,
@@ -64,20 +64,19 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 						validationParameters,
 						out securityToken
 						);
-					validatedToken = new ValidatedToken( (JwtSecurityToken) securityToken );
+					accessToken = new AccessToken( (JwtSecurityToken) securityToken );
 
 				} catch( SecurityTokenExpiredException ) {
 
 					return new ValidationResponse(
 						ValidationStatus.Expired,
-						token: null
-						);
+						accessToken: null );
 				}
 			}
 
 			return new ValidationResponse(
 				ValidationStatus.Success,
-				validatedToken
+				accessToken
 			);
 
 		}

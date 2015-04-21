@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.UI;
 using D2L.Security.OAuth2.Validation.AccessTokens;
-using D2L.Security.OAuth2.Validation.Token;
 using Moq;
 
 namespace D2L.Security.OAuth2.Tests.Mocks {
-	public static class ValidatedTokenMock {
+	public static class AccessTokenMock {
 
-		public static Mock<IValidatedToken> Create(
+		public static Mock<IAccessToken> Create(
 			DateTime? expiry = null,
 			string xsrfClaim = null
 		) {
@@ -27,7 +21,7 @@ namespace D2L.Security.OAuth2.Tests.Mocks {
 				);
 			}
 
-			var mock = new Mock<IValidatedToken>();
+			var mock = new Mock<IAccessToken>();
 
 			mock.SetupGet( t => t.Expiry ).Returns( expiry.Value );
 			mock.SetupGet( t => t.Claims ).Returns( claims );

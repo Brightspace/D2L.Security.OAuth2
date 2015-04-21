@@ -6,7 +6,6 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 		internal static class ValidWithXsrfOneScope {
 			internal const string Sub = "169";
 			internal const string Tenantid = "tenant-0000-0000-0000-000000000000";
-			internal const string Tenanturl = "http://lores.d2l";
 			internal const string Xt = "abc";
 			internal const long Exp = 1621858476;
 			internal const string Iss = "https://api.brightspace.com/auth";
@@ -17,7 +16,6 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 
 		internal static class ValidWithXsrfTwoScopesNoUser {
 			internal const string Tenantid = "tenant-0000-0000-0000-000000000000";
-			internal const string Tenanturl = "http://lores.d2l";
 			internal const string Xt = "abc";
 			internal const long Exp = 1621858476;
 			internal const string Iss = "https://api.brightspace.com/auth";
@@ -30,7 +28,6 @@ namespace D2L.Security.OAuth2.Validation.Request.Tests.Utilities {
 		internal static class ValidNoXsrfOneScope {
 			internal const string Sub = "169";
 			internal const string Tenantid = "tenant-0000-0000-0000-000000000000";
-			internal const string Tenanturl = "http://lores.d2l";
 			internal const long Exp = 1621858476;
 			internal const string Iss = "https://api.brightspace.com/auth";
 			internal static Scope Scope = new Scope( "lores", "objectives", "manage" );
