@@ -7,14 +7,11 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 	internal sealed class KeyManager : IKeyManager {
 		private readonly IPublicKeyProvider m_publicKeyProvider;
 		private readonly IPrivateKeyProvider m_privateKeyProvider;
-		private readonly string m_issuer;
 
 		public KeyManager(
-			string issuer,
 			IPublicKeyProvider publicKeyProvider,
 			IPrivateKeyProvider privateKeyProvider
 		) {
-			m_issuer = issuer;
 			m_publicKeyProvider = publicKeyProvider;
 			m_privateKeyProvider = privateKeyProvider;
 		}
@@ -30,7 +27,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 		async Task<string> IKeyManager.SignAsync( UnsignedToken token ) {
 			using( D2LSigningCredentials signingCredentials = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
 				var jwt = new JwtSecurityToken(
-					issuer: m_issuer,
+					issuer: token.Issuer,
 					audience: token.Audience,
 					claims: token.Claims,
 					notBefore: token.NotBefore,
