@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Local {
 		[Test]
 		public async Task GetByIdAsync_EmptyDb_ReturnsNull() {
 			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( It.IsAny<Guid>() ) ).ReturnsAsync( null );
-			
+
 			JsonWebKey result = await m_publicKeyProvider.GetByIdAsync( Guid.NewGuid() );
 
 			Assert.IsNull( result );

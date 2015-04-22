@@ -63,7 +63,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Local {
 
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now + TimeSpan.FromSeconds( offsetSeconds ) );
 			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync();
-			
+
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
 
 			Assert.AreEqual( key1.KeyId, key2.KeyId );
