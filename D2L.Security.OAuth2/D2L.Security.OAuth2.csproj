@@ -51,17 +51,22 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Keys\D2LSecurityToken.cs" />
     <Compile Include="Caching\CacheResponse.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Keys\Local\Data\InMemoryPublicKeyDataProvider.cs" />
+    <Compile Include="Keys\Local\Data\IPublicKeyDataProvider.cs" />
+    <Compile Include="Keys\Local\IKeyManager.cs" />
+    <Compile Include="Keys\Local\Default\KeyManager.cs" />
+    <Compile Include="Keys\Local\Default\PrivateKeyProvider.cs" />
+    <Compile Include="Keys\Local\Default\PublicKeyProvider.cs" />
+    <Compile Include="Keys\Local\IPrivateKeyProvider.cs" />
+    <Compile Include="Keys\Local\IPublicKeyProvider.cs" />
+    <Compile Include="Keys\Local\KeyManagerFactory.cs" />
+    <Compile Include="Keys\Local\UnsignedToken.cs" />
     <Compile Include="Principal\D2LPrincipal.cs" />
-    <Compile Include="SecurityTokens\D2LSecurityToken.cs" />
-    <Compile Include="SecurityTokens\Default\InMemorySecurityTokenProvider.cs" />
-    <Compile Include="SecurityTokens\Default\RsaSecurityTokenFactory.cs" />
-    <Compile Include="SecurityTokens\ISecurityTokenFactory.cs" />
-    <Compile Include="SecurityTokens\ISecurityTokenProvider.cs" />
-    <Compile Include="SecurityTokens\Default\RotatingSecurityTokenProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\FriendAssemblies.cs" />
     <Compile Include="Provisioning\ClaimSet.cs" />
@@ -77,6 +82,11 @@
     <Compile Include="Provisioning\SigningTokenFactory.cs" />
     <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
+    <Compile Include="Keys\JsonWebKey.cs" />
+    <Compile Include="Keys\RsaJsonWebKey.cs" />
+    <Compile Include="Utilities\Base64Url.cs" />
+    <Compile Include="Utilities\DateTimeProvider.cs" />
+    <Compile Include="Utilities\IDateTimeProvider.cs" />
     <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
@@ -85,14 +95,14 @@
     <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
     <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyLookupFailureException.cs" />
-    <Compile Include="Validation\Jwks\Data\CachedJwksProvider.cs" />
-    <Compile Include="Validation\Jwks\Constants.cs" />
-    <Compile Include="Validation\Jwks\Data\IJwksProvider.cs" />
-    <Compile Include="Validation\Jwks\Data\JwksProvider.cs" />
-    <Compile Include="Validation\Jwks\Data\JwksResponse.cs" />
-    <Compile Include="Validation\Jwks\IPublicKeyProvider.cs" />
+    <Compile Include="Keys\Remote\Data\CachedJwksProvider.cs" />
+    <Compile Include="Keys\Remote\Constants.cs" />
+    <Compile Include="Keys\Remote\Data\IJwksProvider.cs" />
+    <Compile Include="Keys\Remote\Data\JwksProvider.cs" />
+    <Compile Include="Keys\Remote\Data\JwksResponse.cs" />
+    <Compile Include="Keys\Remote\IPublicKeyProvider.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyNotFoundException.cs" />
-    <Compile Include="Validation\Jwks\PublicKeyProvider.cs" />
+    <Compile Include="Keys\Remote\PublicKeyProvider.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\AuthenticationResponse.cs" />
     <Compile Include="Validation\Request\AuthenticationStatus.cs" />
@@ -113,7 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="SecurityTokens\README.md" />
+    <None Include="Keys\README.md" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

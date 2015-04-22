@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+
 using D2L.Security.OAuth2.Caching;
 
-namespace D2L.Security.OAuth2.Validation.Jwks.Data {
+namespace D2L.Security.OAuth2.Keys.Remote.Data {
 	internal sealed class CachedJwksProvider : IJwksProvider {
 		
 		private readonly ICache m_cache;
