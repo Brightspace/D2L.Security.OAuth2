@@ -87,11 +87,14 @@
     <Compile Include="Provisioning\Utilities\TestUris.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
-    <Compile Include="Unit\SecurityTokens\Default\RotatingSecurityTokenProviderTests.cs" />
+    <Compile Include="Unit\Keys\Local\InMemoryPublicKeyDataProviderTests.cs" />
+    <Compile Include="Unit\Keys\Local\PrivateKeyProviderTests.cs" />
+    <Compile Include="Unit\Keys\Local\PublicKeyProviderTests.cs" />
     <Compile Include="Unit\Validation\AccessTokenValidatorTests.cs" />
-    <Compile Include="Unit\Validation\Jwks\Data\CachedJwksProviderTests.cs" />
-    <Compile Include="Unit\Validation\Jwks\PublicKeyProviderTests.cs" />
+    <Compile Include="Unit\Keys\Remote\Data\CachedJwksProviderTests.cs" />
+    <Compile Include="Unit\Keys\Remote\PublicKeyProviderTests.cs" />
     <Compile Include="Utilities\D2LSecurityTokenUtility.cs" />
+    <Compile Include="Utilities\JsonWebKeyStub.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.HttpRequest.cs" />
     <Compile Include="Validation\Integration\FullStack\FullStackTests.HttpRequestMessage.cs" />
