@@ -5,12 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.Keys.Local.Data;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Local.Default {
 	internal sealed class PrivateKeyProvider : IPrivateKeyProvider {
 		private readonly object m_lock = new object();
 
 		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
+		private readonly IDateTimeProvider m_dateTimeProvider;
 		private readonly TimeSpan m_keyLifetime;
 		private readonly TimeSpan m_keyRotationPeriod;
 
@@ -20,20 +22,22 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 		public PrivateKeyProvider(
 			IPublicKeyDataProvider publicKeyDataProvider,
+			IDateTimeProvider dateTimeProvider,
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
 			m_publicKeyDataProvider = publicKeyDataProvider;
+			m_dateTimeProvider = dateTimeProvider;
 			m_keyLifetime = keyLifetime;
 			m_keyRotationPeriod = keyRotationPeriod;
 		}
 
 		private bool NeedFreshPrivateKey() {
 			PrivateKey key = m_privateKey;
-			return key == null || DateTime.UtcNow > key.ExpiresAt - m_keyRotationPeriod;
+			return key == null || m_dateTimeProvider.UtcNow >= key.ValidTo - m_keyRotationPeriod;
 		}
 
-		async Task<D2LSigningCredentials> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			// This is the double-checked lock "pattern". It is similar to Lazy<PrivateKey> but
 			// we also reset m_privateKey.
 			if( NeedFreshPrivateKey() ) {
@@ -63,15 +67,16 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			csp.ImportParameters( privateKey.RsaParameters );
 			var rsaSecurityKey = new RsaSecurityKey( csp );
 
-			return new D2LSigningCredentials(
+			return new D2LSecurityToken(
 				privateKey.Id,
-				rsaSecurityKey,
-				SecurityAlgorithms.RsaSha256Signature,
-				SecurityAlgorithms.Sha256Digest );
+				privateKey.ValidFrom,
+				privateKey.ValidTo,
+				rsaSecurityKey );
 		}
 
 		private async Task<PrivateKey> CreatePrivateKeyAsync() {
-			DateTime expiresAt = DateTime.UtcNow + m_keyLifetime;
+			DateTime now = m_dateTimeProvider.UtcNow;
+			DateTime expiresAt = now + m_keyLifetime;
 			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( 2048 ) ) {
 				csp.PersistKeyInCsp = false;
 
@@ -84,23 +89,26 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 				await m_publicKeyDataProvider.SaveAsync( jwk ).SafeAsync();
 
-				return new PrivateKey( keyId, privateKey, expiresAt );
+				return new PrivateKey( keyId, privateKey, now, expiresAt );
 			}
 		}
 
 		internal sealed class PrivateKey {
 			private readonly Guid m_id;
 			private readonly RSAParameters m_rsaParameters;
-			private readonly DateTime m_expiresAt;
+			private readonly DateTime m_validFrom;
+			private readonly DateTime m_validTo;
 
 			public PrivateKey(
 				Guid id,
 				RSAParameters rsaParameters,
-				DateTime expiresAt
+				DateTime validFrom,
+				DateTime validTo
 			) {
 				m_id = id;
 				m_rsaParameters = rsaParameters;
-				m_expiresAt = expiresAt;
+				m_validFrom = validFrom;
+				m_validTo = validTo;
 			}
 
 			public Guid Id {
@@ -111,8 +119,12 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 				get { return m_rsaParameters; }
 			}
 
-			public DateTime ExpiresAt {
-				get { return m_expiresAt; }
+			public DateTime ValidFrom {
+				get { return m_validFrom; }
+			}
+
+			public DateTime ValidTo {
+				get { return m_validTo; }
 			}
 		}
 	}

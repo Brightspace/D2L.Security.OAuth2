@@ -2,6 +2,6 @@
 
 namespace D2L.Security.OAuth2.Keys.Local {
 	internal interface IPrivateKeyProvider {
-		Task<D2LSigningCredentials> GetSigningCredentialsAsync();
+		Task<D2LSecurityToken> GetSigningCredentialsAsync();
 	}
 }

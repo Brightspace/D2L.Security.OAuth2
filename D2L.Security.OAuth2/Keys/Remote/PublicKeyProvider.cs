@@ -11,8 +11,6 @@ using Microsoft.IdentityModel.Protocols;
 namespace D2L.Security.OAuth2.Keys.Remote {
 	internal sealed class PublicKeyProvider : IPublicKeyProvider {
 
-		internal const string ALLOWED_KEY_TYPE = "RSA";
-
 		private readonly IJwksProvider m_jwksProvider;
 		
 		public PublicKeyProvider( IJwksProvider jwksProvider ) {
@@ -21,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Remote {
 
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetSecurityTokenAsync(
 			Uri jwksEndPoint,
-			string keyId
+			Guid keyId
 		) {
 
 			JwksResponse jwksResponse = await m_jwksProvider.RequestJwksAsync( 
@@ -57,9 +55,9 @@ namespace D2L.Security.OAuth2.Keys.Remote {
 			return securityToken;
 		}
 		
-		private bool TryGetJsonWebKey( JsonWebKeySet keySet, string keyId, out Microsoft.IdentityModel.Protocols.JsonWebKey key ) {
+		private bool TryGetJsonWebKey( JsonWebKeySet keySet, Guid keyId, out Microsoft.IdentityModel.Protocols.JsonWebKey key ) {
 			foreach( Microsoft.IdentityModel.Protocols.JsonWebKey currentKey in keySet.Keys ) {
-				if( currentKey.Kid == keyId ) {
+				if( currentKey.Kid == keyId.ToString() ) {
 					key = currentKey;
 					return true;
 				}
@@ -71,14 +69,19 @@ namespace D2L.Security.OAuth2.Keys.Remote {
 
 		private  D2LSecurityToken JsonWebKeyToSecurityToken( Microsoft.IdentityModel.Protocols.JsonWebKey jsonWebKey ) {
 			
-			if( jsonWebKey.Kty != ALLOWED_KEY_TYPE ) {
+			if( jsonWebKey.Kty != "RSA" ) {
 				throw new InvalidKeyTypeException( 
 					string.Format(
-						"Expected key type to be {0} but was {1}",
-						ALLOWED_KEY_TYPE,
-						jsonWebKey.Kty
-					) 
-				);
+						"Expected key type to be RSA but was {0}",
+						jsonWebKey.Kty ) );
+			}
+
+			Guid id;
+			if( !Guid.TryParse( jsonWebKey.Kid, out id ) ) {
+				throw new InvalidKeyTypeException(
+					string.Format(
+						"Expected GUID keyId, but got {0}",
+						jsonWebKey.Kid ) );
 			}
 			
 			var e = Base64UrlEncoder.DecodeBytes( jsonWebKey.E );
@@ -94,9 +97,9 @@ namespace D2L.Security.OAuth2.Keys.Remote {
 			var key = new RsaSecurityKey( rsa );
 
 			var token = new D2LSecurityToken(
-				id: jsonWebKey.Kid,
+				id: id,
 				validFrom: DateTime.Now,
-				validTo: DateTime.Now.AddSeconds( Keys.Remote.Constants.KEY_MAXAGE_SECONDS ),
+				validTo: DateTime.Now.AddSeconds( Constants.KEY_MAXAGE_SECONDS ),
 				key: key
 			);
 			

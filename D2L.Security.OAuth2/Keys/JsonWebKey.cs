@@ -14,11 +14,11 @@ namespace D2L.Security.OAuth2.Keys {
 			m_expiresAt = expiresAt;
 		}
 
-		public Guid Id {
+		public virtual Guid Id {
 			get { return m_id; }
 		}
 
-		public DateTime? ExpiresAt {
+		public virtual DateTime? ExpiresAt {
 			get { return m_expiresAt; }
 		}
 

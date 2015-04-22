@@ -8,19 +8,19 @@ using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Utilities {
 	internal static class D2LSecurityTokenUtility {
-		public static D2LSecurityToken CreateExpiredToken( string id = null ) {
+		public static D2LSecurityToken CreateExpiredToken( Guid? id = null ) {
 			return CreateTokenWithTimeRemaining(
 				-TimeSpan.FromHours( 10 ),
 				id );
 		}
 
-		public static D2LSecurityToken CreateExpiringToken( string id = null ) {
+		public static D2LSecurityToken CreateExpiringToken( Guid? id = null ) {
 			return CreateTokenWithTimeRemaining(
 				TimeSpan.FromMinutes( 10 ) - TimeSpan.FromSeconds( 30 ),
 				id );
 		}
 
-		public static D2LSecurityToken CreateActiveToken( string id = null ) {
+		public static D2LSecurityToken CreateActiveToken( Guid? id = null ) {
 			return CreateTokenWithTimeRemaining(
 				TimeSpan.FromHours( 1 ) - TimeSpan.FromSeconds( 1 ),
 				id );
@@ -28,10 +28,10 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 
 		public static D2LSecurityToken CreateTokenWithTimeRemaining(
 			TimeSpan remaining,
-			string id = null
+			Guid? id = null
 		) {
 
-			id = id ?? Guid.NewGuid().ToString();
+			id = id ?? Guid.NewGuid();
 
 			var validTo = DateTime.UtcNow + remaining;
 			var validFrom = validTo - TimeSpan.FromHours( 1 );
@@ -41,14 +41,14 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 			var key = new RsaSecurityKey( csp );
 
 			return new D2LSecurityToken(
-				id,
+				id.Value,
 				validFrom,
 				validTo,
 				key );
 		}
 
-		public static D2LSecurityToken CreateTokenWithoutPrivateKey( string id = null ) {
-			id = id ?? Guid.NewGuid().ToString();
+		public static D2LSecurityToken CreateTokenWithoutPrivateKey( Guid? id = null ) {
+			id = id ?? Guid.NewGuid();
 
 			var validTo = DateTime.UtcNow + TimeSpan.FromHours( 1 );
 			var validFrom = DateTime.UtcNow - TimeSpan.FromHours( 1 );
@@ -60,7 +60,7 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 			var key = new RsaSecurityKey( csp );
 
 			return new D2LSecurityToken(
-				id,
+				id.Value,
 				validFrom,
 				validTo,
 				key );

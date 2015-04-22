@@ -80,8 +80,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 			ValidationStatus? expected_validationStatus = null,
 			bool? expected_accessTokenNull = null
 		) {
-			
-			string keyId = "thekeyid";
+
+			Guid keyId = Guid.NewGuid();
 			D2LSecurityToken signingToken = D2LSecurityTokenUtility.CreateActiveToken( id: keyId );
 			SigningCredentials signingCredentials = null;
 			if( signJwt ) {

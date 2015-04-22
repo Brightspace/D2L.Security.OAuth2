@@ -56,7 +56,6 @@
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Keys\D2LSigningCredentials.cs" />
     <Compile Include="Keys\Local\Data\InMemoryPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Local\Data\IPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Local\IKeyManager.cs" />
@@ -86,6 +85,8 @@
     <Compile Include="Keys\JsonWebKey.cs" />
     <Compile Include="Keys\RsaJsonWebKey.cs" />
     <Compile Include="Utilities\Base64Url.cs" />
+    <Compile Include="Utilities\DateTimeProvider.cs" />
+    <Compile Include="Utilities\IDateTimeProvider.cs" />
     <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
