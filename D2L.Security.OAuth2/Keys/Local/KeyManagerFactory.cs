@@ -2,6 +2,7 @@
 
 using D2L.Security.OAuth2.Keys.Local.Data;
 using D2L.Security.OAuth2.Keys.Local.Default;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Local {
 	public static class KeyManagerFactory {
@@ -22,12 +23,16 @@ namespace D2L.Security.OAuth2.Keys.Local {
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
+
+			IDateTimeProvider dateTimeProvider = new DateTimeProvider();
+
 			IPublicKeyProvider publicKeyProvider = new PublicKeyProvider(
 				publicKeyDataProvider,
 				keyLifetime: keyLifetime );
 
 			IPrivateKeyProvider privateKeyProvider = new PrivateKeyProvider(
 				publicKeyDataProvider,
+				dateTimeProvider,
 				keyLifetime: keyLifetime,
 				keyRotationPeriod: keyRotationPeriod );
 
