@@ -43,11 +43,15 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 
 			string keyId = unvalidatedToken.Header["kid"].ToString();
+			Guid id;
+			if( !Guid.TryParse( keyId, out id ) ) {
+				throw new Exception( "ffooof TODO" );
+			}
 			IAccessToken accessToken = null;
 
 			using( D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
 				jwksEndPoint: jwksEndPoint,
-				keyId: keyId
+				keyId: id
 			).SafeAsync() ) {
 
 				var validationParameters = new TokenValidationParameters() {

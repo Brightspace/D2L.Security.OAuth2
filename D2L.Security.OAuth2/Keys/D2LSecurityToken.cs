@@ -10,8 +10,12 @@ namespace D2L.Security.OAuth2.Keys {
 	/// <summary>
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
+	/// <remarks>
+	/// This class is not thread-safe.
+	/// </remarks>
 	public class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
 
+		private Guid? m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
 		private readonly AsymmetricSecurityKey m_key;
@@ -37,23 +41,33 @@ namespace D2L.Security.OAuth2.Keys {
 		/// This class takes ownership of the AsymmetricSecurityKey
 		/// </remarks>
 		public D2LSecurityToken(
-			string id,
+			Guid id,
 			DateTime validFrom,
 			DateTime validTo,
 			AsymmetricSecurityKey key
 		) : base(
 			name: ProvisioningConstants.AssertionGrant.KEY_ID_NAME,
-			id: id,
+			id: id.ToString(),
 			key: key
 		) {
 			if( validFrom >= validTo ) {
 				throw new ArgumentException( "validFrom must be before validTo" );
 			}
 
+			m_id = id;
 			m_validFrom = validFrom;
 			m_validTo = validTo;
 			m_key = key;
 			DisposeOfKey = true;
+		}
+
+		public Guid KeyId {
+			get {
+				if( m_id == null ) {
+					m_id = Guid.Parse( Id );
+				}
+				return m_id.Value;
+			}
 		}
 
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {

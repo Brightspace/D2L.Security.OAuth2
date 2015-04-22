@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Tests.Mocks {
 
 		internal static Mock<IPublicKeyProvider> Create(
 			Uri jwksEndpoint,
-			string keyId,
+			Guid keyId,
 			D2LSecurityToken token
 		) {
 

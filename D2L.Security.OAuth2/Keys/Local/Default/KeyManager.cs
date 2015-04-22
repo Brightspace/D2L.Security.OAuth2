@@ -25,14 +25,14 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 		}
 
 		async Task<string> IKeyManager.SignAsync( UnsignedToken token ) {
-			using( D2LSigningCredentials signingCredentials = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
+			using( D2LSecurityToken securityToken = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
 				var jwt = new JwtSecurityToken(
 					issuer: token.Issuer,
 					audience: token.Audience,
 					claims: token.Claims,
 					notBefore: token.NotBefore,
 					expires: token.ExpiresAt,
-					signingCredentials: signingCredentials );
+					signingCredentials: securityToken.GetSigningCredentials() );
 
 				var jwtHandler = new JwtSecurityTokenHandler();
 
