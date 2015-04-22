@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace D2L.Security.OAuth2.Validation.Jwks.Data {
+﻿namespace D2L.Security.OAuth2.Keys.Remote.Data {
 	internal class JwksResponse {
 
 		private readonly bool m_fromCache;

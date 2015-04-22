@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Provisioning {
 	internal class KidSecurityToken : NamedKeySecurityToken {
