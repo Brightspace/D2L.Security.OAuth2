@@ -7,7 +7,7 @@ namespace D2L.Security.OAuth2.Tests.Mocks {
 
 		public static Mock<IAccessTokenValidator> Create(
 			string accessToken,
-			ValidationResponse response
+			IValidationResponse response
 		) {
 			var mock = new Mock<IAccessTokenValidator>();
 

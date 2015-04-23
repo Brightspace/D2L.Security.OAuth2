@@ -107,7 +107,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 				publicKeyProvider
 			);
 
-			ValidationResponse response = await tokenValidator.ValidateAsync(
+			IValidationResponse response = await tokenValidator.ValidateAsync(
 				jwksEndPoint: m_jwksEndpoint,
 				accessToken: serializedJwt
 			).SafeAsync();
