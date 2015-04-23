@@ -67,7 +67,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			string token = cookieExists ? cookie : bearerToken;
 			
-			ValidationResponse validationResponse = await m_accessTokenValidator.ValidateAsync(
+			IValidationResponse validationResponse = await m_accessTokenValidator.ValidateAsync(
 				jwksEndpoint,
 				token
 			).SafeAsync();

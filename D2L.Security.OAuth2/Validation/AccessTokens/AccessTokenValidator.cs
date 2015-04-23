@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_publicKeyProvider = publicKeyProvider;
 		}
 
-		async Task<ValidationResponse> IAccessTokenValidator.ValidateAsync(
+		async Task<IValidationResponse> IAccessTokenValidator.ValidateAsync(
 			Uri jwksEndPoint,
 			string token
 		) {
