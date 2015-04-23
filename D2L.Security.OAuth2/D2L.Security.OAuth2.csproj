@@ -91,6 +91,7 @@
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
     <Compile Include="Principal\AnonymousPrincipal.cs" />
+    <Compile Include="Validation\AccessTokens\IValidationResponse.cs" />
     <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
     <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
     <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
