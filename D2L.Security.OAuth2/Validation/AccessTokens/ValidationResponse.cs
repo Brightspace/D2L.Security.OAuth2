@@ -1,5 +1,5 @@
 ﻿namespace D2L.Security.OAuth2.Validation.AccessTokens {
-	public class ValidationResponse {
+	internal sealed class ValidationResponse : IValidationResponse {
 
 		private readonly ValidationStatus m_status;
 		private readonly IAccessToken m_accessToken;
@@ -12,11 +12,11 @@
 			m_accessToken = accessToken;
 		}
 
-		public ValidationStatus Status {
+		ValidationStatus IValidationResponse.Status {
 			get { return m_status; }
 		}
 
-		public IAccessToken AccessToken {
+		IAccessToken IValidationResponse.AccessToken {
 			get { return m_accessToken; }
 		}
 
