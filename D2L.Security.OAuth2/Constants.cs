@@ -1,7 +1,5 @@
-﻿
-namespace D2L.Security.OAuth2 {
+﻿namespace D2L.Security.OAuth2 {
 	internal static class Constants {
-
 		internal static class Claims {
 			internal const string XSRF_TOKEN = "xt";
 			internal const string USER_ID = "sub";
