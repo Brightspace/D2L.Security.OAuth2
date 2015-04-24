@@ -1,10 +1,13 @@
 ﻿using System;
+using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 
 using D2L.Security.OAuth2.Utilities;
+using D2L.Security.OAuth2.Validation.Exceptions;
 
 namespace D2L.Security.OAuth2.Keys {
 	public sealed class RsaJsonWebKey : JsonWebKey {
+
 		private readonly string m_modulus;
 		private readonly string m_exponent;
 
@@ -46,6 +49,31 @@ namespace D2L.Security.OAuth2.Keys {
 				n = m_modulus,
 				e = m_exponent,
 			};
+		}
+
+		public override D2LSecurityToken ToSecurityToken() {
+			
+			var e = Base64UrlEncoder.DecodeBytes( m_exponent );
+			var n = Base64UrlEncoder.DecodeBytes( m_modulus );
+
+			var rsaParams = new RSAParameters() {
+				Exponent = e,
+				Modulus = n
+			};
+
+			var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
+			rsa.ImportParameters( rsaParams );
+			var key = new RsaSecurityKey( rsa );
+
+			var token = new D2LSecurityToken(
+				id: Id,
+				validFrom: DateTime.Now,
+				validTo: ExpiresAt ?? DateTime.Now.AddSeconds( Remote.Constants.KEY_MAXAGE_SECONDS ),
+				key: key
+			);
+			
+			return token;
+
 		}
 	}
 }
