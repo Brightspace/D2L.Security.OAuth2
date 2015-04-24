@@ -82,7 +82,6 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Keys\JsonWebKey.cs" />
     <Compile Include="Keys\RsaJsonWebKey.cs" />
-    <Compile Include="Utilities\Base64Url.cs" />
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="Utilities\DateTimeProvider.cs" />
     <Compile Include="Utilities\IDateTimeProvider.cs" />

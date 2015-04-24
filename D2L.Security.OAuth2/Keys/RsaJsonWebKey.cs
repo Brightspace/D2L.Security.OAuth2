@@ -16,8 +16,8 @@ namespace D2L.Security.OAuth2.Keys {
 			DateTime expiresAt,
 			RSAParameters rsaParameters
 		) : base( id, expiresAt ) {
-			m_modulus = Base64Url.Encode( rsaParameters.Modulus );
-			m_exponent = Base64Url.Encode( rsaParameters.Exponent );
+			m_modulus = Base64UrlEncoder.Encode( rsaParameters.Modulus );
+			m_exponent = Base64UrlEncoder.Encode( rsaParameters.Exponent );
 		}
 
 		public RsaJsonWebKey(
