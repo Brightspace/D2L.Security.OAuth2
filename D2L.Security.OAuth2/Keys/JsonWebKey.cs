@@ -44,6 +44,13 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new JsonWebKeyParseException( "missing 'kid' parameter in JSON web key" );
 			}
 
+			Guid id = Guid.Parse( data[ "kid" ] );
+			DateTime? expiresAt = null;
+			if( data.ContainsKey( "exp" ) ) {
+				long ts = long.Parse( data[ "exp" ] );
+				expiresAt = DateTimeExtensions.FromUnixTime( ts );
+			}
+
 			switch( data[ "kty" ] ) {
 				case "RSA":
 					if( !data.ContainsKey( "n" ) ) {
@@ -59,7 +66,8 @@ namespace D2L.Security.OAuth2.Keys {
 					}
 
 					return new RsaJsonWebKey(
-						kid: data[ "kid" ],
+						id: id,
+						expiresAt: expiresAt,
 						n: data[ "n" ],
 						e: data[ "e" ] );
 
