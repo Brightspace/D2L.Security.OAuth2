@@ -139,6 +139,17 @@ namespace D2L.Security.OAuth2.Keys {
 			return signingCredentials;
 		}
 
+		public virtual JsonWebKey ToJsonWebKey( bool includePrivateParameters = false ) {
+			if( m_key as RsaSecurityKey == null ) {
+				throw new NotImplementedException();
+			}
+
+			var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
+			RSAParameters p = csp.ExportParameters( includePrivateParameters );
+
+			return new RsaJsonWebKey( KeyId, ValidTo, p );
+		}
+
 		public void Dispose() {
 			if( !DisposeOfKey ) {
 				return;
