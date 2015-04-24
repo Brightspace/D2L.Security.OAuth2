@@ -55,6 +55,10 @@
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1-beta2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -87,6 +91,7 @@
     <Compile Include="Provisioning\Utilities\TestUris.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
+    <Compile Include="Unit\Keys\JsonWebKeyTests.cs" />
     <Compile Include="Unit\Keys\Local\InMemoryPublicKeyDataProviderTests.cs" />
     <Compile Include="Unit\Keys\Local\PrivateKeyProviderTests.cs" />
     <Compile Include="Unit\Keys\Local\PublicKeyProviderTests.cs" />
@@ -124,6 +129,7 @@
     <Compile Include="Validation\Utilities\TestUris.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
