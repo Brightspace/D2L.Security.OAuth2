@@ -24,14 +24,16 @@ namespace D2L.Security.OAuth2.Keys {
 
 		public abstract object ToJwkDto();
 
+		public abstract D2LSecurityToken ToSecurityToken();
+
 		public static JsonWebKey FromJson( string json ) {
-			var data = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>( json );
+			var data = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( json );
 
 			if( !data.ContainsKey( "use" ) ) {
 				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
 			}
 
-			if ( data[ "use" ] != "sig" ) {
+			if ( data[ "use" ].ToString() != "sig" ) {
 				string msg = String.Format( "invalid 'use' value in JSON web key: {0}", data[ "use" ] );
 				throw new JsonWebKeyParseException( msg );
 			}
@@ -44,14 +46,14 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new JsonWebKeyParseException( "missing 'kid' parameter in JSON web key" );
 			}
 
-			Guid id = Guid.Parse( data[ "kid" ] );
+			Guid id = Guid.Parse( data[ "kid" ].ToString() );
 			DateTime? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
-				long ts = long.Parse( data[ "exp" ] );
+				long ts = long.Parse( data[ "exp" ].ToString() );
 				expiresAt = DateTimeExtensions.FromUnixTime( ts );
 			}
 
-			switch( data[ "kty" ] ) {
+			switch( data[ "kty" ].ToString() ) {
 				case "RSA":
 					if( !data.ContainsKey( "n" ) ) {
 						throw new JsonWebKeyParseException( "missing 'n' parameter in RSA JSON web key" );
@@ -68,8 +70,8 @@ namespace D2L.Security.OAuth2.Keys {
 					return new RsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
-						n: data[ "n" ],
-						e: data[ "e" ] );
+						n: data[ "n" ].ToString(),
+						e: data[ "e" ].ToString() );
 
 				default:
 					string msg = String.Format( "'{0}' is not a supported JSON eb key type", data[ "kty" ] );
@@ -78,7 +80,7 @@ namespace D2L.Security.OAuth2.Keys {
 			}
 		}
 
-		private static bool HasRsaPrivateKeyMaterial( IReadOnlyDictionary<string, string> data ) {
+		private static bool HasRsaPrivateKeyMaterial( IReadOnlyDictionary<string, object> data ) {
 			return data.ContainsKey( "d" )
 			    || data.ContainsKey( "p" )
 			    || data.ContainsKey( "q" )
@@ -91,5 +93,6 @@ namespace D2L.Security.OAuth2.Keys {
 
 	public class JsonWebKeyParseException : Exception {
 		public JsonWebKeyParseException( string msg ) : base( msg ) {}
+		public JsonWebKeyParseException( string msg, Exception inner ) : base( msg, inner ) {}
 	}
 }

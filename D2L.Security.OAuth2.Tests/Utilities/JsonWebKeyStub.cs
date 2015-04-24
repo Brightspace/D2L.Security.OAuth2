@@ -12,5 +12,9 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 		public override object ToJwkDto() {
 			throw new NotImplementedException();
 		}
+
+		public override D2LSecurityToken ToSecurityToken() {
+			throw new NotImplementedException();
+		}
 	}
 }
