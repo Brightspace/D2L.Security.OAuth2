@@ -18,24 +18,34 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		public RsaJsonWebKey(
-			string kid,
+			Guid id,
+			DateTime? expiresAt,
 			string n,
 			string e
-		) : base( id: Guid.Parse( kid ), expiresAt: null ) {
+		) : base( id, expiresAt ) {
 			m_modulus = n;
 			m_exponent = e;
 		}
 
 		public override object ToJwkDto() {
-			var jwk = new {
+			if( ExpiresAt.HasValue ) {
+				return new {
+					kid = Id.ToString(),
+					kty = "RSA",
+					use = "sig",
+					n = m_modulus,
+					e = m_exponent,
+					exp = ExpiresAt.Value.ToUnixTime()
+				};
+			}
+
+			return new {
 				kid = Id.ToString(),
 				kty = "RSA",
 				use = "sig",
 				n = m_modulus,
-				e = m_exponent
+				e = m_exponent,
 			};
-
-			return jwk;
 		}
 	}
 }
