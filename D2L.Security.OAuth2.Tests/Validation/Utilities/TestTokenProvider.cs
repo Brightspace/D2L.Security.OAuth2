@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -20,16 +21,16 @@ namespace D2L.Security.OAuth2.Validation.Token.Tests.Utilities {
 				rsaService.ImportParameters( rsaParams );
 				string oid = CryptoConfig.MapNameToOID( "SHA256" );
 
-				string base64UrlHeader = Base64Url.Encode( header );
-				string base64UrlPayload = Base64Url.Encode( payloadBytes );
+				string base64UrlHeader = Base64UrlEncoder.Encode( header );
+				string base64UrlPayload = Base64UrlEncoder.Encode( payloadBytes );
 				signature = rsaService.SignData( Encoding.UTF8.GetBytes( base64UrlHeader + "." + base64UrlPayload ), oid );
 			}
 
 			string jwt = String.Format( 
 				"{0}.{1}.{2}",
-				Base64Url.Encode( header ),
-				Base64Url.Encode( payloadBytes ),
-				Base64Url.Encode( signature ) 
+				Base64UrlEncoder.Encode( header ),
+				Base64UrlEncoder.Encode( payloadBytes ),
+				Base64UrlEncoder.Encode( signature ) 
 				);
 
 			return jwt;
