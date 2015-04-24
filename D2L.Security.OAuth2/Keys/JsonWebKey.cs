@@ -31,7 +31,7 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
 			}
 
-			if ( data[ "use " ] != null && data[ "use" ] != "sig" ) {
+			if ( data[ "use" ] != "sig" ) {
 				string msg = String.Format( "invalid 'use' value in JSON web key: {0}", data[ "use" ] );
 				throw new JsonWebKeyParseException( msg );
 			}
@@ -46,11 +46,11 @@ namespace D2L.Security.OAuth2.Keys {
 
 			switch( data[ "kty" ] ) {
 				case "RSA":
-					if( data[ "n" ] != null ) {
+					if( !data.ContainsKey( "n" ) ) {
 						throw new JsonWebKeyParseException( "missing 'n' parameter in RSA JSON web key" );
 					}
 
-					if( data[ "e" ] != null ) {
+					if( !data.ContainsKey( "e" ) ) {
 						throw new JsonWebKeyParseException( "missing 'e' parameter in RSA JSON web key" );
 					}
 
