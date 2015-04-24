@@ -40,17 +40,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			return m_client.ProvisionAccessTokenAsync( assertion, scopes );
 		}
 
-		IAccessToken IAuthTokenProvider.ProvisionAccessToken(
-			ClaimSet claimSet,
-			IEnumerable<Scope> scopes,
-			SecurityToken signingToken
-		) {
-			var @this = this as IAuthTokenProvider;
-
-			var token = @this.ProvisionAccessTokenAsync( claimSet, scopes, signingToken ).Result;
-			return token;
-		}
-
 		public void Dispose() {
 			if( m_disposeClient ) {
 				m_client.Dispose();
