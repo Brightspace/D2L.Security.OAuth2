@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions">
-      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.1\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
@@ -56,6 +53,7 @@
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Keys\JsonWebKeySet.cs" />
     <Compile Include="Keys\Local\Data\InMemoryPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Local\Data\IPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Local\IKeyManager.cs" />
@@ -84,7 +82,6 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Keys\JsonWebKey.cs" />
     <Compile Include="Keys\RsaJsonWebKey.cs" />
-    <Compile Include="Utilities\Base64Url.cs" />
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="Utilities\DateTimeProvider.cs" />
     <Compile Include="Utilities\IDateTimeProvider.cs" />
