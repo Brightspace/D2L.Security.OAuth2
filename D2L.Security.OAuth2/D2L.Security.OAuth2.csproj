@@ -56,6 +56,7 @@
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Keys\JsonWebKeySet.cs" />
     <Compile Include="Keys\Local\Data\InMemoryPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Local\Data\IPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Local\IKeyManager.cs" />

@@ -24,6 +24,8 @@ namespace D2L.Security.OAuth2.Keys {
 
 		public abstract object ToJwkDto();
 
+		public abstract D2LSecurityToken ToSecurityToken();
+
 		public static JsonWebKey FromJson( string json ) {
 			var data = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>( json );
 
