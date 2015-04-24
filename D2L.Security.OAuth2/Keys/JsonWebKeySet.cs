@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
@@ -9,13 +10,25 @@ namespace D2L.Security.OAuth2.Keys {
 		private readonly List<JsonWebKey> m_keys = new List<JsonWebKey>(); 
 
 		public JsonWebKeySet( string json ) {
-			var data = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>( json );
+			var jss = new JavaScriptSerializer();
 
-			if( !data.ContainsKey( "keys" ) ) {
-				throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
+			try {
+				var data = jss.Deserialize<Dictionary<string, List<object>>>( json );
+
+				if( !data.ContainsKey( "keys" ) ) {
+					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
+				}
+
+				List<object> keyObjects = data["keys"];
+
+				foreach( object keyObject in keyObjects ) {
+					string keyJson = jss.Serialize( keyObject );
+					JsonWebKey key = JsonWebKey.FromJson( keyJson );
+					m_keys.Add( key );
+				}
+			} catch( InvalidOperationException e ) {
+				throw new JsonWebKeyParseException( "error parsing jwks", e );
 			}
-			
-			var arrays = data["keys"];
 
 		}
 
