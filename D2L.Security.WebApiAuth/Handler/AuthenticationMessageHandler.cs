@@ -58,10 +58,7 @@ namespace D2L.Security.WebApiAuth.Handler {
 				m_authenticationEndpoint,
 				request,
 				m_authenticationMode
-				)
-				.ConfigureAwait( false )
-				.GetAwaiter()
-				.GetResult();
+				).Result;
 
 			switch( response.Status ) {
 				case AuthenticationStatus.Success:
