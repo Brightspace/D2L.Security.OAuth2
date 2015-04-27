@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
-using D2L.Security.RequestAuthentication;
+using D2L.Security.OAuth2.Principal;
+using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.WebApiAuth.Principal;
 using Moq;
 using NUnit.Framework;
@@ -14,16 +16,24 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 	[Category( "Unit" )]
 	internal sealed class D2LPrincipalAdapterTests {
 
-		private const string ACCESS_TOKEN = "access_token";
 		private const PrincipalType PRINCIPAL_TYPE = PrincipalType.User;
-		private const string TENANT_ID = "tenant_id";
-		private const string TENANT_URL = "tenant_url";
 		private const string USER_ID = "123";
-		private const string XSRF = "xsrf";
 
-		private readonly IEnumerable<string> m_scopes = new[] { "scope1", "scope2" };
+		private readonly Guid TENANT_ID = Guid.NewGuid();
+		private readonly IEnumerable<Scope> m_scopes = new[] { 
+			new Scope( "group", "resource", "permission" )
+		};
 		private readonly IEnumerable<Claim> m_claims = new[] { new Claim( "claim1", "claimvalue1" ) };
 		private readonly DateTime m_accessTokenExpiry = DateTime.Now;
+		
+		private Mock<IAccessToken> m_accessTokenMock;
+
+		[TestFixtureSetUp]
+		public void TestFixtureSetUp() {
+			m_accessTokenMock = new Mock<IAccessToken>();
+			m_accessTokenMock.Setup( x => x.Expiry ).Returns( m_accessTokenExpiry );
+			m_accessTokenMock.Setup( x => x.Claims ).Returns( m_claims );
+		}
 
 		[Test]
 		public void SetID2LPrincipalProperties_GoodValues_ValuesMatch() {
@@ -32,15 +42,13 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 
 			Thread.CurrentPrincipal = CreateMockPrincipal();
 
-			Assert.AreEqual( ACCESS_TOKEN, principal.AccessToken );
+			Assert.AreEqual( m_accessTokenMock.Object, principal.AccessToken );
 			Assert.AreEqual( PRINCIPAL_TYPE, principal.Type );
 			Assert.AreEqual( m_scopes, principal.Scopes );
-			Assert.AreEqual( m_claims, principal.AllClaims );
-			Assert.AreEqual( m_accessTokenExpiry, principal.AccessTokenExpiry );
+			Assert.AreEqual( m_claims, principal.AccessToken.Claims );
+			Assert.AreEqual( m_accessTokenExpiry, principal.AccessToken.Expiry );
 			Assert.AreEqual( TENANT_ID, principal.TenantId );
-			Assert.AreEqual( TENANT_URL, principal.TenantUrl );
 			Assert.AreEqual( USER_ID, principal.UserId );
-			Assert.AreEqual( XSRF, principal.Xsrf );
 		}
 
 		[Test]
@@ -63,17 +71,13 @@ namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
 		}
 
 		private D2LPrincipalAdapter CreateMockPrincipal() {
-
 			Mock<ID2LPrincipal> principalMock = new Mock<ID2LPrincipal>();
-			principalMock.Setup( x => x.AccessToken ).Returns( ACCESS_TOKEN );
-			principalMock.Setup( x => x.AccessTokenExpiry ).Returns( m_accessTokenExpiry );
 			principalMock.Setup( x => x.Type ).Returns( PRINCIPAL_TYPE );
 			principalMock.Setup( x => x.Scopes ).Returns( m_scopes );
-			principalMock.Setup( x => x.AllClaims ).Returns( m_claims );
 			principalMock.Setup( x => x.TenantId ).Returns( TENANT_ID );
-			principalMock.Setup( x => x.TenantUrl ).Returns( TENANT_URL );
 			principalMock.Setup( x => x.UserId ).Returns( USER_ID );
-			principalMock.Setup( x => x.Xsrf ).Returns( XSRF );
+
+			principalMock.Setup( x => x.AccessToken ).Returns( m_accessTokenMock.Object );
 
 			return new D2LPrincipalAdapter( principalMock.Object );
 		}
