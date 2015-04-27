@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading;
-using D2L.Security.RequestAuthentication;
+using D2L.Security.OAuth2.Principal;
+using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 
 namespace D2L.Security.WebApiAuth.Principal {
 
@@ -30,26 +32,18 @@ namespace D2L.Security.WebApiAuth.Principal {
 
 		#region ID2LPrincipal Passthrough Members
 
-		string ID2LPrincipal.AccessToken {
+		IAccessToken ID2LPrincipal.AccessToken {
 			get { return m_principal.Value.AccessToken; }
 		}
 
-		DateTime ID2LPrincipal.AccessTokenExpiry {
-			get { return m_principal.Value.AccessTokenExpiry; }
-		}
-
-		IEnumerable<string> ID2LPrincipal.Scopes {
+		IEnumerable<Scope> ID2LPrincipal.Scopes {
 			get { return m_principal.Value.Scopes; }
 		}
 
-		string ID2LPrincipal.TenantId {
+		Guid ID2LPrincipal.TenantId {
 			get { return m_principal.Value.TenantId; }
 		}
-
-		string ID2LPrincipal.TenantUrl {
-			get { return m_principal.Value.TenantUrl; }
-		}
-
+		
 		PrincipalType ID2LPrincipal.Type {
 			get { return m_principal.Value.Type; }
 		}
@@ -57,20 +51,12 @@ namespace D2L.Security.WebApiAuth.Principal {
 		string ID2LPrincipal.UserId {
 			get { return m_principal.Value.UserId; }
 		}
-
-		IEnumerable<Claim> ID2LPrincipal.AllClaims {
-			get { return m_principal.Value.AllClaims; }
-		}
-
-		string ID2LPrincipal.Xsrf {
-			get { return m_principal.Value.Xsrf; }
-		}
-
+		
 		#endregion ID2LPrincipal Passthrough Members
 
 		public override IEnumerable<Claim> Claims {
 			get {
-				return m_principal.Value.AllClaims;
+				return m_principal.Value.AccessToken.Claims;
 			}
 		}
 

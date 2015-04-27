@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
-using D2L.Security.RequestAuthentication;
+using D2L.Security.OAuth2.Validation.Request;
 using D2L.Security.WebApiAuth.Principal;
 using SimpleLogInterface;
 
@@ -16,6 +16,8 @@ namespace D2L.Security.WebApiAuth.Handler {
 
 		private readonly IRequestAuthenticator m_requestAuthenticator;
 		private readonly ILog m_log;
+		private readonly AuthenticationMode m_authenticationMode;
+		private readonly Uri m_authenticationEndpoint;
 
 		public AuthenticationMessageHandler(
 			HttpConfiguration httpConfiguration,
@@ -25,8 +27,10 @@ namespace D2L.Security.WebApiAuth.Handler {
 			) {
 
 			InnerHandler = new HttpControllerDispatcher( httpConfiguration );
-			AuthenticationMode mode = verifyCsrf ? AuthenticationMode.Full : AuthenticationMode.SkipXsrfValidation;
-			m_requestAuthenticator = RequestAuthenticatorFactory.Create( authenticationEndpoint, mode );
+			m_authenticationMode = verifyCsrf ? AuthenticationMode.Full : AuthenticationMode.SkipXsrfValidation;
+			m_authenticationEndpoint = authenticationEndpoint;
+			m_requestAuthenticator = RequestAuthenticatorFactory.Create();
+
 			m_log = logProvider.Get( typeof( AuthenticationMessageHandler ) );
 		}
 
@@ -50,21 +54,19 @@ namespace D2L.Security.WebApiAuth.Handler {
 
 		private void Authenticate( HttpRequestMessage request ) {
 
-			ID2LPrincipal principal;
+			AuthenticationResponse response = m_requestAuthenticator.AuthenticateAsync(
+				m_authenticationEndpoint,
+				request,
+				m_authenticationMode
+				).Result;
 
-			AuthenticationResult result =
-				m_requestAuthenticator.AuthenticateAndExtract(
-					request,
-					out principal
-				);
-
-			switch( result ) {
-				case AuthenticationResult.Success:
-					Thread.CurrentPrincipal = new D2LPrincipalAdapter( principal );
+			switch( response.Status ) {
+				case AuthenticationStatus.Success:
+					Thread.CurrentPrincipal = new D2LPrincipalAdapter( response.Principal );
 					break;
 
 				default:
-					throw new AuthenticationException( string.Format( "Authentication failed: {0}", result ) );
+					throw new AuthenticationException( string.Format( "Authentication failed: {0}", response.Status ) );
 			}
 		}
 	}
