@@ -3,23 +3,20 @@ using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-
 using D2L.Security.OAuth2.Keys.Local.Data;
 using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Local.Default {
 	internal sealed class PrivateKeyProvider : IPrivateKeyProvider {
-		private readonly object m_lock = new object();
-
+		
 		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
 		private readonly IDateTimeProvider m_dateTimeProvider;
 		private readonly TimeSpan m_keyLifetime;
 		private readonly TimeSpan m_keyRotationPeriod;
+		private readonly SemaphoreSlim m_privateKeyLock = new SemaphoreSlim( initialCount: 1 );
 
-		// volatile is possibly not needed depending on the environment
-		// (e.g. .NET CLR, x86-64) but in general is needed.
-		private volatile PrivateKey m_privateKey;
-
+		private PrivateKey m_privateKey;
+		
 		public PrivateKeyProvider(
 			IPublicKeyDataProvider publicKeyDataProvider,
 			IDateTimeProvider dateTimeProvider,
@@ -32,33 +29,31 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			m_keyRotationPeriod = keyRotationPeriod;
 		}
 
-		private bool NeedFreshPrivateKey() {
-			PrivateKey key = m_privateKey;
+		private bool NeedFreshPrivateKey( PrivateKey key ) {
 			return key == null || m_dateTimeProvider.UtcNow >= key.ValidTo - m_keyRotationPeriod;
 		}
-
+		
 		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
-			// This is the double-checked lock "pattern". It is similar to Lazy<PrivateKey> but
-			// we also reset m_privateKey.
-			if( NeedFreshPrivateKey() ) {
-				// We have to manually use Monitor.Enter/Monitor.Exit because
-				// async/await doesn't work with lock() { ... }
-				Monitor.Enter( m_lock );
-				try {
-					if( NeedFreshPrivateKey() ) {
-						PrivateKey newKey = await CreatePrivateKeyAsync().SafeAsync();
-						Thread.MemoryBarrier(); // This ensures that newKey is fully constructed after this point
-						m_privateKey = newKey;
-					}
-				} finally {
-					Monitor.Exit( m_lock );
-				}
-			}
 
 			// Hold a local reference so that we know we are talking about the same key
 			// after even if another thread changed m_privateKey (race condition when we
 			// are using a key very close to the rotation time.)
 			PrivateKey privateKey = m_privateKey;
+
+			if( NeedFreshPrivateKey( privateKey ) ) {
+				await m_privateKeyLock.WaitAsync().SafeAsync();
+				try {
+					privateKey = m_privateKey;
+
+					if( NeedFreshPrivateKey( privateKey ) ) {
+						m_privateKey = await CreatePrivateKeyAsync().SafeAsync();
+						privateKey = m_privateKey;
+					}
+
+				} finally {
+					m_privateKeyLock.Release();
+				}
+			}
 
 			var csp = new RSACryptoServiceProvider( 2048 ) {
 				PersistKeyInCsp = false
