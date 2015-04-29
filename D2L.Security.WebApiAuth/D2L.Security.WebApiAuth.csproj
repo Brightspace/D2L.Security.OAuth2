@@ -36,8 +36,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Security.OAuth2">
-      <HintPath>..\packages\D2L.Security.OAuth2.2.2.3.0\lib\net451\D2L.Security.OAuth2.dll</HintPath>
+    <Reference Include="D2L.Security.OAuth2, Version=2.2.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\D2L.Security.OAuth2.2.2.5.0\lib\net451\D2L.Security.OAuth2.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
