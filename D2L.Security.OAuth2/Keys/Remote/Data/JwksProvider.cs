@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Keys.Remote.Data {
 			// TODO: control httpclient creation?
 			using( var httpClient = new HttpClient() ) {
 
-				using( HttpResponseMessage response = await httpClient.GetAsync( authEndpoint ).SafeAsync() ) {
+				using( HttpResponseMessage response = await httpClient.GetAsync( jwksEndpoint ).SafeAsync() ) {
 					try {
 						response.EnsureSuccessStatusCode();
 						string jsonResponse = await response.Content.ReadAsStringAsync().SafeAsync();
@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys.Remote.Data {
 							jwksJson: jsonResponse );
 
 					} catch( Exception e ) {
-						string message = string.Format( "Error while looking up JWKS at {0}", authEndpoint );
+						string message = string.Format( "Error while looking up JWKS at {0}", jwksEndpoint );
 						throw new PublicKeyLookupFailureException( message, e );
 					}
 				}
