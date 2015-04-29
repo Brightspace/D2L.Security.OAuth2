@@ -7,14 +7,14 @@ using D2L.Security.OAuth2.Validation.Exceptions;
 namespace D2L.Security.OAuth2.Keys.Remote.Data {
 	internal sealed class JwksProvider : IJwksProvider {
 		
-		async Task<JwksResponse> IJwksProvider.RequestJwksAsync( Uri authServiceEndpoint, bool skipCache ) {
+		async Task<JwksResponse> IJwksProvider.RequestJwksAsync( Uri authEndpoint, bool skipCache ) {
 
-			Uri jwksEndpoint = BuildJwksEndpoint( authServiceEndpoint );
+			Uri jwksEndpoint = BuildJwksEndpoint( authEndpoint );
 
 			// TODO: control httpclient creation?
 			using( var httpClient = new HttpClient() ) {
 
-				using( HttpResponseMessage response = await httpClient.GetAsync( authServiceEndpoint ).SafeAsync() ) {
+				using( HttpResponseMessage response = await httpClient.GetAsync( authEndpoint ).SafeAsync() ) {
 					try {
 						response.EnsureSuccessStatusCode();
 						string jsonResponse = await response.Content.ReadAsStringAsync().SafeAsync();
@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys.Remote.Data {
 							jwksJson: jsonResponse );
 
 					} catch( Exception e ) {
-						string message = string.Format( "Error while looking up JWKS at {0}", authServiceEndpoint );
+						string message = string.Format( "Error while looking up JWKS at {0}", authEndpoint );
 						throw new PublicKeyLookupFailureException( message, e );
 					}
 				}
@@ -32,16 +32,15 @@ namespace D2L.Security.OAuth2.Keys.Remote.Data {
 			}
 		}
 
-		private static Uri BuildJwksEndpoint( Uri authServiceEndpoint ) {
-			string authRoot = authServiceEndpoint.ToString();
+		private static Uri BuildJwksEndpoint( Uri authEndpoint ) {
+			string authRoot = authEndpoint.ToString();
 			if( !authRoot.EndsWith( "/" ) ) {
 				authRoot += "/";
 			}
 
-			Uri authRootUri = new Uri( authRoot );
-			Uri jwksEndpoint = new Uri( authRootUri, ".well-known/jwks" );
+			authRoot += ".well-known/jwks";
 
-			return jwksEndpoint;
+			return new Uri( authRoot );
 		}
 	}
 }
