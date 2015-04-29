@@ -49,10 +49,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 			IAccessToken accessToken = null;
 
-			Uri jwksEndpoint = BuildJwksEndpoint( authServiceEndpoint );
-
 			using( D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
-				jwksEndPoint: jwksEndpoint,
+				authServiceEndpoint: authServiceEndpoint,
 				keyId: id
 			).SafeAsync() ) {
 
@@ -85,18 +83,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				ValidationStatus.Success,
 				accessToken
 			);
-		}
-
-		private static Uri BuildJwksEndpoint( Uri authServiceEndpoint ) {
-			string authRoot = authServiceEndpoint.ToString();
-			if( !authRoot.EndsWith( "/" ) ) {
-				authRoot += "/";
-			}
-
-			Uri authRootUri = new Uri( authRoot );
-			Uri jwksEndpoint = new Uri( authRootUri, ".well-known/jwks" );
-
-			return jwksEndpoint;
 		}
 	}
 }
