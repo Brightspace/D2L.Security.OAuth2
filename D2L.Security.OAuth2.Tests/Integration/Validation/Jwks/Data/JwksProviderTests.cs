@@ -15,6 +15,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation.Jwks.Data {
 	public class JwksProviderTests {
 		
 		private const string GOOD_PATH = "/goodpath";
+		private const string GOOD_PATH_WITH_JWKS = GOOD_PATH + "/.well-known/jwks";
 		private const string GOOD_JSON = "{\"keys\": []}";
 		private const string BAD_PATH = "/badpath";
 
@@ -28,7 +29,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation.Jwks.Data {
 			m_jwksServer = HttpMockFactory.Create( out m_host );
 			
 			m_jwksServer.Stub(
-				x => x.Get( GOOD_PATH )
+				x => x.Get( GOOD_PATH_WITH_JWKS )
 			).Return( GOOD_JSON ).OK();
 			
 			m_jwksServer.Stub(
