@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.Keys;
@@ -94,11 +94,16 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Local {
 
 		[Test]
 		public async Task GetSigningCredentialsAsync_RaceyFirstCall_CreatesOnlyOneKey() {
+			m_mockPublicKeyDataProvider
+				.Setup( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ) )
+				.Returns( Task.Delay( 100 ) ); // Introduce a delay so that we definitely have some other tasks waiting for the save to complete.
+
 			var tasks = Enumerable
 				.Range( 0, 20 )
-				.Select( _ => m_privateKeyProvider.GetSigningCredentialsAsync() );
+				.Select( _ => Task.Run( () => m_privateKeyProvider.GetSigningCredentialsAsync() ) )
+				.ToList();
 
-			IEnumerable<D2LSecurityToken> keys = await Task.WhenAll( tasks );
+			IEnumerable<D2LSecurityToken> keys = await Task.WhenAll( tasks ).SafeAsync();
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
 			var ids = keys.Select( k => k.KeyId ).ToList();
