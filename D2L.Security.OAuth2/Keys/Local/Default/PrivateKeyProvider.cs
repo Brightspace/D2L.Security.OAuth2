@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading;
@@ -50,6 +49,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 						m_privateKey = await CreatePrivateKeyAsync().SafeAsync();
 						privateKey = m_privateKey;
 					}
+
 				} finally {
 					m_privateKeyLock.Release();
 				}
