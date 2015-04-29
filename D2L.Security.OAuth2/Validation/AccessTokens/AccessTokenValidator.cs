@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		}
 
 		async Task<IValidationResponse> IAccessTokenValidator.ValidateAsync(
-			Uri jwksEndPoint,
+			Uri authEndpoint,
 			string token
 		) {
 			
@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			IAccessToken accessToken = null;
 
 			using( D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
-				jwksEndPoint: jwksEndPoint,
+				authEndpoint: authEndpoint,
 				keyId: id
 			).SafeAsync() ) {
 
@@ -83,7 +83,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				ValidationStatus.Success,
 				accessToken
 			);
-
 		}
 	}
 }
