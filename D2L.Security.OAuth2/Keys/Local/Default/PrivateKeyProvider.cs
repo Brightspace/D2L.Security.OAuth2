@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading;
@@ -39,7 +40,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			// after even if another thread changed m_privateKey (race condition when we
 			// are using a key very close to the rotation time.)
 			PrivateKey privateKey = m_privateKey;
-			
+
 			if( NeedFreshPrivateKey( privateKey ) ) {
 				await m_privateKeyLock.WaitAsync().SafeAsync();
 				try {
@@ -49,7 +50,6 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 						m_privateKey = await CreatePrivateKeyAsync().SafeAsync();
 						privateKey = m_privateKey;
 					}
-
 				} finally {
 					m_privateKeyLock.Release();
 				}
