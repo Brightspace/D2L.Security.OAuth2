@@ -6,13 +6,13 @@ using System.Web;
 namespace D2L.Security.OAuth2.Validation.Request {
 	public interface IRequestAuthenticator {
 		Task<AuthenticationResponse> AuthenticateAsync(
-			Uri jwksEndpoint,
+			Uri authEndpoint,
 			HttpRequestMessage request,
 			AuthenticationMode authMode = AuthenticationMode.Full
 		);
 
 		Task<AuthenticationResponse> AuthenticateAsync(
-			Uri jwksEndpoint,
+			Uri authEndpoint,
 			HttpRequest request,
 			AuthenticationMode authMode = AuthenticationMode.Full
 		);
