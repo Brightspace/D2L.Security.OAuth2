@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Net;
-using D2L.Security.OAuth2.Provisioning.Tests.Utilities;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Provisioning.Tests.Integration.FullStack {
