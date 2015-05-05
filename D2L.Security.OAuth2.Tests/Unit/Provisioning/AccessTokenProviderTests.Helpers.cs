@@ -5,9 +5,9 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.ServiceModel.Security;
 
-namespace D2L.Security.OAuth2.Provisioning.Tests.Unit.Default {
+namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 	
-	internal sealed partial class AuthTokenProviderTests {
+	internal sealed partial class AccessTokenProviderTests {
 
 		private static JwtSecurityToken CheckSignatureAndGetToken( string signedToken, byte[] publicKey ) {
 			using( RSACryptoServiceProvider rsaService = MakeCryptoServiceProvider() ) {
