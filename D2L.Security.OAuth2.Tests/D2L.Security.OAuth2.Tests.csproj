@@ -80,9 +80,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provisioning\Integration\FullStack\AsyncFullStackTests.cs" />
     <Compile Include="Provisioning\Integration\FullStack\SyncFullStackTests.cs" />
-    <Compile Include="Unit\Provisioning\AuthServiceClientTests.cs" />
-    <Compile Include="Unit\Provisioning\AccessTokenProviderTests.cs" />
-    <Compile Include="Unit\Provisioning\AccessTokenProviderTests.Helpers.cs" />
+    <Compile Include="Unit\Provisioning\Default\AuthServiceClientTests.cs" />
+    <Compile Include="Unit\Provisioning\Default\AccessTokenProviderTests.cs" />
+    <Compile Include="Unit\Provisioning\Default\AccessTokenProviderTests.Helpers.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
     <Compile Include="Unit\Keys\JsonWebKeyTests.cs" />
