@@ -13,12 +13,12 @@ namespace D2L.Security.OAuth2.Keys.Remote {
 		}
 
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetSecurityTokenAsync(
-			Uri jwksEndPoint,
+			Uri authEndpoint,
 			Guid keyId
 		) {
 
 			JwksResponse jwksResponse = await m_jwksProvider.RequestJwksAsync( 
-				jwksEndPoint,
+				authEndpoint,
 				skipCache: false
 			).SafeAsync();
 			
@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.Keys.Remote {
 				// TODO ... DOS concerns?  This could force us to lookup the key a lot
 				if( jwksResponse.FromCache ) {
 					jwksResponse = await m_jwksProvider.RequestJwksAsync( 
-						jwksEndPoint,
+						authEndpoint,
 						skipCache: true
 					).SafeAsync();
 				}
