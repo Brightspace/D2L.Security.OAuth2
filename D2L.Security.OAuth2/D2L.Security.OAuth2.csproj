@@ -75,11 +75,11 @@
     <Compile Include="Provisioning\ProvisioningConstants.cs" />
     <Compile Include="Provisioning\Default\AccessToken.cs" />
     <Compile Include="Provisioning\Default\AuthServiceClient.cs" />
-    <Compile Include="Provisioning\Default\AuthTokenProvider.cs" />
+    <Compile Include="Provisioning\Default\AccessTokenProvider.cs" />
     <Compile Include="Provisioning\Default\SerializationHelper.cs" />
     <Compile Include="Provisioning\IAccessToken.cs" />
     <Compile Include="Provisioning\IAuthServiceClient.cs" />
-    <Compile Include="Provisioning\IAuthTokenProvider.cs" />
+    <Compile Include="Provisioning\IAccessTokenProvider.cs" />
     <Compile Include="Provisioning\KidSecurityToken.cs" />
     <Compile Include="Provisioning\SigningTokenFactory.cs" />
     <Compile Include="Scopes\Scope.cs" />
@@ -89,6 +89,7 @@
     <Compile Include="Utilities\DateTimeExtensions.cs" />
     <Compile Include="Utilities\DateTimeProvider.cs" />
     <Compile Include="Utilities\IDateTimeProvider.cs" />
+    <Compile Include="Utilities\IEnumerableClaimExtensions.cs" />
     <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
