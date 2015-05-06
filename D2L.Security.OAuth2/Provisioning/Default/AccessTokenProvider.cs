@@ -9,35 +9,47 @@ using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 	public sealed class AccessTokenProvider : IAccessTokenProvider {
-		private readonly string m_issuer;
 		private readonly IAuthServiceClient m_client;
 		private readonly IKeyManager m_keyManager;
 		private readonly bool m_disposeOfClient;
 
 		public AccessTokenProvider(
-			string issuer,
 			IKeyManager keyManager,
 			IAuthServiceClient authServiceClient,
 			bool disposeOfClient = true
 		) {
-			m_issuer = issuer;
 			m_keyManager = keyManager;
 			m_client = authServiceClient;
 			m_disposeOfClient = disposeOfClient;
+		}
+
+		Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
+			ClaimSet claimSet,	
+			IEnumerable<Scope> scopes
+		) {
+			var @this = this as IAccessTokenProvider;
+			return @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes );
 		}
 
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claimSet,
 			IEnumerable<Scope> scopes
 		) {
+			List<Claim> claims = claimSet.ToList();
+
 			scopes = scopes ?? Enumerable.Empty<Scope>();
 
 			DateTime now = DateTime.UtcNow;
 
+			string issuer;
+			if( !claims.TryGetClaim( Constants.Claims.ISSUER, out issuer ) ) {
+				throw new InvalidOperationException( "missing issuer claim" );
+			}
+
 			var unsignedToken = new UnsignedToken(
-				issuer: m_issuer,
+				issuer: issuer,
 				audience: ProvisioningConstants.AssertionGrant.AUDIENCE,
-				claims: claimSet.ToList(),
+				claims: claims,
 				notBefore: now,
 				expiresAt: now + ProvisioningConstants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
 

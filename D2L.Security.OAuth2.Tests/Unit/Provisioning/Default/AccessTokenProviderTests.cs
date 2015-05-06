@@ -44,9 +44,10 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			IKeyManager keyManager = KeyManagerFactory.Create( new InMemoryPublicKeyDataProvider() );
 #pragma warning restore 618
 
-			IAccessTokenProvider provider = new AccessTokenProvider( TestData.ISSUER, keyManager, clientMock.Object );
+			IAccessTokenProvider provider = new AccessTokenProvider( keyManager, clientMock.Object );
 
 			var claims = new List<Claim>{
+				new Claim( Constants.Claims.ISSUER, TestData.ISSUER ),
 				new Claim( Constants.Claims.TENANT_ID, TestData.TENANT_ID ),
 				new Claim( Constants.Claims.USER_ID, TestData.USER ),
 				new Claim( Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN )
