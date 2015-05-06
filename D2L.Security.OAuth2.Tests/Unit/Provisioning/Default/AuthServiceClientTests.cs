@@ -14,7 +14,7 @@ using Moq.Protected;
 
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
+namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 
 	[TestFixture]
 	internal sealed class AuthServiceClientTests {
