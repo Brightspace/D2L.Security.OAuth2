@@ -90,6 +90,7 @@
     <Compile Include="Unit\Keys\Local\PrivateKeyProviderTests.cs" />
     <Compile Include="Unit\Keys\Local\PublicKeyProviderTests.cs" />
     <Compile Include="Unit\Utilities\DateTimeExtensionTests.cs" />
+    <Compile Include="Unit\Utilities\IEnumerableClaimExtensionsTests.cs" />
     <Compile Include="Unit\Validation\AccessTokenValidatorTests.cs" />
     <Compile Include="Unit\Keys\Remote\Data\CachedJwksProviderTests.cs" />
     <Compile Include="Unit\Keys\Remote\PublicKeyProviderTests.cs" />
