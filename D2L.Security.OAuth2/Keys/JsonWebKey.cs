@@ -3,29 +3,57 @@ using System.Collections.Generic;
 using System.Web.Script.Serialization;
 
 namespace D2L.Security.OAuth2.Keys {
+
+	/// <summary>
+	/// Json Web Key (JWK) base class
+	/// </summary>
 	public abstract class JsonWebKey {
+
+		/// <summary>
+		/// The name of the key id (kid) property in the JWT
+		/// </summary>
 		public const string KEY_ID = "kid";
 
 		private readonly Guid m_id;
 		private readonly DateTime? m_expiresAt;
 
+		internal abstract D2LSecurityToken ToSecurityToken();
+
+		/// <summary>
+		/// Construct a new <see cref="JsonWebKey"/> instance
+		/// </summary>
+		/// <param name="id">The key id (kid)</param>
+		/// <param name="expiresAt">When the key expires</param>
 		protected JsonWebKey( Guid id, DateTime? expiresAt ) {
 			m_id = id;
 			m_expiresAt = expiresAt;
 		}
 
+		/// <summary>
+		/// The key id (kid)
+		/// </summary>
 		public virtual Guid Id {
 			get { return m_id; }
 		}
 
+		/// <summary>
+		/// When the key expires
+		/// </summary>
 		public virtual DateTime? ExpiresAt {
 			get { return m_expiresAt; }
 		}
 
+		/// <summary>
+		/// Converts the <see cref="RsaJsonWebKey"/> into a JWK DTO
+		/// </summary>
+		/// <returns>A JWK DTO</returns>
 		public abstract object ToJwkDto();
 
-		public abstract D2LSecurityToken ToSecurityToken();
-
+		/// <summary>
+		/// Deserialize a JWK
+		/// </summary>
+		/// <param name="json">The json JWK</param>
+		/// <returns>A <see cref="JsonWebKey"/></returns>
 		public static JsonWebKey FromJson( string json ) {
 			var data = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( json );
 
@@ -91,8 +119,19 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 	}
 
+	/// <summary>
+	/// Exception indicating that a JWK could not be parsed
+	/// </summary>
 	public class JsonWebKeyParseException : Exception {
+
+		/// <summary>
+		/// Constructs a new <see cref="JsonWebKeyParseException"/>
+		/// </summary>
 		public JsonWebKeyParseException( string msg ) : base( msg ) {}
+
+		/// <summary>
+		/// Constructs a new <see cref="JsonWebKeyParseException"/>
+		/// </summary>
 		public JsonWebKeyParseException( string msg, Exception inner ) : base( msg, inner ) {}
 	}
 }

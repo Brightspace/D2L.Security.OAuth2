@@ -6,6 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Keys.Local.Data {
+
+	/// <summary>
+	/// A simple in-memory key data provider to be used only for testing and prototyping purposes.
+	/// </summary>
 	[Obsolete("Only use this in tests and for prototyping without a db")]
 	public sealed class InMemoryPublicKeyDataProvider : IPublicKeyDataProvider {
 		private readonly ConcurrentDictionary<Guid, JsonWebKey> m_keys = new ConcurrentDictionary<Guid, JsonWebKey>();

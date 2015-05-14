@@ -2,15 +2,22 @@
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 
-using D2L.Security.OAuth2.Utilities;
-using D2L.Security.OAuth2.Validation.Exceptions;
-
 namespace D2L.Security.OAuth2.Keys {
+
+	/// <summary>
+	/// RSA-specific implemention of <see cref="JsonWebKey"/>
+	/// </summary>
 	public sealed class RsaJsonWebKey : JsonWebKey {
 
 		private readonly string m_modulus;
 		private readonly string m_exponent;
 
+		/// <summary>
+		/// Constructs a new <see cref="RsaJsonWebKey"/> instance
+		/// </summary>
+		/// <param name="id">The key id (kid)</param>
+		/// <param name="expiresAt">When the key expires</param>
+		/// <param name="rsaParameters">The parameters needed to by the RSA algorithm</param>
 		public RsaJsonWebKey(
 			Guid id,
 			DateTime expiresAt,
@@ -20,6 +27,13 @@ namespace D2L.Security.OAuth2.Keys {
 			m_exponent = Base64UrlEncoder.Encode( rsaParameters.Exponent );
 		}
 
+		/// <summary>
+		/// Constructs a new <see cref="RsaJsonWebKey"/> instance
+		/// </summary>
+		/// <param name="id">The key id (kid)</param>
+		/// <param name="expiresAt">When the key expires</param>
+		/// <param name="n">The RSA modulus</param>
+		/// <param name="e">The RSA exponent</param>
 		public RsaJsonWebKey(
 			Guid id,
 			DateTime? expiresAt,
@@ -30,6 +44,10 @@ namespace D2L.Security.OAuth2.Keys {
 			m_exponent = e;
 		}
 
+		/// <summary>
+		/// Converts the <see cref="RsaJsonWebKey"/> into a JWK DTO
+		/// </summary>
+		/// <returns>A JWK DTO</returns>
 		public override object ToJwkDto() {
 			if( ExpiresAt.HasValue ) {
 				return new {
@@ -51,7 +69,7 @@ namespace D2L.Security.OAuth2.Keys {
 			};
 		}
 
-		public override D2LSecurityToken ToSecurityToken() {
+		internal override D2LSecurityToken ToSecurityToken() {
 			
 			var e = Base64UrlEncoder.DecodeBytes( m_exponent );
 			var n = Base64UrlEncoder.DecodeBytes( m_modulus );
@@ -73,7 +91,6 @@ namespace D2L.Security.OAuth2.Keys {
 			);
 			
 			return token;
-
 		}
 	}
 }
