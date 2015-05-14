@@ -4,8 +4,17 @@ using System.Linq;
 
 namespace D2L.Security.OAuth2.Scopes {
 
+	/// <summary>
+	/// Helper for comparing scopes
+	/// </summary>
 	public static class ScopeAuthorizer {
 
+		/// <summary>
+		/// Determines if granted scopes satisfy all required scopes
+		/// </summary>
+		/// <param name="grantedScopes">Scopes from the auth token</param>
+		/// <param name="requiredScope">Scopes that are required in order to access a resource</param>
+		/// <returns>True if granted scopes satisfy all required scopes, otherwise false</returns>
 		public static bool IsAuthorized( IEnumerable<Scope> grantedScopes, Scope requiredScope ) {
 
 			if( grantedScopes == null ) {
