@@ -1,4 +1,8 @@
 ﻿namespace D2L.Security.OAuth2.Validation.Request {
+
+	/// <summary>
+	/// The possible results of an authentication request.
+	/// </summary>
 	public enum AuthenticationStatus {
 		
 		/// <summary>
