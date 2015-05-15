@@ -4,10 +4,17 @@ using System.Security.Claims;
 using System.Linq;
 
 namespace D2L.Security.OAuth2.Provisioning {
+
+	/// <summary>
+	/// A structured holder of JWT claims
+	/// </summary>
 	public class ClaimSet {
 
 		private readonly IList<Claim> m_claims;
 
+		/// <summary>
+		/// Constructs a new <see cref="ClaimSet"/>
+		/// </summary>
 		public ClaimSet(
 			string issuer,
 			string tenantId = null,
@@ -35,6 +42,10 @@ namespace D2L.Security.OAuth2.Provisioning {
 			}
 		}
 
+		/// <summary>
+		/// Converts the <see cref="ClaimSet"/> to an <see cref="IEnumerable{Claim}"/>
+		/// </summary>
+		/// <returns>Claims as an <see cref="IEnumerable{Claim}"/></returns>
 		public IEnumerable<Claim> ToClaims() {
 			return m_claims.ToArray();
 		}

@@ -7,22 +7,20 @@ using System.Security.Cryptography;
 using D2L.Security.OAuth2.Provisioning;
 
 namespace D2L.Security.OAuth2.Keys {
+
 	/// <summary>
 	/// This implementation of SecurityToken has a configurable validFrom/validTo
 	/// </summary>
 	/// <remarks>
-	/// This class is not thread-safe.
+	/// This class is not thread-safe
 	/// </remarks>
-	public class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
+	internal class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
 
 		private Guid? m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
 		private readonly AsymmetricSecurityKey m_key;
 
-		/// <remarks>
-		/// This class takes ownership of the AsymmetricSecurityKey
-		/// </remarks>
 		public D2LSecurityToken(
 			TimeSpan lifespan,
 			AsymmetricSecurityKey key
@@ -37,9 +35,6 @@ namespace D2L.Security.OAuth2.Keys {
 			DisposeOfKey = true;
 		}
 
-		/// <remarks>
-		/// This class takes ownership of the AsymmetricSecurityKey
-		/// </remarks>
 		public D2LSecurityToken(
 			Guid id,
 			DateTime validFrom,

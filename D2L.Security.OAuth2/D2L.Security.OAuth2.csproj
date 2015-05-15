@@ -25,7 +25,8 @@
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <DocumentationFile>bin\Debug\D2L.Security.OAuth2.xml</DocumentationFile>
-    <NoWarn>1591</NoWarn>
+    <NoWarn>
+    </NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -81,7 +82,6 @@
     <Compile Include="Provisioning\IAuthServiceClient.cs" />
     <Compile Include="Provisioning\IAccessTokenProvider.cs" />
     <Compile Include="Provisioning\KidSecurityToken.cs" />
-    <Compile Include="Provisioning\SigningTokenFactory.cs" />
     <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Keys\JsonWebKey.cs" />

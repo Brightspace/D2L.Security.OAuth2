@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.Keys.Local.Data;
-using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Local.Default {
 	internal class PublicKeyProvider : IPublicKeyProvider {
