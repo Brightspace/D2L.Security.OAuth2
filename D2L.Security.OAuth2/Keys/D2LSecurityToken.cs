@@ -8,6 +8,12 @@ using D2L.Security.OAuth2.Provisioning;
 
 namespace D2L.Security.OAuth2.Keys {
 
+	/// <summary>
+	/// This implementation of SecurityToken has a configurable validFrom/validTo
+	/// </summary>
+	/// <remarks>
+	/// This class is not thread-safe
+	/// </remarks>
 	internal class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
 
 		private Guid? m_id;
