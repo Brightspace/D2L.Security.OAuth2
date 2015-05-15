@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.Keys.Local.Data;
@@ -18,8 +19,25 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 		}
 
 		async Task<JsonWebKey> IPublicKeyProvider.GetByIdAsync( Guid id ) {
-			JsonWebKey key = await m_publicKeyDataProvider.GetByIdAsync( id ).SafeAsync();
-			key = await KeyExpirationHelper( key ).SafeAsync();
+			// We are intentionally fetching *all* public keys from the database
+			// here. This allows us to clean up all expired public keys even if
+			// GetAllAsync() is never explicitly called (e.g. when we switch from
+			// fetching jwks to specific-JWK in the validation code.)
+			//
+			// It would be more appealing for this to be a background task but
+			// since this is a library that is challenging. Since there shouldn't
+			// be too many public keys anyway and people should cache the JWKs
+			// we should be fine.
+			var @this = this as IPublicKeyProvider;
+			IEnumerable<JsonWebKey> keys = ( await @this.GetAllAsync().SafeAsync() );
+
+			// Using ToList() is important to force evaluation for each key
+			// (SingleOrDefault bails early.) This is actually redundant due to
+			// how GetAllAsync is implemented at the moment, but still.
+			List<JsonWebKey> freshKeys = keys.ToList();
+
+			JsonWebKey key = freshKeys.SingleOrDefault( k => k.Id == id );
+
 			return key;
 		}
 
