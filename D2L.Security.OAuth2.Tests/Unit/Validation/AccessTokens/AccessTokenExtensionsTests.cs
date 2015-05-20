@@ -6,7 +6,7 @@ using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Validation.Request.Tests.Unit.Core.Default {
+namespace D2L.Security.OAuth2.Tests.Unit.Validation.AccessTokens {
 	
 	[TestFixture]
 	internal sealed class AccessTokenExtensionsTests {
