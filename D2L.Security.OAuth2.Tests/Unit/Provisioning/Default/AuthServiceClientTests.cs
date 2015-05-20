@@ -17,6 +17,7 @@ using NUnit.Framework;
 namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 
 	[TestFixture]
+	[Category( "Unit" )]
 	internal sealed class AuthServiceClientTests {
 
 		private class TestData {
@@ -113,7 +114,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 					ItExpr.IsAny<CancellationToken>()
 				)
 				.Callback<HttpRequestMessage, CancellationToken>(
-					async ( req, _ ) => requestBodyReceiver( await req.Content.ReadAsStringAsync() )
+					// Use .Result because Callback doesn't await this function
+					( req, _ ) => requestBodyReceiver( req.Content.ReadAsStringAsync().Result )
 				)
 				.ReturnsAsync( new HttpResponseMessage() {
 					StatusCode = HttpStatusCode.OK,
