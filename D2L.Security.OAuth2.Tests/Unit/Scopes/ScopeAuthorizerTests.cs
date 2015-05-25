@@ -1,8 +1,11 @@
-﻿using FluentAssertions;
+﻿using D2L.Security.OAuth2.Scopes;
+using FluentAssertions;
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Scopes.Tests {
+namespace D2L.Security.OAuth2.Tests.Unit.Scopes {
 
+	[TestFixture]
+	[Category( "Unit" )]
 	internal sealed class ScopeAuthorizerTests {
 
 		[Test]
