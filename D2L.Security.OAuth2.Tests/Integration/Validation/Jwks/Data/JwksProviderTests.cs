@@ -3,7 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.Keys.Remote.Data;
-using D2L.Security.OAuth2.Tests.Mocks;
+using D2L.Security.OAuth2.Tests.Utilities.Mocks;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using HttpMock;
 using NUnit.Framework;
