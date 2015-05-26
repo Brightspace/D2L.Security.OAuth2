@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 	/// <summary>
 	/// A structured holder of JWT claims
 	/// </summary>
-	public class ClaimSet {
+	public sealed class ClaimSet {
 
 		private readonly IList<Claim> m_claims;
 

@@ -71,11 +71,6 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 				return null;
 			}
 
-			// If the key lasts longer than expected, raise an alarm, but keep going
-			if( dt > m_keyLifetime + m_keyLifetime ) {
-				// TODO: but don't spam the logs for the same key because maybe we are changing things blue-green
-			}
-
 			return key;
 		}
 	}
