@@ -2,7 +2,7 @@
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 
-namespace D2L.Security.OAuth2.Tests.Mocks {
+namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 	public static class AccessTokenValidatorMock {
 
 		public static Mock<IAccessTokenValidator> Create(

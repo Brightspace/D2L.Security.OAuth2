@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Security.Claims;
 using System.Collections.Generic;
+using System.Security.Claims;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 
-namespace D2L.Security.OAuth2.Tests.Mocks {
+namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 	public static class AccessTokenMock {
 
 		public static Mock<IAccessToken> Create(

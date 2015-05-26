@@ -2,7 +2,6 @@
 using System.Web;
 using D2L.Security.OAuth2.Tests.Utilities;
 using D2L.Security.OAuth2.Validation.Request;
-using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
