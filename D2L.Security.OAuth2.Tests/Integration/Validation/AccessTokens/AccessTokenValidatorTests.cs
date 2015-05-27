@@ -77,7 +77,8 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 		}
 
 		[Test]
-		public void ValidateAsync_MissignKeyId_Fails() {
+		public void ValidateAsync_KeyIdNotInAuthService_Fails() {
+			// This JWT has a keyId that doesn't match the one in the auth service
 			string jwtWithBadKeyId = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.dUQ2bB3anqRmI-wnC4bulmnwo7wAdrvXo3hn3Dp0tuUl01dy2FhsJESJ9BZ2BeykrLRv2EgdbTW3BCBpBqLbrKQaG_XuGX5MrtXFwHE7i9wWmDsetlJn_cvsZlhPg-voI2iGqT-gpiE9GfWcXjTPUCxAbz6Pqepi0-JDS9uTrCg";
 
 			Assert.Throws<PublicKeyNotFoundException>( () => {
