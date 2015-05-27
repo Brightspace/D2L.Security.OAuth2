@@ -22,20 +22,6 @@ namespace D2L.Security.OAuth2.Keys {
 		private readonly AsymmetricSecurityKey m_key;
 
 		public D2LSecurityToken(
-			TimeSpan lifespan,
-			AsymmetricSecurityKey key
-		) : base(
-			name: ProvisioningConstants.AssertionGrant.KEY_ID_NAME,
-			id: Guid.NewGuid().ToString(),
-			key: key
-		) {
-			m_validFrom = DateTime.UtcNow;
-			m_validTo = m_validFrom + lifespan;
-			m_key = key;
-			DisposeOfKey = true;
-		}
-
-		public D2LSecurityToken(
 			Guid id,
 			DateTime validFrom,
 			DateTime validTo,
@@ -79,14 +65,6 @@ namespace D2L.Security.OAuth2.Keys {
 
 		public override DateTime ValidTo {
 			get { return m_validTo; }
-		}
-
-		public virtual bool IsExpired {
-			get { return DateTime.UtcNow > m_validTo; }
-		}
-
-		public virtual bool IsExpiringSoon( TimeSpan rolloverWindow ) {
-			return DateTime.UtcNow >= m_validTo - rolloverWindow;
 		}
 
 		public virtual bool HasPrivateKey {
@@ -146,12 +124,10 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		public void Dispose() {
-			if( !DisposeOfKey ) {
-				return;
+			if( DisposeOfKey ) {
+				var alg = GetAsymmetricAlgorithm();
+				alg.Dispose();
 			}
-
-			var alg = GetAsymmetricAlgorithm();
-			alg.Dispose();
 		}
 	}
 }

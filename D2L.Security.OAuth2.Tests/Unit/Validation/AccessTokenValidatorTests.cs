@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Remote;
-using D2L.Security.OAuth2.Tests.Mocks;
 using D2L.Security.OAuth2.Tests.Utilities;
+using D2L.Security.OAuth2.Tests.Utilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
 

@@ -42,10 +42,5 @@ namespace D2L.Security.OAuth2.Keys {
 			key = null;
 			return false;
 		}
-
-		public IEnumerable<JsonWebKey> JsonWebKeys {
-			get { return m_keys; }
-		} 
-
 	}
 }
