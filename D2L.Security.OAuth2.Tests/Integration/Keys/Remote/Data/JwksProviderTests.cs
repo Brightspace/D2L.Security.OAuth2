@@ -8,7 +8,7 @@ using D2L.Security.OAuth2.Validation.Exceptions;
 using HttpMock;
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Tests.Integration.Validation.Jwks.Data {
+namespace D2L.Security.OAuth2.Tests.Integration.Keys.Remote.Data {
 	
 	[TestFixture]
 	[Category("Integration")]

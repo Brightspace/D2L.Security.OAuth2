@@ -17,7 +17,7 @@ using NUnit.Framework;
 namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 	
 	[TestFixture]
-	[Category( "Unit" )]
+	[Category( "Integration" )]
 	internal sealed partial class AccessTokenProviderTests {
 
 		private static class TestData {

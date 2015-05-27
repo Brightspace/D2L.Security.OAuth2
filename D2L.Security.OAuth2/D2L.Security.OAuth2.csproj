@@ -61,6 +61,7 @@
     <Compile Include="Keys\JsonWebKeySet.cs" />
     <Compile Include="Keys\Local\Data\InMemoryPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Local\Data\IPublicKeyDataProvider.cs" />
+    <Compile Include="Keys\Local\Default\StaticPrivateKeyProvider.cs" />
     <Compile Include="Keys\Local\IKeyManager.cs" />
     <Compile Include="Keys\Local\Default\KeyManager.cs" />
     <Compile Include="Keys\Local\Default\PrivateKeyProvider.cs" />
