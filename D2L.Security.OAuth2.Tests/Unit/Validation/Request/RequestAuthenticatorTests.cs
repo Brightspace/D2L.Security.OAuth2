@@ -3,11 +3,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using D2L.Security.OAuth2.Principal;
-using D2L.Security.OAuth2.Tests.Mocks;
 using D2L.Security.OAuth2.Tests.Utilities;
+using D2L.Security.OAuth2.Tests.Utilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Request;
-using D2L.Security.OAuth2.Validation.Request.Tests.Utilities;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {

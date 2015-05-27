@@ -81,7 +81,6 @@
     <Compile Include="Provisioning\IAccessToken.cs" />
     <Compile Include="Provisioning\IAuthServiceClient.cs" />
     <Compile Include="Provisioning\IAccessTokenProvider.cs" />
-    <Compile Include="Provisioning\KidSecurityToken.cs" />
     <Compile Include="Scopes\Scope.cs" />
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Keys\JsonWebKey.cs" />
