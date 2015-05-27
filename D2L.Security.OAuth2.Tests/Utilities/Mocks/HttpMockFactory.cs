@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using HttpMock;
 
-namespace D2L.Security.OAuth2.Tests.Mocks {
+namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 
 	internal static class HttpMockFactory {
 

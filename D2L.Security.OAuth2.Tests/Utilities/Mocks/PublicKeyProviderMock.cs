@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Remote;
-
 using Moq;
 
-namespace D2L.Security.OAuth2.Tests.Mocks {
+namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 	public static class PublicKeyProviderMock {
 
 		internal static Mock<IPublicKeyProvider> Create(
