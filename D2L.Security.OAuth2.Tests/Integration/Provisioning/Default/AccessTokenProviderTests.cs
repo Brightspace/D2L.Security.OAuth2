@@ -51,11 +51,6 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 
 		[Test]
 		public async void ProvisionAccessTokenAsync_AssertionTokenIsSigned() {
-			byte[] privateKey;
-			byte[] publicKey;
-			Guid keyId;
-			MakeKeyPair( out privateKey, out publicKey, out keyId );
-
 			var claims = new List<Claim>{
 				new Claim( Constants.Claims.ISSUER, TestData.ISSUER ),
 				new Claim( Constants.Claims.TENANT_ID, TestData.TENANT_ID ),
