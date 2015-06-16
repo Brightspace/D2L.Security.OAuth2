@@ -13,6 +13,8 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 		private readonly IDateTimeProvider m_dateTimeProvider;
 		private readonly TimeSpan m_keyLifetime;
 		private readonly TimeSpan m_keyRotationPeriod;
+		private readonly bool m_savePrivateBits;
+
 		private readonly SemaphoreSlim m_privateKeyLock = new SemaphoreSlim( initialCount: 1 );
 
 		private PrivateKey m_privateKey;
@@ -21,12 +23,14 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			IPublicKeyDataProvider publicKeyDataProvider,
 			IDateTimeProvider dateTimeProvider,
 			TimeSpan keyLifetime,
-			TimeSpan keyRotationPeriod
+			TimeSpan keyRotationPeriod,
+			bool savePrivateBits = false // TODO: this is for LMS 10.5.1. Remove this option for 10.5.2+
 		) {
 			m_publicKeyDataProvider = publicKeyDataProvider;
 			m_dateTimeProvider = dateTimeProvider;
 			m_keyLifetime = keyLifetime;
 			m_keyRotationPeriod = keyRotationPeriod;
+			m_savePrivateBits = savePrivateBits;
 		}
 
 		private bool NeedFreshPrivateKey( PrivateKey key ) {
@@ -75,7 +79,9 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( 2048 ) ) {
 				csp.PersistKeyInCsp = false;
 
-				RSAParameters publicKey = csp.ExportParameters( includePrivateParameters: false );
+				// TODO: remove m_savePrivateBits hack after 10.5.1!
+				RSAParameters publicKey = csp.ExportParameters( includePrivateParameters: m_savePrivateBits );
+
 				RSAParameters privateKey = csp.ExportParameters( includePrivateParameters: true );
 
 				Guid keyId = Guid.NewGuid();
