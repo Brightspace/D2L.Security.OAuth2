@@ -17,14 +17,17 @@ namespace D2L.Security.OAuth2.Keys.Local {
 		/// Creates a new <see cref="IKeyManager"/>
 		/// </summary>
 		/// <param name="publicKeyDataProvider">The data layer for key management</param>
+		/// <param name="savePrivateBits">Wether to include the private data when saving the public key (hack)</param>
 		/// <returns>A new <see cref="IKeyManager"/></returns>
 		public static IKeyManager Create(
-			IPublicKeyDataProvider publicKeyDataProvider
+			IPublicKeyDataProvider publicKeyDataProvider,
+			bool savePrivateBits = false // TODO: remove this option after LMS 10.5.1
 		) {
 			return Create(
 				publicKeyDataProvider,
 				keyLifetime: DEFAULT_KEY_LIFETIME,
-				keyRotationPeriod: DEFAULT_KEY_ROTATION_PERIOD );
+				keyRotationPeriod: DEFAULT_KEY_ROTATION_PERIOD,
+				savePrivateBits: savePrivateBits );
 		}
 
 		/// <summary>
@@ -33,11 +36,13 @@ namespace D2L.Security.OAuth2.Keys.Local {
 		/// <param name="publicKeyDataProvider">The data layer for key management</param>
 		/// <param name="keyLifetime">How long provisioned keys will be valid for</param>
 		/// <param name="keyRotationPeriod">How close to key expiry a fresh key should be provisioned. Must be smaller than <paramref name="keyLifetime"/></param>
+		/// <param name="savePrivateBits">Wether to include the private data when saving the public key (hack)</param>
 		/// <returns>A new <see cref="IKeyManager"/></returns>
 		public static IKeyManager Create(
 			IPublicKeyDataProvider publicKeyDataProvider,
 			TimeSpan keyLifetime,
-			TimeSpan keyRotationPeriod
+			TimeSpan keyRotationPeriod,
+			bool savePrivateBits = false // TODO: remove this option after LMS 10.5.1
 		) {
 
 			IDateTimeProvider dateTimeProvider = new DateTimeProvider();
@@ -50,7 +55,8 @@ namespace D2L.Security.OAuth2.Keys.Local {
 				publicKeyDataProvider,
 				dateTimeProvider,
 				keyLifetime: keyLifetime,
-				keyRotationPeriod: keyRotationPeriod );
+				keyRotationPeriod: keyRotationPeriod,
+				savePrivateBits: savePrivateBits );
 
 			return new KeyManager( publicKeyProvider, privateKeyProvider );
 		}
