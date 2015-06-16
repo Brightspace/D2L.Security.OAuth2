@@ -9,8 +9,7 @@ namespace D2L.Security.OAuth2.Keys {
 	/// </summary>
 	public sealed class RsaJsonWebKey : JsonWebKey {
 
-		private readonly string m_modulus;
-		private readonly string m_exponent;
+		private readonly RSAParameters m_parameters;
 
 		/// <summary>
 		/// Constructs a new <see cref="RsaJsonWebKey"/> instance
@@ -23,8 +22,7 @@ namespace D2L.Security.OAuth2.Keys {
 			DateTime expiresAt,
 			RSAParameters rsaParameters
 		) : base( id, expiresAt ) {
-			m_modulus = Base64UrlEncoder.Encode( rsaParameters.Modulus );
-			m_exponent = Base64UrlEncoder.Encode( rsaParameters.Exponent );
+			m_parameters = rsaParameters;
 		}
 
 		/// <summary>
@@ -40,8 +38,8 @@ namespace D2L.Security.OAuth2.Keys {
 			string n,
 			string e
 		) : base( id, expiresAt ) {
-			m_modulus = n;
-			m_exponent = e;
+			m_parameters.Modulus = Base64UrlEncoder.DecodeBytes( n );
+			m_parameters.Exponent = Base64UrlEncoder.DecodeBytes( e );
 		}
 
 		/// <summary>
@@ -49,13 +47,16 @@ namespace D2L.Security.OAuth2.Keys {
 		/// </summary>
 		/// <returns>A JWK DTO</returns>
 		public override object ToJwkDto() {
+			var modulus = Base64UrlEncoder.Encode( m_parameters.Modulus );
+			var exponent = Base64UrlEncoder.Encode( m_parameters.Exponent );
+
 			if( ExpiresAt.HasValue ) {
 				return new {
 					kid = Id.ToString(),
 					kty = "RSA",
 					use = "sig",
-					n = m_modulus,
-					e = m_exponent,
+					n = modulus,
+					e = exponent,
 					exp = ExpiresAt.Value.ToUnixTime()
 				};
 			}
@@ -64,23 +65,14 @@ namespace D2L.Security.OAuth2.Keys {
 				kid = Id.ToString(),
 				kty = "RSA",
 				use = "sig",
-				n = m_modulus,
-				e = m_exponent,
+				n = modulus,
+				e = exponent,
 			};
 		}
 
 		internal override D2LSecurityToken ToSecurityToken() {
-			
-			var e = Base64UrlEncoder.DecodeBytes( m_exponent );
-			var n = Base64UrlEncoder.DecodeBytes( m_modulus );
-
-			var rsaParams = new RSAParameters() {
-				Exponent = e,
-				Modulus = n
-			};
-
 			var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
-			rsa.ImportParameters( rsaParams );
+			rsa.ImportParameters( m_parameters );
 			var key = new RsaSecurityKey( rsa );
 
 			var token = new D2LSecurityToken(
@@ -91,6 +83,15 @@ namespace D2L.Security.OAuth2.Keys {
 			);
 			
 			return token;
+		}
+
+		/// <summary>
+		///	Get the internal RsaParameters 
+		/// </summary>
+		/// <returns></returns>
+		[Obsolete("Do not use this if you are not LMS 10.5.1!")]
+		public RSAParameters GetRsaParameters() {
+			return m_parameters;
 		}
 	}
 }
