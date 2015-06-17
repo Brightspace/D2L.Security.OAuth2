@@ -11,22 +11,24 @@ namespace D2L.Security.OAuth2.Keys.Remote.Data {
 
 			Uri jwksEndpoint = BuildJwksEndpoint( authEndpoint );
 
-			// TODO: control httpclient creation?
+			// TODO: we should be taking httpClients from users at the top of the stack so they
+			// can control things like proxy settings.
 			using( var httpClient = new HttpClient() ) {
-
-				using( HttpResponseMessage response = await httpClient.GetAsync( jwksEndpoint ).SafeAsync() ) {
-					try {
+				try {
+					using( HttpResponseMessage response = await httpClient.GetAsync( jwksEndpoint ).SafeAsync() ) {
 						response.EnsureSuccessStatusCode();
 						string jsonResponse = await response.Content.ReadAsStringAsync().SafeAsync();
 
 						return new JwksResponse(
 							fromCache: false,
 							jwksJson: jsonResponse );
-
-					} catch( Exception e ) {
-						string message = string.Format( "Error while looking up JWKS at {0}", jwksEndpoint );
-						throw new PublicKeyLookupFailureException( message, e );
 					}
+				} catch( HttpRequestException e ) {
+					string message = string.Format(
+						"Error while looking up JWKS at {0}: {1}",
+						jwksEndpoint,
+						e.Message );
+					throw new PublicKeyLookupFailureException( message, e );
 				}
 
 			}
