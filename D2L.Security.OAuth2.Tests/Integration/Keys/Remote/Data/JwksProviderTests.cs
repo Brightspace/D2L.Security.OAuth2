@@ -47,7 +47,6 @@ namespace D2L.Security.OAuth2.Tests.Integration.Keys.Remote.Data {
 
 		[Test]
 		public async Task SuccessCase() {
-			
 			var goodUri = new Uri( m_host + GOOD_PATH );
 			JwksResponse jwksResponse = await m_jwksProvider.RequestJwksAsync( goodUri );
 			Assert.AreEqual( GOOD_JSON, jwksResponse.JwksJson );
@@ -55,11 +54,16 @@ namespace D2L.Security.OAuth2.Tests.Integration.Keys.Remote.Data {
 
 		[Test]
 		[ExpectedException( typeof( PublicKeyLookupFailureException ) )]
-		public async Task ErrorCase() {
-			
+		public async Task RequestJwksAsync_404_Throws() {
 			var badUri = new Uri( m_host + BAD_PATH );
 			await m_jwksProvider.RequestJwksAsync( badUri );
-			
+		}
+
+		[Test]
+		[ExpectedException( typeof( PublicKeyLookupFailureException ) )]
+		public async Task RequestJwksAsync_CantReachServer_Throws() {
+			var badUri = new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" );
+			await m_jwksProvider.RequestJwksAsync( badUri );
 		}
 	}
 }
