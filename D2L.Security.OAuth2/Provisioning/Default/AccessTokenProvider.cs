@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Keys.Local;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
-	internal sealed class AccessTokenProvider : IAccessTokenProvider {
+	internal sealed class AccessTokenProvider : INonCachingAccessTokenProvider {
 		private readonly IAuthServiceClient m_client;
 		private readonly IKeyManager m_keyManager;
 		private readonly bool m_disposeOfClient;
@@ -24,19 +23,17 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			m_disposeOfClient = disposeOfClient;
 		}
 
-		Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
+		Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
 			ClaimSet claimSet,	
-			IEnumerable<Scope> scopes,
-			ICache cache
+			IEnumerable<Scope> scopes
 		) {
-			var @this = this as IAccessTokenProvider;
+			var @this = this as INonCachingAccessTokenProvider;
 			return @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes );
 		}
 
-		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
+		async Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claimSet,
-			IEnumerable<Scope> scopes,
-			ICache cache
+			IEnumerable<Scope> scopes
 		) {
 			List<Claim> claims = claimSet.ToList();
 

@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			bool disposeOfClient = true
 			) {
 
-			IAccessTokenProvider accessTokenProvider =
+			INonCachingAccessTokenProvider accessTokenProvider =
 				new AccessTokenProvider( keyManager, authServiceClient, disposeOfClient );
 
 			return new CachedAccessTokenProvider( accessTokenProvider, tokenRefreshGracePeriod );

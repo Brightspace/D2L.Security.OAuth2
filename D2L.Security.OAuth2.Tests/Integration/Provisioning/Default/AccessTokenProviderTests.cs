@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
@@ -28,7 +27,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 		}
 
 		private IKeyManager m_keyManager;
-		private IAccessTokenProvider m_accessTokenProvider;
+		private INonCachingAccessTokenProvider m_accessTokenProvider;
 		private JwtSecurityToken m_actualAssertion;
 
 		[SetUp]
