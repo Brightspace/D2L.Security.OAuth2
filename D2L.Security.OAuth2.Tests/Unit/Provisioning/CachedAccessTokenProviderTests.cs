@@ -22,13 +22,13 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 		private readonly Claim[] m_claims = { new Claim( "abc", "123" ), new Claim( "xyz", "789" ) };
 		private readonly Scope[] m_scopes = { new Scope( "a", "b", "c" ), new Scope( "7", "8", "9" ) };
 
-		private Mock<IAccessTokenProvider> m_accessTokenProviderMock;
+		private Mock<INonCachingAccessTokenProvider> m_accessTokenProviderMock;
 		private Mock<ICache> m_userTokenCacheMock;
 		private Mock<ICache> m_serviceTokenCacheMock;
 
 		[SetUp]
 		public void Setup() {
-			m_accessTokenProviderMock = new Mock<IAccessTokenProvider>( MockBehavior.Strict );
+			m_accessTokenProviderMock = new Mock<INonCachingAccessTokenProvider>( MockBehavior.Strict );
 			m_serviceTokenCacheMock = new Mock<ICache>( MockBehavior.Strict );
 			m_userTokenCacheMock = new Mock<ICache>( MockBehavior.Strict );
 		}
@@ -46,7 +46,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 			IAccessToken accessToken = new AccessToken( BuildTestToken() );
 
 			m_accessTokenProviderMock.Setup(
-				x => x.ProvisionAccessTokenAsync( It.IsAny<IEnumerable<Claim>>(), It.IsAny<IEnumerable<Scope>>(), It.IsAny<ICache>() )
+				x => x.ProvisionAccessTokenAsync( It.IsAny<IEnumerable<Claim>>(), It.IsAny<IEnumerable<Scope>>() )
 				).Returns( Task.FromResult( accessToken ) );
 
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
@@ -84,7 +84,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.SetAsync( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>() ) )
 				.Returns( Task.FromResult( 0 ) );
 
-			m_accessTokenProviderMock.Setup( x => x.ProvisionAccessTokenAsync( m_claims, m_scopes, It.IsAny<ICache>() ) )
+			m_accessTokenProviderMock.Setup( x => x.ProvisionAccessTokenAsync( m_claims, m_scopes ) )
 				.Returns( Task.FromResult( accessToken ) );
 
 			const int gracePeriodThatIsBiggerThanTimeToExpiry = TOKEN_EXPIRY_IN_SECONDS + 60;
@@ -161,7 +161,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 			) {
 
 			string userClaim = specifyUserClaim ? ",\"sub\": \"169\"" : string.Empty;
-			long expiry = DateTime.Now.AddSeconds( tokenExpiryInSeconds ).ToUnixTime();
+			long expiry = DateTime.UtcNow.AddSeconds( tokenExpiryInSeconds ).ToUnixTime();
 
 			const string part1 = "{\"alg\": \"RS256\",\"typ\": \"JWT\"}";
 			string part2 = string.Format( "{{\"exp\": \"{0}\"{1}}}", expiry, userClaim );

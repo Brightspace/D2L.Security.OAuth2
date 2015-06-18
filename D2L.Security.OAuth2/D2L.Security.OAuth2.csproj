@@ -76,6 +76,7 @@
     <Compile Include="Provisioning\AccessTokenProviderFactory.cs" />
     <Compile Include="Provisioning\ClaimSet.cs" />
     <Compile Include="Provisioning\Default\CachedAccessTokenProvider.cs" />
+    <Compile Include="Provisioning\INonCachingAccessTokenProvider.cs" />
     <Compile Include="Provisioning\ProvisioningConstants.cs" />
     <Compile Include="Provisioning\Default\AccessToken.cs" />
     <Compile Include="Provisioning\Default\AuthServiceClient.cs" />
