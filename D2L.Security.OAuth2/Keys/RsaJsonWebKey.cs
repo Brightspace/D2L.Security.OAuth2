@@ -77,8 +77,8 @@ namespace D2L.Security.OAuth2.Keys {
 
 			var token = new D2LSecurityToken(
 				id: Id,
-				validFrom: DateTime.Now,
-				validTo: ExpiresAt ?? DateTime.Now.AddSeconds( Remote.Constants.KEY_MAXAGE_SECONDS ),
+				validFrom: DateTime.UtcNow,
+				validTo: ExpiresAt ?? DateTime.UtcNow.AddSeconds( Remote.Constants.KEY_MAXAGE_SECONDS ),
 				key: key
 			);
 			

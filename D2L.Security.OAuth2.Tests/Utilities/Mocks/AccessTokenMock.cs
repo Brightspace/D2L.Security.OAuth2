@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 			string xsrfClaim = null
 		) {
 
-			expiry = expiry ?? DateTime.Now.AddDays( 1 );
+			expiry = expiry ?? DateTime.UtcNow.AddDays( 1 );
 
 			var claims = new List<Claim>();
 			if( xsrfClaim != null ) {
