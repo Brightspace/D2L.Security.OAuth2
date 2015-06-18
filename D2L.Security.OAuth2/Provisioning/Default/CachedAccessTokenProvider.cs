@@ -11,12 +11,12 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 	
 	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {
 
-		private readonly IAccessTokenProvider m_accessTokenProvider;
+		private readonly INonCachingAccessTokenProvider m_accessTokenProvider;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
 		private readonly JwtSecurityTokenHandler m_tokenHandler;
 
 		public CachedAccessTokenProvider(
-			IAccessTokenProvider accessTokenProvider,
+			INonCachingAccessTokenProvider accessTokenProvider,
 			TimeSpan tokenRefreshGracePeriod
 			) {
 			m_accessTokenProvider = accessTokenProvider;
