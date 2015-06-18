@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace D2L.Security.OAuth2.Provisioning {
+﻿namespace D2L.Security.OAuth2.Provisioning {
 	
 	/// <summary>
 	/// An abstraction for access tokens
@@ -11,10 +9,5 @@ namespace D2L.Security.OAuth2.Provisioning {
 		/// The raw token
 		/// </summary>
 		string Token { get; }
-
-		/// <summary>
-		/// Indicates how long the token is valid for
-		/// </summary>
-		TimeSpan ExpiresIn { get; }
 	}
 }
