@@ -31,9 +31,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 				AccessTokenProviderFactory.Create(
 					m_keyManagerMock.Object,
 					m_authServiceClientMock.Object,
-					TimeSpan.FromMinutes( 2 ),
-					userTokenCache: userTokenCacheMock.Object,
-					serviceTokenCache: null
+					TimeSpan.FromMinutes( 2 )
 					);
 
 			Task<IAccessToken> token =
@@ -53,9 +51,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 				AccessTokenProviderFactory.Create(
 					m_keyManagerMock.Object,
 					m_authServiceClientMock.Object,
-					TimeSpan.FromMinutes( 2 ),
-					userTokenCache: null,
-					serviceTokenCache: serviceTokenCacheMock.Object
+					TimeSpan.FromMinutes( 2 )
 					);
 
 			Task<IAccessToken> token =

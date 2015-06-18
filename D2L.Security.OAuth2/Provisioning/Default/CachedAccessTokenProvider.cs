@@ -12,20 +12,14 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {
 
 		private readonly IAccessTokenProvider m_accessTokenProvider;
-		private readonly ICache m_userTokenCache;
-		private readonly ICache m_serviceTokenCache;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
 		private readonly JwtSecurityTokenHandler m_tokenHandler;
 
 		public CachedAccessTokenProvider(
 			IAccessTokenProvider accessTokenProvider,
-			ICache userTokenCache,
-			ICache serviceTokenCache,
 			TimeSpan tokenRefreshGracePeriod
 			) {
 			m_accessTokenProvider = accessTokenProvider;
-			m_userTokenCache = userTokenCache;
-			m_serviceTokenCache = serviceTokenCache;
 			m_tokenRefreshGracePeriod = tokenRefreshGracePeriod;
 			
 			m_tokenHandler = new JwtSecurityTokenHandler();
@@ -37,24 +31,28 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			ClaimSet claimSet,
-			IEnumerable<Scope> scopes
+			IEnumerable<Scope> scopes,
+			ICache cache
 			) {
 			
 			var @this = this as IAccessTokenProvider;
-			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes ).SafeAsync();
+			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).SafeAsync();
 		}
 
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claims,
-			IEnumerable<Scope> scopes
+			IEnumerable<Scope> scopes,
+			ICache cache
 			) {
+
+			if( cache == null ) {
+				cache = new NullCache();
+			}
 
 			claims = claims.ToList();
 			scopes = scopes.ToList();
 
 			string cacheKey = TokenCacheKeyBuilder.BuildKey( claims, scopes );
-
-			ICache cache = GetCache( claims );
 
 			CacheResponse cacheResponse = await cache.GetAsync( cacheKey ).SafeAsync();
 
@@ -72,13 +70,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.Now ).SafeAsync();
 			return token;
-		}
-
-		private ICache GetCache(
-			IEnumerable<Claim> claims
-			) {
-			bool hasSubClaim = claims.Any( claim => claim.Type == Constants.Claims.USER_ID );
-			return hasSubClaim ? m_userTokenCache : m_serviceTokenCache;
 		}
 	}
 }

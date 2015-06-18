@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-
+using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Keys.Local;
 using D2L.Security.OAuth2.Scopes;
 
@@ -26,7 +26,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 		Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			ClaimSet claimSet,	
-			IEnumerable<Scope> scopes
+			IEnumerable<Scope> scopes,
+			ICache cache
 		) {
 			var @this = this as IAccessTokenProvider;
 			return @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes );
@@ -34,7 +35,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claimSet,
-			IEnumerable<Scope> scopes
+			IEnumerable<Scope> scopes,
+			ICache cache
 		) {
 			List<Claim> claims = claimSet.ToList();
 
