@@ -96,7 +96,6 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 				var result = await client.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() );
 
 				Assert.AreEqual( "mrrrrrr", result.Token );
-				Assert.AreEqual( TimeSpan.FromHours( 1 ), result.ExpiresIn );
 			}
 		}
 
