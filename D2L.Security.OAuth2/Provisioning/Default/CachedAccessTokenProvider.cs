@@ -58,7 +58,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			if( cacheResponse.Success ) {
 				SecurityToken securityToken = m_tokenHandler.ReadToken( cacheResponse.Value );
-				if( securityToken.ValidTo > DateTime.Now.Add( m_tokenRefreshGracePeriod ) ) {
+				if( securityToken.ValidTo > DateTime.UtcNow.Add( m_tokenRefreshGracePeriod ) ) {
 					return new AccessToken( cacheResponse.Value );
 				}
 			}
@@ -68,7 +68,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			DateTime validTo = m_tokenHandler.ReadToken( token.Token ).ValidTo;
 
-			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.Now ).SafeAsync();
+			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.UtcNow ).SafeAsync();
 			return token;
 		}
 	}
