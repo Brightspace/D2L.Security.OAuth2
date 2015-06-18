@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 
 			await RunTest(
 				signJwt: false,
-				jwtExpiry: DateTime.Now.AddSeconds( 10 )
+				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 )
 			).SafeAsync();
 		}
 
@@ -34,7 +34,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 
 			await RunTest(
 				signJwt: true,
-				jwtExpiry: DateTime.Now.AddSeconds( -301 ),
+				jwtExpiry: DateTime.UtcNow.AddSeconds( -301 ),
 				expected_validationStatus: ValidationStatus.Expired,
 				expected_accessTokenNull: true
 			).SafeAsync();
@@ -45,7 +45,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 
 			await RunTest(
 				signJwt: true,
-				jwtExpiry: DateTime.Now.AddMonths( -2 ),
+				jwtExpiry: DateTime.UtcNow.AddMonths( -2 ),
 				expected_validationStatus: ValidationStatus.Expired,
 				expected_accessTokenNull: true
 			).SafeAsync();
@@ -57,7 +57,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 
 			await RunTest(
 				signJwt: true,
-				jwtExpiry: DateTime.Now.AddSeconds( -295 ),
+				jwtExpiry: DateTime.UtcNow.AddSeconds( -295 ),
 				expected_validationStatus: ValidationStatus.Success,
 				expected_accessTokenNull: false
 			).SafeAsync();
@@ -68,7 +68,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 
 			await RunTest(
 				signJwt: true,
-				jwtExpiry: DateTime.Now.AddSeconds( 10 ),
+				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 ),
 				expected_validationStatus: ValidationStatus.Success,
 				expected_accessTokenNull: false
 			).SafeAsync();
