@@ -6,7 +6,7 @@ using D2L.Security.OAuth2.Provisioning.Default;
 namespace D2L.Security.OAuth2.Provisioning {
 
 	/// <summary>
-	/// A factory for creating access token providers, with an optional caching layer.
+	/// A factory for creating access token provider.
 	/// </summary>
 	public static class AccessTokenProviderFactory {
 
