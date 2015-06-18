@@ -74,6 +74,9 @@
   <ItemGroup>
     <Compile Include="Integration\Keys\Remote\Data\JwksProviderTests.cs" />
     <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.cs" />
+    <Compile Include="Unit\Provisioning\AccessTokenProviderFactoryTests.cs" />
+    <Compile Include="Unit\Provisioning\CachedAccessTokenProviderTests.cs" />
+    <Compile Include="Unit\Provisioning\TokenCacheKeyBuilderTests.cs" />
     <Compile Include="Utilities\Mocks\AccessTokenValidatorMock.cs" />
     <Compile Include="Utilities\Mocks\AuthServiceMock.cs" />
     <Compile Include="Utilities\Mocks\HttpMockFactory.cs" />

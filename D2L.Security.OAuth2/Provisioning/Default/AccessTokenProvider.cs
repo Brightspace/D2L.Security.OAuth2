@@ -9,21 +9,11 @@ using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
-	/// <summary>
-	/// Provisions access tokens from the auth service
-	/// </summary>
-	/// <remarks>This type is disposable</remarks>
-	public sealed class AccessTokenProvider : IAccessTokenProvider {
+	internal sealed class AccessTokenProvider : IAccessTokenProvider {
 		private readonly IAuthServiceClient m_client;
 		private readonly IKeyManager m_keyManager;
 		private readonly bool m_disposeOfClient;
 
-		/// <summary>
-		/// Constructs a new <see cref="AccessTokenProvider"/>
-		/// </summary>
-		/// <param name="keyManager">Responsible for signing tokens</param>
-		/// <param name="authServiceClient">Communicates to auth service to provision tokens</param>
-		/// <param name="disposeOfClient">If true, the <paramref name="authServiceClient"/> will be disposed of when <see cref="AccessTokenProvider"/> is</param>
 		public AccessTokenProvider(
 			IKeyManager keyManager,
 			IAuthServiceClient authServiceClient,
@@ -73,9 +63,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				.SafeAsync();
 		}
 
-		/// <summary>
-		/// Dispose the <see cref="AccessTokenProvider"/>
-		/// </summary>
 		public void Dispose() {
 			if( m_disposeOfClient ) {
 				m_client.Dispose();
