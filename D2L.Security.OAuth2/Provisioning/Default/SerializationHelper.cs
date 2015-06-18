@@ -9,7 +9,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			DataContractJsonSerializer serializer = new DataContractJsonSerializer( typeof( AssertionGrantResponse ) );
 
 			AssertionGrantResponse response = (AssertionGrantResponse)serializer.ReadObject( assertionGrantResponseStream );
-			IAccessToken token = new AccessToken( response.access_token, response.expires_in );
+			IAccessToken token = new AccessToken( response.access_token );
 
 			return token;
 		}
@@ -18,9 +18,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		private sealed class AssertionGrantResponse {
 			[DataMember]
 			public string access_token { get; set; }
-
-			[DataMember]
-			public long expires_in { get; set; }
 		}
 	}
 }
