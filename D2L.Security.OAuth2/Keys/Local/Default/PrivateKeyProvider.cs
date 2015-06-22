@@ -8,7 +8,7 @@ using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Local.Default {
 	internal sealed class PrivateKeyProvider : IPrivateKeyProvider {
-		
+
 		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
 		private readonly IDateTimeProvider m_dateTimeProvider;
 		private readonly TimeSpan m_keyLifetime;
@@ -18,7 +18,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 		private readonly SemaphoreSlim m_privateKeyLock = new SemaphoreSlim( initialCount: 1 );
 
 		private PrivateKey m_privateKey;
-		
+
 		public PrivateKeyProvider(
 			IPublicKeyDataProvider publicKeyDataProvider,
 			IDateTimeProvider dateTimeProvider,
@@ -50,6 +50,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 					privateKey = m_privateKey;
 
 					if( NeedFreshPrivateKey( privateKey ) ) {
+						DelayDisposeOfRsaSecurityKey( m_privateKey );
 						m_privateKey = await CreatePrivateKeyAsync().SafeAsync();
 						privateKey = m_privateKey;
 					}
@@ -59,24 +60,37 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 				}
 			}
 
-			var csp = new RSACryptoServiceProvider( 2048 ) {
-				PersistKeyInCsp = false
-			};
-
-			csp.ImportParameters( privateKey.RsaParameters );
-			var rsaSecurityKey = new RsaSecurityKey( csp );
-
 			return new D2LSecurityToken(
 				privateKey.Id,
 				privateKey.ValidFrom,
 				privateKey.ValidTo,
-				rsaSecurityKey );
+				privateKey.RsaSecurityKey
+				);
+		}
+
+		private void DelayDisposeOfRsaSecurityKey( PrivateKey privateKey ) {
+
+			// If no key has been assigned before, this will be null, so just return.
+			if( privateKey == null ) {
+				return;
+			}
+
+			RsaSecurityKey rsaSecurityKey = privateKey.RsaSecurityKey;
+
+			// After a period of time, dispose of the key. The generous delay ensures any in-flight 
+			// requests have time to finish.
+			Task.Run(
+				() => {
+					Task.Delay( TimeSpan.FromSeconds( 5 ) );
+					rsaSecurityKey.GetAsymmetricAlgorithm( string.Empty, true ).Dispose();
+				}
+			);
 		}
 
 		private async Task<PrivateKey> CreatePrivateKeyAsync() {
 			DateTime now = m_dateTimeProvider.UtcNow;
 			DateTime expiresAt = now + m_keyLifetime;
-			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( 2048 ) ) {
+			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( Constants.KEY_SIZE ) ) {
 				csp.PersistKeyInCsp = false;
 
 				// TODO: remove m_savePrivateBits hack after 10.5.1!
@@ -90,8 +104,20 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 				await m_publicKeyDataProvider.SaveAsync( jwk ).SafeAsync();
 
-				return new PrivateKey( keyId, privateKey, now, expiresAt );
+				RsaSecurityKey rsaSecurityKey = GetRsaSecurityKey( privateKey );
+
+				return new PrivateKey( keyId, privateKey, now, expiresAt, rsaSecurityKey );
 			}
+		}
+
+		private RsaSecurityKey GetRsaSecurityKey( RSAParameters rsaParameters ) {
+
+			var csp = new RSACryptoServiceProvider( Constants.KEY_SIZE ) {
+				PersistKeyInCsp = false
+			};
+
+			csp.ImportParameters( rsaParameters );
+			return new RsaSecurityKey( csp );
 		}
 
 		internal sealed class PrivateKey {
@@ -99,17 +125,20 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			private readonly RSAParameters m_rsaParameters;
 			private readonly DateTime m_validFrom;
 			private readonly DateTime m_validTo;
+			private readonly RsaSecurityKey m_rsaSecurityKey;
 
 			public PrivateKey(
 				Guid id,
 				RSAParameters rsaParameters,
 				DateTime validFrom,
-				DateTime validTo
+				DateTime validTo,
+				RsaSecurityKey rsaSecurityKey
 			) {
 				m_id = id;
 				m_rsaParameters = rsaParameters;
 				m_validFrom = validFrom;
 				m_validTo = validTo;
+				m_rsaSecurityKey = rsaSecurityKey;
 			}
 
 			public Guid Id {
@@ -126,6 +155,10 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 			public DateTime ValidTo {
 				get { return m_validTo; }
+			}
+
+			public RsaSecurityKey RsaSecurityKey {
+				get { return m_rsaSecurityKey; }
 			}
 		}
 	}

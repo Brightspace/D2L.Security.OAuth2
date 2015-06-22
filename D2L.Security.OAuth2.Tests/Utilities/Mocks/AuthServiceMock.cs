@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
@@ -22,7 +21,7 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 			m_server = HttpMockFactory.Create( out m_host );
 
 			RSAParameters parameters;
-			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( dwKeySize: 2048 ) ) {
+			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( dwKeySize: Constants.KEY_SIZE ) ) {
 				parameters = csp.ExportParameters( includePrivateParameters: true );
 			}
 

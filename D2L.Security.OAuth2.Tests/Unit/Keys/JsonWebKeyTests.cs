@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 using D2L.Security.OAuth2.Keys;
@@ -52,10 +51,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys {
 				keyLifetime: TimeSpan.FromHours(1),
 				keyRotationPeriod: TimeSpan.FromMilliseconds( 42 ) );
 
-			JsonWebKey expectedKey;
-			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync() ) {
-				expectedKey = token.ToJsonWebKey();
-			}
+			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			JsonWebKey expectedKey = token.ToJsonWebKey();
 
 			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
 
