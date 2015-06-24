@@ -113,6 +113,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Compile Include="Unit\Keys\Local\PrivateKeyProviderTests.Concurrency.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">
