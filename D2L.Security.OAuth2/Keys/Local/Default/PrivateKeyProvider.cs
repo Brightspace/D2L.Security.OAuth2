@@ -106,7 +106,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 				RsaSecurityKey rsaSecurityKey = GetRsaSecurityKey( privateKey );
 
-				return new PrivateKey( keyId, privateKey, now, expiresAt, rsaSecurityKey );
+				return new PrivateKey( keyId, now, expiresAt, rsaSecurityKey );
 			}
 		}
 
@@ -122,20 +122,17 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 		internal sealed class PrivateKey {
 			private readonly Guid m_id;
-			private readonly RSAParameters m_rsaParameters;
 			private readonly DateTime m_validFrom;
 			private readonly DateTime m_validTo;
 			private readonly RsaSecurityKey m_rsaSecurityKey;
 
 			public PrivateKey(
 				Guid id,
-				RSAParameters rsaParameters,
 				DateTime validFrom,
 				DateTime validTo,
 				RsaSecurityKey rsaSecurityKey
 			) {
 				m_id = id;
-				m_rsaParameters = rsaParameters;
 				m_validFrom = validFrom;
 				m_validTo = validTo;
 				m_rsaSecurityKey = rsaSecurityKey;
@@ -143,10 +140,6 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 			public Guid Id {
 				get { return m_id; }
-			}
-
-			public RSAParameters RsaParameters {
-				get { return m_rsaParameters; }
 			}
 
 			public DateTime ValidFrom {
