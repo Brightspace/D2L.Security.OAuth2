@@ -3,21 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Local;
 using D2L.Security.OAuth2.Keys.Local.Data;
 using D2L.Security.OAuth2.Keys.Local.Default;
 using D2L.Security.OAuth2.Utilities;
-
 using Moq;
-
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Keys.Local {
+
 	[TestFixture]
 	[Category( "Unit" )]
-	sealed class PrivateKeyProviderTests {
+	internal sealed partial class PrivateKeyProviderTests {
 		private const long ROTATION_PERIOD_SECONDS = 10*60;
 		private const long KEY_LIFETIME_SECONDS = 60*60;
 		private static readonly TimeSpan KEY_LIFETIME = TimeSpan.FromSeconds( KEY_LIFETIME_SECONDS );

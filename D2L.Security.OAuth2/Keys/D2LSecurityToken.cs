@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Keys {
 	/// <remarks>
 	/// This class is not thread-safe
 	/// </remarks>
-	internal class D2LSecurityToken : NamedKeySecurityToken, IDisposable {
+	internal class D2LSecurityToken : NamedKeySecurityToken {
 
 		private Guid? m_id;
 		private readonly DateTime m_validFrom;
@@ -39,7 +39,6 @@ namespace D2L.Security.OAuth2.Keys {
 			m_validFrom = validFrom;
 			m_validTo = validTo;
 			m_key = key;
-			DisposeOfKey = true;
 		}
 
 		public Guid KeyId {
@@ -70,8 +69,6 @@ namespace D2L.Security.OAuth2.Keys {
 		public virtual bool HasPrivateKey {
 			get { return m_key.HasPrivateKey(); }	
 		}
-
-		public bool DisposeOfKey { get; set; }
 
 		public virtual AsymmetricAlgorithm GetAsymmetricAlgorithm() {
 			if( m_key is X509AsymmetricSecurityKey ) {
@@ -121,13 +118,6 @@ namespace D2L.Security.OAuth2.Keys {
 			RSAParameters p = csp.ExportParameters( includePrivateParameters );
 
 			return new RsaJsonWebKey( KeyId, ValidTo, p );
-		}
-
-		public void Dispose() {
-			if( DisposeOfKey ) {
-				var alg = GetAsymmetricAlgorithm();
-				alg.Dispose();
-			}
 		}
 	}
 }
