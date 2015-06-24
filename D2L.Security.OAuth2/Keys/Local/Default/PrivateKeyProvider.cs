@@ -75,14 +75,12 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 				return;
 			}
 
-			RsaSecurityKey rsaSecurityKey = privateKey.RsaSecurityKey;
-
 			// After a period of time, dispose of the key. The generous delay ensures any in-flight 
 			// requests have time to finish.
 			Task.Run(
 				() => {
-					Task.Delay( TimeSpan.FromSeconds( 5 ) );
-					rsaSecurityKey.GetAsymmetricAlgorithm( string.Empty, true ).Dispose();
+					Task.Delay( TimeSpan.FromSeconds( 5 ) )
+						.ContinueWith( t => privateKey.Dispose() );
 				}
 			);
 		}
@@ -120,7 +118,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			return new RsaSecurityKey( csp );
 		}
 
-		internal sealed class PrivateKey {
+		internal sealed class PrivateKey : IDisposable {
 			private readonly Guid m_id;
 			private readonly DateTime m_validFrom;
 			private readonly DateTime m_validTo;
@@ -152,6 +150,10 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 			public RsaSecurityKey RsaSecurityKey {
 				get { return m_rsaSecurityKey; }
+			}
+
+			public void Dispose() {
+				RsaSecurityKey.GetAsymmetricAlgorithm( string.Empty, true ).Dispose();
 			}
 		}
 	}
