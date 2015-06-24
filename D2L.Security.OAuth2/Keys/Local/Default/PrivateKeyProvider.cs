@@ -77,12 +77,8 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 			// After a period of time, dispose of the key. The generous delay ensures any in-flight 
 			// requests have time to finish.
-			Task.Run(
-				() => {
-					Task.Delay( TimeSpan.FromSeconds( 5 ) )
-						.ContinueWith( t => privateKey.Dispose() );
-				}
-			);
+			Task.Delay( TimeSpan.FromSeconds( 5 ) )
+				.ContinueWith( t => privateKey.Dispose() );
 		}
 
 		private async Task<PrivateKey> CreatePrivateKeyAsync() {
