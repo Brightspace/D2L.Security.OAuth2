@@ -98,20 +98,8 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 
 				await m_publicKeyDataProvider.SaveAsync( jwk ).SafeAsync();
 
-				RsaSecurityKey rsaSecurityKey = GetRsaSecurityKey( privateKey );
-
-				return new PrivateKey( keyId, now, expiresAt, rsaSecurityKey );
+				return new PrivateKey( keyId, privateKey, now, expiresAt );
 			}
-		}
-
-		private RsaSecurityKey GetRsaSecurityKey( RSAParameters rsaParameters ) {
-
-			var csp = new RSACryptoServiceProvider( Constants.KEY_SIZE ) {
-				PersistKeyInCsp = false
-			};
-
-			csp.ImportParameters( rsaParameters );
-			return new RsaSecurityKey( csp );
 		}
 
 		internal sealed class PrivateKey : IDisposable {
@@ -119,17 +107,24 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			private readonly DateTime m_validFrom;
 			private readonly DateTime m_validTo;
 			private readonly RsaSecurityKey m_rsaSecurityKey;
+			private readonly RSACryptoServiceProvider m_rsaCryptoServiceProvider;
 
 			public PrivateKey(
 				Guid id,
+				RSAParameters privateKey,
 				DateTime validFrom,
-				DateTime validTo,
-				RsaSecurityKey rsaSecurityKey
+				DateTime validTo
 			) {
 				m_id = id;
 				m_validFrom = validFrom;
 				m_validTo = validTo;
-				m_rsaSecurityKey = rsaSecurityKey;
+
+				m_rsaCryptoServiceProvider = new RSACryptoServiceProvider( Constants.KEY_SIZE ) {
+					PersistKeyInCsp = false
+				};
+				m_rsaCryptoServiceProvider.ImportParameters( privateKey );
+
+				m_rsaSecurityKey = new RsaSecurityKey( m_rsaCryptoServiceProvider );
 			}
 
 			public Guid Id {
@@ -149,7 +144,7 @@ namespace D2L.Security.OAuth2.Keys.Local.Default {
 			}
 
 			public void Dispose() {
-				RsaSecurityKey.GetAsymmetricAlgorithm( string.Empty, true ).Dispose();
+				m_rsaCryptoServiceProvider.Dispose();
 			}
 		}
 	}
