@@ -47,36 +47,35 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			if( !Guid.TryParse( keyId, out id ) ) {
 				throw new Exception( "ffooof TODO" );
 			}
-			IAccessToken accessToken = null;
 
-			using( D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
+			D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
 				authEndpoint: authEndpoint,
 				keyId: id
-			).SafeAsync() ) {
+				).SafeAsync();
 
-				var validationParameters = new TokenValidationParameters() {
-					ValidateAudience = false,
-					ValidateIssuer = false,
-					RequireSignedTokens = true,
-					IssuerSigningToken = signingToken
-				};
-				
-				try {
+			var validationParameters = new TokenValidationParameters() {
+				ValidateAudience = false,
+				ValidateIssuer = false,
+				RequireSignedTokens = true,
+				IssuerSigningToken = signingToken
+			};
 
-					SecurityToken securityToken;
-					m_tokenHandler.ValidateToken(
-						token,
-						validationParameters,
-						out securityToken
-						);
-					accessToken = new AccessToken( (JwtSecurityToken) securityToken );
+			IAccessToken accessToken;
+			try {
 
-				} catch( SecurityTokenExpiredException ) {
+				SecurityToken securityToken;
+				m_tokenHandler.ValidateToken(
+					token,
+					validationParameters,
+					out securityToken
+					);
+				accessToken = new AccessToken( (JwtSecurityToken) securityToken );
 
-					return new ValidationResponse(
-						ValidationStatus.Expired,
-						accessToken: null );
-				}
+			} catch( SecurityTokenExpiredException ) {
+
+				return new ValidationResponse(
+					ValidationStatus.Expired,
+					accessToken: null );
 			}
 
 			return new ValidationResponse(

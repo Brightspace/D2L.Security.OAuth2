@@ -23,7 +23,7 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 
 			var validTo = DateTime.UtcNow + remaining;
 			var validFrom = validTo - TimeSpan.FromHours( 1 );
-			var csp = new RSACryptoServiceProvider( 2048 ) {
+			var csp = new RSACryptoServiceProvider( Constants.KEY_SIZE ) {
 				PersistKeyInCsp = false
 			};
 			var key = new RsaSecurityKey( csp );

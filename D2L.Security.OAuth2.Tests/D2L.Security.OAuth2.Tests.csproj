@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Integration\Keys\Remote\Data\JwksProviderTests.cs" />
     <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.cs" />
+    <Compile Include="Unit\Keys\Local\PrivateKeyProvider.PrivateKeyTests.cs" />
     <Compile Include="Unit\Provisioning\AccessTokenProviderFactoryTests.cs" />
     <Compile Include="Unit\Provisioning\CachedAccessTokenProviderTests.cs" />
     <Compile Include="Unit\Provisioning\TokenCacheKeyBuilderTests.cs" />
@@ -112,6 +113,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <Compile Include="Unit\Keys\Local\PrivateKeyProviderTests.Concurrency.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">
