@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2", "D2L.Security.OAuth2\D2L.Security.OAuth2.csproj", "{676FB8C0-D021-475E-941B-03BE21769294}"
 EndProject
@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B76787
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.Benchmarks", "D2L.Security.OAuth2.Benchmarks\D2L.Security.OAuth2.Benchmarks.csproj", "{32C50F4A-03AE-4C99-9108-3AD518729410}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,6 +30,10 @@ Global
 		{F5667A7E-955D-4402-86C4-8DFB65768AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5667A7E-955D-4402-86C4-8DFB65768AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5667A7E-955D-4402-86C4-8DFB65768AE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32C50F4A-03AE-4C99-9108-3AD518729410}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32C50F4A-03AE-4C99-9108-3AD518729410}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32C50F4A-03AE-4C99-9108-3AD518729410}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32C50F4A-03AE-4C99-9108-3AD518729410}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
