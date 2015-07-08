@@ -53,6 +53,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FriendAssemblies.cs" />
     <Compile Include="Keys\D2LSecurityToken.cs" />
     <Compile Include="Caching\CacheResponse.cs" />
     <Compile Include="Caching\ICache.cs" />
