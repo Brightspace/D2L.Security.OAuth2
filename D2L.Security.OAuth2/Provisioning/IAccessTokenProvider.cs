@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
@@ -11,7 +10,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 	/// Provisions access tokens from the auth service
 	/// </summary>
 	/// <remarks>This type is disposable</remarks>
-	public interface IAccessTokenProvider : IDisposable {
+	public interface IAccessTokenProvider {
 
 		/// <summary>
 		/// Provisions an access token containing the provided claims and scopes.
