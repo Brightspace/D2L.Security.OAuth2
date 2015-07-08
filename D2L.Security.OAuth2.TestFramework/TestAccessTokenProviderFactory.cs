@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.TestFramework
 {
 	public static class TestAccessTokenProviderFactory
     {
-		private static readonly Guid Guid = new Guid("69A15467-53D3-4B96-8DD2-8C4C990D68D9");
+		private static readonly Guid Guid = new Guid( "FA7C07A8-42C8-4C57-9AF2-CCE10C271033" );
 		private static readonly RSAParameters ExpandoPrivateRsaKey = new RSAParameters
 		{
 			D = Convert.FromBase64String( "beXnLc1J4DdtieYmFArjVXIluXvHusYzVbTlXTXVFxRl7rsEFNn2M0mJCdCW2SLjBERaMuGB03MOAW1rBQOw7uizwlC4hgIgs8ONr38kiTe2yIU6/LsbadILf/GAGeDFt/X0ZWL2AWJ5OmY56UcMvOQchKApdWEMgJtvMLM/xN7/8R54zvM53G20fl6GqnRrJT1zCpADjSUpeuY4/+R0HOiFOqXpUEnyTuqAeRuQ41n+8sPioT+Biu2kp7Bwfbeoco3g9vncsjOEIf75cK84dO6r9EdOj6tGLYEugqEJ7RA68eDdNqNDqyeuX5wU3BNQ+KHP0ZSZz6MJ1HH47RGA2Q==" ),
