@@ -138,16 +138,6 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 			Assert.NotNull( token );
 		}
 
-		[Test]
-		public void Dispose_CallsDisposeOnAccessTokenProvider() {
-
-			m_accessTokenProviderMock.Setup( x => x.Dispose() );
-
-			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
-
-			Assert.DoesNotThrow( cachedAccessTokenProvider.Dispose );
-		}
-
 		private IAccessTokenProvider GetCachedAccessTokenProvider( int tokenRefreshGracePeriod = 120 ) {
 			return new CachedAccessTokenProvider(
 				m_accessTokenProviderMock.Object,

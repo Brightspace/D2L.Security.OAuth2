@@ -1,6 +1,9 @@
-﻿using D2L.Security.OAuth2.Caching;
-using D2L.Security.OAuth2.Keys.Remote;
-using D2L.Security.OAuth2.Keys.Remote.Data;
+﻿using System;
+using System.Net.Http;
+using D2L.Security.OAuth2.Keys;
+using D2L.Security.OAuth2.Keys.Caching;
+using D2L.Security.OAuth2.Keys.Default;
+using D2L.Security.OAuth2.Keys.Default.Data;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
@@ -10,22 +13,44 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	public static class AccessTokenValidatorFactory {
 
 		/// <summary>
-		/// Creates an <see cref="IAccessTokenValidator"/> instance.
+		/// Creates an <see cref="IAccessTokenValidator"/> instance backed by local public keys.
 		/// </summary>
-		/// <param name="cache">Optionally cache JWKs (keys).</param>
-		/// <returns>A cache should be provided to prevent calling out to an external service to get the JWKs on each request.</returns>
-		public static IAccessTokenValidator Create( ICache cache = null ) {
-			if( cache == null ) {
-				cache = new NullCache();
-			}
+		/// <param name="publicKeyDataProvider">The <see cref="IPublicKeyDataProvider"/> for the local service</param>
+		/// <returns>A new <see cref="IAccessTokenValidator"/></returns>
+		public static IAccessTokenValidator CreateLocalValidator(
+			IPublicKeyDataProvider publicKeyDataProvider
+		) {
+			var publicKeyProvider = new LocalPublicKeyProvider(
+				PublicKeyDataProviderFactory.CreateInternal( publicKeyDataProvider ),
+				new InMemoryPublicKeyCache()
+			);
 
-			IJwksProvider jwksProvider = new JwksProvider();
-			IJwksProvider cacheJwksProvider = new CachedJwksProvider( cache, jwksProvider );
-			
-			IPublicKeyProvider tokenProvider = new PublicKeyProvider( cacheJwksProvider );
-			IAccessTokenValidator validator = new AccessTokenValidator( tokenProvider );
-			
-			return validator;
+			var result = new AccessTokenValidator( publicKeyProvider );
+			return result;
 		}
+
+		/// <summary>
+		/// Creates an <see cref="IAccessTokenValidator"/> instance backed by a remote token signer.
+		/// </summary>
+		/// <param name="httpClient"><see cref="HttpClient"/> instance with which requests will be made. The lifecycle of the <see cref="HttpClient"/> is not managed. It will not be disposed by the validator.</param>
+		/// <param name="authEndpoint">The base URI of the remote service</param>
+		/// <returns>A new <see cref="IAccessTokenValidator"/></returns>
+		public static IAccessTokenValidator CreateRemoteValidator(
+			HttpClient httpClient,
+			Uri authEndpoint
+		) {
+			var jwksProvider = new JwksProvider(
+				httpClient,
+				authEndpoint
+			);
+			var publicKeyProvider = new RemotePublicKeyProvider(
+				jwksProvider,
+				new InMemoryPublicKeyCache()
+			);
+
+			var result = new AccessTokenValidator( publicKeyProvider );
+			return result;
+		}
+
 	}
 }

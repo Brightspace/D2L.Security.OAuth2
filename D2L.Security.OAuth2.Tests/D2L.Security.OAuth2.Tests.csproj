@@ -68,13 +68,14 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\Keys\Remote\Data\JwksProviderTests.cs" />
+    <Compile Include="Integration\Keys\Default\Data\JwksProviderTests.cs" />
     <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.cs" />
-    <Compile Include="Unit\Keys\Local\PrivateKeyProvider.PrivateKeyTests.cs" />
+    <Compile Include="Unit\Keys\Default\RemotePublicKeyProviderTests.cs" />
     <Compile Include="Unit\Provisioning\AccessTokenProviderFactoryTests.cs" />
     <Compile Include="Unit\Provisioning\CachedAccessTokenProviderTests.cs" />
     <Compile Include="Unit\Provisioning\TokenCacheKeyBuilderTests.cs" />
@@ -89,14 +90,12 @@
     <Compile Include="Unit\Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Unit\Scopes\ScopeTests.cs" />
     <Compile Include="Unit\Keys\JsonWebKeyTests.cs" />
-    <Compile Include="Unit\Keys\Local\InMemoryPublicKeyDataProviderTests.cs" />
-    <Compile Include="Unit\Keys\Local\PrivateKeyProviderTests.cs" />
-    <Compile Include="Unit\Keys\Local\PublicKeyProviderTests.cs" />
+    <Compile Include="Unit\Keys\Development\InMemoryPublicKeyDataProviderTests.cs" />
+    <Compile Include="Unit\Keys\Default\PrivateKeyProviderTests.cs" />
+    <Compile Include="Unit\Keys\Default\ExpiringPublicKeyDataProviderTests.cs" />
     <Compile Include="Unit\Utilities\DateTimeExtensionTests.cs" />
     <Compile Include="Unit\Utilities\IEnumerableClaimExtensionsTests.cs" />
     <Compile Include="Unit\Validation\AccessTokenValidatorTests.cs" />
-    <Compile Include="Unit\Keys\Remote\Data\CachedJwksProviderTests.cs" />
-    <Compile Include="Unit\Keys\Remote\PublicKeyProviderTests.cs" />
     <Compile Include="Utilities\D2LSecurityTokenUtility.cs" />
     <Compile Include="Utilities\JsonWebKeyStub.cs" />
     <Compile Include="Unit\Validation\AccessTokens\AccessTokenExtensionsTests.cs" />
@@ -113,7 +112,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <Compile Include="Unit\Keys\Local\PrivateKeyProviderTests.Concurrency.cs" />
+    <Compile Include="Unit\Keys\Default\PrivateKeyProviderTests.Concurrency.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">

@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
-
-using D2L.Security.OAuth2.Keys;
-using NUnit.Framework;
+using D2L.Security.OAuth2.Keys.Default;
 
 namespace D2L.Security.OAuth2.Tests.Utilities {
 	internal static class D2LSecurityTokenUtility {
@@ -23,16 +20,25 @@ namespace D2L.Security.OAuth2.Tests.Utilities {
 
 			var validTo = DateTime.UtcNow + remaining;
 			var validFrom = validTo - TimeSpan.FromHours( 1 );
-			var csp = new RSACryptoServiceProvider( Constants.KEY_SIZE ) {
+
+			RSAParameters privateKey;
+			using( var csp = new RSACryptoServiceProvider( Keys.Constants.GENERATED_RSA_KEY_SIZE ) {
 				PersistKeyInCsp = false
-			};
-			var key = new RsaSecurityKey( csp );
+			} ) {
+				privateKey = csp.ExportParameters( includePrivateParameters: true );
+			}
 
 			return new D2LSecurityToken(
 				id.Value,
 				validFrom,
 				validTo,
-				key );
+				keyFactory: () => {
+					var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
+					csp.ImportParameters( privateKey );
+					var key = new RsaSecurityKey( csp );
+					return key;
+				}
+			);
 		}
 	}
 }

@@ -150,7 +150,6 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, request_d2lApiCookie );
 
 			AuthenticationResponse authResponse = await authenticator.AuthenticateAsync(
-				new Uri( "https://somewhere.something" ),
 				httpRequestMessage,
 				authMode: authMode
 			).SafeAsync();
@@ -167,7 +166,6 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, request_d2lApiCookie );
 
 			authResponse = await authenticator.AuthenticateAsync(
-				new Uri( "https://somewhere.something" ),
 				httpRequest,
 				authMode: authMode
 			).SafeAsync();
