@@ -1,6 +1,6 @@
 ﻿using System;
-using D2L.Security.OAuth2.Caching;
-using D2L.Security.OAuth2.Keys.Local;
+using System.Net.Http;
+using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Provisioning.Default;
 
 namespace D2L.Security.OAuth2.Provisioning {
@@ -11,18 +11,23 @@ namespace D2L.Security.OAuth2.Provisioning {
 	public static class AccessTokenProviderFactory {
 
 		/// <summary>
-		/// Factory method for creating new <see cref="IAccessTokenProvider"/> instances.
+		/// Factory method for creating new <see cref="IAccessTokenProvider"/> instances. <paramref name="httpClient"/> will not be diposed.
 		/// </summary>
 		/// <returns>A new <see cref="IAccessTokenProvider"/></returns>
 		public static IAccessTokenProvider Create(
-			IKeyManager keyManager,
-			IAuthServiceClient authServiceClient,
-			TimeSpan tokenRefreshGracePeriod,
-			bool disposeOfClient = true
-			) {
+			ITokenSigner tokenSigner,
+			HttpClient httpClient,
+			Uri authEndpoint,
+			TimeSpan tokenRefreshGracePeriod
+		) {
+
+			IAuthServiceClient authServiceClient = new AuthServiceClient(
+				httpClient,
+				authEndpoint
+			);
 
 			INonCachingAccessTokenProvider accessTokenProvider =
-				new AccessTokenProvider( keyManager, authServiceClient, disposeOfClient );
+				new AccessTokenProvider( tokenSigner, authServiceClient );
 
 			return new CachedAccessTokenProvider( accessTokenProvider, tokenRefreshGracePeriod );
 		}

@@ -25,10 +25,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			m_tokenHandler = new JwtSecurityTokenHandler();
 		}
 
-		void IDisposable.Dispose() {
-			m_accessTokenProvider.Dispose();
-		}
-
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			ClaimSet claimSet,
 			IEnumerable<Scope> scopes,
