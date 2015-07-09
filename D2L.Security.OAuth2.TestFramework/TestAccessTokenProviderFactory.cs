@@ -29,10 +29,12 @@ namespace D2L.Security.OAuth2.TestFramework
 		{
 			IAuthServiceClient authServiceClient = new AuthServiceClient( httpClient, new Uri( tokenProvisioningEndpoint ) );
 
-			IPrivateKeyProvider priv = new StaticPrivateKeyProvider( Guid, ExpandoPrivateRsaKey );
-			ITokenSigner km = new TokenSigner( priv );
+#pragma warning disable 618
+			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( Guid, ExpandoPrivateRsaKey );
+#pragma warning restore 618
+			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
 
-			INonCachingAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( km, authServiceClient );
+			INonCachingAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( tokenSigner, authServiceClient );
 
 			return new CachedAccessTokenProvider( noCacheTokenProvider, Timeout.InfiniteTimeSpan );
 		}
