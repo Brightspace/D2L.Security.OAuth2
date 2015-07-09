@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
@@ -15,8 +16,13 @@ namespace D2L.Security.OAuth2.TestFramework
 
 		public static IAccessTokenProvider Create(HttpClient httpClient, String tokenProvisioningEndpoint)
 		{
+			return Create(httpClient, tokenProvisioningEndpoint, TestGuid, TestRSAParametersProvider.RSAParameters);
+		}
+
+		public static IAccessTokenProvider Create(HttpClient httpClient, String tokenProvisioningEndpoint, Guid guid, RSAParameters rsaParameters)
+		{
 			IAuthServiceClient authServiceClient = new AuthServiceClient( httpClient, new Uri( tokenProvisioningEndpoint ) );
-			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( TestGuid, TestRSAParameterProvider.RSAParameters );
+			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( guid, rsaParameters );
 			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
 			INonCachingAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( tokenSigner, authServiceClient );
 
