@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		private const string DEV_AUTH_URL = "https://auth-dev.proddev.d2l/core";
 
 		[Test]
-		public async void TestTestAccessTokenProvider() {
+		public async void TestAccessTokenProvider_TokenIsValid() {
 			using (var httpClient = new HttpClient()) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( new ClaimSet( "ExpandoClient", Guid.NewGuid() ), new[] { new Scope( "*", "*", "*" ) } );
