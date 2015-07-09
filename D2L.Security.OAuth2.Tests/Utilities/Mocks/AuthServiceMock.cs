@@ -4,9 +4,8 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Keys.Local;
-using D2L.Security.OAuth2.Keys.Local.Data;
-using D2L.Security.OAuth2.Keys.Local.Default;
+using D2L.Security.OAuth2.Keys.Default;
+using D2L.Security.OAuth2.Keys.Development;
 using HttpMock;
 using Newtonsoft.Json;
 
@@ -14,14 +13,14 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 	internal sealed class AuthServiceMock {
 		private readonly IHttpServer m_server;
 		private readonly string m_host;
-		private readonly IPublicKeyProvider m_publicKeyProvider;
-		private readonly IKeyManager m_keyManager;
+		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
+		private readonly ITokenSigner m_tokenSigner;
 
 		public AuthServiceMock() {
 			m_server = HttpMockFactory.Create( out m_host );
 
 			RSAParameters parameters;
-			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( dwKeySize: Constants.KEY_SIZE ) ) {
+			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( dwKeySize: Keys.Constants.GENERATED_RSA_KEY_SIZE ) ) {
 				parameters = csp.ExportParameters( includePrivateParameters: true );
 			}
 
@@ -31,16 +30,15 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 
 #pragma warning disable 618
 			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( keyId, parameters );
-			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
+			m_publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
 #pragma warning restore 618
 
-			publicKeyDataProvider.SaveAsync( new RsaJsonWebKey( keyId, DateTime.UtcNow + keyLifetime, parameters ) );
-			m_publicKeyProvider = new PublicKeyProvider( publicKeyDataProvider, keyLifetime );
-			m_keyManager = new KeyManager( m_publicKeyProvider, privateKeyProvider );
+			m_publicKeyDataProvider.SaveAsync( new RsaJsonWebKey( keyId, DateTime.UtcNow + keyLifetime, parameters ) );
+			m_tokenSigner = new TokenSigner( privateKeyProvider );
 		}
 
 		public async Task SetupJwks() {
-			var keys = await m_publicKeyProvider
+			var keys = await m_publicKeyDataProvider
 				.GetAllAsync()
 				.SafeAsync();
 
@@ -62,7 +60,7 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 		public Uri Host { get { return new Uri( m_host ); } }
 
 		public async Task<string> SignTokenBackdoor( UnsignedToken token ) {
-			return await m_keyManager
+			return await m_tokenSigner
 				.SignAsync( token )
 				.SafeAsync();
 		}

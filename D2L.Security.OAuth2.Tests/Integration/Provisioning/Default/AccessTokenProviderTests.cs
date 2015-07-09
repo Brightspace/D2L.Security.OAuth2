@@ -3,14 +3,13 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.Keys.Local;
-using D2L.Security.OAuth2.Keys.Local.Data;
+using D2L.Security.OAuth2.Keys;
+using D2L.Security.OAuth2.Keys.Default;
+using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Provisioning.Default;
 using D2L.Security.OAuth2.Scopes;
-
 using Moq;
-
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
@@ -26,7 +25,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			public const string XSRF_TOKEN = "someXsrfToken";
 		}
 
-		private IKeyManager m_keyManager;
+		private IPublicKeyDataProvider m_publicKeyDataProvider;
+		private ITokenSigner m_tokenSigner;
 		private INonCachingAccessTokenProvider m_accessTokenProvider;
 		private JwtSecurityToken m_actualAssertion;
 
@@ -42,10 +42,11 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 				.ReturnsAsync( null );
 
 #pragma warning disable 618
-			m_keyManager = KeyManagerFactory.Create( new InMemoryPublicKeyDataProvider() );
+			m_publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
 #pragma warning restore 618
 
-			m_accessTokenProvider = new AccessTokenProvider( m_keyManager, clientMock.Object );
+			m_tokenSigner = TokenSignerFactory.Create( m_publicKeyDataProvider );
+			m_accessTokenProvider = new AccessTokenProvider( m_tokenSigner, clientMock.Object );
 		}
 
 		[Test]
@@ -63,7 +64,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 				.ProvisionAccessTokenAsync( claims, scopes )
 				.SafeAsync();
 
-			var publicKeys = (await m_keyManager.GetAllAsync().SafeAsync()).ToList();
+			var publicKeys = ( await m_publicKeyDataProvider.GetAllAsync().SafeAsync() ).ToList();
 
 			string expectedKeyId = publicKeys.First().Id.ToString();
 			string actualKeyId = m_actualAssertion.Header.SigningKeyIdentifier[ 0 ].Id;

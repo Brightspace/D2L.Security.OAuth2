@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
-
 using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Keys.Remote;
+using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
@@ -21,7 +20,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		}
 
 		async Task<IValidationResponse> IAccessTokenValidator.ValidateAsync(
-			Uri authEndpoint,
 			string token
 		) {
 			
@@ -48,10 +46,9 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new Exception( "ffooof TODO" );
 			}
 
-			D2LSecurityToken signingToken = await m_publicKeyProvider.GetSecurityTokenAsync(
-				authEndpoint: authEndpoint,
-				keyId: id
-				).SafeAsync();
+			D2LSecurityToken signingToken = await m_publicKeyProvider
+				.GetByIdAsync( id )
+				.SafeAsync();
 
 			var validationParameters = new TokenValidationParameters() {
 				ValidateAudience = false,
