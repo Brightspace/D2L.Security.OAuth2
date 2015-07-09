@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
@@ -20,7 +21,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 
 		private static class TestData {
 			public const string ISSUER = "someIssuer";
-			public const string TENANT_ID = "someTenant";
+			public static Guid TENANT_ID = Guid.NewGuid();
 			public const string USER = "someUser";
 			public const string XSRF_TOKEN = "someXsrfToken";
 		}
@@ -53,7 +54,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 		public async void ProvisionAccessTokenAsync_AssertionTokenIsSigned() {
 			var claims = new List<Claim>{
 				new Claim( Constants.Claims.ISSUER, TestData.ISSUER ),
-				new Claim( Constants.Claims.TENANT_ID, TestData.TENANT_ID ),
+				new Claim( Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() ),
 				new Claim( Constants.Claims.USER_ID, TestData.USER ),
 				new Claim( Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN )
 			};
@@ -73,7 +74,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			Assert.AreEqual( expectedKeyId, actualKeyId );
 
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.ISSUER, TestData.ISSUER );
-			AssertClaimEquals( m_actualAssertion, Constants.Claims.TENANT_ID, TestData.TENANT_ID );
+			AssertClaimEquals( m_actualAssertion, Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.USER_ID, TestData.USER );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN );
 		}
@@ -91,7 +92,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 				.SafeAsync();
 
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.ISSUER, TestData.ISSUER );
-			AssertClaimEquals( m_actualAssertion, Constants.Claims.TENANT_ID, TestData.TENANT_ID );
+			AssertClaimEquals( m_actualAssertion, Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.USER_ID, TestData.USER );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN );
 		}
