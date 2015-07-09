@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-
 using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Keys.Local;
-using D2L.Security.OAuth2.Keys.Local.Data;
-using D2L.Security.OAuth2.Keys.Local.Default;
+using D2L.Security.OAuth2.Keys.Default;
+using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Utilities;
-
 using Newtonsoft.Json;
-
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Keys {
@@ -45,7 +41,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys {
 		public async Task FromJson_GeneratedKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new PrivateKeyProvider(
 #pragma warning disable 618
-				new InMemoryPublicKeyDataProvider(),
+				PublicKeyDataProviderFactory.CreateInternal( new InMemoryPublicKeyDataProvider() ),
 #pragma warning restore 618
 				new DateTimeProvider(),
 				keyLifetime: TimeSpan.FromHours(1),

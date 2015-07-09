@@ -1,5 +1,4 @@
-﻿using System;
-using D2L.Security.OAuth2.Validation.AccessTokens;
+﻿using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 
 namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
@@ -13,7 +12,6 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 
 			mock.Setup(
 				v => v.ValidateAsync(
-					It.IsAny<Uri>(),
 					accessToken
 				)
 			).ReturnsAsync( response );
