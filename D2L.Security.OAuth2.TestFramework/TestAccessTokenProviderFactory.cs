@@ -16,13 +16,15 @@ namespace D2L.Security.OAuth2.TestFramework
 
 		public static IAccessTokenProvider Create(HttpClient httpClient, String tokenProvisioningEndpoint)
 		{
-			return Create(httpClient, tokenProvisioningEndpoint, TestGuid, TestRSAParametersProvider.RSAParameters);
+			return Create(httpClient, tokenProvisioningEndpoint, TestGuid, TestRSAParametersProvider.TestRSAParameters);
 		}
 
 		public static IAccessTokenProvider Create(HttpClient httpClient, String tokenProvisioningEndpoint, Guid guid, RSAParameters rsaParameters)
 		{
 			IAuthServiceClient authServiceClient = new AuthServiceClient( httpClient, new Uri( tokenProvisioningEndpoint ) );
+#pragma warning disable 618
 			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( guid, rsaParameters );
+#pragma warning restore 618
 			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
 			INonCachingAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( tokenSigner, authServiceClient );
 

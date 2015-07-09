@@ -66,9 +66,9 @@ namespace D2L.Security.OAuth2.TestFramework.Properties {
         ///	&lt;Exponent&gt;AQAB&lt;/Exponent&gt;
         ///	&lt;Modulus&gt;xWrs0hAtygx13cTf+AkW8NjDJz4PPqds86ilcmDAhh5j/FRreI8OJeAv9qMCQCIagRDPFE/i2B1eg9ES241FsJC8lMNYHf697zsywtbC8qmZn8T4RigDAoBSTxaWgnOYPP07FdNFA6jBXZwJ2SzC5yF84tlqDuhYUClQgbDPT2Ur522901rDMBnVJ41dUVJdOhbgOGhwu4hIpp8XJpeLNusvxC3kasxMRs1CopDYgNVUbBkVm3z5KhsudvAlB7PHoDlBLkxnUMNJhGabkgRSSDLO0JpP9trBZSUWoUkd6RQDWm6rLtSH9KvOIaOE [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string RSAParameters {
+        internal static string TestRSAParameters {
             get {
-                return ResourceManager.GetString("RSAParameters", resourceCulture);
+                return ResourceManager.GetString("TestRSAParameters", resourceCulture);
             }
         }
     }
