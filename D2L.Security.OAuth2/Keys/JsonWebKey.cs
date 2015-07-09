@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using D2L.Security.OAuth2.Keys.Default;
 
 namespace D2L.Security.OAuth2.Keys {
 
@@ -99,7 +100,8 @@ namespace D2L.Security.OAuth2.Keys {
 						id: id,
 						expiresAt: expiresAt,
 						n: data[ "n" ].ToString(),
-						e: data[ "e" ].ToString() );
+						e: data[ "e" ].ToString()
+					);
 
 				default:
 					string msg = String.Format( "'{0}' is not a supported JSON eb key type", data[ "kty" ] );

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
-using D2L.Security.OAuth2.Keys.Local;
-using D2L.Security.OAuth2.Keys.Local.Data;
-using D2L.Security.OAuth2.Keys.Local.Default;
+using D2L.Security.OAuth2.Keys;
+using D2L.Security.OAuth2.Keys.Default;
+using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Newtonsoft.Json;
 
@@ -17,14 +18,13 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			Guid id;
 			SetUp( out host, out token, out id );
 
-			IAccessTokenValidator validator = new AccessTokenValidator(
-				new D2L.Security.OAuth2.Keys.Remote.PublicKeyProvider(
-					new D2L.Security.OAuth2.Keys.Remote.Data.JwksProvider()
-				)
+			IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator(
+				new HttpClient(),
+				host
 			);
 
 			return delegate {
-				validator.ValidateAsync( host, token ).SafeAsync().GetAwaiter().GetResult();
+				validator.ValidateAsync( token ).SafeAsync().GetAwaiter().GetResult();
 			};
 		}
 
@@ -38,14 +38,13 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			host = new Uri( hostStr );
 
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
-			IPublicKeyProvider publicKeyProvider = new PublicKeyProvider( publicKeyDataProvider, TimeSpan.FromDays( 2 ) );
 			IPrivateKeyProvider privateKeyProvider = GetPrivateKeyProvider( publicKeyDataProvider );
 
 			var securityToken = privateKeyProvider.GetSigningCredentialsAsync().SafeAsync().GetAwaiter().GetResult();
 
-			IKeyManager keyManager = new KeyManager( publicKeyProvider, privateKeyProvider );
+			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
 
-			token = keyManager
+			token = tokenSigner
 				.SignAsync( new UnsignedToken(
 					"some issuer",
 					"some audience",
@@ -57,7 +56,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 				.GetAwaiter()
 				.GetResult();
 
-			var jwk = publicKeyProvider
+			var jwk = publicKeyDataProvider
 				.GetAllAsync()
 				.SafeAsync()
 				.GetAwaiter()

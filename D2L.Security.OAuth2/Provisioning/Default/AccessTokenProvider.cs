@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.Keys.Local;
+using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
 	internal sealed class AccessTokenProvider : INonCachingAccessTokenProvider {
+
 		private readonly IAuthServiceClient m_client;
-		private readonly IKeyManager m_keyManager;
-		private readonly bool m_disposeOfClient;
+		private readonly ITokenSigner m_tokenSigner;
 
 		public AccessTokenProvider(
-			IKeyManager keyManager,
-			IAuthServiceClient authServiceClient,
-			bool disposeOfClient = true
+			ITokenSigner tokenSigner,
+			IAuthServiceClient authServiceClient
 		) {
-			m_keyManager = keyManager;
+			m_tokenSigner = tokenSigner;
 			m_client = authServiceClient;
-			m_disposeOfClient = disposeOfClient;
 		}
 
 		Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
@@ -53,19 +51,13 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				notBefore: now,
 				expiresAt: now + ProvisioningConstants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
 
-			string assertion = await m_keyManager
+			string assertion = await m_tokenSigner
 				.SignAsync( unsignedToken )
 				.SafeAsync();
 
 			return await m_client
 				.ProvisionAccessTokenAsync( assertion, scopes )
 				.SafeAsync();
-		}
-
-		public void Dispose() {
-			if( m_disposeOfClient ) {
-				m_client.Dispose();
-			}
 		}
 	}
 }
