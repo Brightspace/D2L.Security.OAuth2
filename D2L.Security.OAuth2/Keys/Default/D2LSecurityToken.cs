@@ -108,6 +108,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			if( m_key.Value is RsaSecurityKey ) {
 				signatureAlgorithm = SecurityAlgorithms.RsaSha256Signature;
 				digestAlgorithm = SecurityAlgorithms.Sha256Digest;
+			} else if( m_key.Value is EcDsaSecurityKey ) {
+				var ecdsaKey = m_key.Value as EcDsaSecurityKey;
+				signatureAlgorithm = ecdsaKey.SignatureAlgorithm;
+				digestAlgorithm = ecdsaKey.DigestAlgorithm;
 			} else {
 				throw new NotImplementedException();
 			}
@@ -125,14 +129,19 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public virtual JsonWebKey ToJsonWebKey( bool includePrivateParameters = false ) {
-			if( m_key.Value as RsaSecurityKey == null ) {
-				throw new NotImplementedException();
+			if( m_key.Value is RsaSecurityKey ) {
+				var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
+				RSAParameters p = csp.ExportParameters( includePrivateParameters );
+
+				return new RsaJsonWebKey( KeyId, ValidTo, p );
+			} else if( m_key.Value is EcDsaSecurityKey && !includePrivateParameters ) {
+				var ecDsa = GetAsymmetricAlgorithm() as ECDsaCng;
+				byte[] publicBlob = ecDsa.Key.Export( CngKeyBlobFormat.EccPublicBlob );
+
+				return new EcDsaJsonWebKey( KeyId, ValidTo, publicBlob );
 			}
 
-			var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
-			RSAParameters p = csp.ExportParameters( includePrivateParameters );
-
-			return new RsaJsonWebKey( KeyId, ValidTo, p );
+			throw new NotImplementedException();
 		}
 
 		public virtual void Dispose() {
