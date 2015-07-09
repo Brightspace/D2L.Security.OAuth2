@@ -17,7 +17,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		/// </summary>
 		public ClaimSet(
 			string issuer,
-			string tenantId = null,
+			Guid? tenantId = null,
 			string user = null,
 			string xsrfToken = null
 		) {
@@ -29,8 +29,8 @@ namespace D2L.Security.OAuth2.Provisioning {
 
 			m_claims.Add( new Claim( Constants.Claims.ISSUER, issuer ) );
 
-			if( !string.IsNullOrWhiteSpace( tenantId ) ) {
-				m_claims.Add( new Claim( Constants.Claims.TENANT_ID, tenantId ) );
+			if( tenantId.HasValue ) {
+				m_claims.Add( new Claim( Constants.Claims.TENANT_ID, tenantId.Value.ToString() ) );
 			}
 			
 			if( !string.IsNullOrWhiteSpace( user ) ) {
