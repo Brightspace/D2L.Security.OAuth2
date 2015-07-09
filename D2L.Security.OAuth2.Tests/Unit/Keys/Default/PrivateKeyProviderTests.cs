@@ -31,7 +31,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 			m_mockDateTimeProvider = new Mock<IDateTimeProvider>();
 			m_mockDateTimeProvider.Setup( dp => dp.UtcNow ).Returns( () => DateTime.UtcNow );
 
-			m_privateKeyProvider = new PrivateKeyProvider(
+			m_privateKeyProvider = new RsaPrivateKeyProvider(
 				m_mockPublicKeyDataProvider.Object,
 				m_mockDateTimeProvider.Object,
 				KEY_LIFETIME,

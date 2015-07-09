@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal sealed class PrivateKeyProvider : IPrivateKeyProvider {
+	internal sealed class EcDsaPrivateKeyProvider : IPrivateKeyProvider {
 
 		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
 		private readonly IDateTimeProvider m_dateTimeProvider;
+		private readonly CngAlgorithm m_algorithm;
 		private readonly TimeSpan m_keyLifetime;
 		private readonly TimeSpan m_keyRotationPeriod;
 
@@ -17,9 +18,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private RefCountedD2LSecurityToken m_privateKey;
 
-		public PrivateKeyProvider(
+		public EcDsaPrivateKeyProvider(
 			ISanePublicKeyDataProvider publicKeyDataProvider,
 			IDateTimeProvider dateTimeProvider,
+			CngAlgorithm algorithm,
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
@@ -29,6 +31,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			m_publicKeyDataProvider = publicKeyDataProvider;
 			m_dateTimeProvider = dateTimeProvider;
+			m_algorithm = algorithm;
 			m_keyLifetime = keyLifetime;
 			m_keyRotationPeriod = keyRotationPeriod;
 		}
@@ -73,16 +76,23 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			DateTime now = m_dateTimeProvider.UtcNow;
 			DateTime expiresAt = now + m_keyLifetime;
 
-			RSAParameters publicKey;
-			RSAParameters privateKey;
-			using( var csp = new RSACryptoServiceProvider( Constants.GENERATED_RSA_KEY_SIZE ) { PersistKeyInCsp = false } ) {
-				publicKey = csp.ExportParameters( includePrivateParameters: false );
-				privateKey = csp.ExportParameters( includePrivateParameters: true );
+			var creationParams = new CngKeyCreationParameters() {
+				ExportPolicy = CngExportPolicies.AllowPlaintextExport,
+				KeyUsage = CngKeyUsages.Signing
+			};
+
+			byte[] publicBlob;
+			byte[] privateBlob;
+			using( var cngKey = CngKey.Create( m_algorithm, null, creationParams ) ) {
+				using( ECDsaCng ecDsa = new ECDsaCng( cngKey ) ) {
+					publicBlob = ecDsa.Key.Export( CngKeyBlobFormat.EccPublicBlob );
+					privateBlob = ecDsa.Key.Export( CngKeyBlobFormat.EccPrivateBlob );
+				}
 			}
 
 			Guid keyId = Guid.NewGuid();
 
-			var jwk = new RsaJsonWebKey( keyId, expiresAt, publicKey );
+			var jwk = new EcDsaJsonWebKey( keyId, expiresAt, publicBlob );
 
 			await m_publicKeyDataProvider.SaveAsync( jwk ).SafeAsync();
 
@@ -91,10 +101,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				validFrom: now,
 				validTo: expiresAt,
 				keyFactory: () => {
-					var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
-					csp.ImportParameters( privateKey );
-					var key = new RsaSecurityKey( csp );
-					return key;
+					using( var cng = CngKey.Import( privateBlob, CngKeyBlobFormat.EccPrivateBlob ) ) {
+						// ECDsaCng copies the CngKey, hence the using
+						var ecDsa = new ECDsaCng( cng );
+						return new EcDsaSecurityKey( ecDsa );
+					}
 				}
 			);
 		}

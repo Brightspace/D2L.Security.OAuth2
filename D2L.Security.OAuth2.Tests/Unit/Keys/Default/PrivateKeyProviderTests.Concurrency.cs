@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 			int keyOverlapIntervalMilliseconds
 			) {
 
-			IPrivateKeyProvider provider = new PrivateKeyProvider(
+			IPrivateKeyProvider provider = new RsaPrivateKeyProvider(
 				m_mockPublicKeyDataProvider.Object,
 				m_mockDateTimeProvider.Object,
 				TimeSpan.FromMilliseconds( keyLifeTimeMilliseconds ),
