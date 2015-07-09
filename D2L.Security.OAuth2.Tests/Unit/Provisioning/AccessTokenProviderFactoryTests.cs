@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
@@ -31,8 +32,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 			IAccessTokenProvider accessTokenProvider =
 				AccessTokenProviderFactory.Create(
 					tokenSigner: m_keyManagerMock.Object,
-					httpClient: null,
-					authEndpoint: null,
+					httpClient: new HttpClient(),
+					authEndpoint: new Uri( "http://foo.d2l" ),
 					tokenRefreshGracePeriod: TimeSpan.FromMinutes( 2 )
 				);
 
@@ -52,8 +53,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning {
 			IAccessTokenProvider accessTokenProvider =
 				AccessTokenProviderFactory.Create(
 					tokenSigner: m_keyManagerMock.Object,
-					httpClient: null,
-					authEndpoint: null,
+					httpClient: new HttpClient(),
+					authEndpoint: new Uri( "http://foo.d2l" ),
 					tokenRefreshGracePeriod: TimeSpan.FromMinutes( 2 )
 				);
 

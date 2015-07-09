@@ -27,8 +27,15 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			HttpClient httpClient,
 			Uri authEndpoint
 		) {
-			m_client = httpClient;
+			if( httpClient == null ) {
+				throw new ArgumentNullException( "httpClient" );
+			}
 
+			if( authEndpoint == null ) {
+				throw new ArgumentNullException( "authEndpoint" );
+			}
+
+			m_client = httpClient;
 			m_tokenProvisioningEndpoint = new Uri( authEndpoint + TOKEN_PATH );
 		}
 
