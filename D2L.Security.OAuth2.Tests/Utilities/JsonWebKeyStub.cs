@@ -1,6 +1,7 @@
 ﻿using System;
 
 using D2L.Security.OAuth2.Keys;
+using D2L.Security.OAuth2.Keys.Default;
 
 namespace D2L.Security.OAuth2.Tests.Utilities {
 	internal class JsonWebKeyStub : JsonWebKey {

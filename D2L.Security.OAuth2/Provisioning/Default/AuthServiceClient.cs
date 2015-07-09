@@ -11,39 +11,32 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 	/// <summary>
 	/// Calls the Auth Service to provision access tokens
 	/// </summary>
-	/// <remarks>This type is disposable</remarks>
-	public sealed class AuthServiceClient : IAuthServiceClient {
+	internal sealed class AuthServiceClient : IAuthServiceClient {
+
+		private const string TOKEN_PATH = "/connect/token";
 
 		private readonly HttpClient m_client;
-		private readonly bool m_disposeClient;
 		private readonly Uri m_tokenProvisioningEndpoint;
 
 		/// <summary>
 		/// Constructs a new <see cref="AuthServiceClient"/>
 		/// </summary>
-		/// <param name="tokenProvisioningEndpoint">The token provisioning endpoint on the auth service</param>
-		public AuthServiceClient(
-			Uri tokenProvisioningEndpoint
-		)
-			: this(
-			  httpClient: new HttpClient(),
-			  tokenProvisioningEndpoint: tokenProvisioningEndpoint
-			) { }
-
-		/// <summary>
-		/// Constructs a new <see cref="AuthServiceClient"/>
-		/// </summary>
 		/// <param name="httpClient">An http client used to communicate with the auth service.</param>
-		/// <param name="tokenProvisioningEndpoint">The token provisioning endpoint on the auth service</param>
-		/// <param name="disposeHttpClient">If true, <paramref name="httpClient"/> will be disposed of</param>
+		/// <param name="authEndpoint">The token provisioning endpoint on the auth service</param>
 		public AuthServiceClient(
 			HttpClient httpClient,
-			Uri tokenProvisioningEndpoint,
-			bool disposeHttpClient = true
+			Uri authEndpoint
 		) {
+			if( httpClient == null ) {
+				throw new ArgumentNullException( "httpClient" );
+			}
+
+			if( authEndpoint == null ) {
+				throw new ArgumentNullException( "authEndpoint" );
+			}
+
 			m_client = httpClient;
-			m_disposeClient = disposeHttpClient;
-			m_tokenProvisioningEndpoint = tokenProvisioningEndpoint;
+			m_tokenProvisioningEndpoint = new Uri( authEndpoint + TOKEN_PATH );
 		}
 
 		/// <summary>
@@ -64,15 +57,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 					IAccessToken accessToken = SerializationHelper.ExtractAccessToken( resultStream );
 					return accessToken;
 				}
-			}
-		}
-
-		/// <summary>
-		/// Disposes the <see cref="AuthServiceClient"/>
-		/// </summary>
-		public void Dispose() {
-			if( m_disposeClient ) {
-				m_client.Dispose();
 			}
 		}
 

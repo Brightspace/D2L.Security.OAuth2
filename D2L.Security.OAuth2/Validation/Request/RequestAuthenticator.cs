@@ -17,7 +17,6 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		}
 
 		Task<AuthenticationResponse> IRequestAuthenticator.AuthenticateAsync(
-			Uri authEndpoint,
 			HttpRequestMessage request,
 			AuthenticationMode authMode
 		) {
@@ -25,11 +24,10 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			string bearerToken = request.GetBearerTokenValue();
 			string xsrfToken = request.GetXsrfValue();
 
-			return AuthenticateHelper( authEndpoint, cookie, xsrfToken, bearerToken, authMode );
+			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
 		}
 
 		Task<AuthenticationResponse> IRequestAuthenticator.AuthenticateAsync(
-			Uri authEndpoint,
 			HttpRequest request,
 			AuthenticationMode authMode
 		) {
@@ -37,11 +35,10 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			string bearerToken = request.GetBearerTokenValue();
 			string xsrfToken = request.GetXsrfValue();
 
-			return AuthenticateHelper( authEndpoint, cookie, xsrfToken, bearerToken, authMode );
+			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
 		}
 
 		private async Task<AuthenticationResponse> AuthenticateHelper(
-			Uri authEndpoint,
 			string cookie,
 			string xsrfToken,
 			string bearerToken,
@@ -67,10 +64,9 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			string token = cookieExists ? cookie : bearerToken;
 			
-			IValidationResponse validationResponse = await m_accessTokenValidator.ValidateAsync(
-				authEndpoint,
-				token
-			).SafeAsync();
+			IValidationResponse validationResponse = await m_accessTokenValidator
+				.ValidateAsync( token )
+				.SafeAsync();
 
 			if( validationResponse.Status == ValidationStatus.Expired ) {
 				return new AuthenticationResponse(
