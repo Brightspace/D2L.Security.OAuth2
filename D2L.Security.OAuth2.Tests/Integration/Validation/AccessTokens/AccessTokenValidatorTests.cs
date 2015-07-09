@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.Keys.Local;
-using D2L.Security.OAuth2.Keys.Remote;
-using D2L.Security.OAuth2.Keys.Remote.Data;
+using D2L.Security.OAuth2.Keys;
+using D2L.Security.OAuth2.Keys.Caching;
+using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Tests.Utilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
@@ -20,9 +21,11 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp() {
-			m_authService = new AuthServiceMock();	
-			var publicKeyProvider = new PublicKeyProvider( new JwksProvider());
-			m_accessTokenValidator = new AccessTokenValidator( publicKeyProvider );
+			m_authService = new AuthServiceMock();
+			m_accessTokenValidator = AccessTokenValidatorFactory.CreateRemoteValidator(
+				new HttpClient(),
+				m_authService.Host
+			);
 
 			m_authService.SetupJwks().Wait();
 		}
@@ -41,7 +44,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 				.SafeAsync();
 
 			IValidationResponse response = await m_accessTokenValidator
-				.ValidateAsync( m_authService.Host, token )
+				.ValidateAsync( token )
 				.SafeAsync();
 
 			Assert.AreEqual( ValidationStatus.Success, response.Status );
@@ -70,7 +73,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 
 			Assert.Throws<SignatureVerificationFailedException>( () => {
 				var response = m_accessTokenValidator
-					.ValidateAsync( m_authService.Host, token )
+					.ValidateAsync( token )
 					.GetAwaiter()
 					.GetResult();
 			} );
@@ -83,7 +86,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 
 			Assert.Throws<PublicKeyNotFoundException>( () => {
 				var response = m_accessTokenValidator
-					.ValidateAsync( m_authService.Host, jwtWithBadKeyId )
+					.ValidateAsync( jwtWithBadKeyId )
 					.GetAwaiter()
 					.GetResult();
 			} );

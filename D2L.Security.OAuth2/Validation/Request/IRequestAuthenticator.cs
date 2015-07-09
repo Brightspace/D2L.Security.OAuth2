@@ -15,15 +15,12 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <summary>
 		/// Authenticates a token contained in an <see cref="HttpRequestMessage"/>
 		/// </summary>
-		/// <param name="authEndpoint">The endpoint of the auth service, which usually ends 
-		/// with /core/</param>
 		/// <param name="request">The web request object</param>
 		/// <param name="authMode">The authentication mode; xsrf validation should NOT be 
 		/// skipped for requests coming from a browser</param>
 		/// <returns>An object containting both the status of the authentication request 
 		/// and a principal containing claims</returns>
 		Task<AuthenticationResponse> AuthenticateAsync(
-			Uri authEndpoint,
 			HttpRequestMessage request,
 			AuthenticationMode authMode = AuthenticationMode.Full
 		);
@@ -31,15 +28,12 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <summary>
 		/// Authenticates a token contained in an <see cref="HttpRequest"/>
 		/// </summary>
-		/// <param name="authEndpoint">The endpoint of the auth service, which usually 
-		/// ends with /core/</param>
 		/// <param name="request">The web request object.</param>
 		/// <param name="authMode">The authentication mode. Xsrf validation should NOT 
 		/// be skipped for requests coming from a browser</param>
 		/// <returns>An object containting both the status of the authentication 
 		/// request and a principal containing claims</returns>
 		Task<AuthenticationResponse> AuthenticateAsync(
-			Uri authEndpoint,
 			HttpRequest request,
 			AuthenticationMode authMode = AuthenticationMode.Full
 		);

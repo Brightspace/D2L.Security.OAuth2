@@ -29,7 +29,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			string requestBody = null;
 			Action<string> requestBodyReceiver = x => requestBody = x;
 
-			using( var client = CreateMockedClient( requestBodyReceiver ) ) {
+			using( var httpClient = CreateMockedHttpClient( requestBodyReceiver ) ) {
+				var client = CreateClient( httpClient );
 				var assertion = "123";
 				var result = await client.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() );
 
@@ -49,7 +50,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			string requestBody = null;
 			Action<string> requestBodyReceiver = x => requestBody = x;
 
-			using( var client = CreateMockedClient( requestBodyReceiver ) ) {
+			using( var httpClient = CreateMockedHttpClient( requestBodyReceiver ) ) {
+				var client = CreateClient( httpClient );
 				var assertion = "123";
 				var result = await client.ProvisionAccessTokenAsync( assertion, new Scope[] {
 					new Scope( "foo", "bar", "baz" )
@@ -71,7 +73,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			string requestBody = null;
 			Action<string> requestBodyReceiver = x => requestBody = x;
 
-			using( var client = CreateMockedClient( requestBodyReceiver ) ) {
+			using( var httpClient = CreateMockedHttpClient( requestBodyReceiver ) ) {
+				var client = CreateClient( httpClient );
 				var assertion = "123";
 				var result = await client.ProvisionAccessTokenAsync( assertion, new Scope[] {
 					new Scope( "foo", "bar", "baz" ),
@@ -91,7 +94,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 
 		[Test]
 		async public void CorrectlyReadsResponse() {
-			using( var client = CreateMockedClient( x => { }, responseContent: TestData.ValidHttpResponseBody ) ) {
+			using( var httpClient = CreateMockedHttpClient( x => { }, responseContent: TestData.ValidHttpResponseBody ) ) {
+				var client = CreateClient( httpClient );
 				var assertion = "123";
 				var result = await client.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() );
 
@@ -99,7 +103,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			}
 		}
 
-		private static IAuthServiceClient CreateMockedClient(
+		private static HttpClient CreateMockedHttpClient(
 			Action<string> requestBodyReceiver,
 			HttpStatusCode responseStatus = HttpStatusCode.OK,
 			string responseContent = TestData.ValidHttpResponseBody
@@ -122,12 +126,14 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 				} ); ;
 
 			var httpClient = new HttpClient( messageHandler.Object, true );
+			return httpClient;
+		}
+
+		private static IAuthServiceClient CreateClient( HttpClient httpClient ) {
 			var client = new AuthServiceClient(
 				httpClient: httpClient,
-				disposeHttpClient: true,
-				tokenProvisioningEndpoint: new Uri( "http://foo.d2l" )
+				authEndpoint: new Uri( "http://foo.d2l" )
 			);
-
 			return client;
 		}
 
