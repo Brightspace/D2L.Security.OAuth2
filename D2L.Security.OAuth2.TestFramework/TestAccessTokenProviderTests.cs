@@ -13,7 +13,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		{
 			IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create("https://auth-dev.proddev.d2l/core/connect/token");
 
-			IAccessToken token = await provider.ProvisionAccessTokenAsync( new ClaimSet( "ExpandoClient", Guid.NewGuid().ToString() ), new[] { new Scope( "*", "*", "*" ) } );
+			IAccessToken token = await provider.ProvisionAccessTokenAsync( new ClaimSet( "ExpandoClient", Guid.NewGuid() ), new[] { new Scope( "*", "*", "*" ) } );
 
 			Console.WriteLine(token.Token);
 		}
