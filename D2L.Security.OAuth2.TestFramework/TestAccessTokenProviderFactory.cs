@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading;
-using D2L.Security.OAuth2.Keys.Local;
-using D2L.Security.OAuth2.Keys.Local.Default;
+using D2L.Security.OAuth2.Keys;
+using D2L.Security.OAuth2.Keys.Default;
+using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Provisioning.Default;
-using Moq;
 
 namespace D2L.Security.OAuth2.TestFramework
 {
@@ -24,13 +25,12 @@ namespace D2L.Security.OAuth2.TestFramework
 			Q = Convert.FromBase64String( "3lCYzfXalBUpK/2wOIeB/zIU5Gmw9t3pyRdyduCkCuziGKZEZjWwSXt/bkw1wVLVmo3hPSWQJ4WruhE/9WZXeDQeBm7HVcML/lBRnjjqzAzn1HDbC3UfEAB+YvmD0/uuTMGGSPncr8+LWpG8QpUjk5KCvRX9lnATqz+NUymsFlc=" ),
 		};
 
-		public static IAccessTokenProvider Create(String tokenProvisioningEndpoint)
+		public static IAccessTokenProvider Create(HttpClient httpClient, String tokenProvisioningEndpoint)
 		{
-			IAuthServiceClient authServiceClient = new AuthServiceClient( new Uri( tokenProvisioningEndpoint ) );
+			IAuthServiceClient authServiceClient = new AuthServiceClient( httpClient, new Uri( tokenProvisioningEndpoint ) );
 
-			IPublicKeyProvider pub = new Mock<IPublicKeyProvider>( MockBehavior.Strict ).Object;
 			IPrivateKeyProvider priv = new StaticPrivateKeyProvider( Guid, ExpandoPrivateRsaKey );
-			IKeyManager km = new KeyManager( pub, priv );
+			ITokenSigner km = new TokenSigner( priv );
 
 			INonCachingAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( km, authServiceClient );
 
