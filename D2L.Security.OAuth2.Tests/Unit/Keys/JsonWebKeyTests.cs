@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
@@ -38,8 +39,21 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys {
 		}
 
 		[Test]
+		[TestCase( @"{""kid"":""fae33c85-e421-40f5-bebb-8ec8ab778be4"",""kty"":""EC"",""use"":""sig"",""crv"":""P-256"",""x"":""AL09T4hmZ8kGWPSU8mJ-3g3I2kEVZOYhclTWDCNu-0qA"",""y"":""IDCL6vha_57X2KbTO5mkBibZIL7MTi4DGMEDUdM4gnI""}" )]
+		[TestCase( @"{""kid"":""fae33c85-e421-40f5-bebb-8ec8ab778be4"",""kty"":""EC"",""use"":""sig"",""crv"":""P-384"",""x"":""AKfOQlLSk7xXUVaU2kkYUWb0ZvSmIQy3DgJqmYu66TBrFXOMIGvvfEc-qKviYhfKpQ"",""y"":""cCrZCHsHNcnSXw1YoFxiL2qTjVEUf7_Cy4vMTt55CyX3xIxFgkNbd-U4oLi_sgVP""}" )]
+		[TestCase( @"{""kid"":""fae33c85-e421-40f5-bebb-8ec8ab778be4"",""kty"":""EC"",""use"":""sig"",""crv"":""P-521"",""x"":""APMnS32Z3PMZ1cEO6GKi-9VtdVssHyVCWAWdIJl2yuhlmtDgulS8vZ7yjPokw80P0c4eOxlACNrT_8_FiWY5K0l4"",""y"":""Ad58CFD37NRSVJLEgcrxg4ExYFsDZ6Mv-WKjIz3QUVgHo_FksDQ_ZT-7SaKY1DTU64Xc2F9NQpeAOAWySnJIyIQN""}" )]
+		public void FromJson_ParsesStaticEcKeyWithoutExp( string jwk ) {
+			JsonWebKey key = JsonWebKey.FromJson( jwk );
+
+			Assert.AreEqual( Guid.Parse( "fae33c85-e421-40f5-bebb-8ec8ab778be4" ), key.Id );
+			Assert.IsFalse( key.ExpiresAt.HasValue );
+
+			Assert.DoesNotThrow( () => key.ToSecurityToken() );
+		}
+
+		[Test]
 		public async Task FromJson_GeneratedKeyRoundTrips() {
-			IPrivateKeyProvider privateKeyProvider = new PrivateKeyProvider(
+			IPrivateKeyProvider privateKeyProvider = new RsaPrivateKeyProvider(
 #pragma warning disable 618
 				PublicKeyDataProviderFactory.CreateInternal( new InMemoryPublicKeyDataProvider() ),
 #pragma warning restore 618
@@ -49,6 +63,33 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys {
 
 			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 			JsonWebKey expectedKey = token.ToJsonWebKey();
+
+			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
+
+			JsonWebKey actualKey = JsonWebKey.FromJson( expectedJson );
+			string actualJson = JsonConvert.SerializeObject( actualKey.ToJwkDto() );
+
+			Assert.AreEqual( expectedKey.Id, actualKey.Id );
+			Assert.AreEqual( expectedKey.ExpiresAt.Value.ToUnixTime(), actualKey.ExpiresAt.Value.ToUnixTime() );
+			Assert.AreEqual( expectedJson, actualJson );
+		}
+
+		[Test]
+		public async Task FromJson_GeneratedECKeyRoundTrips() {
+			IPrivateKeyProvider privateKeyProvider = new EcDsaPrivateKeyProvider(
+#pragma warning disable 618
+				PublicKeyDataProviderFactory.CreateInternal( new InMemoryPublicKeyDataProvider() ),
+#pragma warning restore 618
+ new DateTimeProvider(),
+				keyLifetime: TimeSpan.FromHours( 1 ),
+				keyRotationPeriod: TimeSpan.FromMilliseconds( 42 ),
+				algorithm: CngAlgorithm.ECDsaP256
+			);
+
+			JsonWebKey expectedKey;
+			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync() ) {
+				expectedKey = token.ToJsonWebKey();
+			}
 
 			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
 
