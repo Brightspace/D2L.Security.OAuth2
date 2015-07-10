@@ -63,9 +63,6 @@ namespace D2L.Security.OAuth2.Keys {
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
-
-			IDateTimeProvider dateTimeProvider = new DateTimeProvider();
-
 			CngAlgorithm algorithm;
 			switch( curve ) {
 				case Curve.P521: {
@@ -83,15 +80,17 @@ namespace D2L.Security.OAuth2.Keys {
 				}
 			}
 
-			IPrivateKeyProvider privateKeyProvider = new EcDsaPrivateKeyProvider(
-				PublicKeyDataProviderFactory.CreateInternal( publicKeyDataProvider ),
-				dateTimeProvider,
-				keyLifetime: keyLifetime,
-				keyRotationPeriod: keyRotationPeriod,
-				algorithm: algorithm
-			);
+			IPrivateKeyProvider privateKeyProvider = EcDsaPrivateKeyProvider
+				.Factory
+				.Create(
+					publicKeyDataProvider,
+					keyLifetime,
+					keyRotationPeriod,
+					algorithm
+				);
 
-			return new TokenSigner( privateKeyProvider );
+			var tokenSigner = new TokenSigner( privateKeyProvider );
+			return tokenSigner;
 		}
 	}
 }

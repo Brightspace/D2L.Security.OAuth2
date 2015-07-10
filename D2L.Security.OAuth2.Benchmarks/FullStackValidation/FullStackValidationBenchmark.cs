@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			};
 		}
 
-		protected abstract IPrivateKeyProvider GetPrivateKeyProvider( IPublicKeyDataProvider p );
+		protected abstract ITokenSigner GetTokenSigner( IPublicKeyDataProvider p );
 
 
 		private void SetUp( out Uri host, out string token, out Guid id ) {
@@ -36,13 +36,10 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			var server = HttpMockFactory.Create( out hostStr );
 
 			host = new Uri( hostStr );
-
+#pragma warning disable 618
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
-			IPrivateKeyProvider privateKeyProvider = GetPrivateKeyProvider( publicKeyDataProvider );
-
-			var securityToken = privateKeyProvider.GetSigningCredentialsAsync().SafeAsync().GetAwaiter().GetResult();
-
-			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
+#pragma warning restore 618
+			ITokenSigner tokenSigner = GetTokenSigner( publicKeyDataProvider );
 
 			token = tokenSigner
 				.SignAsync( new UnsignedToken(

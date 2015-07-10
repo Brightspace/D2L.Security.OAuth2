@@ -60,10 +60,15 @@
     <Compile Include="Keys\Default\D2LSecurityToken.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Keys\Caching\InMemoryPublicKeyCache.cs" />
+    <Compile Include="Keys\Default\D2LSecurityTokenFactory.cs" />
     <Compile Include="Keys\Default\EcDsaJsonWebKey.cs" />
     <Compile Include="Keys\Default\EcDsaJsonWebKey.ECCPublicKeyBlobFormatter.cs">
       <DependentUpon>EcDsaJsonWebKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Keys\Default\EcDsaPrivateKeyProvider.Factory.cs">
+      <DependentUpon>EcDsaPrivateKeyProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\RotatingPrivateKeyProvider.cs" />
     <Compile Include="Keys\Default\EcDsaPrivateKeyProvider.cs" />
     <Compile Include="Keys\Default\EcDsaSecurityKey.cs" />
     <Compile Include="Keys\Default\EcDsaSecurityKey.EcDsaSignatureDeformatter.cs">
@@ -76,8 +81,13 @@
       <DependentUpon>EcDsaSecurityKey.cs</DependentUpon>
     </Compile>
     <Compile Include="Keys\Default\ExpiringPublicKeyDataProvider.cs" />
+    <Compile Include="Keys\Default\ID2LSecurityTokenFactory.cs" />
     <Compile Include="Keys\Default\ISanePublicKeyDataProvider.cs" />
     <Compile Include="Keys\Default\LocalPublicKeyProvider.cs" />
+    <Compile Include="Keys\Default\RsaPrivateKeyProvider.Factory.cs">
+      <DependentUpon>RsaPrivateKeyProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\SavingPrivateKeyProvider.cs" />
     <Compile Include="Keys\EcDsaTokenSignerFactory.cs" />
     <Compile Include="Keys\PublicKeyDataProviderFactory.cs" />
     <Compile Include="Keys\Default\RefCountedD2LSecurityToken.cs" />
