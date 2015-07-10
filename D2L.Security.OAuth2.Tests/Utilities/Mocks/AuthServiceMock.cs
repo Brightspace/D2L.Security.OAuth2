@@ -54,23 +54,25 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 								break;
 						}
 
-						m_privateKeyProvider = new EcDsaPrivateKeyProvider(
-							m_publicKeyDataProvider,
-							new DateTimeProvider(),
-							keyLifetime: keyLifetime,
-							keyRotationPeriod: keyRotationPeriod,
-							algorithm: curve
-						);
+						m_privateKeyProvider = EcDsaPrivateKeyProvider
+							.Factory
+							.Create(
+								m_publicKeyDataProvider,
+								keyLifetime,
+								keyRotationPeriod,
+								curve
+							);
 						break;
 					}
 				case KeyType.RSA:
 				default: {
-						m_privateKeyProvider = new RsaPrivateKeyProvider(
-							m_publicKeyDataProvider,
-							new DateTimeProvider(),
-							keyLifetime: keyLifetime,
-							keyRotationPeriod: keyRotationPeriod
-						);
+						m_privateKeyProvider = RsaPrivateKeyProvider
+							.Factory
+							.Create(
+								m_publicKeyDataProvider,
+								keyLifetime,
+								keyRotationPeriod
+							);
 						break;
 					}
 			}
