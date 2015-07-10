@@ -36,12 +36,14 @@ namespace D2L.Security.OAuth2.Keys {
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
-			var privateKeyProvider = new RsaPrivateKeyProvider(
-				PublicKeyDataProviderFactory.CreateInternal( publicKeyDataProvider ),
-				new DateTimeProvider(),
-				keyLifetime: keyLifetime,
-				keyRotationPeriod: keyRotationPeriod
-			);
+			IPrivateKeyProvider privateKeyProvider = RsaPrivateKeyProvider
+				.Factory
+				.Create(
+					publicKeyDataProvider,
+					keyLifetime,
+					keyRotationPeriod
+				);
+
 			var tokenSigner = new TokenSigner( privateKeyProvider );
 			return tokenSigner;
 		}

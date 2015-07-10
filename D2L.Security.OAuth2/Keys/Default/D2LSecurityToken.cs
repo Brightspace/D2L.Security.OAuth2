@@ -20,6 +20,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		// respecting the thread safety warning of those implemtnations
 		private readonly ThreadLocal<AsymmetricSecurityKey> m_key;
 
+		protected D2LSecurityToken() { }
+
 		public D2LSecurityToken(
 			Guid id,
 			DateTime validFrom,
@@ -40,7 +42,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 		}
 
-		public Guid KeyId { get { return m_id; } }
+		public virtual Guid KeyId { get { return m_id; } }
 		public override string Id { get { return KeyId.ToString(); } }
 
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
@@ -149,5 +151,6 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				m_key.Dispose();
 			}
 		}
+
 	}
 }

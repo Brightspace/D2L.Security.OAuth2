@@ -1,19 +1,11 @@
-﻿using System;
-using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Keys.Default;
-using D2L.Security.OAuth2.Utilities;
+﻿using D2L.Security.OAuth2.Keys;
 
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 	internal sealed class RS256 : FullStackValidationBenchmark, IBenchmark {
 
-		protected override IPrivateKeyProvider GetPrivateKeyProvider( IPublicKeyDataProvider p ) {
-			return new RsaPrivateKeyProvider(
-				PublicKeyDataProviderFactory.CreateInternal( p ),
-				new DateTimeProvider(),
-				TimeSpan.FromDays( 2 ),
-				TimeSpan.FromDays( 1 )
-			);
+		protected override ITokenSigner GetTokenSigner( IPublicKeyDataProvider p ) {
+			return RsaTokenSignerFactory.Create( p );
 		}
 
 	}

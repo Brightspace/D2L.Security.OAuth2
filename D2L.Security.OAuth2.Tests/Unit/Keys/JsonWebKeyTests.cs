@@ -54,12 +54,11 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys {
 		[Test]
 		public async Task FromJson_GeneratedKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new RsaPrivateKeyProvider(
-#pragma warning disable 618
-				PublicKeyDataProviderFactory.CreateInternal( new InMemoryPublicKeyDataProvider() ),
-#pragma warning restore 618
-				new DateTimeProvider(),
-				keyLifetime: TimeSpan.FromHours(1),
-				keyRotationPeriod: TimeSpan.FromMilliseconds( 42 ) );
+				new D2LSecurityTokenFactory(
+					new DateTimeProvider(),
+					TimeSpan.FromHours( 1 )
+				)
+			);
 
 			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 			JsonWebKey expectedKey = token.ToJsonWebKey();
@@ -77,13 +76,11 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys {
 		[Test]
 		public async Task FromJson_GeneratedECKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new EcDsaPrivateKeyProvider(
-#pragma warning disable 618
-				PublicKeyDataProviderFactory.CreateInternal( new InMemoryPublicKeyDataProvider() ),
-#pragma warning restore 618
- new DateTimeProvider(),
-				keyLifetime: TimeSpan.FromHours( 1 ),
-				keyRotationPeriod: TimeSpan.FromMilliseconds( 42 ),
-				algorithm: CngAlgorithm.ECDsaP256
+				new D2LSecurityTokenFactory(
+					new DateTimeProvider(),
+					TimeSpan.FromHours( 1 )
+				),
+				CngAlgorithm.ECDsaP256
 			);
 
 			JsonWebKey expectedKey;
