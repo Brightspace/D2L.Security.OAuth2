@@ -61,6 +61,11 @@ namespace D2L.Security.WebApiAuth.Handler {
 			return base.SendAsync( request, cancellationToken );
 		}
 
+		/// <summary>
+		/// See https://msdn.microsoft.com/en-us/library/b1yfkh5e(v=VS.100).aspx 
+		/// (MSDN patterns for dealing with disposables; covers derived class scenarios.
+		/// This is relevant because we're also inheriting from a disposable base class.)
+		/// </summary>
 		protected override void Dispose( bool disposing ) {
 			if( !m_isDisposed ) {
 				if( disposing ) {
