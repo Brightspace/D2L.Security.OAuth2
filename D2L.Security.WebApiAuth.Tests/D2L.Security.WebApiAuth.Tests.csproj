@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Security.OAuth2, Version=2.2.6.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="D2L.Security.OAuth2, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\D2L.Security.OAuth2.2.2.6.0\lib\net451\D2L.Security.OAuth2.dll</HintPath>
+      <HintPath>..\packages\D2L.Security.OAuth2.3.0.0.0\lib\net451\D2L.Security.OAuth2.dll</HintPath>
     </Reference>
     <Reference Include="Moq">
       <HintPath>..\packages\Moq.4.2.1409.1722\lib\net40\Moq.dll</HintPath>
