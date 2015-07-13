@@ -7,10 +7,12 @@ using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Provisioning.Default;
+using D2L.Security.OAuth2.TestFramework.Properties;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	public static class TestAccessTokenProviderFactory {
-		private static readonly Guid TestGuid = new Guid( "FA7C07A8-42C8-4C57-9AF2-CCE10C271033" );
+
+		private static readonly Guid TestGuid = new Guid(Resources.TestGuid);
 
 		public static IAccessTokenProvider Create( HttpClient httpClient, String tokenProvisioningEndpoint ) {
 			return Create( httpClient, tokenProvisioningEndpoint, TestGuid, TestRSAParametersProvider.TestRSAParameters );
