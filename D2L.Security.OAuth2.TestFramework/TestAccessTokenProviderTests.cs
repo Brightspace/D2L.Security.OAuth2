@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Security.Cryptography;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.TestFramework.Properties;
@@ -43,6 +44,16 @@ namespace D2L.Security.OAuth2.TestFramework {
 				var result = await validator.ValidateAsync( token.Token );
 
 				Assert.AreEqual( result.Status, ValidationStatus.Success );
+			}
+		}
+
+		[Test]
+		public void TestAccessTokenProvider_InvalidRSAParameters_TokenIsInvalid() {
+			var randomRsaParameters = new RSACryptoServiceProvider(2048) { PersistKeyInCsp = false }.ExportParameters( true );
+
+			using( var httpClient = new HttpClient() ) {
+				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, Guid.NewGuid(), randomRsaParameters );
+				Assert.Throws<HttpRequestException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ) );
 			}
 		}
 
