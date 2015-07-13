@@ -61,6 +61,15 @@ namespace D2L.Security.OAuth2.TestFramework.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FA7C07A8-42C8-4C57-9AF2-CCE10C271033.
+        /// </summary>
+        internal static string TestGuid {
+            get {
+                return ResourceManager.GetString("TestGuid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;DOS-720&quot;?&gt;
         ///&lt;RSAParameters xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
         ///	&lt;Exponent&gt;AQAB&lt;/Exponent&gt;
