@@ -7,12 +7,11 @@ using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Provisioning.Default;
-using D2L.Security.OAuth2.TestFramework.Properties;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	public static class TestAccessTokenProviderFactory {
 
-		private static readonly Guid TestKeyId = new Guid( Resources.TestKeyId );
+		private static readonly Guid TestKeyId = TestRSAParametersProvider.TestKeyId;
 
 		/// <summary>
 		///  Creates an IAccessTokenProvider with test credentials. Your ClaimSet should have the issuer "ExpandoClient". You can request any Scope.
