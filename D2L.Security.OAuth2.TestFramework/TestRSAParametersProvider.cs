@@ -5,19 +5,18 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 	internal static class TestRSAParametersProvider {
 
-		static private readonly RSAParameters m_parameters;
+		private static readonly RSAParameters m_parameters;
 
 		static TestRSAParametersProvider() {
-			using (var provider = new RSACryptoServiceProvider { PersistKeyInCsp = false }) {
+			using( var provider = new RSACryptoServiceProvider { PersistKeyInCsp = false } ) {
 				provider.FromXmlString( Resources.TestRSAParameters );
 				m_parameters = provider.ExportParameters( true );
 			}
 		}
 
 		public static RSAParameters TestRSAParameters {
-			get {
-				return m_parameters;
-			}
+			get { return m_parameters; }
 		}
+
 	}
 }
