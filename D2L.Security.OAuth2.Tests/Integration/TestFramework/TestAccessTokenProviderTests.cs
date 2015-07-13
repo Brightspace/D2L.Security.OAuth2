@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 
 		[Test]
 		public void TestAccessTokenProvider_InvalidRSAParameters_TokenIsInvalid() {
-			var randomRsaParameters = new RSACryptoServiceProvider(2048) { PersistKeyInCsp = false }.ExportParameters( true );
+			var randomRsaParameters = new RSACryptoServiceProvider( OAuth2.Keys.Constants.GENERATED_RSA_KEY_SIZE ) { PersistKeyInCsp = false }.ExportParameters( true );
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, Guid.NewGuid(), randomRsaParameters );
