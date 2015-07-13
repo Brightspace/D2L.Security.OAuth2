@@ -43,6 +43,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\FriendAssemblies.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -51,7 +52,6 @@
     <Compile Include="TestRSAParametersProvider.cs" />
     <Compile Include="TestAccessTokenProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestAccessTokenProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">

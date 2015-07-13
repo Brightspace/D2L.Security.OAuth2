@@ -74,6 +74,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Integration\Keys\Default\Data\JwksProviderTests.cs" />
+    <Compile Include="Integration\TestFramework\TestAccessTokenProviderTests.cs">
+      <SubType>
+      </SubType>
+    </Compile>
     <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.cs" />
     <Compile Include="Unit\Keys\Default\RemotePublicKeyProviderTests.cs" />
     <Compile Include="Unit\Provisioning\AccessTokenProviderFactoryTests.cs" />
@@ -115,6 +119,10 @@
     <Compile Include="Unit\Keys\Default\PrivateKeyProviderTests.Concurrency.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj">
+      <Project>{f10655cb-e66d-4df7-8991-10c26c8faf18}</Project>
+      <Name>D2L.Security.OAuth2.TestFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">
       <Project>{676fb8c0-d021-475e-941b-03be21769294}</Project>
       <Name>D2L.Security.OAuth2</Name>
