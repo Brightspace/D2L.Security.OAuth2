@@ -3,12 +3,13 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.TestFramework;
 using D2L.Security.OAuth2.TestFramework.Properties;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using NUnit.Framework;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 
-namespace D2L.Security.OAuth2.TestFramework {
+namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 
 	[TestFixture]
 	[Category( "Integration" )]
