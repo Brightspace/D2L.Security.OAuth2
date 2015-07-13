@@ -37,7 +37,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 		[Test]
 		public async void TestAccessTokenProvider_SuppliedRSAParameters_TokenIsValid() {
 			using( var httpClient = new HttpClient() ) {
-				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestRSAParametersProvider.TestKeyId, TestRSAParametersProvider.TestRSAParameters );
+				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestStaticKeyProvider.TestKeyId, TestStaticKeyProvider.TestRSAParameters );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes );
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );

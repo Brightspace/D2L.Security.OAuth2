@@ -11,7 +11,7 @@ using D2L.Security.OAuth2.Provisioning.Default;
 namespace D2L.Security.OAuth2.TestFramework {
 	public static class TestAccessTokenProviderFactory {
 
-		private static readonly Guid TestKeyId = TestRSAParametersProvider.TestKeyId;
+		private static readonly Guid TestKeyId = TestStaticKeyProvider.TestKeyId;
 
 		/// <summary>
 		///  Creates an IAccessTokenProvider with test credentials. Your ClaimSet should have the issuer "ExpandoClient". You can request any Scope.
@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		/// <param name="tokenProvisioningEndpoint">The auth server</param>
 		/// <returns>An IAccessTokenProvider with test credentials</returns>
 		public static IAccessTokenProvider Create( HttpClient httpClient, String tokenProvisioningEndpoint ) {
-			return Create( httpClient, tokenProvisioningEndpoint, TestKeyId, TestRSAParametersProvider.TestRSAParameters );
+			return Create( httpClient, tokenProvisioningEndpoint, TestKeyId, TestStaticKeyProvider.TestRSAParameters );
 		}
 
 		/// <summary>
