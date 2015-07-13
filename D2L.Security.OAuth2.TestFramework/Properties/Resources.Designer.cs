@@ -63,9 +63,9 @@ namespace D2L.Security.OAuth2.TestFramework.Properties {
         /// <summary>
         ///   Looks up a localized string similar to FA7C07A8-42C8-4C57-9AF2-CCE10C271033.
         /// </summary>
-        internal static string TestGuid {
+        internal static string TestKeyId {
             get {
-                return ResourceManager.GetString("TestGuid", resourceCulture);
+                return ResourceManager.GetString("TestKeyId", resourceCulture);
             }
         }
         
