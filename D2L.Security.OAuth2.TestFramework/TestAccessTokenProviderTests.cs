@@ -10,6 +10,7 @@ using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 namespace D2L.Security.OAuth2.TestFramework {
 
 	[TestFixture]
+	[Category( "Integration" )]
 	internal sealed class TestAccessTokenProviderTests {
 
 		private const string DEV_AUTH_URL = "https://auth-dev.proddev.d2l/core";
