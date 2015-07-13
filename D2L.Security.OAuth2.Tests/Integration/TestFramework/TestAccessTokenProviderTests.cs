@@ -4,7 +4,6 @@ using System.Security.Cryptography;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.TestFramework;
-using D2L.Security.OAuth2.TestFramework.Properties;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using NUnit.Framework;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
@@ -38,7 +37,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 		[Test]
 		public async void TestAccessTokenProvider_SuppliedRSAParameters_TokenIsValid() {
 			using( var httpClient = new HttpClient() ) {
-				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, new Guid( Resources.TestKeyId ), TestRSAParametersProvider.TestRSAParameters );
+				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestRSAParametersProvider.TestKeyId, TestRSAParametersProvider.TestRSAParameters );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes );
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
