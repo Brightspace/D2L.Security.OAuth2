@@ -67,6 +67,9 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FullStackValidation\ES512.cs" />
+    <Compile Include="FullStackValidation\ES384.cs" />
+    <Compile Include="FullStackValidation\ES256.cs" />
     <Compile Include="IBenchmark.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
