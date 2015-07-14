@@ -17,12 +17,12 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 		private readonly Uri m_jwksEndpoint = new Uri( "http://someplace.somewhere" );
 
 		[Test]
-		[ExpectedException( typeof( InvalidSignatureAlgorithmException ) )]
 		public async Task UnsignedJwt() {
 
 			await RunTest(
 				signJwt: false,
-				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 )
+				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 ),
+				expectedExceptionType: typeof( InvalidTokenException )
 			).SafeAsync();
 		}
 
@@ -32,8 +32,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 			await RunTest(
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddSeconds( -301 ),
-				expected_validationStatus: ValidationStatus.Expired,
-				expected_accessTokenNull: true
+				expectedExceptionType: typeof( ExpiredTokenException )
 			).SafeAsync();
 		}
 		
@@ -43,8 +42,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 			await RunTest(
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddMonths( -2 ),
-				expected_validationStatus: ValidationStatus.Expired,
-				expected_accessTokenNull: true
+				expectedExceptionType: typeof( ExpiredTokenException )
 			).SafeAsync();
 		}
 
@@ -54,9 +52,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 
 			await RunTest(
 				signJwt: true,
-				jwtExpiry: DateTime.UtcNow.AddSeconds( -295 ),
-				expected_validationStatus: ValidationStatus.Success,
-				expected_accessTokenNull: false
+				jwtExpiry: DateTime.UtcNow.AddSeconds( -295 )
 			).SafeAsync();
 		}
 		
@@ -65,17 +61,14 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 
 			await RunTest(
 				signJwt: true,
-				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 ),
-				expected_validationStatus: ValidationStatus.Success,
-				expected_accessTokenNull: false
+				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 )
 			).SafeAsync();
 		}
 		
 		private async Task RunTest(
 			bool signJwt,
 			DateTime jwtExpiry,
-			ValidationStatus? expected_validationStatus = null,
-			bool? expected_accessTokenNull = null
+			Type expectedExceptionType = null
 		) {
 
 			Guid keyId = Guid.NewGuid();
@@ -104,13 +97,24 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 				publicKeyProvider
 			);
 
-			IValidationResponse response = await tokenValidator.ValidateAsync(
-				accessToken: serializedJwt
-			).SafeAsync();
-			
-			Assert.AreEqual( expected_validationStatus, response.Status );
-			Assert.AreEqual( expected_accessTokenNull, response.AccessToken == null );
 
+			IAccessToken accessToken = null;
+			Exception exception = null;
+			try {
+				accessToken = await tokenValidator.ValidateAsync(
+					accessToken: serializedJwt
+				).SafeAsync();
+			} catch( Exception e ) {
+				exception = e;
+			}
+
+			if( expectedExceptionType != null ) {
+				Assert.IsNull( accessToken, "Unexpected access token returned from validation" );
+				Assert.IsNotNull( exception, "Expected an exception but got null" );
+				Assert.AreEqual( expectedExceptionType, exception.GetType(), "Wrong exception type" );
+			} else {
+				Assert.IsNotNull( accessToken, "Expected an access token but got none" );
+			}
 		}
 		
 	}

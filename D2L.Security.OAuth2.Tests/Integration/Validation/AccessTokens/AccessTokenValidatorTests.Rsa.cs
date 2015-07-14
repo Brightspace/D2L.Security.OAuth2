@@ -47,16 +47,16 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
 					.SafeAsync();
 
-				IValidationResponse response = await m_accessTokenValidator
+				IAccessToken accessToken = await m_accessTokenValidator
 					.ValidateAsync( token )
 					.SafeAsync();
 
-				Assert.AreEqual( ValidationStatus.Success, response.Status );
+				Assert.IsNotNull( accessToken );
 
 				string subject;
 				string fakeclaim;
-				response.AccessToken.Claims.TryGetClaim( "sub", out subject );
-				response.AccessToken.Claims.TryGetClaim( "fakeclaim", out fakeclaim );
+				accessToken.Claims.TryGetClaim( "sub", out subject );
+				accessToken.Claims.TryGetClaim( "fakeclaim", out fakeclaim );
 
 				Assert.AreEqual( SUBJECT, subject );
 				Assert.IsNull( fakeclaim );
