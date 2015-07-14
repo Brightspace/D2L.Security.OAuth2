@@ -60,6 +60,12 @@
     <Compile Include="Keys\Default\D2LSecurityToken.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Keys\Caching\InMemoryPublicKeyCache.cs" />
+    <Compile Include="Keys\Default\D2LSecurityToken.Disposal.cs">
+      <DependentUpon>D2LSecurityToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\D2LSecurityToken.SecurityToken.cs">
+      <DependentUpon>D2LSecurityToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Keys\Default\D2LSecurityTokenFactory.cs" />
     <Compile Include="Keys\Default\EcDsaJsonWebKey.cs" />
     <Compile Include="Keys\Default\EcDsaJsonWebKey.ECCPublicKeyBlobFormatter.cs">
@@ -90,7 +96,6 @@
     <Compile Include="Keys\Default\SavingPrivateKeyProvider.cs" />
     <Compile Include="Keys\EcDsaTokenSignerFactory.cs" />
     <Compile Include="Keys\PublicKeyDataProviderFactory.cs" />
-    <Compile Include="Keys\Default\RefCountedD2LSecurityToken.cs" />
     <Compile Include="Keys\Default\RemotePublicKeyProvider.cs" />
     <Compile Include="Keys\Caching\IInMemoryPublicKeyCache.cs" />
     <Compile Include="Keys\Default\JsonWebKeySet.cs" />
