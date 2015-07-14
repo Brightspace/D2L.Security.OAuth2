@@ -28,14 +28,18 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 		public void GetSigningCredentialsAsync_HighLoad_FrequentlyRollingKeys_KeysRemainValid(
 			int keyLifeTimeMilliseconds,
 			int keyOverlapIntervalMilliseconds
-			) {
+		) {
 
-			IPrivateKeyProvider provider = new PrivateKeyProvider(
-				m_mockPublicKeyDataProvider.Object,
+			IPrivateKeyProvider provider = new RotatingPrivateKeyProvider(
+				new RsaPrivateKeyProvider(
+					new D2LSecurityTokenFactory(
+						m_mockDateTimeProvider.Object,
+						TimeSpan.FromMilliseconds( keyLifeTimeMilliseconds )
+					)
+				),
 				m_mockDateTimeProvider.Object,
-				TimeSpan.FromMilliseconds( keyLifeTimeMilliseconds ),
 				TimeSpan.FromMilliseconds( keyOverlapIntervalMilliseconds )
-				);
+			);
 
 			IList<Thread> threads = new List<Thread>();
 			ManualResetEventSlim go = new ManualResetEventSlim( false );

@@ -2,10 +2,13 @@
 
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
-	internal sealed class RS256 : FullStackValidationBenchmark, IBenchmark {
+	internal sealed class ES384 : FullStackValidationBenchmark, IBenchmark {
 
 		protected override ITokenSigner GetTokenSigner( IPublicKeyDataProvider p ) {
-			return RsaTokenSignerFactory.Create( p );
+			return EcDsaTokenSignerFactory.Create(
+				p,
+				EcDsaTokenSignerFactory.Curve.P384
+			);
 		}
 
 	}
