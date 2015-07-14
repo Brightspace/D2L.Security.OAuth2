@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Newtonsoft.Json;
@@ -36,6 +35,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			var server = HttpMockFactory.Create( out hostStr );
 
 			host = new Uri( hostStr );
+
 #pragma warning disable 618
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
 #pragma warning restore 618

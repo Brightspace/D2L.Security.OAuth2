@@ -1,7 +1,8 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+
+using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 
 namespace D2L.Security.OAuth2.Validation.Request {
@@ -18,9 +19,8 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <param name="request">The web request object</param>
 		/// <param name="authMode">The authentication mode; xsrf validation should NOT be 
 		/// skipped for requests coming from a browser</param>
-		/// <returns>An object containting both the status of the authentication request 
-		/// and a principal containing claims</returns>
-		Task<AuthenticationResponse> AuthenticateAsync(
+		/// <returns>An <see cref="ID2LPrincipal"/> for an authenticated user.</returns>
+		Task<ID2LPrincipal> AuthenticateAsync(
 			HttpRequestMessage request,
 			AuthenticationMode authMode = AuthenticationMode.Full
 		);
@@ -31,9 +31,8 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <param name="request">The web request object.</param>
 		/// <param name="authMode">The authentication mode. Xsrf validation should NOT 
 		/// be skipped for requests coming from a browser</param>
-		/// <returns>An object containting both the status of the authentication 
-		/// request and a principal containing claims</returns>
-		Task<AuthenticationResponse> AuthenticateAsync(
+		/// <returns>An <see cref="ID2LPrincipal"/> for an authenticated user.</returns>
+		Task<ID2LPrincipal> AuthenticateAsync(
 			HttpRequest request,
 			AuthenticationMode authMode = AuthenticationMode.Full
 		);
