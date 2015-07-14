@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private readonly SemaphoreSlim m_privateKeyLock = new SemaphoreSlim( initialCount: 1 );
 
-		private RefCountedD2LSecurityToken m_privateKey;
+		private D2LSecurityToken m_privateKey;
 
 		public RotatingPrivateKeyProvider(
 			IPrivateKeyProvider inner,
@@ -31,7 +31,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			// Hold a local reference so that we know we are talking about the same key
 			// after even if another thread changed m_privateKey (race condition when we
 			// are using a key very close to the rotation time.)
-			RefCountedD2LSecurityToken privateKey = m_privateKey;
+			D2LSecurityToken privateKey = m_privateKey;
 
 			if( NeedFreshPrivateKey( privateKey ) ) {
 				// This Semaphore is used instead of lock(foo){}
@@ -41,8 +41,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					privateKey = m_privateKey;
 
 					if( NeedFreshPrivateKey( privateKey ) ) {
-						D2LSecurityToken newKey = await m_inner.GetSigningCredentialsAsync().SafeAsync();
-						m_privateKey = new RefCountedD2LSecurityToken( newKey );
+						m_privateKey = (await m_inner.GetSigningCredentialsAsync().SafeAsync()).Ref();
 
 						if( privateKey != null ) {
 							privateKey.Dispose();

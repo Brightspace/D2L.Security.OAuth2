@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading;
-using D2L.Security.OAuth2.Provisioning;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 
-	internal class D2LSecurityToken : SecurityToken, IDisposable {
+	internal sealed partial class D2LSecurityToken : SecurityToken {
 
 		private Guid m_id;
 		private readonly DateTime m_validFrom;
@@ -19,8 +16,6 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		// This allows us to share the D2LSecurityToken across threads, while still
 		// respecting the thread safety warning of those implemtnations
 		private readonly ThreadLocal<AsymmetricSecurityKey> m_key;
-
-		protected D2LSecurityToken() { }
 
 		public D2LSecurityToken(
 			Guid id,
@@ -42,16 +37,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 		}
 
-		public virtual Guid KeyId { get { return m_id; } }
-		public override string Id { get { return KeyId.ToString(); } }
-
-		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
-			get {
-				return new ReadOnlyCollection<SecurityKey>(
-					new List<SecurityKey> { m_key.Value }
-				);
-			}
-		}
+		public Guid KeyId { get { return m_id; } }
 		
 		public override DateTime ValidFrom {
 			get { return m_validFrom; }
@@ -61,32 +47,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			get { return m_validTo; }
 		}
 
-		public virtual bool HasPrivateKey {
+		public bool HasPrivateKey {
 			get { return m_key.Value.HasPrivateKey(); }	
 		}
 
-		public override SecurityKey ResolveKeyIdentifierClause(
-			SecurityKeyIdentifierClause keyIdentifierClause
-		) {
-			if( MatchesKeyIdentifierClause( keyIdentifierClause ) ) {
-				return m_key.Value;
-			}
-
-			return null;
-		}
-
-		public override bool MatchesKeyIdentifierClause( SecurityKeyIdentifierClause keyIdentifierClause ) {
-			if( keyIdentifierClause == null ) {
-				throw new ArgumentNullException( "keyIdentifierClause" );
-			}
-
-			var clause = keyIdentifierClause as NamedKeySecurityKeyIdentifierClause;
-			return clause != null
-				&& clause.Name.Equals( ProvisioningConstants.AssertionGrant.KEY_ID_NAME, StringComparison.Ordinal )
-				&& clause.Id.Equals( this.KeyId.ToString(), StringComparison.OrdinalIgnoreCase );
-		}
-
-		public virtual AsymmetricAlgorithm GetAsymmetricAlgorithm() {
+		public AsymmetricAlgorithm GetAsymmetricAlgorithm() {
 			if( m_key.Value is X509AsymmetricSecurityKey ) {
 				throw new InvalidOperationException(
 					"This hacky thing is not applicable to the X509AsymmetricSecurityKey implementation"
@@ -103,7 +68,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return alg;
 		}
 
-		public virtual SigningCredentials GetSigningCredentials() {
+		public SigningCredentials GetSigningCredentials() {
 			string signatureAlgorithm;
 			string digestAlgorithm;
 
@@ -130,7 +95,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return signingCredentials;
 		}
 
-		public virtual JsonWebKey ToJsonWebKey( bool includePrivateParameters = false ) {
+		public JsonWebKey ToJsonWebKey( bool includePrivateParameters = false ) {
 			if( m_key.Value is RsaSecurityKey ) {
 				var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
 				RSAParameters p = csp.ExportParameters( includePrivateParameters );
@@ -144,12 +109,6 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 
 			throw new NotImplementedException();
-		}
-
-		public virtual void Dispose() {
-			foreach( var key in m_key.Values ) {
-				m_key.Dispose();
-			}
 		}
 
 	}
