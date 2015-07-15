@@ -38,9 +38,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\FriendAssemblies.cs" />
-    <Compile Include="TestRSAParametersProvider.cs" />
     <Compile Include="TestAccessTokenProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestStaticKeyProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">
