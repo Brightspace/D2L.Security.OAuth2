@@ -1,14 +1,19 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
+using System.Linq;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed class AccessTokenValidator : IAccessTokenValidator {
 
-		internal const string ALLOWED_SIGNATURE_ALGORITHM = "RS256";
+		internal static string[] ALLOWED_SIGNATURE_ALGORITHMS = new string[] {
+			"RS256",
+			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha256Signature,
+			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha384Signature,
+			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha512Signature
+		};
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
 		private readonly JwtSecurityTokenHandler m_tokenHandler = new JwtSecurityTokenHandler();
@@ -19,7 +24,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_publicKeyProvider = publicKeyProvider;
 		}
 
-		async Task<IValidationResponse> IAccessTokenValidator.ValidateAsync(
+		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
 			
@@ -27,23 +32,23 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				token
 			);
 			
-			if( unvalidatedToken.SignatureAlgorithm != ALLOWED_SIGNATURE_ALGORITHM ) {
+			if( !ALLOWED_SIGNATURE_ALGORITHMS.Contains( unvalidatedToken.SignatureAlgorithm ) ) {
 				string message = string.Format(
-					"Signature algorithm '{0}' is not supported.  Permitted algorithm is '{1}'",
+					"Signature algorithm '{0}' is not supported.  Permitted algorithms are '{1}'",
 					unvalidatedToken.SignatureAlgorithm,
-					ALLOWED_SIGNATURE_ALGORITHM
+					ALLOWED_SIGNATURE_ALGORITHMS
 				);
-				throw new InvalidSignatureAlgorithmException( message );
+				throw new InvalidTokenException( message );
 			}
 
 			if( !unvalidatedToken.Header.ContainsKey( "kid" ) ) {
-				throw new MissingKeyIdException( "KeyId not found in token" );
+				throw new InvalidTokenException( "KeyId not found in token" );
 			}
 
 			string keyId = unvalidatedToken.Header["kid"].ToString();
 			Guid id;
 			if( !Guid.TryParse( keyId, out id ) ) {
-				throw new Exception( "ffooof TODO" );
+				throw new InvalidTokenException( string.Format( "Non-guid kid claim: {0}", keyId ) );
 			}
 
 			D2LSecurityToken signingToken = await m_publicKeyProvider
@@ -58,27 +63,22 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			};
 
 			IAccessToken accessToken;
-			try {
 
+			try {
 				SecurityToken securityToken;
 				m_tokenHandler.ValidateToken(
 					token,
 					validationParameters,
 					out securityToken
 					);
-				accessToken = new AccessToken( (JwtSecurityToken) securityToken );
-
+				accessToken = new AccessToken( ( JwtSecurityToken )securityToken );
 			} catch( SecurityTokenExpiredException ) {
-
-				return new ValidationResponse(
-					ValidationStatus.Expired,
-					accessToken: null );
+				throw new ExpiredTokenException( "The access token is expired" );
+			} catch( Exception e ) {
+				throw new ValidationException( "Unknown validation exception", e );
 			}
 
-			return new ValidationResponse(
-				ValidationStatus.Success,
-				accessToken
-			);
+			return accessToken;
 		}
 	}
 }

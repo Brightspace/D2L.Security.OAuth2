@@ -28,9 +28,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes );
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				var result = await validator.ValidateAsync( token.Token );
-
-				Assert.AreEqual( result.Status, ValidationStatus.Success );
+				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ) );
 			}
 		}
 
@@ -41,9 +39,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes );
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				var result = await validator.ValidateAsync( token.Token );
-
-				Assert.AreEqual( result.Status, ValidationStatus.Success );
+				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ) );
 			}
 		}
 

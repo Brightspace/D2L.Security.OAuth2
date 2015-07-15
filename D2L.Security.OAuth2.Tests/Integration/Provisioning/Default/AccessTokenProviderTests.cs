@@ -46,7 +46,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			m_publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
 #pragma warning restore 618
 
-			m_tokenSigner = TokenSignerFactory.Create( m_publicKeyDataProvider );
+			m_tokenSigner = RsaTokenSignerFactory.Create( m_publicKeyDataProvider );
 			m_accessTokenProvider = new AccessTokenProvider( m_tokenSigner, clientMock.Object );
 		}
 
