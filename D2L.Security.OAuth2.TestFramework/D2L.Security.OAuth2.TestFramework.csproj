@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\FriendAssemblies.cs" />
+    <Compile Include="TestAccessToken.cs" />
     <Compile Include="TestAccessTokenProviderFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestStaticKeyProvider.cs" />
