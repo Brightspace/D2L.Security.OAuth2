@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_publicKeyProvider = publicKeyProvider;
 		}
 
-		async Task<IValidationResponse> IAccessTokenValidator.ValidateAsync(
+		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
 			
@@ -38,17 +38,17 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					unvalidatedToken.SignatureAlgorithm,
 					ALLOWED_SIGNATURE_ALGORITHMS
 				);
-				throw new InvalidSignatureAlgorithmException( message );
+				throw new InvalidTokenException( message );
 			}
 
 			if( !unvalidatedToken.Header.ContainsKey( "kid" ) ) {
-				throw new MissingKeyIdException( "KeyId not found in token" );
+				throw new InvalidTokenException( "KeyId not found in token" );
 			}
 
 			string keyId = unvalidatedToken.Header["kid"].ToString();
 			Guid id;
 			if( !Guid.TryParse( keyId, out id ) ) {
-				throw new Exception( "ffooof TODO" );
+				throw new InvalidTokenException( string.Format( "Non-guid kid claim: {0}", keyId ) );
 			}
 
 			D2LSecurityToken signingToken = await m_publicKeyProvider
@@ -63,27 +63,22 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			};
 
 			IAccessToken accessToken;
-			try {
 
+			try {
 				SecurityToken securityToken;
 				m_tokenHandler.ValidateToken(
 					token,
 					validationParameters,
 					out securityToken
 					);
-				accessToken = new AccessToken( (JwtSecurityToken) securityToken );
-
+				accessToken = new AccessToken( ( JwtSecurityToken )securityToken );
 			} catch( SecurityTokenExpiredException ) {
-
-				return new ValidationResponse(
-					ValidationStatus.Expired,
-					accessToken: null );
+				throw new ExpiredTokenException( "The access token is expired" );
+			} catch( Exception e ) {
+				throw new ValidationException( "Unknown validation exception", e );
 			}
 
-			return new ValidationResponse(
-				ValidationStatus.Success,
-				accessToken
-			);
+			return accessToken;
 		}
 	}
 }
