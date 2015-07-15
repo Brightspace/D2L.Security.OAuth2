@@ -78,6 +78,7 @@
       <SubType>
       </SubType>
     </Compile>
+    <Compile Include="Integration\TestFramework\TestAccessTokenTests.cs" />
     <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.cs" />
     <Compile Include="Unit\Keys\Default\RemotePublicKeyProviderTests.cs" />
     <Compile Include="Unit\Provisioning\AccessTokenProviderFactoryTests.cs" />
