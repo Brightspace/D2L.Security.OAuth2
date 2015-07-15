@@ -7,8 +7,7 @@ namespace D2L.Security.OAuth2.Keys {
 	/// <summary>
 	/// A factory for creating <see cref="ITokenSigner"/> instances.
 	/// </summary>
-	[Obsolete( "Use RsaTokenSignerFactory instead", error: false )]
-	public static class TokenSignerFactory {
+	public static class RsaTokenSignerFactory {
 
 		/// <summary>
 		/// Creates an <see cref="ITokenSigner"/> instance which saves public keys to the provided <see cref="IPublicKeyDataProvider"/>
@@ -18,7 +17,11 @@ namespace D2L.Security.OAuth2.Keys {
 		public static ITokenSigner Create(
 			IPublicKeyDataProvider publicKeyDataProvider
 		) {
-			return RsaTokenSignerFactory.Create( publicKeyDataProvider );
+			return Create(
+				publicKeyDataProvider,
+				keyLifetime: Constants.DEFAULT_KEY_LIFETIME,
+				keyRotationPeriod: Constants.DEFAULT_KEY_ROTATION_PERIOD
+			);
 		}
 
 		/// <summary>
@@ -33,11 +36,16 @@ namespace D2L.Security.OAuth2.Keys {
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
-			return RsaTokenSignerFactory.Create(
-				publicKeyDataProvider,
-				keyLifetime: keyLifetime,
-				keyRotationPeriod: keyRotationPeriod
-			);
+			IPrivateKeyProvider privateKeyProvider = RsaPrivateKeyProvider
+				.Factory
+				.Create(
+					publicKeyDataProvider,
+					keyLifetime,
+					keyRotationPeriod
+				);
+
+			var tokenSigner = new TokenSigner( privateKeyProvider );
+			return tokenSigner;
 		}
 
 	}

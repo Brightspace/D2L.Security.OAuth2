@@ -60,11 +60,42 @@
     <Compile Include="Keys\Default\D2LSecurityToken.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Keys\Caching\InMemoryPublicKeyCache.cs" />
+    <Compile Include="Keys\Default\D2LSecurityToken.Disposal.cs">
+      <DependentUpon>D2LSecurityToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\D2LSecurityToken.SecurityToken.cs">
+      <DependentUpon>D2LSecurityToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\D2LSecurityTokenFactory.cs" />
+    <Compile Include="Keys\Default\EcDsaJsonWebKey.cs" />
+    <Compile Include="Keys\Default\EcDsaJsonWebKey.ECCPublicKeyBlobFormatter.cs">
+      <DependentUpon>EcDsaJsonWebKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\EcDsaPrivateKeyProvider.Factory.cs">
+      <DependentUpon>EcDsaPrivateKeyProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\RotatingPrivateKeyProvider.cs" />
+    <Compile Include="Keys\Default\EcDsaPrivateKeyProvider.cs" />
+    <Compile Include="Keys\Default\EcDsaSecurityKey.cs" />
+    <Compile Include="Keys\Default\EcDsaSecurityKey.EcDsaSignatureDeformatter.cs">
+      <DependentUpon>EcDsaSecurityKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\EcDsaSecurityKey.EcDsaSignatureFormatter.cs">
+      <DependentUpon>EcDsaSecurityKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\EcDsaSecurityKey.SupportedAlgorithms.cs">
+      <DependentUpon>EcDsaSecurityKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Keys\Default\ExpiringPublicKeyDataProvider.cs" />
+    <Compile Include="Keys\Default\ID2LSecurityTokenFactory.cs" />
     <Compile Include="Keys\Default\ISanePublicKeyDataProvider.cs" />
     <Compile Include="Keys\Default\LocalPublicKeyProvider.cs" />
+    <Compile Include="Keys\Default\RsaPrivateKeyProvider.Factory.cs">
+      <DependentUpon>RsaPrivateKeyProvider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Keys\Default\SavingPrivateKeyProvider.cs" />
+    <Compile Include="Keys\EcDsaTokenSignerFactory.cs" />
     <Compile Include="Keys\PublicKeyDataProviderFactory.cs" />
-    <Compile Include="Keys\Default\RefCountedD2LSecurityToken.cs" />
     <Compile Include="Keys\Default\RemotePublicKeyProvider.cs" />
     <Compile Include="Keys\Caching\IInMemoryPublicKeyCache.cs" />
     <Compile Include="Keys\Default\JsonWebKeySet.cs" />
@@ -73,11 +104,12 @@
     <Compile Include="Keys\Development\StaticPrivateKeyProvider.cs" />
     <Compile Include="Keys\ITokenSigner.cs" />
     <Compile Include="Keys\Default\TokenSigner.cs" />
-    <Compile Include="Keys\Default\PrivateKeyProvider.cs" />
+    <Compile Include="Keys\Default\RsaPrivateKeyProvider.cs" />
     <Compile Include="Keys\Default\IPrivateKeyProvider.cs" />
     <Compile Include="Keys\Default\IPublicKeyProvider.cs" />
     <Compile Include="Keys\Default\Data\IJwksProvider.cs" />
     <Compile Include="Keys\Default\Data\JwksProvider.cs" />
+    <Compile Include="Keys\RsaTokenSignerFactory.cs" />
     <Compile Include="Keys\TokenSignerFactory.cs" />
     <Compile Include="Keys\UnsignedToken.cs" />
     <Compile Include="Principal\D2LPrincipal.cs" />
@@ -108,16 +140,14 @@
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
     <Compile Include="Principal\AnonymousPrincipal.cs" />
-    <Compile Include="Validation\AccessTokens\IValidationResponse.cs" />
-    <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
-    <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
-    <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
+    <Compile Include="Validation\Exceptions\ExpiredTokenException.cs" />
+    <Compile Include="Validation\Exceptions\InvalidTokenException.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyLookupFailureException.cs" />
     <Compile Include="Keys\Constants.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyNotFoundException.cs" />
+    <Compile Include="Validation\Exceptions\ValidationException.cs" />
+    <Compile Include="Validation\Exceptions\XsrfException.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
-    <Compile Include="Validation\Request\AuthenticationResponse.cs" />
-    <Compile Include="Validation\Request\AuthenticationStatus.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenExtensions.cs" />
     <Compile Include="Validation\Request\RequestAuthenticator.cs" />
@@ -130,8 +160,6 @@
     <Compile Include="Validation\AccessTokens\AccessTokenValidator.cs" />
     <Compile Include="Validation\AccessTokens\IAccessTokenValidator.cs" />
     <Compile Include="Validation\AccessTokens\AccessToken.cs" />
-    <Compile Include="Validation\AccessTokens\ValidationResponse.cs" />
-    <Compile Include="Validation\AccessTokens\ValidationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

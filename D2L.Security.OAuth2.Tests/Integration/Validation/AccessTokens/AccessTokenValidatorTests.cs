@@ -43,16 +43,16 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 					DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
 				.SafeAsync();
 
-			IValidationResponse response = await m_accessTokenValidator
+			IAccessToken accessToken = await m_accessTokenValidator
 				.ValidateAsync( token )
 				.SafeAsync();
 
-			Assert.AreEqual( ValidationStatus.Success, response.Status );
+			Assert.IsNotNull( accessToken );
 
 			string subject;
 			string fakeclaim;
-			response.AccessToken.Claims.TryGetClaim( "sub", out subject );
-			response.AccessToken.Claims.TryGetClaim( "fakeclaim", out fakeclaim );
+			accessToken.Claims.TryGetClaim( "sub", out subject );
+			accessToken.Claims.TryGetClaim( "fakeclaim", out fakeclaim );
 
 			Assert.AreEqual( SUBJECT, subject );
 			Assert.IsNull( fakeclaim );
@@ -71,12 +71,10 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 
 			token += "abcd";
 
-			Assert.Throws<SignatureVerificationFailedException>( () => {
-				var response = m_accessTokenValidator
-					.ValidateAsync( token )
-					.GetAwaiter()
-					.GetResult();
-			} );
+			Assert.Throws<ValidationException>( () => m_accessTokenValidator
+				.ValidateAsync( token )
+				.GetAwaiter()
+				.GetResult() );
 		}
 
 		[Test]
@@ -84,12 +82,10 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 			// This JWT has a keyId that doesn't match the one in the auth service
 			string jwtWithBadKeyId = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.dUQ2bB3anqRmI-wnC4bulmnwo7wAdrvXo3hn3Dp0tuUl01dy2FhsJESJ9BZ2BeykrLRv2EgdbTW3BCBpBqLbrKQaG_XuGX5MrtXFwHE7i9wWmDsetlJn_cvsZlhPg-voI2iGqT-gpiE9GfWcXjTPUCxAbz6Pqepi0-JDS9uTrCg";
 
-			Assert.Throws<PublicKeyNotFoundException>( () => {
-				var response = m_accessTokenValidator
-					.ValidateAsync( jwtWithBadKeyId )
-					.GetAwaiter()
-					.GetResult();
-			} );
+			Assert.Throws<PublicKeyNotFoundException>( () => m_accessTokenValidator
+				.ValidateAsync( jwtWithBadKeyId )
+				.GetAwaiter()
+				.GetResult() );
 		}
 	}
 }

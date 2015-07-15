@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
+using D2L.Security.OAuth2.Utilities;
 using HttpMock;
 using Newtonsoft.Json;
 
@@ -13,31 +14,76 @@ namespace D2L.Security.OAuth2.Tests.Utilities.Mocks {
 	internal sealed class AuthServiceMock {
 		private readonly IHttpServer m_server;
 		private readonly string m_host;
-		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
+
+		private readonly ISanePublicKeyDataProvider m_publicKeyDataProvider;
+		private readonly IPrivateKeyProvider m_privateKeyProvider;
 		private readonly ITokenSigner m_tokenSigner;
 
-		public AuthServiceMock() {
+		public enum KeyType {
+			RSA = 1,
+			ECDSA_P256 = 2,
+			ECDSA_P384 = 3,
+			ECDSA_P521 = 4
+		};
+
+		public AuthServiceMock( KeyType keyType = KeyType.RSA ) {
 			m_server = HttpMockFactory.Create( out m_host );
 
-			RSAParameters parameters;
-			using( RSACryptoServiceProvider csp = new RSACryptoServiceProvider( dwKeySize: Keys.Constants.GENERATED_RSA_KEY_SIZE ) ) {
-				parameters = csp.ExportParameters( includePrivateParameters: true );
-			}
-
-			Guid keyId = Guid.NewGuid();
-
-			TimeSpan keyLifetime = TimeSpan.FromDays( 365 );
-
 #pragma warning disable 618
-			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( keyId, parameters );
-			m_publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
+			m_publicKeyDataProvider = PublicKeyDataProviderFactory.CreateInternal( new InMemoryPublicKeyDataProvider() );
 #pragma warning restore 618
 
-			m_publicKeyDataProvider.SaveAsync( new RsaJsonWebKey( keyId, DateTime.UtcNow + keyLifetime, parameters ) );
-			m_tokenSigner = new TokenSigner( privateKeyProvider );
+			TimeSpan keyLifetime = TimeSpan.FromDays( 365 );
+			TimeSpan keyRotationPeriod = TimeSpan.FromDays( 182 );
+
+			switch( keyType ) {
+				case KeyType.ECDSA_P256:
+				case KeyType.ECDSA_P384:
+				case KeyType.ECDSA_P521: {
+						CngAlgorithm curve;
+						switch( keyType ) {
+							case KeyType.ECDSA_P521:
+								curve = CngAlgorithm.ECDsaP521;
+								break;
+							case KeyType.ECDSA_P384:
+								curve = CngAlgorithm.ECDsaP384;
+								break;
+							case KeyType.ECDSA_P256:
+							default:
+								curve = CngAlgorithm.ECDsaP256;
+								break;
+						}
+
+						m_privateKeyProvider = EcDsaPrivateKeyProvider
+							.Factory
+							.Create(
+								m_publicKeyDataProvider,
+								keyLifetime,
+								keyRotationPeriod,
+								curve
+							);
+						break;
+					}
+				case KeyType.RSA:
+				default: {
+						m_privateKeyProvider = RsaPrivateKeyProvider
+							.Factory
+							.Create(
+								m_publicKeyDataProvider,
+								keyLifetime,
+								keyRotationPeriod
+							);
+						break;
+					}
+			}
+
+			m_tokenSigner = new TokenSigner( m_privateKeyProvider );
 		}
 
 		public async Task SetupJwks() {
+			// Get a private key so public key is saved
+			await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+
 			var keys = await m_publicKeyDataProvider
 				.GetAllAsync()
 				.SafeAsync();

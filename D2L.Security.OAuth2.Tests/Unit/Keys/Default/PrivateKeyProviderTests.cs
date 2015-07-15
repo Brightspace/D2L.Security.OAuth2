@@ -31,11 +31,12 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 			m_mockDateTimeProvider = new Mock<IDateTimeProvider>();
 			m_mockDateTimeProvider.Setup( dp => dp.UtcNow ).Returns( () => DateTime.UtcNow );
 
-			m_privateKeyProvider = new PrivateKeyProvider(
+			m_privateKeyProvider = RsaPrivateKeyProvider.Factory.Create(
 				m_mockPublicKeyDataProvider.Object,
-				m_mockDateTimeProvider.Object,
 				KEY_LIFETIME,
-				ROTATION_PERIOD );
+				ROTATION_PERIOD,
+				m_mockDateTimeProvider.Object
+			);
 		}
 
 		[Test]

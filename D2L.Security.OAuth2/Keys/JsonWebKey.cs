@@ -103,6 +103,27 @@ namespace D2L.Security.OAuth2.Keys {
 						e: data[ "e" ].ToString()
 					);
 
+				case "EC":
+					if( !data.ContainsKey( "crv" ) ) {
+						throw new JsonWebKeyParseException( "missing 'crv' parameter in EC JSON web key" );
+					}
+
+					if( !data.ContainsKey( "x" ) ) {
+						throw new JsonWebKeyParseException( "missing 'x' parameter in EC JSON web key" );
+					}
+
+					if( !data.ContainsKey( "y" ) ) {
+						throw new JsonWebKeyParseException( "missing 'y' parameter in EC JSON web key" );
+					}
+
+					return new EcDsaJsonWebKey(
+						id: id,
+						expiresAt: expiresAt,
+						curve: data[ "crv" ].ToString(),
+						x: data[ "x" ].ToString(),
+						y: data[ "y" ].ToString()
+					);
+
 				default:
 					string msg = String.Format( "'{0}' is not a supported JSON eb key type", data[ "kty" ] );
 					throw new JsonWebKeyParseException( msg );

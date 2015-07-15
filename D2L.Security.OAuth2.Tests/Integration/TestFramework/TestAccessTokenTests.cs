@@ -19,11 +19,8 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				var result = await validator.ValidateAsync( token );
-
-				Assert.AreEqual( result.Status, ValidationStatus.Success );
+				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token ) );
 			}
-			
 		}
 
 		[Test]
@@ -32,9 +29,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				var result = await validator.ValidateAsync( token );
-
-				Assert.AreEqual( result.Status, ValidationStatus.Success );
+				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token ) );
 			}
 
 		}
@@ -47,9 +42,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				var result = await validator.ValidateAsync( token );
-
-				Assert.AreEqual( result.Status, ValidationStatus.Success );
+				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token ) );
 			}
 
 		}
