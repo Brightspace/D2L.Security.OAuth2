@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Web;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.Security.OAuth2.Validation.Exceptions;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	internal sealed class RequestAuthenticator : IRequestAuthenticator {
@@ -16,7 +17,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			m_accessTokenValidator = accessTokenValidator;
 		}
 
-		Task<AuthenticationResponse> IRequestAuthenticator.AuthenticateAsync(
+		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
 			HttpRequestMessage request,
 			AuthenticationMode authMode
 		) {
@@ -27,7 +28,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
 		}
 
-		Task<AuthenticationResponse> IRequestAuthenticator.AuthenticateAsync(
+		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
 			HttpRequest request,
 			AuthenticationMode authMode
 		) {
@@ -38,7 +39,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
 		}
 
-		private async Task<AuthenticationResponse> AuthenticateHelper(
+		private async Task<ID2LPrincipal> AuthenticateHelper(
 			string cookie,
 			string xsrfToken,
 			string bearerToken,
@@ -49,50 +50,28 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			bool bearerTokenExists = !string.IsNullOrEmpty( bearerToken );
 
 			if( !cookieExists && !bearerTokenExists ) {
-				return new AuthenticationResponse(
-					AuthenticationStatus.Anonymous,
-					principal: ANONYMOUS_PRINCIPAL
-				);
+				return ANONYMOUS_PRINCIPAL;
 			}
 
 			if( cookieExists && bearerTokenExists ) {
-				return new AuthenticationResponse(
-					AuthenticationStatus.LocationConflict,
-					principal: null
-				);
+				throw new ValidationException( "Token in both cookie and auth header not allowed" );
 			}
 
 			string token = cookieExists ? cookie : bearerToken;
 			
-			IValidationResponse validationResponse = await m_accessTokenValidator
+			IAccessToken accessToken = await m_accessTokenValidator
 				.ValidateAsync( token )
 				.SafeAsync();
 
-			if( validationResponse.Status == ValidationStatus.Expired ) {
-				return new AuthenticationResponse(
-					AuthenticationStatus.Expired,
-					principal: null
-				);
-			}
-
 			// TODO .. we should consider doing the xsrf check without validating the jwt
-			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, validationResponse.AccessToken, authMode );
+			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, accessToken, authMode );
 			if( !isXsrfSafe ) {
-				return new AuthenticationResponse(
-					AuthenticationStatus.XsrfMismatch,
-					principal: null
-				);
+				throw new XsrfException( "Request is lacking XSRF protection" );
 			}
 
-			if( validationResponse.Status == ValidationStatus.Success ) {
-				ID2LPrincipal principal = new D2LPrincipal( validationResponse.AccessToken );
-				return new AuthenticationResponse(
-					AuthenticationStatus.Success,
-					principal
-				);
-			}
+			ID2LPrincipal principal = new D2LPrincipal( accessToken );
 
-			throw new Exception( "Unknown validation status: " + validationResponse.Status );
+			return principal;
 		}
 
 		private bool IsXsrfSafe(
