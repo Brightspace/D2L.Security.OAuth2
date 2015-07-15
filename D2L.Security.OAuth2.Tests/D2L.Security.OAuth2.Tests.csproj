@@ -76,7 +76,6 @@
     <Compile Include="Integration\Keys\Default\Data\JwksProviderTests.cs" />
     <Compile Include="Integration\TestFramework\TestAccessTokenProviderTests.cs" />
     <Compile Include="Integration\TestFramework\TestAccessTokenTests.cs" />
-    <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.cs" />
     <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.Rsa.cs" />
     <Compile Include="Integration\Validation\AccessTokens\AccessTokenValidatorTests.EcDsa.cs" />
     <Compile Include="Unit\Keys\Default\RemotePublicKeyProviderTests.cs" />
