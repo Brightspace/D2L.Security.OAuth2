@@ -140,16 +140,14 @@
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
     <Compile Include="Principal\AnonymousPrincipal.cs" />
-    <Compile Include="Validation\AccessTokens\IValidationResponse.cs" />
-    <Compile Include="Validation\Exceptions\InvalidKeyTypeException.cs" />
-    <Compile Include="Validation\Exceptions\InvalidSignatureAlgorithmException.cs" />
-    <Compile Include="Validation\Exceptions\MissingKeyIdException.cs" />
+    <Compile Include="Validation\Exceptions\ExpiredTokenException.cs" />
+    <Compile Include="Validation\Exceptions\InvalidTokenException.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyLookupFailureException.cs" />
     <Compile Include="Keys\Constants.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyNotFoundException.cs" />
+    <Compile Include="Validation\Exceptions\ValidationException.cs" />
+    <Compile Include="Validation\Exceptions\XsrfException.cs" />
     <Compile Include="Validation\Request\AuthenticationMode.cs" />
-    <Compile Include="Validation\Request\AuthenticationResponse.cs" />
-    <Compile Include="Validation\Request\AuthenticationStatus.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenExtensions.cs" />
     <Compile Include="Validation\Request\RequestAuthenticator.cs" />
@@ -162,8 +160,6 @@
     <Compile Include="Validation\AccessTokens\AccessTokenValidator.cs" />
     <Compile Include="Validation\AccessTokens\IAccessTokenValidator.cs" />
     <Compile Include="Validation\AccessTokens\AccessToken.cs" />
-    <Compile Include="Validation\AccessTokens\ValidationResponse.cs" />
-    <Compile Include="Validation\AccessTokens\ValidationStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

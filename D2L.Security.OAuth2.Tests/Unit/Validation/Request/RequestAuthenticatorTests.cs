@@ -6,7 +6,11 @@ using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Tests.Utilities;
 using D2L.Security.OAuth2.Tests.Utilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Request;
+
+using Moq;
+
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
@@ -24,10 +28,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				request_authorizationHeader: ACCESS_TOKEN,
 				request_d2lApiCookie: null,
 				accessToken_xsrfClaim: "xsrf",
-				accessToken_validationStatus: ValidationStatus.Success,
-				authMode: AuthenticationMode.Full,
- 				expected_authenticationStatus: AuthenticationStatus.Success,
-				expected_nullPrincipal: false
+				authMode: AuthenticationMode.Full
 			).SafeAsync();
 		}
 
@@ -38,10 +39,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				request_authorizationHeader: null,
 				request_d2lApiCookie: ACCESS_TOKEN,
 				accessToken_xsrfClaim: "xsrf",
-				accessToken_validationStatus: ValidationStatus.Success,
-				authMode: AuthenticationMode.Full,
- 				expected_authenticationStatus: AuthenticationStatus.Success,
-				expected_nullPrincipal: false
+				authMode: AuthenticationMode.Full
 			).SafeAsync();
 		}
 
@@ -52,10 +50,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				request_authorizationHeader: ACCESS_TOKEN,
 				request_d2lApiCookie: ACCESS_TOKEN,
 				accessToken_xsrfClaim: "xsrf",
-				accessToken_validationStatus: ValidationStatus.Success,
 				authMode: AuthenticationMode.Full,
- 				expected_authenticationStatus: AuthenticationStatus.LocationConflict,
-				expected_nullPrincipal: true
+				expectedExceptionType: typeof( ValidationException )
 			).SafeAsync();
 		}
 
@@ -66,10 +62,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				request_authorizationHeader: string.Empty,
 				request_d2lApiCookie: string.Empty,
 				accessToken_xsrfClaim: "xsrf",
-				accessToken_validationStatus: ValidationStatus.Success,
 				authMode: AuthenticationMode.Full,
- 				expected_authenticationStatus: AuthenticationStatus.Anonymous,
-				expected_nullPrincipal: false,
+				expectedExceptionType: null,
 				expected_principalType: PrincipalType.Anonymous
 			).SafeAsync();
 		}
@@ -81,10 +75,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				request_authorizationHeader: null,
 				request_d2lApiCookie: ACCESS_TOKEN,
 				accessToken_xsrfClaim: "XsRf",
-				accessToken_validationStatus: ValidationStatus.Success,
 				authMode: AuthenticationMode.Full,
- 				expected_authenticationStatus: AuthenticationStatus.XsrfMismatch,
-				expected_nullPrincipal: true
+				expectedExceptionType: typeof( XsrfException )
 			).SafeAsync();
 		}
 
@@ -95,10 +87,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				request_authorizationHeader: null,
 				request_d2lApiCookie: ACCESS_TOKEN,
 				accessToken_xsrfClaim: "way different",
-				accessToken_validationStatus: ValidationStatus.Success,
-				authMode: AuthenticationMode.SkipXsrfValidation,
- 				expected_authenticationStatus: AuthenticationStatus.Success,
-				expected_nullPrincipal: false
+				authMode: AuthenticationMode.SkipXsrfValidation
 			).SafeAsync();
 		}
 
@@ -109,10 +98,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				request_authorizationHeader: null,
 				request_d2lApiCookie: ACCESS_TOKEN,
 				accessToken_xsrfClaim: "xsrf",
-				accessToken_validationStatus: ValidationStatus.Expired,
 				authMode: AuthenticationMode.SkipXsrfValidation,
- 				expected_authenticationStatus: AuthenticationStatus.Expired,
-				expected_nullPrincipal: true
+				expectedExceptionType: typeof( ExpiredTokenException )
 			).SafeAsync();
 		}
 
@@ -121,10 +108,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 			string request_d2lApiCookie,
 			string request_authorizationHeader,
 			string accessToken_xsrfClaim,
-			ValidationStatus accessToken_validationStatus,
 			AuthenticationMode authMode,
-			AuthenticationStatus expected_authenticationStatus,
-			bool expected_nullPrincipal,
+			Type expectedExceptionType = null,
 			PrincipalType? expected_principalType = null
 		) {
 
@@ -132,14 +117,10 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				xsrfClaim: accessToken_xsrfClaim
 			).Object;
 
-			var validationResponse = new ValidationResponse(
-				accessToken_validationStatus,
-				token
-			);
-
 			IAccessTokenValidator tokenValidator = AccessTokenValidatorMock.Create(
 				accessToken: ACCESS_TOKEN,
-				response: validationResponse
+				accessTokenAfterValidation: token,
+				expectedExceptionType: expectedExceptionType
 			).Object;
 
 			IRequestAuthenticator authenticator = new RequestAuthenticator( tokenValidator );
@@ -149,49 +130,64 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 				.WithXsrfHeader( request_xsrfHeader )
 				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, request_d2lApiCookie );
 
-			AuthenticationResponse authResponse = await authenticator.AuthenticateAsync(
-				httpRequestMessage,
-				authMode: authMode
-			).SafeAsync();
+			ID2LPrincipal principal = null;
+			Exception exception = null;
+			try {
+				principal = await authenticator.AuthenticateAsync(
+					httpRequestMessage,
+					authMode: authMode
+					).SafeAsync();
+			} catch( Exception e ) {
+				exception = e;
+			}
 			
 			CheckExpectations(
-				authResponse,
-				expected_authenticationStatus,
-				expected_nullPrincipal,
+				principal,
+				exception,
+				expectedExceptionType,
 				expected_principalType );
+
+			exception = null;
 
 			HttpRequest httpRequest = RequestBuilder.Create()
 				.WithAuthHeader( request_authorizationHeader )
 				.WithXsrfHeader( request_xsrfHeader )
 				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, request_d2lApiCookie );
 
-			authResponse = await authenticator.AuthenticateAsync(
-				httpRequest,
-				authMode: authMode
-			).SafeAsync();
+			try {
+				principal = await authenticator.AuthenticateAsync(
+					httpRequest,
+					authMode: authMode
+					).SafeAsync();
+			} catch( Exception e ) {
+				exception = e;
+			}
 			
 			CheckExpectations(
-				authResponse,
-				expected_authenticationStatus,
-				expected_nullPrincipal,
+				principal,
+				exception,
+				expectedExceptionType,
 				expected_principalType );
-
-			Assert.AreEqual( expected_authenticationStatus, authResponse.Status, "Using HttpRequest" );
-			Assert.AreEqual( expected_nullPrincipal, authResponse.Principal == null, "Using HttpRequest" );
 		}
 
 		private void CheckExpectations(
-			AuthenticationResponse authResponse,
-			AuthenticationStatus expected_authenticationStatus,
-			bool expected_nullPrincipal,
+			ID2LPrincipal principal,
+			Exception exception,
+			Type expectedExceptionType,
 			PrincipalType? expected_principalType
 		) {
+			if( expectedExceptionType != null ) {
+				Assert.IsNull( principal );
+				Assert.IsNotNull( exception );
+				Assert.AreEqual( expectedExceptionType, exception.GetType() );
+				return;
+			}
 
-			Assert.AreEqual( expected_authenticationStatus, authResponse.Status, "Using HttpRequest" );
-			Assert.AreEqual( expected_nullPrincipal, authResponse.Principal == null, "Using HttpRequest" );
+			Assert.IsNotNull( principal );
+			Assert.IsNull( exception );
 
 			if( expected_principalType.HasValue ) {
-				Assert.AreEqual( expected_principalType, authResponse.Principal.Type );
+				Assert.AreEqual( expected_principalType, principal.Type );
 			}
 		}
 	}
