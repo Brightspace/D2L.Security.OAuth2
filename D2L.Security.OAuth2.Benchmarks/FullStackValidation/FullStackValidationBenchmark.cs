@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Newtonsoft.Json;
@@ -28,7 +27,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			};
 		}
 
-		protected abstract IPrivateKeyProvider GetPrivateKeyProvider( IPublicKeyDataProvider p );
+		protected abstract ITokenSigner GetTokenSigner( IPublicKeyDataProvider p );
 
 
 		private void SetUp( out Uri host, out string token, out Guid id ) {
@@ -37,12 +36,10 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 			host = new Uri( hostStr );
 
+#pragma warning disable 618
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
-			IPrivateKeyProvider privateKeyProvider = GetPrivateKeyProvider( publicKeyDataProvider );
-
-			var securityToken = privateKeyProvider.GetSigningCredentialsAsync().SafeAsync().GetAwaiter().GetResult();
-
-			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
+#pragma warning restore 618
+			ITokenSigner tokenSigner = GetTokenSigner( publicKeyDataProvider );
 
 			token = tokenSigner
 				.SignAsync( new UnsignedToken(
