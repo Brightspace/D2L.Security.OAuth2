@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Keys.Caching;
-using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Tests.Utilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
@@ -75,7 +72,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 
 				token += "abcd";
 
-				Assert.Throws<SignatureVerificationFailedException>( () => {
+				Assert.Throws<ValidationException>( () => {
 					var response = m_accessTokenValidator
 						.ValidateAsync( token )
 						.GetAwaiter()
