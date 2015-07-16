@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -72,7 +71,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 
 				token += "abcd";
 
-				Assert.Throws<SignatureVerificationFailedException>( () =>
+				Assert.Throws<ValidationException>( () =>
 					m_accessTokenValidator
 						.ValidateAsync( token )
 						.GetAwaiter()
