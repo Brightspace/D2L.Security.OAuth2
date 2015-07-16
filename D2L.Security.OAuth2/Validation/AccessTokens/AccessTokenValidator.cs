@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				string message = string.Format(
 					"Signature algorithm '{0}' is not supported.  Permitted algorithms are '{1}'",
 					unvalidatedToken.SignatureAlgorithm,
-					ALLOWED_SIGNATURE_ALGORITHMS
+					string.Join( ",", ALLOWED_SIGNATURE_ALGORITHMS )
 				);
 				throw new InvalidTokenException( message );
 			}
