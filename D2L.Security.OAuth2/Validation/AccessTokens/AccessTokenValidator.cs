@@ -27,8 +27,11 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
-			
-			var unvalidatedToken = (JwtSecurityToken)m_tokenHandler.ReadToken(
+			if( !m_tokenHandler.CanReadToken( token ) ) {
+				throw new ValidationException( "Couldn't parse token" );
+			}
+
+			var unvalidatedToken = ( JwtSecurityToken )m_tokenHandler.ReadToken(
 				token
 			);
 			
