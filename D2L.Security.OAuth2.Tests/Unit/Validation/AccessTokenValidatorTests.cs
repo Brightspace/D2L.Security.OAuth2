@@ -6,6 +6,9 @@ using D2L.Security.OAuth2.Tests.Utilities;
 using D2L.Security.OAuth2.Tests.Utilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
+
+using Moq;
+
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Tests.Unit.Validation {
@@ -15,6 +18,16 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 	public class AccessTokenValidatorTests {
 
 		private readonly Uri m_jwksEndpoint = new Uri( "http://someplace.somewhere" );
+
+		[Test]
+		public void ValidateAsync_GarbageJwt_Throws() {
+			var publicKeyProvider = new Mock<IPublicKeyProvider>( MockBehavior.Strict ).Object;
+			IAccessTokenValidator accessTokenValidator = new AccessTokenValidator( publicKeyProvider );
+
+			Assert.Throws<ValidationException>( () =>
+				accessTokenValidator.ValidateAsync( "garbage" ).GetAwaiter().GetResult()
+			);
+		}
 
 		[Test]
 		public async Task UnsignedJwt() {
