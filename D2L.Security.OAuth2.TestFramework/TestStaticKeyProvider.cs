@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using System.Security.Cryptography;
+using D2L.Security.OAuth2.TestFramework.Properties;
 
 namespace D2L.Security.OAuth2.TestFramework {
 
@@ -12,7 +11,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 		static TestStaticKeyProvider() {
 			using( var provider = new RSACryptoServiceProvider { PersistKeyInCsp = false } ) {
-				provider.FromXmlString( File.ReadAllText( AssemblyDirectory + @"\Resources\TestRSAParameters.xml" ) );
+				provider.FromXmlString( Resources.TestRSAParameters );
 				m_parameters = provider.ExportParameters( true );
 			}
 		}
@@ -24,15 +23,5 @@ namespace D2L.Security.OAuth2.TestFramework {
 		public static Guid TestKeyId {
 			get { return m_testKeyId; }
 		}
-
-		private static string AssemblyDirectory {
-			get {
-				string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-				UriBuilder uri = new UriBuilder( codeBase );
-				string path = Uri.UnescapeDataString( uri.Path );
-				return Path.GetDirectoryName( path );
-			}
-		}
-
 	}
 }
