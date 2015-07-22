@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
@@ -16,7 +17,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		};
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
-		private readonly JwtSecurityTokenHandler m_tokenHandler = new JwtSecurityTokenHandler();
+		private readonly ThreadLocal<JwtSecurityTokenHandler> m_tokenHandler = new ThreadLocal<JwtSecurityTokenHandler>(
+			valueFactory: () => new JwtSecurityTokenHandler(),
+			trackAllValues: false
+		);
 
 		public AccessTokenValidator(
 			IPublicKeyProvider publicKeyProvider
@@ -27,11 +31,13 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
-			if( !m_tokenHandler.CanReadToken( token ) ) {
+			var tokenHandler = m_tokenHandler.Value;
+
+			if( !tokenHandler.CanReadToken( token ) ) {
 				throw new ValidationException( "Couldn't parse token" );
 			}
 
-			var unvalidatedToken = ( JwtSecurityToken )m_tokenHandler.ReadToken(
+			var unvalidatedToken = (JwtSecurityToken)tokenHandler.ReadToken(
 				token
 			);
 			
@@ -69,7 +75,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			try {
 				SecurityToken securityToken;
-				m_tokenHandler.ValidateToken(
+				tokenHandler.ValidateToken(
 					token,
 					validationParameters,
 					out securityToken
