@@ -34,7 +34,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, tokenProvisioningEndpoint );
-				IAccessToken token = await provider.ProvisionAccessTokenAsync( claims, scopes );
+				IAccessToken token = await provider.ProvisionAccessTokenAsync( claims, scopes ).SafeAsync();
 				return token.Token;
 			}
 		}
@@ -58,7 +58,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 			if( xsrfToken != null ) {
 				claimSet.Add( new Claim( Constants.Claims.XSRF_TOKEN, xsrfToken ) );
 			}
-			return await GetToken( tokenProvisioningEndpoint, claimSet, new[] { new Scope( "*", "*", "*" ) } );
+			return await GetToken( tokenProvisioningEndpoint, claimSet, new[] { new Scope( "*", "*", "*" ) } ).SafeAsync();
 		}
 
 	}

@@ -75,6 +75,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 				Assert.Throws<ValidationException>( () => {
 					var response = m_accessTokenValidator
 						.ValidateAsync( token )
+						.SafeAsync()
 						.GetAwaiter()
 						.GetResult();
 				} );
@@ -88,6 +89,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.Validation {
 				Assert.Throws<PublicKeyNotFoundException>( () => {
 					var response = m_accessTokenValidator
 						.ValidateAsync( jwtWithBadKeyId )
+						.SafeAsync()
 						.GetAwaiter()
 						.GetResult();
 				} );
