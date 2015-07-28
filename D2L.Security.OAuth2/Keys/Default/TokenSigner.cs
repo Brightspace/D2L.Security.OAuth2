@@ -28,13 +28,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					expires: token.ExpiresAt,
 					signingCredentials: securityToken.GetSigningCredentials()
 				);
+
+				var jwtHandler = new JwtSecurityTokenHandler();
+
+				string signedRawToken = jwtHandler.WriteToken( jwt );
+
+				return signedRawToken;
 			}
-
-			var jwtHandler = new JwtSecurityTokenHandler();
-
-			string signedRawToken = jwtHandler.WriteToken( jwt );
-
-			return signedRawToken;
 		}
 	}
 }
