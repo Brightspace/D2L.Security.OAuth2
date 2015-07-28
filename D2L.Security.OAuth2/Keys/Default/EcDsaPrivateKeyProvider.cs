@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Keys.Default {
@@ -32,7 +34,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				using( var cng = CngKey.Import( privateBlob, CngKeyBlobFormat.EccPrivateBlob ) ) {
 					// ECDsaCng copies the CngKey, hence the using
 					var ecDsa = new ECDsaCng( cng );
-					return new EcDsaSecurityKey( ecDsa );
+					var key = new EcDsaSecurityKey( ecDsa );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, ecDsa );
 				}
 			} );
 
