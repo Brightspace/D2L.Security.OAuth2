@@ -13,7 +13,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
 			get {
 				return new ReadOnlyCollection<SecurityKey>(
-					new List<SecurityKey> { m_key.Value }
+					new List<SecurityKey> { GetKey() }
 				);
 			}
 		}
@@ -22,7 +22,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			SecurityKeyIdentifierClause keyIdentifierClause
 		) {
 			if( MatchesKeyIdentifierClause( keyIdentifierClause ) ) {
-				return m_key.Value;
+				return GetKey();
 			}
 
 			return null;

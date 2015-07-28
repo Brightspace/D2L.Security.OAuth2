@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens;
+﻿using System;
+using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 				csp.ImportParameters( privateKey );
 				var key = new RsaSecurityKey( csp );
-				return key;
+				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, csp );
 			} );
 
 			return Task.FromResult( result );

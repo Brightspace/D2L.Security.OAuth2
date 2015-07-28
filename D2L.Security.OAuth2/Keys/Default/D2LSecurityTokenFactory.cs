@@ -17,7 +17,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		D2LSecurityToken ID2LSecurityTokenFactory.Create(
-			Func<AsymmetricSecurityKey> keyFactory
+			Func<Tuple<AsymmetricSecurityKey, IDisposable>> keyFactory
 		) {
 			Guid id = Guid.NewGuid();
 			DateTime validFrom = m_dateTimeProvider.UtcNow;
