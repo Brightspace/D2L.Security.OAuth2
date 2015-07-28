@@ -25,10 +25,10 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 		public async void TestAccessTokenProvider_TokenIsValid() {
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL );
-				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes );
+				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync();
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ) );
+				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
 			}
 		}
 
@@ -36,10 +36,10 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 		public async void TestAccessTokenProvider_SuppliedRSAParameters_TokenIsValid() {
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestStaticKeyProvider.TestKeyId, TestStaticKeyProvider.TestRSAParameters );
-				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes );
+				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync();
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ) );
+				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, Guid.NewGuid(), randomRsaParameters );
-				Assert.Throws<HttpRequestException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ) );
+				Assert.Throws<HttpRequestException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync() );
 			}
 		}
 

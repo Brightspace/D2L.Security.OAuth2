@@ -41,7 +41,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 
 		[Test]
 		public async Task GetSigningCredentialsAsync_FirstCall_CreatesAndReturnsKey() {
-			D2LSecurityToken key = await m_privateKeyProvider.GetSigningCredentialsAsync();
+			D2LSecurityToken key = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
 
@@ -56,10 +56,10 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 			DateTime now = DateTime.UtcNow;
 
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now );
-			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync();
+			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now + TimeSpan.FromSeconds( offsetSeconds ) );
-			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync();
+			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
 
@@ -76,13 +76,13 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 			DateTime now = DateTime.UtcNow;
 
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now );
-			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync();
+			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
 			m_mockDateTimeProvider
 				.Setup( dtp => dtp.UtcNow )
 				.Returns( now + KEY_LIFETIME - ROTATION_PERIOD + TimeSpan.FromSeconds( offsetSeconds ) );
 
-			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync();
+			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Exactly( 2 ) );
 

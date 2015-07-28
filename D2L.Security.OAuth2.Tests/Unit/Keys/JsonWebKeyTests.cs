@@ -84,7 +84,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys {
 			);
 
 			JsonWebKey expectedKey;
-			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync() ) {
+			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
 				expectedKey = token.ToJsonWebKey();
 			}
 
