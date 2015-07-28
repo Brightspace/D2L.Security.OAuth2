@@ -32,7 +32,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				return result;
 			}
 
-			JsonWebKey jwk = await m_publicKeyDataProvider.GetByIdAsync( id );
+			JsonWebKey jwk = await m_publicKeyDataProvider
+				.GetByIdAsync( id )
+				.SafeAsync();
 
 			if( jwk != null ) {
 				result = jwk.ToSecurityToken();

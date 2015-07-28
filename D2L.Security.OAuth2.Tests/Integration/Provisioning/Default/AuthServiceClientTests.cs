@@ -32,7 +32,9 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			using( var httpClient = CreateMockedHttpClient( requestBodyReceiver ) ) {
 				var client = CreateClient( httpClient );
 				var assertion = "123";
-				var result = await client.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() );
+				var result = await client
+					.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() )
+					.SafeAsync();
 
 				var parameters = requestBody
 					.Split( '&' )
@@ -53,9 +55,11 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			using( var httpClient = CreateMockedHttpClient( requestBodyReceiver ) ) {
 				var client = CreateClient( httpClient );
 				var assertion = "123";
-				var result = await client.ProvisionAccessTokenAsync( assertion, new Scope[] {
-					new Scope( "foo", "bar", "baz" )
-				} );
+				var result = await client
+					.ProvisionAccessTokenAsync( assertion, new Scope[] {
+						new Scope( "foo", "bar", "baz" )
+					} )
+					.SafeAsync();
 
 				var parameters = requestBody
 					.Split( '&' )
@@ -76,10 +80,12 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			using( var httpClient = CreateMockedHttpClient( requestBodyReceiver ) ) {
 				var client = CreateClient( httpClient );
 				var assertion = "123";
-				var result = await client.ProvisionAccessTokenAsync( assertion, new Scope[] {
-					new Scope( "foo", "bar", "baz" ),
-					new Scope( "quux", "mrr", "rawr" )
-				} );
+				var result = await client
+					.ProvisionAccessTokenAsync( assertion, new Scope[] {
+						new Scope( "foo", "bar", "baz" ),
+						new Scope( "quux", "mrr", "rawr" )
+					} )
+					.SafeAsync();
 
 				var parameters = requestBody
 					.Split( '&' )
@@ -97,7 +103,9 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			using( var httpClient = CreateMockedHttpClient( x => { }, responseContent: TestData.ValidHttpResponseBody ) ) {
 				var client = CreateClient( httpClient );
 				var assertion = "123";
-				var result = await client.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() );
+				var result = await client
+					.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() )
+					.SafeAsync();
 
 				Assert.AreEqual( "mrrrrrr", result.Token );
 			}

@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation {
 			IAccessTokenValidator accessTokenValidator = new AccessTokenValidator( publicKeyProvider );
 
 			Assert.Throws<ValidationException>( () =>
-				accessTokenValidator.ValidateAsync( "garbage" ).GetAwaiter().GetResult()
+				accessTokenValidator.ValidateAsync( "garbage" ).SafeAsync().GetAwaiter().GetResult()
 			);
 		}
 
