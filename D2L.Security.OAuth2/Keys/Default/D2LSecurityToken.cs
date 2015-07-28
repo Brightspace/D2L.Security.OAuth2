@@ -15,13 +15,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		// such as RSACryptoServiceProvider are not thread-safe
 		// This allows us to share the D2LSecurityToken across threads, while still
 		// respecting the thread safety warning of those implemtnations
-		private readonly ThreadLocal<AsymmetricSecurityKey> m_key;
+		private readonly ThreadLocal<Tuple<AsymmetricSecurityKey, IDisposable>> m_key;
 
 		public D2LSecurityToken(
 			Guid id,
 			DateTime validFrom,
 			DateTime validTo,
-			Func<AsymmetricSecurityKey> keyFactory
+			Func<Tuple<AsymmetricSecurityKey, IDisposable>> keyFactory
 		) {
 			if( validFrom >= validTo ) {
 				throw new ArgumentException( "validFrom must be before validTo" );
@@ -31,7 +31,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_validFrom = validFrom;
 			m_validTo = validTo;
 
-			m_key = new ThreadLocal<AsymmetricSecurityKey>(
+			m_key = new ThreadLocal<Tuple<AsymmetricSecurityKey, IDisposable>>(
 				valueFactory: keyFactory,
 				trackAllValues: true
 			);
@@ -48,11 +48,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public bool HasPrivateKey {
-			get { return m_key.Value.HasPrivateKey(); }	
+			get { return GetKey().HasPrivateKey(); }
 		}
 
 		public AsymmetricAlgorithm GetAsymmetricAlgorithm() {
-			if( m_key.Value is X509AsymmetricSecurityKey ) {
+			if( GetKey() is X509AsymmetricSecurityKey ) {
 				throw new InvalidOperationException(
 					"This hacky thing is not applicable to the X509AsymmetricSecurityKey implementation"
 				);
@@ -61,8 +61,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			// Note: RsaSecurityKey ignores the "algorithm" parameter here.
 			// See http://referencesource.microsoft.com/#System.IdentityModel/System/IdentityModel/Tokens/RsaSecurityKey.cs,63
 
-			AsymmetricAlgorithm alg = m_key
-				.Value
+			AsymmetricAlgorithm alg = GetKey()
 				.GetAsymmetricAlgorithm( "", HasPrivateKey );
 
 			return alg;
@@ -72,11 +71,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			string signatureAlgorithm;
 			string digestAlgorithm;
 
-			if( m_key.Value is RsaSecurityKey ) {
+			var key = GetKey();
+
+			if( key is RsaSecurityKey ) {
 				signatureAlgorithm = SecurityAlgorithms.RsaSha256Signature;
 				digestAlgorithm = SecurityAlgorithms.Sha256Digest;
-			} else if( m_key.Value is EcDsaSecurityKey ) {
-				var ecdsaKey = m_key.Value as EcDsaSecurityKey;
+			} else if( key is EcDsaSecurityKey ) {
+				var ecdsaKey = key as EcDsaSecurityKey;
 				signatureAlgorithm = ecdsaKey.SignatureAlgorithm;
 				digestAlgorithm = ecdsaKey.DigestAlgorithm;
 			} else {
@@ -87,7 +88,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			var securityKeyIdentifier = new SecurityKeyIdentifier( keyIdentifierClause );
 
 			var signingCredentials = new SigningCredentials(
-				m_key.Value,
+				GetKey(),
 				signatureAlgorithm,
 				digestAlgorithm,
 				securityKeyIdentifier );
@@ -96,12 +97,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public JsonWebKey ToJsonWebKey( bool includePrivateParameters = false ) {
-			if( m_key.Value is RsaSecurityKey ) {
+			var key = GetKey();
+
+			if( key is RsaSecurityKey ) {
 				var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
 				RSAParameters p = csp.ExportParameters( includePrivateParameters );
 
 				return new RsaJsonWebKey( KeyId, ValidTo, p );
-			} else if( m_key.Value is EcDsaSecurityKey && !includePrivateParameters ) {
+			} else if( key is EcDsaSecurityKey && !includePrivateParameters ) {
 				var ecDsa = GetAsymmetricAlgorithm() as ECDsaCng;
 				byte[] publicBlob = ecDsa.Key.Export( CngKeyBlobFormat.EccPublicBlob );
 
@@ -109,6 +112,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 
 			throw new NotImplementedException();
+		}
+
+		private AsymmetricSecurityKey GetKey() {
+			return m_key.Value.Item1;
 		}
 
 	}
