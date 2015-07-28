@@ -53,7 +53,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			keys = await Task
 				.WhenAll(
 					keys.Select( key => KeyExpirationHelper( key ) ).ToArray()
-				);
+				)
+				.SafeAsync();
 
 			keys = keys
 				.Where( key => key != null )
@@ -82,7 +83,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			TimeSpan dt = key.ExpiresAt.Value - DateTime.UtcNow;
 
 			if( dt < TimeSpan.FromSeconds( 0 ) ) {
-				await ( this as IPublicKeyDataProvider ).DeleteAsync( key.Id );
+				await ( this as IPublicKeyDataProvider )
+					.DeleteAsync( key.Id )
+					.SafeAsync();
 				return null;
 			}
 
