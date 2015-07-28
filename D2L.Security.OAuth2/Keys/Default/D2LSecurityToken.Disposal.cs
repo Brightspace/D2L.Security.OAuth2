@@ -32,8 +32,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 						m_disposed = true;
 
 						foreach( var key in m_key.Values ) {
-							m_key.Dispose();
+							var disposable = key.Item2;
+							if( disposable != null ) {
+								disposable.Dispose();
+							}
 						}
+
+						m_key.Dispose();
 					}
 				}
 			}
