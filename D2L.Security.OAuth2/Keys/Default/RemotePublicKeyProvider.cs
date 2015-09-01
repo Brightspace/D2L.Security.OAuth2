@@ -43,7 +43,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private static void CacheJwks( IInMemoryPublicKeyCache cache, JsonWebKeySet jwks ) {
 			foreach( var jwk in jwks ) {
-				cache.Set( jwk.ToSecurityToken() );
+				D2LSecurityToken token;
+				try {
+					token = jwk.ToSecurityToken();
+				} catch {
+					continue;
+				}
+
+				cache.Set( token );
 			}
 		}
 
