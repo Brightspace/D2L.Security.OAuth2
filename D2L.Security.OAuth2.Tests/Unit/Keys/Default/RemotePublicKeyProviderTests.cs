@@ -109,5 +109,60 @@ namespace D2L.Security.OAuth2.Tests.Unit.Keys.Default {
 
 			Assert.AreEqual( cachedKey, result );
 		}
+
+		[Test]
+		async public void ItShouldRetrieveJwksAndIgnoreInvalidKeysWithoutErroring() {
+			var seq = new MockSequence();
+
+			m_keyCache
+				.InSequence( seq )
+				.Setup( x => x.Get( KEY_ID ) )
+				.Returns<D2LSecurityToken>( null );
+
+			var otherKeyId = Guid.NewGuid();
+			var jwks = new JsonWebKeySet(
+				new JavaScriptSerializer().Serialize(
+					new {
+						keys = new object[] {
+							D2LSecurityTokenUtility
+								.CreateActiveToken( KEY_ID )
+								.ToJsonWebKey()
+								.ToJwkDto(),
+							D2LSecurityTokenUtility
+								.CreateTokenWithTimeRemaining( TimeSpan.FromSeconds( -1 ), otherKeyId )
+								.ToJsonWebKey()
+								.ToJwkDto()
+						}
+					}
+				)
+			);
+			m_jwksProvider
+				.InSequence( seq )
+				.Setup( x => x.RequestJwksAsync() )
+				.ReturnsAsync( jwks );
+
+			m_keyCache
+				.Setup( x => x.Set( It.Is<D2LSecurityToken>( k => k.KeyId == KEY_ID ) ) );
+
+			var cachedKey = new D2LSecurityToken(
+				KEY_ID,
+				DateTime.UtcNow,
+				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
+				() => null as Tuple<AsymmetricSecurityKey, IDisposable>
+			);
+			m_keyCache
+				.InSequence( seq )
+				.Setup( x => x.Get( KEY_ID ) )
+				.Returns( cachedKey );
+
+			D2LSecurityToken result = await m_publicKeyProvider
+				.GetByIdAsync( KEY_ID )
+				.SafeAsync();
+
+			m_keyCache.VerifyAll();
+			m_keyCache.Verify( x => x.Set( It.IsAny<D2LSecurityToken>() ), Times.Once );
+
+			Assert.AreEqual( cachedKey, result );
+		}
 	}
 }
