@@ -6,12 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
+using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Request;
-using D2L.Security.WebApiAuth.Principal;
 using SimpleLogInterface;
 
-namespace D2L.Security.WebApiAuth.Handler {
+namespace D2L.Security.OAuth2.Validation.Request {
 	
 	internal sealed class AuthenticationMessageHandler : DelegatingHandler {
 

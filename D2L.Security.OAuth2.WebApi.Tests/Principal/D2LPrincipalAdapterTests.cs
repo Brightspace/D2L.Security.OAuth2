@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
-using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
-using D2L.Security.WebApiAuth.Principal;
 using Moq;
 using NUnit.Framework;
 
-namespace D2L.Security.WebApiAuth.Tests.Unit.Principal {
+namespace D2L.Security.OAuth2.Principal {
 
 	[TestFixture]
 	[Category( "Unit" )]

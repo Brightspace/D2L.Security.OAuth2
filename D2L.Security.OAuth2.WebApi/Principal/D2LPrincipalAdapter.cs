@@ -6,7 +6,7 @@ using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 
-namespace D2L.Security.WebApiAuth.Principal {
+namespace D2L.Security.OAuth2.Principal {
 
 	/// <summary>
 	/// This class has some ugliness to present a clean injectable principal. It uses a lazy cache
