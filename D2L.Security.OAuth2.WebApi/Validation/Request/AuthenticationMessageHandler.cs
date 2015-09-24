@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Request;
 using SimpleLogInterface;
 
@@ -51,7 +51,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			try {
 				await AuthenticateAsync( request )
 					.ConfigureAwait( false );
-			} catch( AuthenticationException ex ) {
+			} catch( ValidationException ex ) {
 				m_log.Warn( "Authentication failed", ex );
 				return request.CreateResponse( HttpStatusCode.Unauthorized );
 			} catch( Exception ex ) {
