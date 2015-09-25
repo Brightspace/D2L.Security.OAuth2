@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 
 // Nuget: Title
 [assembly: AssemblyTitle( "D2L Security For Web API" )]
@@ -18,3 +19,5 @@
 [assembly: AssemblyFileVersion( "2.4.0.0" )]
 
 [assembly: AssemblyCopyright( "Copyright © Desire2Learn" )]
+
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.WebApi.UnitTests" )]
