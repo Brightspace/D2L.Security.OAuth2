@@ -85,6 +85,10 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				   m_authenticationMode
 			   ).ConfigureAwait( false );
 
+			// It is okay to access Thread.CurrentPrincipal because it is contained in
+			// the SecurityContext which is part of ExecutionContext which you don't
+			// lose when you SafeAsync/ConfigureAwait( false ).
+			// See: http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx
 			Thread.CurrentPrincipal = new D2LPrincipalAdapter( principal );
 		}
 	}
