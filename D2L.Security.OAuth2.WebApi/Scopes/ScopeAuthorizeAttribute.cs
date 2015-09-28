@@ -2,8 +2,10 @@
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Scopes {
 	public sealed class ScopeAuthorizeAttribute : AuthorizeAttribute {
@@ -28,14 +30,15 @@ namespace D2L.Security.OAuth2.Scopes {
 		}
 
 		protected override bool IsAuthorized( HttpActionContext actionContext ) {
-			var principal = actionContext.ControllerContext.RequestContext.Principal as ClaimsPrincipal;
+			var principal =
+				Thread.CurrentPrincipal as ID2LPrincipal ??
+				actionContext.ControllerContext.RequestContext.Principal as ID2LPrincipal;
+
 			if( principal == null ) {
 				return false;
 			}
 
-			var grantedScopes = principal.GetGrantedScopes();
-
-			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, m_requiredScope );
+			bool isAuthorized = ScopeAuthorizer.IsAuthorized( principal.Scopes, m_requiredScope );
 
 			return isAuthorized;
 		}
