@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			) {
 
 			try {
-				AuthenticateAsync( request );
+				Authenticate( request );
 			} catch( ValidationException ex ) {
 				m_log.Warn( "Authentication failed", ex );
 				return request.CreateResponse( HttpStatusCode.Unauthorized );
@@ -78,7 +78,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			base.Dispose( disposing );
 		}
 
-		private void AuthenticateAsync( HttpRequestMessage request ) {
+		private void Authenticate( HttpRequestMessage request ) {
 			var principal = m_requestAuthenticator.AuthenticateAsync(
 				   request,
 				   m_authenticationMode
