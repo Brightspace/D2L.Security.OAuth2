@@ -3,65 +3,20 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Controllers;
+using D2L.Security.OAuth2.Principal;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Scopes {
 	internal sealed class ScopeAuthorizeAttributeTests {
-		[Test]
-		public void PrincipalNotSet_AuthorizationShouldBeDenied() {
+		private HttpActionContext m_actionContext;
 
-			var actionContext = CreateActionContextWithPrinciapl( null );
-
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
-			attr.OnAuthorization( actionContext );
-
-			AssertIsNotAuthorized( actionContext.Response );
-		}
-
-		[Test]
-		public void NoScopesGranted_AuthorizationShouldBeDenied() {
-
-			var principal = CreatePrinciaplWithScopeClaim( null );
-			var actionContext = CreateActionContextWithPrinciapl( principal );
-
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
-			attr.OnAuthorization( actionContext );
-
-			AssertIsNotAuthorized( actionContext.Response );
-		}
-
-		[Test]
-		public void RequiredScopeIsNotGranted_AuthorizationShouldBeDenied() {
-
-			var principal = CreatePrinciaplWithScopeClaim( "g:r:x" );
-			var actionContext = CreateActionContextWithPrinciapl( principal );
-
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
-			attr.OnAuthorization( actionContext );
-
-			AssertIsNotAuthorized( actionContext.Response );
-		}
-
-		[Test]
-		public void RequiredScopeIsGranted_AuthorizationShouldBeGranted() {
-
-			var principal = CreatePrinciaplWithScopeClaim( "g:r:p" );
-			var actionContext = CreateActionContextWithPrinciapl( principal );
-
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
-			attr.OnAuthorization( actionContext );
-
-			AssertIsAuthorized( actionContext.Response );
-		}
-
-		#region Helpers
-
-		private static HttpActionContext CreateActionContextWithPrinciapl( ClaimsPrincipal princiapl ) {
-
+		[SetUp]
+		public void SetUp() {
 			var allowAnonymousAttributeCollection =
 				new Collection<AllowAnonymousAttribute>( Enumerable.Empty<AllowAnonymousAttribute>().ToList() );
 
@@ -79,22 +34,67 @@ namespace D2L.Security.OAuth2.Scopes {
 				.Setup( ad => ad.GetCustomAttributes<AllowAnonymousAttribute>() )
 				.Returns( allowAnonymousAttributeCollection );
 
-			var actionContext = ContextUtil.CreateActionContext( controllerContext, actionDescriptorMock.Object );
-
-			actionContext.ControllerContext.RequestContext.Principal = princiapl;
-
-			return actionContext;
+			m_actionContext = ContextUtil.CreateActionContext( controllerContext, actionDescriptorMock.Object );
 		}
 
-		private static ClaimsPrincipal CreatePrinciaplWithScopeClaim( string scopePattern ) {
+		[Test]
+		public void PrincipalNotSet_AuthorizationShouldBeDenied() {
+			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			attr.OnAuthorization( m_actionContext );
 
-			var claims = ( scopePattern == null )
-				? Enumerable.Empty<Claim>()
-				: new[] { new Claim( Constants.ClaimTypes.Scope, scopePattern ) };
-			var identity = new ClaimsIdentity( claims );
-			var principal = new ClaimsPrincipal( identity );
+			AssertIsNotAuthorized( m_actionContext.Response );
+		}
 
-			return principal;
+		[Test]
+		public void NoScopesGranted_AuthorizationShouldBeDenied() {
+			SetupPrincipal();
+
+			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			attr.OnAuthorization( m_actionContext );
+
+			AssertIsNotAuthorized( m_actionContext.Response );
+		}
+
+		[Test]
+		public void RequiredScopeIsNotGranted_AuthorizationShouldBeDenied() {
+			SetupPrincipal( "g:r:x" );
+
+			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			attr.OnAuthorization( m_actionContext );
+
+			AssertIsNotAuthorized( m_actionContext.Response );
+		}
+
+		[Test]
+		public void RequiredScopeIsGranted_AuthorizationShouldBeGranted() {
+			SetupPrincipal( "g:r:p" );
+
+			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			attr.OnAuthorization( m_actionContext );
+
+			AssertIsAuthorized( m_actionContext.Response );
+		}
+
+		[Test]
+		public void RequiredScopeIsGranted_PrincipalOnActionContect_AuthorizationShouldBeGranted() {
+			SetupPrincipal( "g:r:p", setOnActionContextInstead: true );
+
+			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			attr.OnAuthorization( m_actionContext );
+
+			AssertIsAuthorized( m_actionContext.Response );
+		}
+
+		private void SetupPrincipal( string scope = null, bool setOnActionContextInstead = false) {
+			var d2lPrincipal = new Mock<ID2LPrincipal>( MockBehavior.Strict );
+			d2lPrincipal.Setup( p => p.Scopes ).Returns( scope == null ? new Scope[] { } : new[] { Scope.Parse( scope ) } );
+			var principal = new D2LPrincipalAdapter( d2lPrincipal.Object);
+
+			if( setOnActionContextInstead ) {
+				m_actionContext.RequestContext.Principal = principal;
+			} else {
+				Thread.CurrentPrincipal = principal;
+			}
 		}
 
 		private static void AssertIsAuthorized( HttpResponseMessage response ) {
@@ -107,9 +107,6 @@ namespace D2L.Security.OAuth2.Scopes {
 			response.Should().NotBeNull();
 			response.StatusCode.Should().Be( HttpStatusCode.Forbidden );
 		}
-
-		#endregion
-
 	}
 
 }
