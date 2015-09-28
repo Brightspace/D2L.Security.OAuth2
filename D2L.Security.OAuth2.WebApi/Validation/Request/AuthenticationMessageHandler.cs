@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Security.OAuth2.Validation.Request;
 using SimpleLogInterface;
 
@@ -43,22 +43,24 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			m_log = logProvider.Get( typeof( AuthenticationMessageHandler ) );
 		}
 
-		protected override Task<HttpResponseMessage> SendAsync(
+		protected override async Task<HttpResponseMessage> SendAsync(
 			HttpRequestMessage request,
 			CancellationToken cancellationToken
 			) {
 
 			try {
-				Authenticate( request );
-			} catch( AuthenticationException ex ) {
+				await AuthenticateAsync( request )
+					.ConfigureAwait( false );
+			} catch( ValidationException ex ) {
 				m_log.Warn( "Authentication failed", ex );
-				return Task.FromResult( request.CreateResponse( HttpStatusCode.Unauthorized ) );
+				return request.CreateResponse( HttpStatusCode.Unauthorized );
 			} catch( Exception ex ) {
 				m_log.Error( "An unknown error occurred during authentication", ex );
-				return Task.FromResult( request.CreateResponse( HttpStatusCode.Unauthorized ) );
+				return request.CreateResponse( HttpStatusCode.Unauthorized );
 			}
 
-			return base.SendAsync( request, cancellationToken );
+			return await base.SendAsync( request, cancellationToken )
+				.ConfigureAwait( false );
 		}
 
 		/// <summary>
@@ -77,20 +79,17 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			base.Dispose( disposing );
 		}
 
-		private void Authenticate( HttpRequestMessage request ) {
-			AuthenticationResponse response = m_requestAuthenticator.AuthenticateAsync(
-				request,
-				m_authenticationMode
-				).Result;
+		private async Task AuthenticateAsync( HttpRequestMessage request ) {
+			var principal = await m_requestAuthenticator.AuthenticateAsync(
+				   request,
+				   m_authenticationMode
+			   ).ConfigureAwait( false );
 
-			switch( response.Status ) {
-				case AuthenticationStatus.Success:
-					Thread.CurrentPrincipal = new D2LPrincipalAdapter( response.Principal );
-					break;
-
-				default:
-					throw new AuthenticationException( string.Format( "Authentication failed: {0}", response.Status ) );
-			}
+			// It is okay to access Thread.CurrentPrincipal because it is contained in
+			// the SecurityContext which is part of ExecutionContext which you don't
+			// lose when you SafeAsync/ConfigureAwait( false ).
+			// See: http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx
+			Thread.CurrentPrincipal = new D2LPrincipalAdapter( principal );
 		}
 	}
 }
