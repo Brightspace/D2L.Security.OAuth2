@@ -49,8 +49,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			) {
 
 			try {
-				await AuthenticateAsync( request )
-					.ConfigureAwait( false );
+				AuthenticateAsync( request );
 			} catch( ValidationException ex ) {
 				m_log.Warn( "Authentication failed", ex );
 				return request.CreateResponse( HttpStatusCode.Unauthorized );
@@ -79,16 +78,12 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			base.Dispose( disposing );
 		}
 
-		private async Task AuthenticateAsync( HttpRequestMessage request ) {
-			var principal = await m_requestAuthenticator.AuthenticateAsync(
+		private void AuthenticateAsync( HttpRequestMessage request ) {
+			var principal = m_requestAuthenticator.AuthenticateAsync(
 				   request,
 				   m_authenticationMode
-			   ).ConfigureAwait( false );
+			   ).ConfigureAwait( false ).GetAwaiter().GetResult();
 
-			// It is okay to access Thread.CurrentPrincipal because it is contained in
-			// the SecurityContext which is part of ExecutionContext which you don't
-			// lose when you SafeAsync/ConfigureAwait( false ).
-			// See: http://blogs.msdn.com/b/pfxteam/archive/2012/06/15/executioncontext-vs-synchronizationcontext.aspx
 			Thread.CurrentPrincipal = new D2LPrincipalAdapter( principal );
 		}
 	}
