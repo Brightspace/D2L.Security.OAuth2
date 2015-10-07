@@ -35,8 +35,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			var clause = keyIdentifierClause as NamedKeySecurityKeyIdentifierClause;
 			return clause != null
-				&& clause.Name.Equals( ProvisioningConstants.AssertionGrant.KEY_ID_NAME, StringComparison.Ordinal )
-				&& clause.Id.Equals( this.KeyId.ToString(), StringComparison.OrdinalIgnoreCase );
+				&& clause.Name.Equals( OAuth2.Constants.Claims.KEY_ID, StringComparison.Ordinal )
+				&& clause.Id.Equals( KeyId.ToString(), StringComparison.OrdinalIgnoreCase );
 		}
 	}
 }

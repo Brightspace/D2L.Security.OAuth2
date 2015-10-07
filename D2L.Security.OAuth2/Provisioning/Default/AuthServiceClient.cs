@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 		private static string BuildFormContents( string assertion, IEnumerable<Scope> scopes ) {
 			StringBuilder builder = new StringBuilder( "grant_type=" );
-			builder.Append( ProvisioningConstants.AssertionGrant.GRANT_TYPE );
+			builder.Append( WebUtility.UrlEncode( Constants.GrantTypes.JWT_BEARER ) );
 
 			builder.Append( "&assertion=" );
 			builder.Append( assertion );
