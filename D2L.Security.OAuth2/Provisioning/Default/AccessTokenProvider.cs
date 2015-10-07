@@ -46,10 +46,10 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			var unsignedToken = new UnsignedToken(
 				issuer: issuer,
-				audience: ProvisioningConstants.AssertionGrant.AUDIENCE,
+				audience: Constants.ASSERTION_AUDIENCE,
 				claims: claims,
 				notBefore: now,
-				expiresAt: now + ProvisioningConstants.AssertionGrant.ASSERTION_TOKEN_LIFETIME );
+				expiresAt: now + Constants.ASSERTION_TOKEN_LIFETIME );
 
 			string assertion = await m_tokenSigner
 				.SignAsync( unsignedToken )
