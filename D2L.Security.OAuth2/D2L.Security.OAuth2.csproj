@@ -121,7 +121,6 @@
     <Compile Include="Provisioning\Default\CachedAccessTokenProvider.cs" />
     <Compile Include="Provisioning\Default\IAuthServiceClient.cs" />
     <Compile Include="Provisioning\Default\INonCachingAccessTokenProvider.cs" />
-    <Compile Include="Provisioning\ProvisioningConstants.cs" />
     <Compile Include="Provisioning\Default\AccessToken.cs" />
     <Compile Include="Provisioning\Default\AccessTokenProvider.cs" />
     <Compile Include="Provisioning\Default\SerializationHelper.cs" />

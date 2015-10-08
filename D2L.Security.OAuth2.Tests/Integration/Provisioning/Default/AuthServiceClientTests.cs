@@ -24,6 +24,8 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 			public const string ValidHttpResponseBody = "{\"access_token\":\"mrrrrrr\",\"expires_in\":3600,\"token_type\":\"Bearer\"}";
 		}
 
+		private readonly string ENCODED_GRANT_TYPE = WebUtility.UrlEncode( Constants.GrantTypes.JWT_BEARER );
+
 		[Test]
 		async public void CorrectlyEncodesBody_NoScope() {
 			string requestBody = null;
@@ -41,7 +43,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 					.Select( x => x.Split( '=' ) )
 					.ToDictionary( x => x[0], x => x[1] );
 
-				Assert.AreEqual( ProvisioningConstants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
+				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters["grant_type"] );
 				Assert.AreEqual( assertion, parameters["assertion"] );
 				Assert.AreEqual( string.Empty, parameters["scope"] );
 			}
@@ -66,7 +68,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 					.Select( x => x.Split( '=' ) )
 					.ToDictionary( x => x[0], x => x[1] );
 
-				Assert.AreEqual( ProvisioningConstants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
+				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters["grant_type"] );
 				Assert.AreEqual( assertion, parameters["assertion"] );
 				Assert.AreEqual( "foo%3Abar%3Abaz", parameters["scope"] );
 			}
@@ -92,7 +94,7 @@ namespace D2L.Security.OAuth2.Tests.Unit.Provisioning.Default {
 					.Select( x => x.Split( '=' ) )
 					.ToDictionary( x => x[0], x => x[1] );
 
-				Assert.AreEqual( ProvisioningConstants.AssertionGrant.GRANT_TYPE, parameters["grant_type"] );
+				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters["grant_type"] );
 				Assert.AreEqual( assertion, parameters["assertion"] );
 				Assert.AreEqual( "foo%3Abar%3Abaz+quux%3Amrr%3Arawr", parameters["scope"] );
 			}
