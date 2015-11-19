@@ -103,6 +103,31 @@ namespace D2L.Security.OAuth2.Tests.Unit.Validation.Request {
 			).SafeAsync();
 		}
 
+		[Test]
+		public async Task WhenBothCookieAndHeaderSupplied_HeaderIsPreferred() {
+
+			const string HEADER_TOKEN = "header";
+			const string COOKIE_TOKEN = "cookie";
+
+			var httpRequestMessage = new HttpRequestMessage()
+				.WithAuthHeader( HEADER_TOKEN )
+				.WithXsrfHeader( "xsrf" )
+				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, COOKIE_TOKEN );
+
+			IAccessToken token = AccessTokenMock.Create(
+				xsrfClaim: "xsrf"
+			).Object;
+
+			Mock<IAccessTokenValidator> mock = new Mock<IAccessTokenValidator>();
+			mock.Setup( v => v.ValidateAsync( HEADER_TOKEN ) ).ReturnsAsync( token );
+
+			IRequestAuthenticator authenticator = new RequestAuthenticator( mock.Object );
+			ID2LPrincipal result = await authenticator.AuthenticateAsync( httpRequestMessage ).SafeAsync();
+
+			mock.Verify( v => v.ValidateAsync( HEADER_TOKEN ), Times.Exactly( 1 ) );
+			Assert.NotNull( result );
+		}
+
 		private async Task RunTest(
 			string request_xsrfHeader,
 			string request_d2lApiCookie,
