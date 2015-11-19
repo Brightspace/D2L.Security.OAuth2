@@ -53,11 +53,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				return ANONYMOUS_PRINCIPAL;
 			}
 
-			if( cookieExists && bearerTokenExists ) {
-				throw new ValidationException( "Token in both cookie and auth header not allowed" );
-			}
-
-			string token = cookieExists ? cookie : bearerToken;
+			string token = bearerTokenExists ? bearerToken : cookie;
 			
 			IAccessToken accessToken = await m_accessTokenValidator
 				.ValidateAsync( token )
