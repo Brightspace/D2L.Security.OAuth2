@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using D2L.Security.OAuth2.Scopes;
 
-namespace D2L.Security.OAuth2 {
+namespace D2L.Security.OAuth2.Extensions {
 	internal static class ClaimsPrincipalExtensions {
 		internal static IEnumerable<Scope> GetGrantedScopes( this ClaimsPrincipal principal ) {
 

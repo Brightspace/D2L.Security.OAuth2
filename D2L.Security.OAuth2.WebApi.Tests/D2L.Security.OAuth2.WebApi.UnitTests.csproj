@@ -32,9 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Security.OAuth2, Version=4.1.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\D2L.Security.OAuth2.4.1.3.0\lib\net451\D2L.Security.OAuth2.dll</HintPath>
+    <Reference Include="D2L.Security.OAuth2, Version=4.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\D2L.Security.OAuth2.4.2.0.0\lib\net451\D2L.Security.OAuth2.dll</HintPath>
+      <Private>True</Private>
+      <Aliases>OAuth2</Aliases>
     </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
@@ -88,6 +89,7 @@
     <ProjectReference Include="..\D2L.Security.OAuth2.WebApi\D2L.Security.OAuth2.WebApi.csproj">
       <Project>{c9140879-73e6-4767-b12b-17581793e419}</Project>
       <Name>D2L.Security.OAuth2.WebApi</Name>
+      <Aliases>OAuth2WebApi</Aliases>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
