@@ -1,12 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿extern alias OAuth2WebApi;
+extern alias OAuth2;
+
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using D2L.Security.OAuth2.Principal;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace D2L.Security.OAuth2.Scopes {
 
 		[Test]
 		public void PrincipalNotSet_AuthorizationShouldBeDenied() {
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			var attr = new OAuth2WebApi::D2L.Security.OAuth2.Scopes.ScopeAuthorizeAttribute( "g", "r", "p" );
 			attr.OnAuthorization( m_actionContext );
 
 			AssertIsNotAuthorized( m_actionContext.Response );
@@ -49,7 +50,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		public void NoScopesGranted_AuthorizationShouldBeDenied() {
 			SetupPrincipal();
 
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			var attr = new OAuth2WebApi::D2L.Security.OAuth2.Scopes.ScopeAuthorizeAttribute( "g", "r", "p" );
 			attr.OnAuthorization( m_actionContext );
 
 			AssertIsNotAuthorized( m_actionContext.Response );
@@ -59,7 +60,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		public void RequiredScopeIsNotGranted_AuthorizationShouldBeDenied() {
 			SetupPrincipal( "g:r:x" );
 
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			var attr = new OAuth2WebApi::D2L.Security.OAuth2.Scopes.ScopeAuthorizeAttribute( "g", "r", "p" );
 			attr.OnAuthorization( m_actionContext );
 
 			AssertIsNotAuthorized( m_actionContext.Response );
@@ -69,7 +70,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		public void RequiredScopeIsGranted_AuthorizationShouldBeGranted() {
 			SetupPrincipal( "g:r:p" );
 
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			var attr = new OAuth2WebApi::D2L.Security.OAuth2.Scopes.ScopeAuthorizeAttribute( "g", "r", "p" );
 			attr.OnAuthorization( m_actionContext );
 
 			AssertIsAuthorized( m_actionContext.Response );
@@ -79,16 +80,18 @@ namespace D2L.Security.OAuth2.Scopes {
 		public void RequiredScopeIsGranted_PrincipalOnActionContect_AuthorizationShouldBeGranted() {
 			SetupPrincipal( "g:r:p", setOnActionContextInstead: true );
 
-			var attr = new ScopeAuthorizeAttribute( "g", "r", "p" );
+			var attr = new OAuth2WebApi::D2L.Security.OAuth2.Scopes.ScopeAuthorizeAttribute( "g", "r", "p" );
 			attr.OnAuthorization( m_actionContext );
 
 			AssertIsAuthorized( m_actionContext.Response );
 		}
 
 		private void SetupPrincipal( string scope = null, bool setOnActionContextInstead = false) {
-			var d2lPrincipal = new Mock<ID2LPrincipal>( MockBehavior.Strict );
-			d2lPrincipal.Setup( p => p.Scopes ).Returns( scope == null ? new Scope[] { } : new[] { Scope.Parse( scope ) } );
-			var principal = new D2LPrincipalAdapter( d2lPrincipal.Object);
+			var d2lPrincipal = new Mock<OAuth2::D2L.Security.OAuth2.Principal.ID2LPrincipal>( MockBehavior.Strict );
+			d2lPrincipal.Setup( p => p.Scopes ).Returns( scope == null ?
+				new OAuth2::D2L.Security.OAuth2.Scopes.Scope[] { } :
+				new[] { OAuth2::D2L.Security.OAuth2.Scopes.Scope.Parse( scope ) } );
+			var principal = new OAuth2WebApi::D2L.Security.OAuth2.Principal.D2LPrincipalAdapter( d2lPrincipal.Object);
 
 			if( setOnActionContextInstead ) {
 				m_actionContext.RequestContext.Principal = principal;

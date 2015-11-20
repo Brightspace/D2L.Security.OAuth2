@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿extern alias OAuth2;
+extern alias OAuth2WebApi;
+
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using D2L.Security.OAuth2.Scopes;
 using NUnit.Framework;
+using OAuth2WebApi::D2L.Security.OAuth2.Extensions;
 
 namespace D2L.Security.OAuth2.Extensions {
 
@@ -29,10 +32,10 @@ namespace D2L.Security.OAuth2.Extensions {
 			builder.Remove( builder.Length - 1, 1 );
 
 			ClaimsPrincipal principal = PrincipalFromScopeClaim( builder.ToString() );
-			Scope[] resolvedScopes = principal.GetGrantedScopes().ToArray();
+			OAuth2::D2L.Security.OAuth2.Scopes.Scope[] resolvedScopes = principal.GetGrantedScopes().ToArray();
 
 			for( int i = 0; i < resolvedScopes.Length; i++ ) {
-				Scope scope = resolvedScopes[i];
+				OAuth2::D2L.Security.OAuth2.Scopes.Scope scope = resolvedScopes[i];
 
 				Assert.AreEqual( groups[i], scope.Group );
 				Assert.AreEqual( resources[i], scope.Resource );
@@ -46,10 +49,10 @@ namespace D2L.Security.OAuth2.Extensions {
 		public void GetGrantedScopes_Multiple_ManyPermissions_Success() {
 			ClaimsPrincipal principal = PrincipalFromScopeClaim( "dummy:dummy:dummy g:r:p0,p1" );
 
-			Scope[] scopes = principal.GetGrantedScopes().ToArray();
+			OAuth2::D2L.Security.OAuth2.Scopes.Scope[] scopes = principal.GetGrantedScopes().ToArray();
 			Assert.AreEqual( 2, scopes.Length );
 
-			Scope actual = scopes[1];
+			OAuth2::D2L.Security.OAuth2.Scopes.Scope actual = scopes[1];
 			Assert.AreEqual( "g", actual.Group );
 			Assert.AreEqual( "r", actual.Resource );
 
@@ -74,7 +77,7 @@ namespace D2L.Security.OAuth2.Extensions {
 		[TestCase( " a:b:c" )]
 		public void GetGrantedScopes_ContainsValidScope_ExtraWhiteSpace_ValidScopeParsedSuccessfully( string scopePattern ) {
 			ClaimsPrincipal principal = PrincipalFromScopeClaim( scopePattern );
-			Scope[] scopes = principal.GetGrantedScopes().ToArray();
+			OAuth2::D2L.Security.OAuth2.Scopes.Scope[] scopes = principal.GetGrantedScopes().ToArray();
 
 			Assert.AreEqual( 1, scopes.Length );
 			Assert.AreEqual( "a", scopes[0].Group );
@@ -85,7 +88,7 @@ namespace D2L.Security.OAuth2.Extensions {
 		}
 
 		private static ClaimsPrincipal PrincipalFromScopeClaim( string scopeClaimValue ) {
-			Claim claim = new Claim( Constants.ClaimTypes.Scope, scopeClaimValue );
+			Claim claim = new Claim( OAuth2WebApi::D2L.Security.OAuth2.Constants.ClaimTypes.Scope, scopeClaimValue );
 			Claim[] claims = new Claim[] { claim };
 			ClaimsIdentity claimsIdentity = new ClaimsIdentity( claims );
 
