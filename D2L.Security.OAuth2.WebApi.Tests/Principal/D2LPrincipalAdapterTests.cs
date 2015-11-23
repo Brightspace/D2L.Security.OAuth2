@@ -1,11 +1,11 @@
-﻿extern alias OAuth2;
-extern alias OAuth2WebApi;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading;
+using D2L.Security.OAuth2.Principal;
+using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 using NUnit.Framework;
 
@@ -15,23 +15,23 @@ namespace D2L.Security.OAuth2.Principal {
 	[Category( "Unit" )]
 	internal sealed class D2LPrincipalAdapterTests {
 
-		private const OAuth2::D2L.Security.OAuth2.Principal.PrincipalType PRINCIPAL_TYPE =
-			OAuth2::D2L.Security.OAuth2.Principal.PrincipalType.User;
+		private const PrincipalType PRINCIPAL_TYPE =
+			PrincipalType.User;
 
 		private const string USER_ID = "123";
 
 		private readonly Guid TENANT_ID = Guid.NewGuid();
-		private readonly IEnumerable<OAuth2::D2L.Security.OAuth2.Scopes.Scope> m_scopes = new[] { 
-			new OAuth2::D2L.Security.OAuth2.Scopes.Scope( "group", "resource", "permission" )
+		private readonly IEnumerable<Scope> m_scopes = new[] { 
+			new Scope( "group", "resource", "permission" )
 		};
 		private readonly IEnumerable<Claim> m_claims = new[] { new Claim( "claim1", "claimvalue1" ) };
 		private readonly DateTime m_accessTokenExpiry = DateTime.Now;
 		
-		private Mock<OAuth2::D2L.Security.OAuth2.Validation.AccessTokens.IAccessToken> m_accessTokenMock;
+		private Mock<IAccessToken> m_accessTokenMock;
 
 		[TestFixtureSetUp]
 		public void TestFixtureSetUp() {
-			m_accessTokenMock = new Mock<OAuth2::D2L.Security.OAuth2.Validation.AccessTokens.IAccessToken>();
+			m_accessTokenMock = new Mock<IAccessToken>();
 			m_accessTokenMock.Setup( x => x.Expiry ).Returns( m_accessTokenExpiry );
 			m_accessTokenMock.Setup( x => x.Claims ).Returns( m_claims );
 		}
@@ -39,8 +39,8 @@ namespace D2L.Security.OAuth2.Principal {
 		[Test]
 		public void SetID2LPrincipalProperties_GoodValues_ValuesMatch() {
 
-			OAuth2::D2L.Security.OAuth2.Principal.ID2LPrincipal principal =
-				new OAuth2WebApi::D2L.Security.OAuth2.Principal.D2LPrincipalAdapter();
+			ID2LPrincipal principal =
+				new D2LPrincipalAdapter();
 
 			Thread.CurrentPrincipal = CreateMockPrincipal();
 
@@ -57,7 +57,7 @@ namespace D2L.Security.OAuth2.Principal {
 		public void IPrincipalProperties_AccessThem_NotGoodValues() {
 
 			IPrincipal principal =
-				new OAuth2WebApi::D2L.Security.OAuth2.Principal.D2LPrincipalAdapter();
+				new D2LPrincipalAdapter();
 
 			Thread.CurrentPrincipal = CreateMockPrincipal();
 
@@ -68,13 +68,13 @@ namespace D2L.Security.OAuth2.Principal {
 		[Test]
 		public void ID2LPrincipalProperties_PrincipalNotSet_ExceptionWhenAccessingProperty() {
 
-			OAuth2::D2L.Security.OAuth2.Principal.ID2LPrincipal principal =
-				new OAuth2WebApi::D2L.Security.OAuth2.Principal.D2LPrincipalAdapter();
-			Assert.Throws<OAuth2WebApi::D2L.Security.OAuth2.Principal.PrincipalNotAssignedException>( () => { var tenant = principal.TenantId; } );
+			ID2LPrincipal principal =
+				new D2LPrincipalAdapter();
+			Assert.Throws<PrincipalNotAssignedException>( () => { var tenant = principal.TenantId; } );
 		}
 
-		private OAuth2WebApi::D2L.Security.OAuth2.Principal.D2LPrincipalAdapter CreateMockPrincipal() {
-			Mock<OAuth2::D2L.Security.OAuth2.Principal.ID2LPrincipal> principalMock = new Mock<OAuth2::D2L.Security.OAuth2.Principal.ID2LPrincipal>();
+		private D2LPrincipalAdapter CreateMockPrincipal() {
+			Mock<ID2LPrincipal> principalMock = new Mock<ID2LPrincipal>();
 			principalMock.Setup( x => x.Type ).Returns( PRINCIPAL_TYPE );
 			principalMock.Setup( x => x.Scopes ).Returns( m_scopes );
 			principalMock.Setup( x => x.TenantId ).Returns( TENANT_ID );
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2.Principal {
 
 			principalMock.Setup( x => x.AccessToken ).Returns( m_accessTokenMock.Object );
 
-			return new OAuth2WebApi::D2L.Security.OAuth2.Principal.D2LPrincipalAdapter( principalMock.Object );
+			return new D2LPrincipalAdapter( principalMock.Object );
 		}
 	}
 }
