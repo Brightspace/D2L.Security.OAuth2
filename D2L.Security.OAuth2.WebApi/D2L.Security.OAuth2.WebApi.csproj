@@ -65,7 +65,6 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants.cs" />
     <Compile Include="Extensions\ClaimsPrincipalExtensions.cs" />
     <Compile Include="Scopes\ScopeAuthorizeAttribute.cs" />
     <Compile Include="Validation\Request\AuthenticationMessageHandler.cs" />

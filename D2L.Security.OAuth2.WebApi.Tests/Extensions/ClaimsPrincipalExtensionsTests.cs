@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Text;
 using D2L.Security.OAuth2.Scopes;
 using NUnit.Framework;
-using OAuth2WebApi::D2L.Security.OAuth2.Extensions;
 
 namespace D2L.Security.OAuth2.Extensions {
 
