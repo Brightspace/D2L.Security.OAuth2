@@ -4,7 +4,7 @@ using System.Text;
 using D2L.Security.OAuth2.Scopes;
 using NUnit.Framework;
 
-namespace D2L.Security.OAuth2.Extensions {
+namespace D2L.Security.OAuth2 {
 
 	[TestFixture]
 	internal sealed class ClaimsPrincipalExtensionsTests {
