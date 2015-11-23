@@ -60,7 +60,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 			Assert.IsNull( m_authenticationContext.Principal );
 			Assert.IsNull( m_principalAfterCallback );
-			Assert.IsInstanceOfType( typeof( AuthenticationFailureResult ), m_authenticationContext.ErrorResult );
+			Assert.AreEqual( typeof( AuthenticationFailureResult ), m_authenticationContext.ErrorResult.GetType() );
 		}
 
 		[Test]
@@ -76,8 +76,28 @@ namespace D2L.Security.OAuth2.Authentication {
 		}
 
 		[Test]
+		public async Task AuthenticateAsync_AnonymousPrincipal_401() {
+			var principalMock = new Mock<ID2LPrincipal>( MockBehavior.Strict );
+			principalMock.Setup( p => p.Type ).Returns( PrincipalType.Anonymous );
+			var principal = principalMock.Object;
+			
+			m_requestAuthenticator
+				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
+				.ReturnsAsync( principal );
+			
+			await m_authenticationFilter
+				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
+				.SafeAsync();
+
+			Assert.IsNull( m_authenticationContext.Principal );
+			Assert.IsNull( m_principalAfterCallback );
+			Assert.AreEqual( typeof( AuthenticationFailureResult ), m_authenticationContext.ErrorResult.GetType() );
+		}
+
+		[Test]
 		public async Task AuthenticateAsync_Success() {
 			var principalMock = new Mock<ID2LPrincipal>( MockBehavior.Strict );
+			principalMock.Setup( p => p.Type ).Returns( PrincipalType.User );
 			principalMock.Setup( p => p.TenantId ).Returns( new Guid() );
 			var principal = principalMock.Object;
 

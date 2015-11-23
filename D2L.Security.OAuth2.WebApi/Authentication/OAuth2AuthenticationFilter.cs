@@ -50,6 +50,12 @@ namespace D2L.Security.OAuth2.Authentication {
 				throw;
 			}
 
+			if( principal.Type == PrincipalType.Anonymous ) {
+				m_log.Warn( "Authentication missing" );
+				context.ErrorResult = new AuthenticationFailureResult( null );
+				return;	
+			}
+
 			// Add to request context so things that can't use DI (e.g. extension
 			// methods) can get the principal.
 			context.Principal = new D2LPrincipalToIPrincipalAdaptor( principal );
