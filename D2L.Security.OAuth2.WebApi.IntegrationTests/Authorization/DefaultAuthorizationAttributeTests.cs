@@ -11,6 +11,14 @@ namespace D2L.Security.OAuth2.Authorization {
 	[TestFixture]
 	internal sealed class DefaultAuthorizationAttributeTests {
 		[Test]
+		public async Task UnspecifiedSpecifiedScope_AnyRequest_500() {
+			// Not the most fantastic test because its only asserting on a very
+			// overloaded status code but ok.
+			await TestUtilities.RunBasicAuthTest( "/authorization/unspecifiedscope", HttpStatusCode.InternalServerError )
+				.SafeAsync();
+		}
+
+		[Test]
 		public async Task Basic_NoAuthentication_401() {
 			await TestUtilities.RunBasicAuthTest( "/authorization/basic", HttpStatusCode.Unauthorized )
 				.SafeAsync();
@@ -20,16 +28,6 @@ namespace D2L.Security.OAuth2.Authorization {
 		public async Task Basic_HasSubjectClaim_403() {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				userId: 123
-			).SafeAsync();
-
-			await TestUtilities.RunBasicAuthTest( "/authorization/basic", jwt, HttpStatusCode.Unauthorized ) // TODO: see note at top
-				.SafeAsync();
-		}
-
-		[Test]
-		public async Task Basic_InsufficientScope_403() {
-			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
-				scope: "*:*:r"
 			).SafeAsync();
 
 			await TestUtilities.RunBasicAuthTest( "/authorization/basic", jwt, HttpStatusCode.Unauthorized ) // TODO: see note at top
@@ -48,12 +46,12 @@ namespace D2L.Security.OAuth2.Authorization {
 		[TestCase( "foo:bar:notbaz", HttpStatusCode.Forbidden )]
 		[TestCase( "foo:bar:baz", HttpStatusCode.NoContent )]
 		[TestCase( "foo:*:baz", HttpStatusCode.NoContent )]
-		public async Task RequireScope( string scope, HttpStatusCode expectedStatusCode) {
+		public async Task Basic_ScopeTests( string scope, HttpStatusCode expectedStatusCode) {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				scope: scope
 			).SafeAsync();
 
-			await TestUtilities.RunBasicAuthTest( "/authorization/requirescope", jwt, expectedStatusCode )
+			await TestUtilities.RunBasicAuthTest( "/authorization/basic", jwt, expectedStatusCode )
 				.SafeAsync();
 		}
 

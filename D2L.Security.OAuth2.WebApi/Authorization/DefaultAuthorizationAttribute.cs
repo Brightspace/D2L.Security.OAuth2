@@ -7,7 +7,6 @@ using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
 	public sealed class DefaultAuthorizationAttribute : AuthorizeAttribute {
-		private static readonly RequireScopeAttribute m_conservativeScopeChecker = new RequireScopeAttribute( "*", "*", "*" );
 		private static readonly ServicesOnlyAttribute m_conservativePrincipalTypeChecker = new ServicesOnlyAttribute();
 
 		protected override bool IsAuthorized( HttpActionContext context ) {
@@ -37,7 +36,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			}
 
 			if( scopeAttribute == null && noScopeAttribute == null ) {
-				return m_conservativeScopeChecker.IsAuthorizedHelper( context );
+				throw new Exception( "You must specify a scope with [RequireScope] or use [NoScope] for this API" );
 			}
 
 			return true;

@@ -5,15 +5,15 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 	[DefaultAuthorization]
 	public sealed class AuthorizationAttributeTestsController : ApiController {
 		[HttpGet]
-		[Route("authorization/basic")]
-		public void Basic() {
+		[Route("authorization/unspecifiedscope")]
+		public void UnspecifiedScope() {
 			
 		}
 
 		[HttpGet]
-		[RequireScope( "foo", "bar", "baz" )]
-		[Route("authorization/requirescope")]
-		public void ScopeOverride() {
+		[RequireScope("foo","bar","baz")]
+		[Route("authorization/basic")]
+		public void Basic() {
 			
 		}
 
