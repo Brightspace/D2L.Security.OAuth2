@@ -5,8 +5,9 @@ using System.Web.Http.Controllers;
 namespace D2L.Security.OAuth2 {
 	internal static partial class ExtensionMethods {
 		public static T GetSingleAttribute<T>( this HttpActionContext @this ) where T : class {
-			// TODO: validate that this GetCustomAttributes overload doesnt do inheritance stuff
-			var attributes = @this.ActionDescriptor.GetCustomAttributes<T>();
+			var attributes = @this.ActionDescriptor.GetCustomAttributes<T>(
+				inherit: false
+			);
 
 			if( attributes.Count == 0 ) {
 				return null;
