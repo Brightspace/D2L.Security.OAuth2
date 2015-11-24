@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationFailureResult.cs" />
     <Compile Include="Authentication\OAuth2AuthenticationFilter.cs" />
+    <Compile Include="TaskHelpers.cs" />
     <Compile Include="Scopes\ScopeAuthorizeAttribute.cs" />
     <Compile Include="Validation\Request\AuthenticationMessageHandler.cs" />
     <Compile Include="Validation\Request\AuthenticationMessageHandlerFactory.cs" />
