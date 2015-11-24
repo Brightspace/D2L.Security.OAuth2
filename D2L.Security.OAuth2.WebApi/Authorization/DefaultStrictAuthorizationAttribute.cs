@@ -44,7 +44,7 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		private bool PrincipalTypeIsOk( HttpActionContext context ) {
-			AuthorizeAttribute allowUsersAttribute = context.GetSingleAttribute<AllowUsersAttribute>();
+			AuthorizeAttribute allowUsersAttribute = context.GetSingleAttribute<AllowUsersAndServicesAttribute>();
 			AuthorizeAttribute servicesOnlyAttribute = context.GetSingleAttribute<ServicesOnlyAttribute>();
 
 			if ( allowUsersAttribute != null && servicesOnlyAttribute != null ) {

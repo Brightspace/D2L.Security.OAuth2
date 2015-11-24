@@ -74,6 +74,12 @@ namespace D2L.Security.OAuth2.Authorization {
 			await TestUtilities.RunBasicAuthTest( "/authorization/allowusers", jwt, HttpStatusCode.NoContent )
 				.SafeAsync();
 		}
+
+		[Test]
+		public async Task AllowUsers_Anonymous_401() {
+			await TestUtilities.RunBasicAuthTest( "/authorization/allowusers", HttpStatusCode.Unauthorized )
+				.SafeAsync();
+		}
 		
 		[TestCase("")]
 		[TestCase("*:*:*")]
@@ -86,9 +92,35 @@ namespace D2L.Security.OAuth2.Authorization {
 			await TestUtilities.RunBasicAuthTest( "/authorization/noscope", jwt, HttpStatusCode.NoContent )
 				.SafeAsync();
 		}
+
 		[Test]
-		public async Task Anonymous_Anything_204() {
+		public async Task Anonymous_NoToken_204() {
 			await TestUtilities.RunBasicAuthTest( "/authorization/anonymous", HttpStatusCode.NoContent )
+				.SafeAsync();
+		}
+
+		[TestCase( "" )]
+		[TestCase( "*:*:*" )]
+		[TestCase( "foo:bar:baz" )]
+		public async Task Anonymous_User_204( string scope ) {
+			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
+				userId: 12312,
+				scope: scope
+			).SafeAsync();
+
+			await TestUtilities.RunBasicAuthTest( "/authorization/anonymous", jwt, HttpStatusCode.NoContent )
+				.SafeAsync();
+		}
+
+		[TestCase( "" )]
+		[TestCase( "*:*:*" )]
+		[TestCase( "foo:bar:baz" )]
+		public async Task Anonymous_Service_204( string scope ) {
+			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
+				scope: scope
+			).SafeAsync();
+
+			await TestUtilities.RunBasicAuthTest( "/authorization/anonymous", jwt, HttpStatusCode.NoContent )
 				.SafeAsync();
 		}
 	}

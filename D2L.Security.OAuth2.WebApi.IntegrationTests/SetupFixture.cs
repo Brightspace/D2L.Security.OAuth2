@@ -6,8 +6,9 @@ using NUnit.Framework;
 using Owin;
 using SimpleLogInterface;
 using D2L.Services;
+using D2L.Security.OAuth2.Authentication;
 
-namespace D2L.Security.OAuth2.Authentication {
+namespace D2L.Security.OAuth2 {
 	[SetUpFixture]
 	public sealed class SetUpFixture {
 		const long PORT = 8916; // TODO: do this better

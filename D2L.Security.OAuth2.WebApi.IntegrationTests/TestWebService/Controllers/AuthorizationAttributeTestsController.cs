@@ -18,10 +18,14 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 		}
 
 		[HttpGet]
-		[AllowUsers]
+		[AllowUsersAndServices]
+		[NoRequiredScope] 
 		[Route("authorization/allowusers")]
 		public void AllowUsers() {
-			
+			// This route uses the [NoRequiredScope] attribute to make sure that it 401s
+			// for anon users inside [AllowUsersAndServices]... otherwise it might 401
+			// inside [RequiredScope(...)] depending on the order inside
+			// DefaultStrictAuthorizationAttribute.
 		}
 
 		[HttpGet]
@@ -32,7 +36,6 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 		}
 
 		[HttpGet]
-		[OverrideAuthentication]
 		[AllowAnonymous]
 		[Route("authorization/anonymous")]
 		public void Anonymous() {
