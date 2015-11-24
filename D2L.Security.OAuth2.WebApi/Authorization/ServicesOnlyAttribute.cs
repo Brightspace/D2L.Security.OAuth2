@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Net;
+using System.Net.Http;
+using System.Web.Http;
 using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
 
@@ -11,17 +13,18 @@ namespace D2L.Security.OAuth2.Authorization {
 				return false;
 			}
 
-			// Sigh...
-			long userId;
-			if( long.TryParse( principal.UserId, out userId ) ) {
-				return false;
-			}
-
-			return true;
+			return principal.Type == PrincipalType.Service;
 		}
 
 		internal bool IsAuthorizedHelper( HttpActionContext context ) {
 			return this.IsAuthorized( context );
+		}
+
+		protected override void HandleUnauthorizedRequest( HttpActionContext actionContext ) {
+			var response = actionContext.Request.CreateErrorResponse( HttpStatusCode.Forbidden, "services_only" );
+			response.Headers.Add( "WWW-Authenticate", "Bearer error=\"services_only\"" );
+
+			actionContext.Response = response;
 		}
 	}
 }
