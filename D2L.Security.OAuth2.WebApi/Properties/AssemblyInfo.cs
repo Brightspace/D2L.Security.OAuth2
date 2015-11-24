@@ -21,3 +21,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright( "Copyright © Desire2Learn" )]
 
 [assembly: InternalsVisibleTo( "D2L.Security.OAuth2.WebApi.UnitTests" )]
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.WebApi.IntegrationTests" )]

@@ -12,7 +12,6 @@ using NUnit.Framework;
 namespace D2L.Security.OAuth2.Principal {
 
 	[TestFixture]
-	[Category( "Unit" )]
 	internal sealed class D2LPrincipalAdapterTests {
 
 		private const PrincipalType PRINCIPAL_TYPE =

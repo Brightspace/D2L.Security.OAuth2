@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("D2L.Security.OAuth2.WebApi.Tests")]
+[assembly: AssemblyTitle("D2L.Security.OAuth2.WebApi.IntegrationTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Desire2Learn")]
-[assembly: AssemblyProduct("D2L.Security.WebApiAuth.Tests")]
+[assembly: AssemblyProduct("D2L.Security.OAuth2.WebApi.IntegrationTests")]
 [assembly: AssemblyCopyright("Copyright © Desire2Learn 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +21,7 @@ using NUnit.Framework;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3bae0188-1cb6-48c4-b5fd-5471cbe78084")]
+[assembly: Guid("e5ca39da-48dc-4458-b47a-52d3cf624f40")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,4 +36,4 @@ using NUnit.Framework;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: Category("Unit")]
+[assembly: Category("Integration")]

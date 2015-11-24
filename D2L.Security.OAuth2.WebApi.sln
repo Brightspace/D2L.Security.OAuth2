@@ -7,12 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi.UnitTests", "D2L.Security.OAuth2.WebApi.Tests\D2L.Security.OAuth2.WebApi.UnitTests.csproj", "{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F59E6B25-E149-45A7-9D8A-EC7292CCB56B}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{CFB9DCB1-4616-44F9-A8A0-DFEE76C29A6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi.IntegrationTests", "D2L.Security.OAuth2.WebApi.IntegrationTests\D2L.Security.OAuth2.WebApi.IntegrationTests.csproj", "{AAEEDF67-9ACD-4316-8570-77BABFC7F235}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,8 +25,16 @@ Global
 		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAEEDF67-9ACD-4316-8570-77BABFC7F235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAEEDF67-9ACD-4316-8570-77BABFC7F235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAEEDF67-9ACD-4316-8570-77BABFC7F235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAEEDF67-9ACD-4316-8570-77BABFC7F235}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54} = {CFB9DCB1-4616-44F9-A8A0-DFEE76C29A6B}
+		{AAEEDF67-9ACD-4316-8570-77BABFC7F235} = {CFB9DCB1-4616-44F9-A8A0-DFEE76C29A6B}
 	EndGlobalSection
 EndGlobal
