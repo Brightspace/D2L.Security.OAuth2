@@ -7,27 +7,20 @@ using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
 	public sealed class DefaultAuthorizationAttribute : AuthorizeAttribute {
-		private static readonly ServicesOnlyAttribute m_conservativePrincipalTypeChecker = new ServicesOnlyAttribute();
-
 		protected override bool IsAuthorized( HttpActionContext context ) {
-			// This check is redundant in a couple of ways but it's good as a fail-safe.
 			var principal = context.RequestContext.Principal as ID2LPrincipal;
+
 			if( principal == null ) {
 				return false;
 			}
 
-			if ( !ScopesAreOk( context )) {
-				return false;
-			}
-
-			if ( !PrincipalTypeIsOk( context )) {
-				return false;	
-			}
+			RequireScopeSpecification( context );
+			RequirePrincipalTypeSpecification( context );
 
 			return true;
 		}
 
-		private bool ScopesAreOk( HttpActionContext context ) {
+		private static void RequireScopeSpecification( HttpActionContext context ) {
 			AuthorizeAttribute scopeAttribute = context.GetSingleAttribute<RequireScopeAttribute>();
 			AuthorizeAttribute noScopeAttribute = context.GetSingleAttribute<NoRequiredScopeAttribute>();
 
@@ -38,23 +31,14 @@ namespace D2L.Security.OAuth2.Authorization {
 			if( scopeAttribute == null && noScopeAttribute == null ) {
 				throw new Exception( "You must specify a scope with [RequireScope] or use [NoScope] for this API" );
 			}
-
-			return true;
 		}
 
-		private bool PrincipalTypeIsOk( HttpActionContext context ) {
-			AuthorizeAttribute allowUsersAttribute = context.GetSingleAttribute<AllowUsersAndServicesAttribute>();
-			AuthorizeAttribute servicesOnlyAttribute = context.GetSingleAttribute<ServicesOnlyAttribute>();
+		private static void RequirePrincipalTypeSpecification( HttpActionContext context ) {
+			AuthorizeAttribute allowFromAttribute = context.GetSingleAttribute<AllowFromAttribute>();
 
-			if ( allowUsersAttribute != null && servicesOnlyAttribute != null ) {
-				throw new Exception( "Whoa - why does this action have an AllowUsers and ServicesOnly attribute???" );
+			if ( allowFromAttribute == null ) {
+				throw new Exception( "You must specify the types of callers for this API with [AllowFrom(...)]" );
 			}
-
-			if ( allowUsersAttribute == null && servicesOnlyAttribute == null ) {
-				return m_conservativePrincipalTypeChecker.IsAuthorizedHelper( context );
-			}
-
-			return true;
 		}
 	}
 }

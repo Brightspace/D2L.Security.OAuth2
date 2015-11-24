@@ -48,9 +48,5 @@ namespace D2L.Security.OAuth2.Authorization {
 
 			actionContext.Response = response;
 		}
-
-		internal bool IsAuthorizedHelper( HttpActionContext context ) {
-			return this.IsAuthorized( context );
-		}
 	}
 }
