@@ -10,8 +10,8 @@ namespace D2L.Security.OAuth2.Authentication {
 	[TestFixture]
 	internal sealed class OAuth2AuthenticationFilterTests {
 		[Test]
-		public async Task Basic_NoAuth_401() {
-			await RunTest( "/authentication/basic", HttpStatusCode.Unauthorized )
+		public async Task Basic_NoAuthAtAll_204() {
+			await RunTest( "/authentication/basic", HttpStatusCode.NoContent )
 				.SafeAsync();
 		}
 

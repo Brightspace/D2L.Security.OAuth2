@@ -76,11 +76,12 @@ namespace D2L.Security.OAuth2.Authentication {
 		}
 
 		[Test]
-		public async Task AuthenticateAsync_AnonymousPrincipal_401() {
+		public async Task AuthenticateAsync_AnonymousPrincipal_StillSucceeds() {
+			// It's up to the authorization attributes to restrict routes to users or services etc.
 			var principalMock = new Mock<ID2LPrincipal>( MockBehavior.Strict );
 			principalMock.Setup( p => p.Type ).Returns( PrincipalType.Anonymous );
 			var principal = principalMock.Object;
-			
+
 			m_requestAuthenticator
 				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
 				.ReturnsAsync( principal );
@@ -89,9 +90,14 @@ namespace D2L.Security.OAuth2.Authentication {
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();
 
-			Assert.IsNull( m_authenticationContext.Principal );
-			Assert.IsNull( m_principalAfterCallback );
-			Assert.AreEqual( typeof( AuthenticationFailureResult ), m_authenticationContext.ErrorResult.GetType() );
+			Assert.AreSame( principal, m_principalAfterCallback );
+			Assert.IsNotNull( m_authenticationContext.Principal );
+
+			var principalFromContext = m_authenticationContext.Principal as ID2LPrincipal;
+
+			Assert.IsNotNull( principalFromContext );
+			Assert.AreEqual( PrincipalType.Anonymous, m_principalAfterCallback.Type );
+			Assert.AreEqual( PrincipalType.Anonymous, principalFromContext.Type );
 		}
 
 		[Test]

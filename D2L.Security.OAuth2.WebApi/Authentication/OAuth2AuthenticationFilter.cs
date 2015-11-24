@@ -50,11 +50,9 @@ namespace D2L.Security.OAuth2.Authentication {
 				throw;
 			}
 
-			if( principal.Type == PrincipalType.Anonymous ) {
-				m_log.Warn( "Authentication missing" );
-				context.ErrorResult = new AuthenticationFailureResult( null );
-				return;	
-			}
+			// Note: the principal at this point may be anonymous if no credentials
+			// were sent. This can be guarded against with the authorization attributes
+			// and is by DefaultStrictAuthorizationAttribute.
 
 			// Add to request context so things that can't use DI (e.g. extension
 			// methods) can get the principal.
