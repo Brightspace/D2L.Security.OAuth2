@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 		[Test]
 		public async Task Basic_ExpiredJwt_401() {
-			string dayOldJwt = await SetUpFixture
+			string dayOldJwt = await TestUtilities
 				.GetAccessTokenValidForAMinute(
 					issuedAtTime: DateTime.UtcNow - TimeSpan.FromDays( 1 )
 				).SafeAsync();
@@ -36,7 +36,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 		[Test]
 		public async Task Basic_ValidJwt_204() {
-			string validJwt = await SetUpFixture
+			string validJwt = await TestUtilities
 				.GetAccessTokenValidForAMinute()
 				.SafeAsync();
 
