@@ -4,12 +4,12 @@ using NUnit.Framework;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Authorization {
-	// TODO: because the DefaultStrictAuthorizationFilter is itself an authorization filter but if you
+	// TODO: because the DefaultAuthorizationFilter is itself an authorization filter but if you
 	// don't override HandleUnauthorizedRequest then you will get Unauthorized instead of Forbidden. Also
 	// any custom logic in the authorization attributes won't run. This is a (at the moment minor) defect
 	// that we should fix.
 	[TestFixture]
-	internal sealed class DefaultStrictAuthorizationAttributeTests {
+	internal sealed class DefaultAuthorizationAttributeTests {
 		[Test]
 		public async Task Basic_NoAuthentication_401() {
 			await TestUtilities.RunBasicAuthTest( "/authorization/basic", HttpStatusCode.Unauthorized )

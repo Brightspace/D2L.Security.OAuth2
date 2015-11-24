@@ -2,7 +2,7 @@
 using D2L.Security.OAuth2.Authorization;
 
 namespace D2L.Security.OAuth2.TestWebService.Controllers {
-	[DefaultStrictAuthorization]
+	[DefaultAuthorization]
 	public sealed class AuthorizationAttributeTestsController : ApiController {
 		[HttpGet]
 		[Route("authorization/basic")]
@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 			// This route uses the [NoRequiredScope] attribute to make sure that it 401s
 			// for anon users inside [AllowUsersAndServices]... otherwise it might 401
 			// inside [RequiredScope(...)] depending on the order inside
-			// DefaultStrictAuthorizationAttribute.
+			// DefaultAuthorizationAttribute.
 		}
 
 		[HttpGet]

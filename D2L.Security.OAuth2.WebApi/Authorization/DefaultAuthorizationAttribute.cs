@@ -6,7 +6,7 @@ using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
-	public sealed class DefaultStrictAuthorizationAttribute : AuthorizeAttribute {
+	public sealed class DefaultAuthorizationAttribute : AuthorizeAttribute {
 		private static readonly RequireScopeAttribute m_conservativeScopeChecker = new RequireScopeAttribute( "*", "*", "*" );
 		private static readonly ServicesOnlyAttribute m_conservativePrincipalTypeChecker = new ServicesOnlyAttribute();
 

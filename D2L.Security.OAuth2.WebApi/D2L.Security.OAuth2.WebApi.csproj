@@ -72,7 +72,7 @@
     <Compile Include="Authentication\AuthenticationFailureResult.cs" />
     <Compile Include="Authentication\OAuth2AuthenticationFilter.cs" />
     <Compile Include="Authorization\AllowUsersAndServicesAttribute.cs" />
-    <Compile Include="Authorization\DefaultStrictAuthorizationAttribute.cs" />
+    <Compile Include="Authorization\DefaultAuthorizationAttribute.cs" />
     <Compile Include="Authorization\NoRequiredScopeAttribute.cs" />
     <Compile Include="Authorization\RequireScopeAttribute.cs" />
     <Compile Include="Authorization\ServicesOnlyAttribute.cs" />
