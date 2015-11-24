@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.Authentication {
 	internal sealed class OAuth2AuthenticationFilterTests {
 		[Test]
 		public async Task Basic_NoAuthAtAll_204() {
-			await RunTest( "/authentication/basic", HttpStatusCode.NoContent )
+			await TestUtilities.RunBasicAuthTest( "/authentication/basic", HttpStatusCode.NoContent )
 				.SafeAsync();
 		}
 
@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		public async Task Basic_GarbageJwt_401() {
 			const string GARBAGE_JWT = "foo";
 
-			await RunTest( "/authentication/basic", GARBAGE_JWT, HttpStatusCode.Unauthorized )
+			await TestUtilities.RunBasicAuthTest( "/authentication/basic", GARBAGE_JWT, HttpStatusCode.Unauthorized )
 				.SafeAsync();
 		}
 
@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Authentication {
 					issuedAtTime: DateTime.UtcNow - TimeSpan.FromDays( 1 )
 				).SafeAsync();
 
-			await RunTest( "/authentication/basic", dayOldJwt, HttpStatusCode.Unauthorized )
+			await TestUtilities.RunBasicAuthTest( "/authentication/basic", dayOldJwt, HttpStatusCode.Unauthorized )
 				.SafeAsync();
 		}
 
@@ -40,35 +40,14 @@ namespace D2L.Security.OAuth2.Authentication {
 				.GetAccessTokenValidForAMinute()
 				.SafeAsync();
 
-			await RunTest( "/authentication/basic", validJwt, HttpStatusCode.NoContent )
+			await TestUtilities.RunBasicAuthTest( "/authentication/basic", validJwt, HttpStatusCode.NoContent )
 				.SafeAsync();
 		}
 
 		[Test]
 		public async Task Anonymous_NoAuth_204() {
-			await RunTest( "/authentication/anonymous", HttpStatusCode.NoContent )
+			await TestUtilities.RunBasicAuthTest( "/authentication/anonymous", HttpStatusCode.NoContent )
 				.SafeAsync();
-		}
-
-		private Task RunTest( string route, HttpStatusCode expectedStatusCode ) {
-			return RunTest( route, null, expectedStatusCode ); 
-		}
-
-		private async Task RunTest( string route, string jwt, HttpStatusCode expectedStatusCode ) {
-			using( var client = SetUpFixture.GetHttpClient() ) {
-
-				var req = new HttpRequestMessage();
-				req.Method = HttpMethod.Get;
-				req.RequestUri = new Uri( client.BaseAddress, route );
-
-				if( jwt != null ) {
-					req.Headers.Authorization = new AuthenticationHeaderValue( "Bearer", jwt );
-				}
-
-				using ( var resp = await client.SendAsync( req ).SafeAsync() ) {
-					Assert.AreEqual( expectedStatusCode, resp.StatusCode );
-				}
-			}
 		}
 	}
 }

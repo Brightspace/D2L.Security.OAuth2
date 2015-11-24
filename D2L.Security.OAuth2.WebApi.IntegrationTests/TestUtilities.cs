@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Authentication;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Request;
 using D2L.Services;
+using NUnit.Framework;
 
 namespace D2L.Security.OAuth2 {
 	internal static class TestUtilities {
@@ -54,6 +59,27 @@ namespace D2L.Security.OAuth2 {
 					expiresAt: issuedAtTime.Value + TimeSpan.FromMinutes( 1 )
 				)
 			).SafeAsync();
+		}
+
+		public static Task RunBasicAuthTest( string route, HttpStatusCode expectedStatusCode ) {
+			return RunBasicAuthTest( route, null, expectedStatusCode ); 
+		}
+
+		public static async Task RunBasicAuthTest( string route, string jwt, HttpStatusCode expectedStatusCode ) {
+			using( var client = SetUpFixture.GetHttpClient() ) {
+
+				var req = new HttpRequestMessage();
+				req.Method = HttpMethod.Get;
+				req.RequestUri = new Uri( client.BaseAddress, route );
+
+				if( jwt != null ) {
+					req.Headers.Authorization = new AuthenticationHeaderValue( "Bearer", jwt );
+				}
+
+				using ( var resp = await client.SendAsync( req ).SafeAsync() ) {
+					Assert.AreEqual( expectedStatusCode, resp.StatusCode );
+				}
+			}
 		}
 	}
 }
