@@ -90,9 +90,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\OAuth2AuthenticationFilterTests.cs" />
+    <Compile Include="Authorization\DefaultStrictAuthorizationAttributeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="TestWebService\Controllers\AuthenticationFilterTestsController.cs" />
+    <Compile Include="TestWebService\Controllers\AuthorizationAttributeTestsController.cs" />
     <Compile Include="TestUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
