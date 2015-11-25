@@ -26,7 +26,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			AuthorizeAttribute noScopeAttribute = context.ActionDescriptor.GetCustomAttributes<NoRequiredScopeAttribute>().Single();
 
 			if( scopeAttribute != null && noScopeAttribute != null ) {
-				throw new Exception( "Whoa - why does this action have a RequireScope and NoRequiredScope attribute???" );
+				throw new Exception( "The attributes [RequireScope(...)] and [NoScope] are mutually exclusive" );
 			}
 
 			if( scopeAttribute == null && noScopeAttribute == null ) {
