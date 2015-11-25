@@ -9,6 +9,7 @@ using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Authorization {
+	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
 	public sealed class RequireScopeAttribute : AuthorizeAttribute {
 		private readonly Scope m_requiredScope;
 

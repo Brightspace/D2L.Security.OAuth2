@@ -6,6 +6,7 @@ using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
+	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
 	public sealed class DefaultAuthorizationAttribute : AuthorizeAttribute {
 		protected override bool IsAuthorized( HttpActionContext context ) {
 			var principal = context.RequestContext.Principal as ID2LPrincipal;
@@ -21,8 +22,8 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		private static void RequireScopeSpecification( HttpActionContext context ) {
-			AuthorizeAttribute scopeAttribute = context.GetSingleAttribute<RequireScopeAttribute>();
-			AuthorizeAttribute noScopeAttribute = context.GetSingleAttribute<NoRequiredScopeAttribute>();
+			AuthorizeAttribute scopeAttribute = context.ActionDescriptor.GetCustomAttributes<RequireScopeAttribute>().Single();
+			AuthorizeAttribute noScopeAttribute = context.ActionDescriptor.GetCustomAttributes<NoRequiredScopeAttribute>().Single();
 
 			if( scopeAttribute != null && noScopeAttribute != null ) {
 				throw new Exception( "Whoa - why does this action have a RequireScope and NoRequiredScope attribute???" );
@@ -34,7 +35,7 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		private static void RequirePrincipalTypeSpecification( HttpActionContext context ) {
-			AuthorizeAttribute allowFromAttribute = context.GetSingleAttribute<AllowFromAttribute>();
+			AuthorizeAttribute allowFromAttribute = context.ActionDescriptor.GetCustomAttributes<AllowFromAttribute>().Single();
 
 			if ( allowFromAttribute == null ) {
 				throw new Exception( "You must specify the types of callers for this API with [AllowFrom(...)]" );

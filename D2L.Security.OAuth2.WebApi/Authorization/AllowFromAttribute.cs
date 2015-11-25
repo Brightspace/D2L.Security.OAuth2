@@ -7,6 +7,7 @@ using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
+	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
 	public sealed class AllowFromAttribute : AuthorizeAttribute {
 		private readonly bool m_allowUsers;
 		private readonly bool m_allowServices;
