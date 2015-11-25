@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		[TestCase( 0, "", HttpStatusCode.Forbidden )]
-		[TestCase( 0, "foo:bar:baz", HttpStatusCode.NoContent )]
+		[TestCase( 0, "foo:bar:baz", HttpStatusCode.Unauthorized )]
 		[TestCase( 123, "", HttpStatusCode.Forbidden )]
 		[TestCase( 123, "foo:bar:baz", HttpStatusCode.NoContent )]
 		[TestCase( 123, "foo:*:baz", HttpStatusCode.NoContent )]

@@ -22,8 +22,8 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		private static void RequireScopeSpecification( HttpActionContext context ) {
-			AuthorizeAttribute scopeAttribute = context.ActionDescriptor.GetCustomAttributes<RequireScopeAttribute>().Single();
-			AuthorizeAttribute noScopeAttribute = context.ActionDescriptor.GetCustomAttributes<NoRequiredScopeAttribute>().Single();
+			AuthorizeAttribute scopeAttribute = context.ActionDescriptor.GetCustomAttributes<RequireScopeAttribute>().SingleOrDefault();
+			AuthorizeAttribute noScopeAttribute = context.ActionDescriptor.GetCustomAttributes<NoRequiredScopeAttribute>().SingleOrDefault();
 
 			if( scopeAttribute != null && noScopeAttribute != null ) {
 				throw new Exception( "The attributes [RequireScope(...)] and [NoScope] are mutually exclusive" );
@@ -35,7 +35,7 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		private static void RequirePrincipalTypeSpecification( HttpActionContext context ) {
-			AuthorizeAttribute allowFromAttribute = context.ActionDescriptor.GetCustomAttributes<AllowFromAttribute>().Single();
+			AuthorizeAttribute allowFromAttribute = context.ActionDescriptor.GetCustomAttributes<AllowFromAttribute>().SingleOrDefault();
 
 			if ( allowFromAttribute == null ) {
 				throw new Exception( "You must specify the types of callers for this API with [AllowFrom(...)]" );
