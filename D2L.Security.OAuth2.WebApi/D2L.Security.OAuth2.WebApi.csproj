@@ -71,16 +71,20 @@
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationFailureResult.cs" />
     <Compile Include="Authentication\OAuth2AuthenticationFilter.cs" />
-    <Compile Include="TaskHelpers.cs" />
-    <Compile Include="Scopes\ScopeAuthorizeAttribute.cs" />
-    <Compile Include="Validation\Request\AuthenticationMessageHandler.cs" />
-    <Compile Include="Validation\Request\AuthenticationMessageHandlerFactory.cs" />
-    <Compile Include="Principal\D2LPrincipalAdapter.cs" />
+    <Compile Include="Authorization\AllowFromAttribute.cs" />
+    <Compile Include="Authorization\DefaultAuthorizationAttribute.cs" />
+    <Compile Include="Authorization\NoRequiredScopeAttribute.cs" />
+    <Compile Include="Authorization\RequireScopeAttribute.cs" />
     <Compile Include="Extensions\System.Security.Claims.ClaimsPrincipal.Extensions.cs" />
+    <Compile Include="Principal\D2LPrincipalAdapter.cs" />
     <Compile Include="Principal\D2LPrincipalToIPrincipalAdaptor.cs" />
-    <Compile Include="Validation\Request\IAuthenticationMessageHandlerFactory.cs" />
     <Compile Include="Principal\PrincipalNotAssignedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scopes\ScopeAuthorizeAttribute.cs" />
+    <Compile Include="TaskHelpers.cs" />
+    <Compile Include="Validation\Request\AuthenticationMessageHandler.cs" />
+    <Compile Include="Validation\Request\AuthenticationMessageHandlerFactory.cs" />
+    <Compile Include="Validation\Request\IAuthenticationMessageHandlerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
