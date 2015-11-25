@@ -13,22 +13,22 @@ namespace D2L.Security.OAuth2.Authentication {
 	public sealed class OAuth2AuthenticationFilter : IAuthenticationFilter {
 		private readonly ILog m_log;
 		private readonly IRequestAuthenticator m_requestAuthenticator;
-		private readonly Action<ID2LPrincipal> m_principalCallback;
+		private readonly ID2LPrincipalDependencyRegistry m_principalDependencyRegistry;
 
 		/// <summary>
 		/// Authentication filter for Brightspace OAuth 2.0
 		/// </summary>
 		/// <param name="logProvider"></param>
 		/// <param name="requestAuthenticator"></param>
-		/// <param name="principalCallback">Callback that gets passed an ID2LPrincipal on every authentication. E.g. you can use this to register the principal for dependency injection.</param>
+		/// <param name="principalDependencyRegistry">Called to do out-of-band actions like set up ID2LPrincipal for dependency injection.</param>
 		public OAuth2AuthenticationFilter(
 			ILogProvider logProvider,
 			IRequestAuthenticator requestAuthenticator,
-			Action<ID2LPrincipal> principalCallback
+			ID2LPrincipalDependencyRegistry principalDependencyRegistry
 		) {
 			m_log = logProvider.Get( this.GetType() );
 			m_requestAuthenticator = requestAuthenticator;
-			m_principalCallback = principalCallback;
+			m_principalDependencyRegistry = principalDependencyRegistry;
 		}
 
 		async Task IAuthenticationFilter.AuthenticateAsync(
@@ -59,7 +59,7 @@ namespace D2L.Security.OAuth2.Authentication {
 			context.Principal = new D2LPrincipalToIPrincipalAdaptor( principal );
 
 			// We're using a callback here to avoid coupling to Unity (for example)
-			m_principalCallback( principal );
+			m_principalDependencyRegistry.Register( context, principal );
 		}
 
 		private async Task<ID2LPrincipal> AuthenticateAsync( HttpAuthenticationContext context ) {

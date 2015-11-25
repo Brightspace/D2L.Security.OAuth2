@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationFailureResult.cs" />
+    <Compile Include="Authentication\ID2LPrincipalDependencyRegistry.cs" />
     <Compile Include="Authentication\OAuth2AuthenticationFilter.cs" />
     <Compile Include="Authorization\AllowFromAttribute.cs" />
     <Compile Include="Authorization\DefaultAuthorizationAttribute.cs" />

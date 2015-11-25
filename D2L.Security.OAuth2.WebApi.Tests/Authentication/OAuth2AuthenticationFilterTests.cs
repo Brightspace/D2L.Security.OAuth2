@@ -19,11 +19,13 @@ namespace D2L.Security.OAuth2.Authentication {
 		private Mock<IRequestAuthenticator> m_requestAuthenticator;
 		private Mock<ILog> m_log;
 		private IAuthenticationFilter m_authenticationFilter;
-		private ID2LPrincipal m_principalAfterCallback;
 		private HttpAuthenticationContext m_authenticationContext;
+		private Mock<ID2LPrincipalDependencyRegistry> m_principalRegistry;
 
 		[SetUp]
 		public void SetUp() {
+			m_principalRegistry = new Mock<ID2LPrincipalDependencyRegistry>( MockBehavior.Strict );
+
 			m_requestAuthenticator = new Mock<IRequestAuthenticator>( MockBehavior.Strict );
 
 			m_log = new Mock<ILog>( MockBehavior.Loose );
@@ -32,12 +34,10 @@ namespace D2L.Security.OAuth2.Authentication {
 				.Setup( lp => lp.Get( typeof( OAuth2AuthenticationFilter ).FullName ) )
 				.Returns( m_log.Object );
 
-			m_principalAfterCallback = null;
-
 			m_authenticationFilter = new OAuth2AuthenticationFilter(
 				logProvider.Object,
 				m_requestAuthenticator.Object,
-				p => m_principalAfterCallback = p
+				m_principalRegistry.Object
 			);
 
 			var request = new HttpRequestMessage();
@@ -59,7 +59,6 @@ namespace D2L.Security.OAuth2.Authentication {
 				.SafeAsync();
 
 			Assert.IsNull( m_authenticationContext.Principal );
-			Assert.IsNull( m_principalAfterCallback );
 			Assert.AreEqual( typeof( AuthenticationFailureResult ), m_authenticationContext.ErrorResult.GetType() );
 		}
 
@@ -85,19 +84,23 @@ namespace D2L.Security.OAuth2.Authentication {
 			m_requestAuthenticator
 				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
 				.ReturnsAsync( principal );
+
+			m_principalRegistry
+				.Setup( pr => pr.Register( m_authenticationContext, principalMock.Object ) );
 			
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();
 
-			Assert.AreSame( principal, m_principalAfterCallback );
 			Assert.IsNotNull( m_authenticationContext.Principal );
 
 			var principalFromContext = m_authenticationContext.Principal as ID2LPrincipal;
 
 			Assert.IsNotNull( principalFromContext );
-			Assert.AreEqual( PrincipalType.Anonymous, m_principalAfterCallback.Type );
 			Assert.AreEqual( PrincipalType.Anonymous, principalFromContext.Type );
+
+			m_principalRegistry
+				.Verify( pr => pr.Register( m_authenticationContext, principalMock.Object ), Times.Once );
 		}
 
 		[Test]
@@ -111,17 +114,22 @@ namespace D2L.Security.OAuth2.Authentication {
 				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
 				.ReturnsAsync( principal );
 			
+			m_principalRegistry
+				.Setup( pr => pr.Register( m_authenticationContext, principalMock.Object ) );
+			
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();
 
-			Assert.AreSame( principal, m_principalAfterCallback );
 			Assert.IsNotNull( m_authenticationContext.Principal );
 
 			var principalFromContext = m_authenticationContext.Principal as ID2LPrincipal;
 
 			Assert.IsNotNull( principalFromContext );
 			Assert.AreEqual( principal.TenantId, principalFromContext.TenantId );
+
+			m_principalRegistry
+				.Verify( pr => pr.Register( m_authenticationContext, principalMock.Object ), Times.Once );
 		}
 
 		[Test]

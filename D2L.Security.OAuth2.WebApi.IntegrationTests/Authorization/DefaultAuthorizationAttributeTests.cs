@@ -25,11 +25,11 @@ namespace D2L.Security.OAuth2.Authorization {
 
 		[Test]
 		public async Task Basic_NoAuthentication_403() {
-			await TestUtilities.RunBasicAuthTest( "/authorization/basic", HttpStatusCode.Forbidden )
+			await TestUtilities.RunBasicAuthTest( "/authorization/basic", HttpStatusCode.Unauthorized )
 				.SafeAsync();
 		}
 
-		[TestCase( 0, "", HttpStatusCode.Forbidden )]
+		[TestCase( 0, "", HttpStatusCode.Unauthorized )]
 		[TestCase( 0, "foo:bar:baz", HttpStatusCode.Unauthorized )]
 		[TestCase( 123, "", HttpStatusCode.Forbidden )]
 		[TestCase( 123, "foo:bar:baz", HttpStatusCode.NoContent )]

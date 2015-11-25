@@ -7,6 +7,7 @@ using Owin;
 using SimpleLogInterface;
 using D2L.Services;
 using D2L.Security.OAuth2.Authentication;
+using Moq;
 
 namespace D2L.Security.OAuth2 {
 	[SetUpFixture]
@@ -40,7 +41,10 @@ namespace D2L.Security.OAuth2 {
 			var authFilter = new OAuth2AuthenticationFilter(
 				logProvider: NullLogProvider.Instance,
 				requestAuthenticator: TestUtilities.RequestAuthenticator,
-				principalCallback: p => { }
+
+				// TODO: it'd be nice to use something that stored the last set ID2LPrincipal that way tests
+				// could validate more behaviour
+				principalDependencyRegistry: new Mock<ID2LPrincipalDependencyRegistry>( MockBehavior.Loose ).Object
 			);
 
 			config.MapHttpAttributeRoutes();
