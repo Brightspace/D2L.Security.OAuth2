@@ -1,5 +1,5 @@
 ﻿using System;
-namespace D2L.Security.OAuth2.Principal {
+namespace D2L.Security.OAuth2 {
 
 	/// <summary>
 	/// Principal types
