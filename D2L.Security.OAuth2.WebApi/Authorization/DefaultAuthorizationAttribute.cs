@@ -35,8 +35,8 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		private static void RequirePrincipalTypeSpecification( HttpActionContext context ) {
-			var allowFromAttribute = context.ActionDescriptor.GetCustomAttributes<AllowFromAttribute>().SingleOrDefault();
-			var allowFromAttribute2 = context.ActionDescriptor.ControllerDescriptor.ControllerType.GetCustomAttributes( typeof( AllowFromAttribute ), inherit: false ).SingleOrDefault();
+			var allowFromAttribute = context.ActionDescriptor.GetCustomAttributes<AuthenticationAttribute>().SingleOrDefault();
+			var allowFromAttribute2 = context.ActionDescriptor.ControllerDescriptor.ControllerType.GetCustomAttributes( typeof( AuthenticationAttribute ), inherit: false ).SingleOrDefault();
 
 			if ( allowFromAttribute == null && allowFromAttribute2 == null ) {
 				throw new Exception( "You must specify the types of callers for this API with [AllowFrom(...)]" );
