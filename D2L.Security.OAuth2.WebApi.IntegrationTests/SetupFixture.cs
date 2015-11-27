@@ -47,11 +47,11 @@ namespace D2L.Security.OAuth2 {
 				principalDependencyRegistry: new Mock<ID2LPrincipalDependencyRegistry>( MockBehavior.Loose ).Object
 			);
 
-			config.MapHttpAttributeRoutes();
-			
 			// TODO: adding this globally might suck later depending on what we want to test
 			config.Filters.Add( authFilter );
 
+			config.MapHttpAttributeRoutes();
+			
 			config.EnsureInitialized();
 
 			appBuilder.UseWebApi( config );
