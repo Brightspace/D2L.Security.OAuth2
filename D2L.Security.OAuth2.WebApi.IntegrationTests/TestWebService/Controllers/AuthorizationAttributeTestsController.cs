@@ -6,7 +6,7 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 	[DefaultAuthorization]
 	public sealed class AuthorizationAttributeTestsController : ApiController {
 		[HttpGet]
-		[Authentication( PrincipalType.Service )]
+		[Authentication( services: true )]
 		[Route("authorization/unspecifiedscope")]
 		public void UnspecifiedScope() {
 			// Will crash because we forgot a [RequireScope(...)]	
@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 
 		[HttpGet]
 		[RequireScope("foo","bar","baz")]
-		[Authentication( PrincipalType.User )]
+		[Authentication( users: true )]
 		[Route("authorization/basic")]
 		public void Basic() {
 			
@@ -29,7 +29,7 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 
 		[HttpGet]
 		[NoRequiredScope]
-		[Authentication( PrincipalType.User | PrincipalType.Service )]
+		[Authentication( users: true, services: true )]
 		[Route("authorization/noscope")]
 		public void NoScope() {
 			

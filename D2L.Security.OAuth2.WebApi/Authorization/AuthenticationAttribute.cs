@@ -12,22 +12,24 @@ namespace D2L.Security.OAuth2.Authorization {
 	/// </summary>
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
 	public sealed class AuthenticationAttribute : AuthorizeAttribute {
-
-		private readonly PrincipalType m_allowedPrincipalTypes;
+		private readonly bool m_allowUsers;
+		private readonly bool m_allowServices;
 
 		/// <summary>
 		/// Restrict an API to users, services or both.
 		/// </summary>
-		/// <param name="allowedPrincipalTypes">The types of callers that are allowed to call this API</param>
+		/// <param name="users">Requests with a user context</param>
+		/// <param name="services">Requests without a user context</param>
 		public AuthenticationAttribute(
-			PrincipalType allowedPrincipalTypes
+			bool users = false,
+			bool services = false
 		) {
-			if( ( m_allowedPrincipalTypes & PrincipalType.Anonymous ) == PrincipalType.Anonymous ) {
-				if ( m_allowedPrincipalTypes != PrincipalType.Anonymous ) {
-					throw new ArgumentException( "Anonymous is mutually exclusive with the other types of principal" );
-				}
+			if( !users && !services ) {
+				throw new ArgumentException( "You must allow for at least one of users or services. If you want to allow anonymous users use [AllowAnonymous] instead" );
 			}
-			m_allowedPrincipalTypes = allowedPrincipalTypes;
+
+			m_allowUsers = users;
+			m_allowServices = services;
 		}
 
 		protected override bool IsAuthorized( HttpActionContext context ) {
@@ -37,11 +39,19 @@ namespace D2L.Security.OAuth2.Authorization {
 				return false;
 			}
 
-			if( m_allowedPrincipalTypes == PrincipalType.Anonymous ) {
-				return true;
-			}
+			switch( principal.Type ) {
+				case PrincipalType.Anonymous:
+					return false;
 
-			return ( m_allowedPrincipalTypes & principal.Type ) == principal.Type;
+				case PrincipalType.User:
+					return m_allowUsers;
+
+				case PrincipalType.Service:
+					return m_allowServices;
+
+				default:
+					throw new NotImplementedException();
+			}
 		}
 	}
 }

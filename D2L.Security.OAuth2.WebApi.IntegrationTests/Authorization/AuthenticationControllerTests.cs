@@ -26,8 +26,6 @@ namespace D2L.Security.OAuth2.Authorization {
 		[TestCase( "usersorservices", 0, SCOPE, HttpStatusCode.NoContent, TestName="Users/services route, service passes" )]
 		[TestCase( "usersorservices", 123, "wrong:scope:ok", HttpStatusCode.Forbidden, TestName="Users/services route, a user with the wrong scope fails authz" )]
 		[TestCase( "usersorservices", 123, SCOPE, HttpStatusCode.NoContent, TestName="Users/services route, user passes" )]
-		[TestCase( "anonymous", 0, "any:old:scope", HttpStatusCode.NoContent, TestName="Anon route, service passes" )]
-		[TestCase( "anonymous", 123, "any:old:scope", HttpStatusCode.NoContent, TestName="Anon route, user passes" )]
 		public async Task AuthenticatedTests( string route, long userId, string scope, HttpStatusCode expectedStatusCode ) {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				userId: userId == 0 ? (long?)null : userId,

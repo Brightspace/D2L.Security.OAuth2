@@ -3,7 +3,7 @@ using D2L.Security.OAuth2.Authorization;
 
 namespace D2L.Security.OAuth2.TestWebService.Controllers {
 	[DefaultAuthorization]
-	[Authentication( PrincipalType.User )]
+	[Authentication( users: true )]
 	public sealed class AuthenticationAttributeController : ApiController {
 		[HttpGet]
 		[RequireScope("a","b","c")]
@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 		[HttpGet]
 		[RequireScope("a","b","c")]
 		[Route("allowfrom/servicesonly")]
-		[Authentication( PrincipalType.Service )]
+		[Authentication( services: true )]
 		public void ServicesOnly() {
 			
 		}
@@ -23,16 +23,8 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 		[HttpGet]
 		[RequireScope("a","b","c")]
 		[Route("allowfrom/usersorservices")]
-		[Authentication( PrincipalType.User | PrincipalType.Service )]
+		[Authentication( users: true, services: true )]
 		public void UsersOrServices() {
-			
-		}
-
-		[HttpGet]
-		[NoRequiredScope]
-		[Route("allowfrom/anonymous")]
-		[Authentication( PrincipalType.Anonymous )]
-		public void Anonymous() {
 			
 		}
 	}
