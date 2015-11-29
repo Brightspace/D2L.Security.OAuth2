@@ -3,8 +3,8 @@ using D2L.Security.OAuth2.Authorization;
 
 namespace D2L.Security.OAuth2.TestWebService.Controllers {
 	[DefaultAuthorization]
-	[AllowFrom( users: true )]
-	public sealed class AllowFromController : ApiController {
+	[Authentication( users: true )]
+	public sealed class AuthenticationAttributeController : ApiController {
 		[HttpGet]
 		[RequireScope("a","b","c")]
 		[Route("allowfrom/default")]
@@ -15,8 +15,16 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 		[HttpGet]
 		[RequireScope("a","b","c")]
 		[Route("allowfrom/servicesonly")]
-		[AllowFrom( users: false, services: true )]
+		[Authentication( services: true )]
 		public void ServicesOnly() {
+			
+		}
+
+		[HttpGet]
+		[RequireScope("a","b","c")]
+		[Route("allowfrom/usersorservices")]
+		[Authentication( users: true, services: true )]
+		public void UsersOrServices() {
 			
 		}
 	}

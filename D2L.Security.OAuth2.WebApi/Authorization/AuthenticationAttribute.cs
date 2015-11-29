@@ -7,8 +7,11 @@ using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
+	/// <summary>
+	/// Restrict which kinds of authenticated users are authorized to use these APIs
+	/// </summary>
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
-	public sealed class AllowFromAttribute : AuthorizeAttribute {
+	public sealed class AuthenticationAttribute : AuthorizeAttribute {
 		private readonly bool m_allowUsers;
 		private readonly bool m_allowServices;
 
@@ -17,10 +20,7 @@ namespace D2L.Security.OAuth2.Authorization {
 		/// </summary>
 		/// <param name="users">Requests with a user context</param>
 		/// <param name="services">Requests without a user context</param>
-		/// <remarks>
-		/// We are doing this rather than taking a params PrincipalType[] because it avoids users needing to import that type with an extra using.
-		/// </remarks>
-		public AllowFromAttribute(
+		public AuthenticationAttribute(
 			bool users = false,
 			bool services = false
 		) {
