@@ -13,9 +13,17 @@ namespace D2L.Security.OAuth2.Principal {
 	/// </summary>
 	internal sealed class D2LPrincipalToIPrincipalAdaptor : IPrincipal, ID2LPrincipal {
 		private readonly ID2LPrincipal m_principal;
+		private readonly IIdentity m_identity;
 
 		public D2LPrincipalToIPrincipalAdaptor( ID2LPrincipal principal ) {
 			m_principal = principal;
+
+			// This is required for the IIS hosted services (WebHost)
+			// We aren't honestly using this functionality at the moment.
+			// TODO: validate that IIS uses this e.g. to fill out logs
+			m_identity = new GenericIdentity(
+				name: "D2LPrincipalToIPrincipalAdaptor_" + Guid.NewGuid().ToString()
+			);
 		}
 
 		IAccessToken ID2LPrincipal.AccessToken {
@@ -38,12 +46,13 @@ namespace D2L.Security.OAuth2.Principal {
 			get { return m_principal.UserId; }
 		}
 
-		public IIdentity Identity {
-			get { throw new NotImplementedException(); }
+		IIdentity IPrincipal.Identity {
+			get { return m_identity; }
 		}
 
-		public bool IsInRole( string role ) {
-			throw new NotImplementedException();
+		bool IPrincipal.IsInRole( string role ) {
+			// We aren't usefully implementing IPrincipal at this point
+			return false;
 		}
 	}
 }
