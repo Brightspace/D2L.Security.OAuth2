@@ -36,7 +36,8 @@ namespace D2L.Security.OAuth2 {
 		public static class Claims {
 			/// <summary>
 			/// The "audience" for this JWT. Currently not really used. See the
-			/// TENANT_ID claim for something that behaves like this implies.
+			/// TENANT_ID claim for something that behaves like this implies
+			/// https://tools.ietf.org/html/rfc7519#section-4.1.3
 			/// </summary>
 			public const string AUDIENCE = "aud";
 
@@ -47,48 +48,63 @@ namespace D2L.Security.OAuth2 {
 
 			/// <summary>
 			/// The Unix timestamp for when this JWT expires
+			/// https://tools.ietf.org/html/rfc7519#section-4.1.4
 			/// </summary>
 			public const string EXPIRY = "exp";
 
 			/// <summary>
+			/// The Unix timestamp for when this JWT was issued
+			/// https://tools.ietf.org/html/rfc7519#section-4.1.6
+			/// </summary>
+			public const string ISSUED_AT = "iat";
+
+			/// <summary>
 			/// Indicates who created + signed the JWT
+			/// https://tools.ietf.org/html/rfc7519#section-4.1.1
 			/// </summary>
 			public const string ISSUER = "iss";
 
 			/// <summary>
 			/// The name of the key used to sign this JWT (always a GUID)
+			/// https://tools.ietf.org/html/draft-ietf-jose-json-web-key-41#section-4.5
 			/// </summary>
 			public const string KEY_ID = "kid";
 
 			/// <summary>
 			/// A Unix timestamp for the earliest point at which this JWT
-			/// should be considered valid.
+			/// should be considered valid
+			/// https://tools.ietf.org/html/rfc7519#section-4.1.5
 			/// </summary>
 			public const string NOT_BEFORE = "nbf";
 
 			/// <summary>
 			/// The OAuth2 scopes for an access token; used for authorization
+			/// https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-12#section-2.1
 			/// </summary>
 			public const string SCOPE = "scope";
 
 			/// <summary>
 			/// Which tenant the JWT is scoped to (always a GUID)
+			/// (This is a D2L-custom claim)
 			/// </summary>
 			public const string TENANT_ID = "tenantid";
 
 			/// <summary>
 			/// A unique ID for the JWT (always a GUID)
+			/// https://tools.ietf.org/html/rfc7519#section-4.1.7
 			/// </summary>
 			public const string TOKEN_ID = "jti";
 
 			/// <summary>
 			/// The LE-local userId that the access token represents. Value
 			/// is a string (that parses as an integer/UserId)
+			/// https://tools.ietf.org/html/rfc7519#section-4.1.2
 			/// </summary>
 			public const string USER_ID = "sub";
 
 			/// <summary>
 			/// The XSRF token for a user access token. Only used by LE.
+			/// (This is a D2L-custom claim)
 			/// </summary>
 			public const string XSRF_TOKEN = "xt";
 		}
