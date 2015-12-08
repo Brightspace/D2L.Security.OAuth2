@@ -107,6 +107,26 @@ namespace D2L.Security.OAuth2 {
 			/// (This is a D2L-custom claim)
 			/// </summary>
 			public const string XSRF_TOKEN = "xt";
+
+			/// <summary>
+			/// The body of a validated Caliper federated session id (providing
+			/// LTI launch context info)
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string CALIPER_FSID_BODY = "fsid";
+
+			/// <summary>
+			/// The session that is associated with this token
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string SESSION_ID = "sid";
+
+			/// <summary>
+			/// If this exists it indicates the "sub" of this token is being
+			/// impersonated by the user indicated in this claim
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string IMPERSONATING_USER_ID = "impsub";
 		}
 
 		/// <summary>
