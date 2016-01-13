@@ -92,12 +92,6 @@ namespace D2L.Security.OAuth2 {
 			public const string NOT_BEFORE = "nbf";
 
 			/// <summary>
-			/// The session that is associated with this token
-			/// (This is a D2L-custom claim)
-			/// </summary>
-			public const string SESSION_ID = "sid";
-
-			/// <summary>
 			/// The OAuth2 scopes for an access token; used for authorization
 			/// https://tools.ietf.org/html/draft-ietf-oauth-jwt-bearer-12#section-2.1
 			/// </summary>
