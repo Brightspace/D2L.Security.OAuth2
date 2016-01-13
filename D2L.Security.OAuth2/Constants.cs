@@ -42,6 +42,13 @@ namespace D2L.Security.OAuth2 {
 			public const string AUDIENCE = "aud";
 
 			/// <summary>
+			/// The body of a validated Caliper federated session id (providing
+			/// LTI launch context info)
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string CALIPER_FSID_BODY = "fsid";
+
+			/// <summary>
 			/// The name of the integration that acquired this access token
 			/// </summary>
 			public const string CLIENT_ID = "client_id";
@@ -51,6 +58,13 @@ namespace D2L.Security.OAuth2 {
 			/// https://tools.ietf.org/html/rfc7519#section-4.1.4
 			/// </summary>
 			public const string EXPIRY = "exp";
+
+			/// <summary>
+			/// If this exists it indicates the "sub" of this token is being
+			/// impersonated by the user indicated in this claim
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string IMPERSONATING_USER_ID = "impsub";
 
 			/// <summary>
 			/// The Unix timestamp for when this JWT was issued
@@ -76,6 +90,12 @@ namespace D2L.Security.OAuth2 {
 			/// https://tools.ietf.org/html/rfc7519#section-4.1.5
 			/// </summary>
 			public const string NOT_BEFORE = "nbf";
+
+			/// <summary>
+			/// The session that is associated with this token
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string SESSION_ID = "sid";
 
 			/// <summary>
 			/// The OAuth2 scopes for an access token; used for authorization
@@ -107,26 +127,6 @@ namespace D2L.Security.OAuth2 {
 			/// (This is a D2L-custom claim)
 			/// </summary>
 			public const string XSRF_TOKEN = "xt";
-
-			/// <summary>
-			/// The body of a validated Caliper federated session id (providing
-			/// LTI launch context info)
-			/// (This is a D2L-custom claim)
-			/// </summary>
-			public const string CALIPER_FSID_BODY = "fsid";
-
-			/// <summary>
-			/// The session that is associated with this token
-			/// (This is a D2L-custom claim)
-			/// </summary>
-			public const string SESSION_ID = "sid";
-
-			/// <summary>
-			/// If this exists it indicates the "sub" of this token is being
-			/// impersonated by the user indicated in this claim
-			/// (This is a D2L-custom claim)
-			/// </summary>
-			public const string IMPERSONATING_USER_ID = "impsub";
 		}
 
 		/// <summary>
