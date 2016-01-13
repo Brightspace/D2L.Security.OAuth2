@@ -92,6 +92,14 @@ namespace D2L.Security.OAuth2 {
 			public const string NOT_BEFORE = "nbf";
 
 			/// <summary>
+			/// The RabbitMQ endpoint for the BDP used for the LTI-driven Caliper
+			/// workflow. This is a temporary feature; once we have a consistent
+			/// service-discovery solution it will be unnecessary.
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string RMQ_ENDPOINT = "rmq_endpoint";
+
+			/// <summary>
 			/// The session that is associated with this token
 			/// (This is a D2L-custom claim)
 			/// </summary>
