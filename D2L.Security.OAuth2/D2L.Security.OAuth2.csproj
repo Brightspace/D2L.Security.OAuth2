@@ -162,6 +162,7 @@
     <Compile Include="Validation\AccessTokens\AccessToken.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="D2L.Security.OAuth2.nuspec" />
     <None Include="packages.config" />
     <None Include="Keys\README.md" />
   </ItemGroup>
