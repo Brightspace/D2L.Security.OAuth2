@@ -61,11 +61,11 @@ namespace D2L.Security.OAuth2 {
 			).SafeAsync();
 		}
 
-		public static Task RunBasicAuthTest( string route, HttpStatusCode expectedStatusCode ) {
+		public static Task<string> RunBasicAuthTest( string route, HttpStatusCode expectedStatusCode ) {
 			return RunBasicAuthTest( route, null, expectedStatusCode ); 
 		}
 
-		public static async Task RunBasicAuthTest( string route, string jwt, HttpStatusCode expectedStatusCode ) {
+		public static async Task<string> RunBasicAuthTest( string route, string jwt, HttpStatusCode expectedStatusCode ) {
 			using( var client = SetUpFixture.GetHttpClient() ) {
 
 				var req = new HttpRequestMessage();
@@ -78,6 +78,13 @@ namespace D2L.Security.OAuth2 {
 
 				using ( var resp = await client.SendAsync( req ).SafeAsync() ) {
 					Assert.AreEqual( expectedStatusCode, resp.StatusCode );
+
+					string body = await resp
+						.Content
+						.ReadAsStringAsync()
+						.SafeAsync();
+
+					return body;
 				}
 			}
 		}

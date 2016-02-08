@@ -96,12 +96,14 @@
     <Compile Include="Authentication\OAuth2AuthenticationFilterTests.cs" />
     <Compile Include="Authorization\AuthenticationControllerTests.cs" />
     <Compile Include="Authorization\DefaultAuthorizationAttributeTests.cs" />
+    <Compile Include="Authorization\RequireClaimAttributeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SetUpFixture.cs" />
     <Compile Include="TestWebService\Controllers\AuthenticationAttributeController.cs" />
     <Compile Include="TestWebService\Controllers\AuthenticationFilterTestsController.cs" />
     <Compile Include="TestWebService\Controllers\AuthorizationAttributeTestsController.cs" />
     <Compile Include="TestUtilities.cs" />
+    <Compile Include="TestWebService\Controllers\RequireClaimAttributeTestsController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
