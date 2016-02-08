@@ -7,7 +7,7 @@ using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
-	internal sealed class RequireClaimAttribute : AuthorizeAttribute {
+	public sealed class RequireClaimAttribute : AuthorizeAttribute {
 		private readonly string m_claimType;
 
 		public RequireClaimAttribute( string claimType ) {
