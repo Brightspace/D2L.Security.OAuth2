@@ -34,6 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="D2L.Services.Core.Exceptions">
+      <HintPath>..\..\packages\D2L.Services.Core.Exceptions.1.0.0\lib\net451\D2L.Services.Core.Exceptions.dll</HintPath>
+    </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
     </Reference>
