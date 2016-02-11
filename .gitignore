@@ -7,3 +7,4 @@ docs/output
 *.nupkg
 *.orig
 *.DotSettings
+*.lock.json
