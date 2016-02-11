@@ -79,7 +79,6 @@
     <Compile Include="Provisioning\TokenCacheKeyBuilderTests.cs" />
     <Compile Include="Scopes\ScopeAuthorizerTests.cs" />
     <Compile Include="Scopes\ScopeTests.cs" />
-    <Compile Include="TestUtilities\CookieHeaderMaker.cs" />
     <Compile Include="TestUtilities\D2LSecurityTokenUtility.cs" />
     <Compile Include="TestUtilities\JsonWebKeyStub.cs" />
     <Compile Include="TestUtilities\Mocks\AccessTokenMock.cs" />
@@ -91,11 +90,7 @@
     <Compile Include="Validation\AccessTokens\AccessTokenExtensionsTests.cs" />
     <Compile Include="Validation\AccessTokenValidatorTests.cs" />
     <Compile Include="Validation\Request\HttpRequestExtensionsTests.AuthHeader.cs" />
-    <Compile Include="Validation\Request\HttpRequestExtensionsTests.Cookie.cs" />
-    <Compile Include="Validation\Request\HttpRequestExtensionsTests.Xsrf.cs" />
     <Compile Include="Validation\Request\HttpRequestMessageExtensionsTests.AuthHeader.cs" />
-    <Compile Include="Validation\Request\HttpRequestMessageExtensionsTests.Cookie.cs" />
-    <Compile Include="Validation\Request\HttpRequestMessageExtensionsTests.Xsrf.cs" />
     <Compile Include="Validation\Request\RequestAuthenticatorTests.cs" />
   </ItemGroup>
   <ItemGroup>

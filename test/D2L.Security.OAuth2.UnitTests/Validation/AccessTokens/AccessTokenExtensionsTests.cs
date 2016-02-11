@@ -9,20 +9,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	[TestFixture]
 	internal sealed class AccessTokenExtensionsTests {
 		[Test]
-		public void GetXsrfToken_Success() {
-			string expected = "somexsrf";
-			var accessTokenMock = new Mock<IAccessToken>();
-			MockClaim( accessTokenMock, Constants.Claims.XSRF_TOKEN, expected );
-			Assert.AreEqual( expected, accessTokenMock.Object.GetXsrfToken() );
-		}
-
-		[Test]
-		public void GetXsrfToken_None_ReturnsNull() {
-			var accessTokenMock = new Mock<IAccessToken>();
-			Assert.IsNull( accessTokenMock.Object.GetXsrfToken() );
-		}
-
-		[Test]
 		public void GetTenantId_Success() {
 			string expected = "sometenantid";
 			var accessTokenMock = new Mock<IAccessToken>();

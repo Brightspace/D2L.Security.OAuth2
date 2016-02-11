@@ -5,13 +5,6 @@ using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal static class AccessTokenExtensions {
-
-		/// <param name="token">An access token</param>
-		/// <returns>The value of the Xsrf token. Returns null if one was not found.</returns>
-		internal static string GetXsrfToken( this IAccessToken token ) {
-			return token.GetClaimValue( Constants.Claims.XSRF_TOKEN );
-		}
-
 		/// <param name="token">An access token</param>
 		/// <returns>The access token id. Returns null if one was not found.</returns>
 		internal static string GetAccessTokenId( this IAccessToken token ) {

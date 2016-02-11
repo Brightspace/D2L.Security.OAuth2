@@ -7,7 +7,6 @@ using D2L.Security.OAuth2.TestUtilities;
 using D2L.Security.OAuth2.TestUtilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using Moq;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.Request {
@@ -18,122 +17,33 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		[Test]
 		public async Task TokenInHeader_SuccessCase() {
 			await RunTest(
-				request_xsrfHeader: "xsrf",
-				request_authorizationHeader: ACCESS_TOKEN,
-				request_d2lApiCookie: null,
-				accessToken_xsrfClaim: "xsrf",
-				authMode: AuthenticationMode.Full
-			).SafeAsync();
-		}
-
-		[Test]
-		public async Task TokenInCookie_SuccessCase() {
-			await RunTest(
-				request_xsrfHeader: "xsrf",
-				request_authorizationHeader: null,
-				request_d2lApiCookie: ACCESS_TOKEN,
-				accessToken_xsrfClaim: "xsrf",
-				authMode: AuthenticationMode.Full
-			).SafeAsync();
-		}
-
-		[Test]
-		public async Task TokenInHeaderAndCookie_ThatsaNoNo() {
-			await RunTest(
-				request_xsrfHeader: "xsrf",
-				request_authorizationHeader: ACCESS_TOKEN,
-				request_d2lApiCookie: ACCESS_TOKEN,
-				accessToken_xsrfClaim: "xsrf",
-				authMode: AuthenticationMode.Full,
-				expectedExceptionType: typeof( ValidationException )
+				request_authorizationHeader: ACCESS_TOKEN
 			).SafeAsync();
 		}
 
 		[Test]
 		public async Task NoToken() {
 			await RunTest(
-				request_xsrfHeader: "xsrf",
 				request_authorizationHeader: string.Empty,
-				request_d2lApiCookie: string.Empty,
-				accessToken_xsrfClaim: "xsrf",
-				authMode: AuthenticationMode.Full,
 				expectedExceptionType: null,
 				expected_principalType: PrincipalType.Anonymous
 			).SafeAsync();
 		}
 		
 		[Test]
-		public async Task Xsrf_DoesNotMatch() {
-			await RunTest(
-				request_xsrfHeader: "xsrf",
-				request_authorizationHeader: null,
-				request_d2lApiCookie: ACCESS_TOKEN,
-				accessToken_xsrfClaim: "XsRf",
-				authMode: AuthenticationMode.Full,
-				expectedExceptionType: typeof( XsrfException )
-			).SafeAsync();
-		}
-
-		[Test]
-		public async Task Xsrf_Mismatch_ButAuthModeIsSkipXsrf_SoItsAllGood() {
-			await RunTest(
-				request_xsrfHeader: "xsrf",
-				request_authorizationHeader: null,
-				request_d2lApiCookie: ACCESS_TOKEN,
-				accessToken_xsrfClaim: "way different",
-				authMode: AuthenticationMode.SkipXsrfValidation
-			).SafeAsync();
-		}
-
-		[Test]
 		public async Task TokenExpired() {
 			await RunTest(
-				request_xsrfHeader: "xsrf",
-				request_authorizationHeader: null,
-				request_d2lApiCookie: ACCESS_TOKEN,
-				accessToken_xsrfClaim: "xsrf",
-				authMode: AuthenticationMode.SkipXsrfValidation,
+				request_authorizationHeader: ACCESS_TOKEN,
 				expectedExceptionType: typeof( ExpiredTokenException )
 			).SafeAsync();
 		}
 
-		[Test]
-		public async Task WhenBothCookieAndHeaderSupplied_HeaderIsPreferred() {
-			const string HEADER_TOKEN = "header";
-			const string COOKIE_TOKEN = "cookie";
-
-			var httpRequestMessage = new HttpRequestMessage()
-				.WithAuthHeader( HEADER_TOKEN )
-				.WithXsrfHeader( "xsrf" )
-				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, COOKIE_TOKEN );
-
-			IAccessToken token = AccessTokenMock.Create(
-				xsrfClaim: "xsrf"
-			).Object;
-
-			Mock<IAccessTokenValidator> mock = new Mock<IAccessTokenValidator>();
-			mock.Setup( v => v.ValidateAsync( HEADER_TOKEN ) ).ReturnsAsync( token );
-
-			IRequestAuthenticator authenticator = new RequestAuthenticator( mock.Object );
-			ID2LPrincipal result = await authenticator.AuthenticateAsync( httpRequestMessage ).SafeAsync();
-
-			mock.Verify( v => v.ValidateAsync( HEADER_TOKEN ), Times.Exactly( 1 ) );
-			Assert.NotNull( result );
-		}
-
 		private async Task RunTest(
-			string request_xsrfHeader,
-			string request_d2lApiCookie,
 			string request_authorizationHeader,
-			string accessToken_xsrfClaim,
-			AuthenticationMode authMode,
 			Type expectedExceptionType = null,
 			PrincipalType? expected_principalType = null
 		) {
-
-			IAccessToken token = AccessTokenMock.Create(
-				xsrfClaim: accessToken_xsrfClaim
-			).Object;
+			IAccessToken token = AccessTokenMock.Create().Object;
 
 			IAccessTokenValidator tokenValidator = AccessTokenValidatorMock.Create(
 				accessToken: ACCESS_TOKEN,
@@ -144,16 +54,13 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			IRequestAuthenticator authenticator = new RequestAuthenticator( tokenValidator );
 
 			var httpRequestMessage = new HttpRequestMessage()
-				.WithAuthHeader( request_authorizationHeader )
-				.WithXsrfHeader( request_xsrfHeader )
-				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, request_d2lApiCookie );
+				.WithAuthHeader( request_authorizationHeader );
 
 			ID2LPrincipal principal = null;
 			Exception exception = null;
 			try {
 				principal = await authenticator.AuthenticateAsync(
-					httpRequestMessage,
-					authMode: authMode
+					httpRequestMessage
 					).SafeAsync();
 			} catch( Exception e ) {
 				exception = e;
@@ -167,16 +74,14 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			exception = null;
 
-			HttpRequest httpRequest = RequestBuilder.Create()
-				.WithAuthHeader( request_authorizationHeader )
-				.WithXsrfHeader( request_xsrfHeader )
-				.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, request_d2lApiCookie );
+			HttpRequest httpRequest = RequestBuilder
+				.Create()
+				.WithAuthHeader( request_authorizationHeader );
 
 			try {
 				principal = await authenticator.AuthenticateAsync(
-					httpRequest,
-					authMode: authMode
-					).SafeAsync();
+					httpRequest
+				).SafeAsync();
 			} catch( Exception e ) {
 				exception = e;
 			}

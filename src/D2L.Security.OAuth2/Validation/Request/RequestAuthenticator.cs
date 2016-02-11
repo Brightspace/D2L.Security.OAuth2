@@ -22,88 +22,37 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		}
 
 		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
-			HttpRequestMessage request,
-			AuthenticationMode authMode
+			HttpRequestMessage request
 		) {
-			string cookie = request.GetCookieValue();
 			string bearerToken = request.GetBearerTokenValue();
-			string xsrfToken = request.GetXsrfValue();
 
-			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
+			return AuthenticateHelper( bearerToken );
 		}
 
 #if !DNXCORE50
 		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
-			HttpRequest request,
-			AuthenticationMode authMode
+			HttpRequest request
 		) {
-			string cookie = request.GetCookieValue();
 			string bearerToken = request.GetBearerTokenValue();
-			string xsrfToken = request.GetXsrfValue();
 
-			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
+			return AuthenticateHelper( bearerToken );
 		}
 #endif
 
 		private async Task<ID2LPrincipal> AuthenticateHelper(
-			string cookie,
-			string xsrfToken,
-			string bearerToken,
-			AuthenticationMode authMode
+			string bearerToken
 		) {
-		
-			bool cookieExists = !string.IsNullOrEmpty( cookie );
-			bool bearerTokenExists = !string.IsNullOrEmpty( bearerToken );
-
-			if( !cookieExists && !bearerTokenExists ) {
+			if( string.IsNullOrEmpty( bearerToken ) ) {
 				return ANONYMOUS_PRINCIPAL;
 			}
 
-			string token = bearerTokenExists ? bearerToken : cookie;
-			
 			IAccessToken accessToken = await m_accessTokenValidator
-				.ValidateAsync( token )
+				.ValidateAsync( bearerToken )
 				.SafeAsync();
-
-			// TODO .. we should consider doing the xsrf check without validating the jwt
-			bool isXsrfSafe = IsXsrfSafe( cookie, xsrfToken, accessToken, authMode );
-			if( !isXsrfSafe ) {
-				throw new XsrfException( "Request is lacking XSRF protection" );
-			}
 
 			ID2LPrincipal principal = new D2LPrincipal( accessToken );
 
 			return principal;
-		}
-
-		private bool IsXsrfSafe(
-			string cookie,
-			string xsrfToken,
-			IAccessToken accessToken,
-			AuthenticationMode authMode
-		) {
-
-			if( authMode == AuthenticationMode.SkipXsrfValidation ) {
-				return true;
-			}
-
-			bool isBrowserUser = !string.IsNullOrEmpty( cookie );
-			if( !isBrowserUser ) {
-				return true;
-			}
-
-			// we must now validate that the xsrf tokens match
-
-			string xsrfTokenFromAccessToken = accessToken.GetXsrfToken();
-
-			bool xsrfTokensEqual = xsrfTokenFromAccessToken == xsrfToken;
-			bool xsrfTokenContainsValue = !string.IsNullOrEmpty( xsrfToken );
-
-			if( !xsrfTokensEqual || !xsrfTokenContainsValue ) {
-				return false;
-			}
-
-			return true;
 		}
 	}
 }

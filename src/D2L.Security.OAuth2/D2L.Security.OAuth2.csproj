@@ -145,8 +145,6 @@
     <Compile Include="Keys\Constants.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyNotFoundException.cs" />
     <Compile Include="Validation\Exceptions\ValidationException.cs" />
-    <Compile Include="Validation\Exceptions\XsrfException.cs" />
-    <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenExtensions.cs" />
     <Compile Include="Validation\Request\RequestAuthenticator.cs" />

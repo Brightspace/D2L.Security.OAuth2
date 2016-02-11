@@ -115,12 +115,6 @@ namespace D2L.Security.OAuth2 {
 			/// https://tools.ietf.org/html/rfc7519#section-4.1.2
 			/// </summary>
 			public const string USER_ID = "sub";
-
-			/// <summary>
-			/// The XSRF token for a user access token. Only used by LE.
-			/// (This is a D2L-custom claim)
-			/// </summary>
-			public const string XSRF_TOKEN = "xt";
 		}
 
 		/// <summary>
