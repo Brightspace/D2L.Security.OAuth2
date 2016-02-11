@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.TestFra
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{731C8174-3528-40CD-AE98-F21CB7763FD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.UnitTests", "D2L.Security.OAuth2.UnitTests\D2L.Security.OAuth2.UnitTests.csproj", "{95CE1314-E961-4C64-B410-43903BD3A04C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.UnitTests", "test\D2L.Security.OAuth2.UnitTests\D2L.Security.OAuth2.UnitTests.csproj", "{95CE1314-E961-4C64-B410-43903BD3A04C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
