@@ -2,7 +2,9 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/id5byt9yitcek417/branch/master?svg=true)](https://ci.appveyor.com/project/Brightspace/d2l-security-oauth2/branch/master)
 
-Brightspace OAuth 2.0 for C#
+C# implementation of Brightspace OAuth 2.0.
+
+For WebAPI-specific extensions, see [D2L.Security.OAuth2.WebApi](https://github.com/Brightspace/D2L.Security.OAuth2.WebApi).
 
 ## Contributing
 
