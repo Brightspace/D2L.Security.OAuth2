@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		/// <param name="scopes">List of scopes to include in the access token</param>
 		/// <returns>A JWT token from the auth service signed with the auth service's private key</returns>
 		/// <exception cref="AuthServiceException">
-		/// The auth service could not be reached, or it did not response with
+		/// The auth service could not be reached, or it did not respond with
 		/// a status code indicating success.
 		/// </exception>
 		async Task<IAccessToken> IAuthServiceClient.ProvisionAccessTokenAsync(
