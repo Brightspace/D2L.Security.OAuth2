@@ -38,20 +38,24 @@
     <Reference Include="BenchmarkIt">
       <HintPath>..\..\packages\Benchmark.It.1.2.0\lib\BenchmarkIt.dll</HintPath>
     </Reference>
-    <Reference Include="HttpMock">
+    <Reference Include="HttpMock, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\HttpMock.1.1.5\lib\net40\HttpMock.dll</HintPath>
     </Reference>
-    <Reference Include="Kayak">
+    <Reference Include="Kayak, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Kayak.0.7.2\lib\Kayak.dll</HintPath>
     </Reference>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -73,7 +77,6 @@
     <Compile Include="IBenchmark.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FullStackValidation\HttpMockFactory.cs" />
     <Compile Include="FullStackValidation\RS256.cs" />
     <Compile Include="FullStackValidation\FullStackValidationBenchmark.cs" />
     <Compile Include="FullStackValidation\FullStackValidationBenchmarks.cs" />
@@ -83,6 +86,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj">
+      <Project>{f10655cb-e66d-4df7-8991-10c26c8faf18}</Project>
+      <Name>D2L.Security.OAuth2.TestFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">
       <Project>{676fb8c0-d021-475e-941b-03be21769294}</Project>
       <Name>D2L.Security.OAuth2</Name>
