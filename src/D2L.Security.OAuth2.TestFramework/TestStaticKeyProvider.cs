@@ -3,9 +3,7 @@ using System.Security.Cryptography;
 using D2L.Security.OAuth2.TestFramework.Properties;
 
 namespace D2L.Security.OAuth2.TestFramework {
-
 	internal static class TestStaticKeyProvider {
-
 		private static readonly RSAParameters m_parameters;
 		private static readonly Guid m_testKeyId = new Guid( "FA7C07A8-42C8-4C57-9AF2-CCE10C271033" );
 

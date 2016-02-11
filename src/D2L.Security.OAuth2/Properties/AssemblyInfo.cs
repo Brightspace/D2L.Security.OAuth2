@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -34,3 +35,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion( "4.5.0.0" )]
 [assembly: AssemblyFileVersion( "4.5.0.0" )]
 [assembly: AssemblyInformationalVersion( "4.5.0.0" )]
+
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.TestFramework" )]
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.Benchmarks" )]
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.UnitTests" )]
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.IntegrationTests" )]
+[assembly: InternalsVisibleTo( "DynamicProxyGenAssembly2" )]
