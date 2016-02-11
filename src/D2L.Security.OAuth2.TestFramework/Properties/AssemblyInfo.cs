@@ -34,3 +34,7 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.3.0.0")]
 [assembly: AssemblyFileVersion("1.3.0.0")]
+
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.Benchmarks" )]
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.UnitTests" )]
+[assembly: InternalsVisibleTo( "D2L.Security.OAuth2.IntegrationTests" )]
