@@ -11,6 +11,7 @@ using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 namespace D2L.Security.OAuth2.Tests.Integration.TestFramework {
 
 	[TestFixture]
+  [Ignore( "These rely on internal infrastructure to run" )]
 	[Category( "Integration" )]
 	internal sealed class TestAccessTokenProviderTests {
 
