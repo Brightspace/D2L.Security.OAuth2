@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2", "D2L.Security.OAuth2\D2L.Security.OAuth2.csproj", "{676FB8C0-D021-475E-941B-03BE21769294}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2", "src/D2L.Security.OAuth2\D2L.Security.OAuth2.csproj", "{676FB8C0-D021-475E-941B-03BE21769294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.Tests", "D2L.Security.OAuth2.Tests\D2L.Security.OAuth2.Tests.csproj", "{F5667A7E-955D-4402-86C4-8DFB65768AE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.Tests", "test/D2L.Security.OAuth2.Tests\D2L.Security.OAuth2.Tests.csproj", "{F5667A7E-955D-4402-86C4-8DFB65768AE1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B76787C3-75ED-41D8-8AE9-8C5B8A4C5515}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,9 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B76787
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.Benchmarks", "D2L.Security.OAuth2.Benchmarks\D2L.Security.OAuth2.Benchmarks.csproj", "{32C50F4A-03AE-4C99-9108-3AD518729410}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.Benchmarks", "test/D2L.Security.OAuth2.Benchmarks\D2L.Security.OAuth2.Benchmarks.csproj", "{32C50F4A-03AE-4C99-9108-3AD518729410}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.TestFramework", "D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj", "{F10655CB-E66D-4DF7-8991-10C26C8FAF18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.TestFramework", "src/D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj", "{F10655CB-E66D-4DF7-8991-10C26C8FAF18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
