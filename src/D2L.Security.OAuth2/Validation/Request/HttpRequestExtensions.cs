@@ -1,8 +1,9 @@
-﻿using System.Web;
+#if !DNXCORE50
+
+using System.Web;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	internal static class HttpRequestExtensions {
-
 		/// <param name="request">The request</param>
 		/// <returns>The value of the auth cookie, or null if one was not found</returns>
 		internal static string GetCookieValue( this HttpRequest request ) {
@@ -37,3 +38,5 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		}
 	}
 }
+
+#endif

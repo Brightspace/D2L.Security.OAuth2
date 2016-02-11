@@ -1,5 +1,11 @@
-﻿using System;
+using System;
+
+#if !DNXCORE50
 using System.Runtime.Caching;
+#else
+using Microsoft.Framework.Caching.Memory;
+#endif
+
 using D2L.Security.OAuth2.Keys.Default;
 
 namespace D2L.Security.OAuth2.Keys.Caching {

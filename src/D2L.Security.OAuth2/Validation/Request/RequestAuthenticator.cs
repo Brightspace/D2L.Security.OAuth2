@@ -1,7 +1,11 @@
-﻿using System;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+
+#if !DNXCORE50
 using System.Web;
+#endif
+
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
@@ -28,6 +32,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
 		}
 
+#if !DNXCORE50
 		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
 			HttpRequest request,
 			AuthenticationMode authMode
@@ -38,6 +43,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			return AuthenticateHelper( cookie, xsrfToken, bearerToken, authMode );
 		}
+#endif
 
 		private async Task<ID2LPrincipal> AuthenticateHelper(
 			string cookie,
