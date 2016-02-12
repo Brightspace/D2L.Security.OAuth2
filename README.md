@@ -1,8 +1,8 @@
-# D2L.Security.OAuth2
+# D2L.Security.OAuth2.WebApi
 
 [![Build status](https://ci.appveyor.com/api/projects/status/yqlusxwxaj9sau8a/branch/master?svg=true)](https://ci.appveyor.com/project/Brightspace/d2l-security-oauth2-webapi/branch/master)
 
-WebAPI-specific extensions for [D2L.Security.OAuth2](https://github.com/Brightspace/D2L.Security.OAuth2)
+WebAPI-specific extensions for [D2L.Security.OAuth2](https://github.com/Brightspace/D2L.Security.OAuth2),
 
 ## Contributing
 
