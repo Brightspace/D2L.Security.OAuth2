@@ -3,22 +3,24 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Security.Claims;
 
+#if DNXCORE50
+using System.IdentityModel.Tokens.Jwt;
+#endif
+
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
-
 	internal sealed class AccessToken : IAccessToken {
-
 		private readonly JwtSecurityToken m_inner;
 		private readonly IAccessToken m_this;
-		
+
 		internal AccessToken( JwtSecurityToken jwtSecurityToken ) {
 			m_inner = jwtSecurityToken;
 			m_this = this;
 		}
-		
+
 		string IAccessToken.Id {
 			get { return m_this.GetClaimValue( Constants.Claims.TOKEN_ID ); }
 		}
-		
+
 		DateTime IAccessToken.Expiry {
 			get { return m_inner.ValidTo; }
 		}
@@ -30,6 +32,5 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		string IAccessToken.SensitiveRawAccessToken {
 			get { return m_inner.RawData; }
 		}
-		
 	}
 }

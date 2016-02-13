@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
 
-namespace D2L.Security.OAuth2.Provisioning.Default {
-	
-	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {
+#if DNXCORE50
+using System.IdentityModel.Tokens.Jwt;
+#endif
 
+namespace D2L.Security.OAuth2.Provisioning.Default {
+	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {
 		private readonly INonCachingAccessTokenProvider m_accessTokenProvider;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
 		private readonly JwtSecurityTokenHandler m_tokenHandler;
@@ -18,10 +20,10 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		public CachedAccessTokenProvider(
 			INonCachingAccessTokenProvider accessTokenProvider,
 			TimeSpan tokenRefreshGracePeriod
-			) {
+    ) {
 			m_accessTokenProvider = accessTokenProvider;
 			m_tokenRefreshGracePeriod = tokenRefreshGracePeriod;
-			
+
 			m_tokenHandler = new JwtSecurityTokenHandler();
 		}
 
@@ -29,8 +31,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			ClaimSet claimSet,
 			IEnumerable<Scope> scopes,
 			ICache cache
-			) {
-			
+    ) {
 			var @this = this as IAccessTokenProvider;
 			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).SafeAsync();
 		}
@@ -39,8 +40,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			IEnumerable<Claim> claims,
 			IEnumerable<Scope> scopes,
 			ICache cache
-			) {
-
+    ) {
 			if( cache == null ) {
 				cache = new NullCache();
 			}
