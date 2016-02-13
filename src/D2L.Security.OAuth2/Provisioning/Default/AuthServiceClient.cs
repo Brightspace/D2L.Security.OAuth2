@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
+using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
@@ -50,13 +51,21 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			IEnumerable<Scope> scopes
 		) {
 			string requestBody = BuildFormContents( assertion, scopes );
-			using( HttpResponseMessage response = await MakeRequest( requestBody ).SafeAsync() ) {
+
+			using (HttpResponseMessage response = await MakeRequest( requestBody ).SafeAsync()) {
 				response.EnsureSuccessStatusCode();
 
-				using( var resultStream = await response.Content.ReadAsStreamAsync().SafeAsync() ) {
-					IAccessToken accessToken = SerializationHelper.ExtractAccessToken( resultStream );
-					return accessToken;
-				}
+				string json = await response
+					.Content
+					.ReadAsStringAsync()
+					.SafeAsync();
+
+				var grantResponse = JsonConvert
+					.DeserializeObject<GrantResponse>( json );
+
+				var accessToken = new AccessToken( grantResponse.access_token );
+
+				return accessToken;
 			}
 		}
 
@@ -81,6 +90,10 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			var result = builder.ToString();
 			return result;
+		}
+
+		private sealed class GrantResponse {
+			public string access_token { get; set; }
 		}
 	}
 }
