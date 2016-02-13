@@ -18,12 +18,9 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// Authenticates a token contained in an <see cref="HttpRequestMessage"/>
 		/// </summary>
 		/// <param name="request">The web request object</param>
-		/// <param name="authMode">The authentication mode; xsrf validation should NOT be
-		/// skipped for requests coming from a browser</param>
 		/// <returns>An <see cref="ID2LPrincipal"/> for an authenticated user.</returns>
 		Task<ID2LPrincipal> AuthenticateAsync(
-			HttpRequestMessage request,
-			AuthenticationMode authMode = AuthenticationMode.Full
+			HttpRequestMessage request
 		);
 
 #if !DNXCORE50
@@ -31,12 +28,9 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// Authenticates a token contained in an <see cref="HttpRequest"/>
 		/// </summary>
 		/// <param name="request">The web request object.</param>
-		/// <param name="authMode">The authentication mode. Xsrf validation should NOT
-		/// be skipped for requests coming from a browser</param>
 		/// <returns>An <see cref="ID2LPrincipal"/> for an authenticated user.</returns>
 		Task<ID2LPrincipal> AuthenticateAsync(
-			HttpRequest request,
-			AuthenticationMode authMode = AuthenticationMode.Full
+			HttpRequest request
 		);
 #endif
 	}

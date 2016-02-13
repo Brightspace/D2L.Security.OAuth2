@@ -49,8 +49,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			var claims = new List<Claim>{
 				new Claim( Constants.Claims.ISSUER, TestData.ISSUER ),
 				new Claim( Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() ),
-				new Claim( Constants.Claims.USER_ID, TestData.USER ),
-				new Claim( Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN )
+				new Claim( Constants.Claims.USER_ID, TestData.USER )
 			};
 
 			var scopes = new Scope[] { };
@@ -70,7 +69,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.ISSUER, TestData.ISSUER );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.USER_ID, TestData.USER );
-			AssertClaimEquals( m_actualAssertion, Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN );
 		}
 
 		[Test]
@@ -78,8 +76,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			var claimSet = new ClaimSet(
 				issuer: TestData.ISSUER,
 				tenantId: TestData.TENANT_ID,
-				user: TestData.USER,
-				xsrfToken: TestData.XSRF_TOKEN );
+				user: TestData.USER
+			);
 
 			await m_accessTokenProvider
 				.ProvisionAccessTokenAsync( claimSet, new Scope[] { } )
@@ -88,7 +86,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.ISSUER, TestData.ISSUER );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.USER_ID, TestData.USER );
-			AssertClaimEquals( m_actualAssertion, Constants.Claims.XSRF_TOKEN, TestData.XSRF_TOKEN );
 		}
 
 		private void AssertClaimEquals( JwtSecurityToken token, string name, string value ) {

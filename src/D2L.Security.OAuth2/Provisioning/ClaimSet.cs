@@ -4,12 +4,10 @@ using System.Security.Claims;
 using System.Linq;
 
 namespace D2L.Security.OAuth2.Provisioning {
-
 	/// <summary>
 	/// A structured holder of JWT claims
 	/// </summary>
 	public sealed class ClaimSet {
-
 		private readonly IList<Claim> m_claims;
 
 		/// <summary>
@@ -18,8 +16,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		public ClaimSet(
 			string issuer,
 			Guid? tenantId = null,
-			string user = null,
-			string xsrfToken = null
+			string user = null
 		) {
 			m_claims = new List<Claim>();
 
@@ -35,10 +32,6 @@ namespace D2L.Security.OAuth2.Provisioning {
 			
 			if( !string.IsNullOrWhiteSpace( user ) ) {
 				m_claims.Add( new Claim( Constants.Claims.USER_ID, user ) );
-			}
-
-			if( !string.IsNullOrWhiteSpace( xsrfToken ) ) {
-				m_claims.Add( new Claim( Constants.Claims.XSRF_TOKEN, xsrfToken ) );
 			}
 		}
 

@@ -21,25 +21,6 @@ namespace D2L.Security.OAuth2.TestUtilities {
 			return httpRequestMessage;
 		}
 
-		internal static HttpRequestMessage WithXsrfHeader( this HttpRequestMessage httpRequestMessage, string xsrfHeaderValue ) {
-			httpRequestMessage.Headers.Add( RequestValidationConstants.Headers.XSRF, xsrfHeaderValue );
-			return httpRequestMessage;
-		}
-
-		internal static HttpRequestMessage WithCookie( this HttpRequestMessage httpRequestMessage, string cookieValue ) {
-			return httpRequestMessage.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, cookieValue );
-		}
-
-		internal static HttpRequestMessage WithCookie( this HttpRequestMessage httpRequestMessage, string cookieName, string cookieValue ) {
-			string cookieHeaderValue = cookieName + "=" + cookieValue;
-			return httpRequestMessage.WithCookieHeader( cookieHeaderValue );
-		}
-
-		internal static HttpRequestMessage WithCookieHeader( this HttpRequestMessage httpRequestMessage, string cookieHeaderValue ) {
-			httpRequestMessage.Headers.Add( RequestValidationConstants.Headers.COOKIE, cookieHeaderValue );
-			return httpRequestMessage;
-		}
-
 		#endregion
 
 		#region HttpRequest
@@ -58,20 +39,6 @@ namespace D2L.Security.OAuth2.TestUtilities {
 			return httpRequest;
 		}
 
-		internal static HttpRequest WithXsrfHeader( this HttpRequest httpRequest, string xsrfHeaderValue ) {
-			AddHeader( httpRequest, RequestValidationConstants.Headers.XSRF, xsrfHeaderValue );
-			return httpRequest;
-		}
-
-		internal static HttpRequest WithCookie( this HttpRequest httpRequest, string cookieValue ) {
-			return httpRequest.WithCookie( RequestValidationConstants.D2L_AUTH_COOKIE_NAME, cookieValue );
-		}
-
-		internal static HttpRequest WithCookie( this HttpRequest httpRequest, string cookieName, string cookieValue ) {
-			httpRequest.Cookies.Add( new HttpCookie( cookieName, cookieValue ) );
-			return httpRequest;
-		}
-		
 		private static void AddHeader( HttpRequest httpRequest, string headerName, string headerValue ) {
 
 			// A hack for modifying http headers in an HttpRequest: http://stackoverflow.com/a/13307238
