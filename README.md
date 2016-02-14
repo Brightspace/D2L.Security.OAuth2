@@ -2,7 +2,24 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/id5byt9yitcek417/branch/master?svg=true)](https://ci.appveyor.com/project/Brightspace/d2l-security-oauth2/branch/master)
 
-C# implementation of Brightspace OAuth 2.0.
+C# libraries for integrating with Brightspace OAuth 2.0.
+
+## Libraries
+
+### D2L.Security.OAuth2
+[![NuGet](https://img.shields.io/nuget/dt/D2L.Security.OAuth2.svg)](https://www.nuget.org/packages/D2L.Security.OAuth2)
+
+Core functionality for request validation and token provisioning.
+
+### D2L.Security.OAuth2.WebApi
+[![NuGet](https://img.shields.io/nuget/dt/D2L.Security.OAuth2.WebApi.svg)](https://www.nuget.org/packages/D2L.Security.OAuth2.WebApi)
+
+WebAPI integration in the form of filters/attributes/etc.
+
+### D2L.Security.OAuth2.TestFramework
+[![NuGet](https://img.shields.io/nuget/dt/D2L.Security.OAuth2.TestFramework.svg)](https://www.nuget.org/packages/D2L.Security.OAuth2.TestFramework)
+
+Helper library for writing tests.
 
 ## Contributing
 
