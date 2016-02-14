@@ -39,6 +39,9 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
@@ -123,7 +126,6 @@
     <Compile Include="Provisioning\Default\INonCachingAccessTokenProvider.cs" />
     <Compile Include="Provisioning\Default\AccessToken.cs" />
     <Compile Include="Provisioning\Default\AccessTokenProvider.cs" />
-    <Compile Include="Provisioning\Default\SerializationHelper.cs" />
     <Compile Include="Provisioning\IAccessToken.cs" />
     <Compile Include="Provisioning\IAccessTokenProvider.cs" />
     <Compile Include="Provisioning\TokenCacheKeyBuilder.cs" />
