@@ -60,7 +60,7 @@
     <Compile Include="Caching\CacheResponse.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
-    <Compile Include="Extensions\System.Net.Http.HttpClient.Extensions.cs" />
+    <Compile Include="Extensions\System.Net.Http.HttpRequestMessage.Extensions.cs" />
     <Compile Include="Keys\Default\D2LSecurityToken.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Keys\Caching\InMemoryPublicKeyCache.cs" />
