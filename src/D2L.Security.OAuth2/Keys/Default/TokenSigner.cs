@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+﻿using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class TokenSigner : ITokenSigner {

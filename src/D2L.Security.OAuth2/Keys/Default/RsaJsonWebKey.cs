@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 
@@ -57,7 +58,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					use = "sig",
 					n = modulus,
 					e = exponent,
-					exp = ExpiresAt.Value.ToUnixTime()
+					exp = (long)ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
 				};
 			}
 

@@ -7,6 +7,7 @@ using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.TestFramework;
 using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {

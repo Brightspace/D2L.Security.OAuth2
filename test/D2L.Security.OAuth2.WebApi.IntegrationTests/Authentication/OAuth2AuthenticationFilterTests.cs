@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using NUnit.Framework;
-using D2L.Services;
+﻿using System;
 using System.Net;
-using System.Net.Http;
-using System;
-using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using D2L.Services;
+using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Authentication {
 	[TestFixture]

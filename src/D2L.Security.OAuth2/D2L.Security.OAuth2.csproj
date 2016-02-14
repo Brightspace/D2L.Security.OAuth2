@@ -39,6 +39,10 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -133,11 +137,9 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Keys\JsonWebKey.cs" />
     <Compile Include="Keys\Default\RsaJsonWebKey.cs" />
-    <Compile Include="Utilities\DateTimeExtensions.cs" />
+    <Compile Include="Utilities\DateTimeHelpers.cs" />
     <Compile Include="Utilities\DateTimeProvider.cs" />
     <Compile Include="Utilities\IDateTimeProvider.cs" />
-    <Compile Include="Utilities\IEnumerableClaimExtensions.cs" />
-    <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
     <Compile Include="Principal\AnonymousPrincipal.cs" />

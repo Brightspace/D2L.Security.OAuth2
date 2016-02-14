@@ -1,4 +1,3 @@
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -6,9 +5,9 @@ using System.Threading.Tasks;
 using System.Web;
 #endif
 
+using D2L.Services;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
-using D2L.Security.OAuth2.Validation.Exceptions;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	internal sealed class RequestAuthenticator : IRequestAuthenticator {

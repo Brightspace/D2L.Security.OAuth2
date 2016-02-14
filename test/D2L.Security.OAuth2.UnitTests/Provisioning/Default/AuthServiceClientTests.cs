@@ -4,12 +4,10 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-
+using D2L.Services;
 using D2L.Security.OAuth2.Scopes;
-
 using Moq;
 using Moq.Protected;
-
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {

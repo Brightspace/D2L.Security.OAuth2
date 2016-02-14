@@ -1,5 +1,4 @@
 ﻿using System;
-
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Utilities {
@@ -11,26 +10,14 @@ namespace D2L.Security.OAuth2.Utilities {
 		
 		[Test]
 		public void FromUnixTime_0_IsEpoch() {
-			DateTime actual = DateTimeExtensions.FromUnixTime( 0 );
-			Assert.AreEqual( DateTimeExtensions.EPOCH, actual );
+			DateTime actual = DateTimeHelpers.FromUnixTime( 0 );
+			Assert.AreEqual( DateTimeHelpers.EPOCH, actual );
 		}
 
 		[Test]
 		public void FromUnixTime_123456890__SPECIAL_DAY() {
-			DateTime actual = DateTimeExtensions.FromUnixTime( SPECIAL_DAY_SECONDS );
+			DateTime actual = DateTimeHelpers.FromUnixTime( SPECIAL_DAY_SECONDS );
 			Assert.AreEqual( SPECIAL_DAY, actual );
-		}
-
-		[Test]
-		public void ToUnixTime_Epoch_0() {
-			long actual = DateTimeExtensions.EPOCH.ToUnixTime();
-			Assert.AreEqual( 0, actual );
-		}
-
-		[Test]
-		public void ToUnixTime_Special_Day__123456890() {
-			long actual = SPECIAL_DAY.ToUnixTime();
-			Assert.AreEqual( SPECIAL_DAY_SECONDS, actual );
 		}
 	}
 }

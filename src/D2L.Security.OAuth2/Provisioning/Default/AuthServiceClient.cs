@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using D2L.Services;
 using D2L.Security.OAuth2.Scopes;
 using Newtonsoft.Json;
 

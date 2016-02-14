@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Services;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 
 namespace D2L.Security.OAuth2.TestFramework {

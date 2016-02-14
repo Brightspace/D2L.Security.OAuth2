@@ -78,7 +78,7 @@ namespace D2L.Security.OAuth2.Keys {
 			DateTime? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
 				long ts = long.Parse( data[ "exp" ].ToString() );
-				expiresAt = DateTimeExtensions.FromUnixTime( ts );
+				expiresAt = DateTimeHelpers.FromUnixTime( ts );
 			}
 
 			switch( data[ "kty" ].ToString() ) {

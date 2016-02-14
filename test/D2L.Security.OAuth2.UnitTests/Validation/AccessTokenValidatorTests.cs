@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
+using D2L.Services;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.TestUtilities;
 using D2L.Security.OAuth2.TestUtilities.Mocks;
