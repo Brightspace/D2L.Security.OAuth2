@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using D2L.Services;
 using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using HttpMock;

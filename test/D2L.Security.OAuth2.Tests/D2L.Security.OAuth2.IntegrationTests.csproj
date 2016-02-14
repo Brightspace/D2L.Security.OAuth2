@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HttpMock, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\HttpMock.1.1.5\lib\net40\HttpMock.dll</HintPath>

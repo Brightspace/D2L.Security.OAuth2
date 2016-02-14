@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
 	internal sealed class JwksProvider : IJwksProvider {

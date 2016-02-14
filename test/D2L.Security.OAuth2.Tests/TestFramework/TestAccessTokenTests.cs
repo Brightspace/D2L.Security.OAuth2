@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Security.Claims;
+using D2L.Services;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using NUnit.Framework;

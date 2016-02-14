@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Services;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;

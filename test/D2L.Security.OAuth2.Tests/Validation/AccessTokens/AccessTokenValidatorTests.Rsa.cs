@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using D2L.Services;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.TestFramework;
 using D2L.Security.OAuth2.Validation.Exceptions;

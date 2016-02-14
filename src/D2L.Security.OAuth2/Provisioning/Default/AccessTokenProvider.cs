@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 

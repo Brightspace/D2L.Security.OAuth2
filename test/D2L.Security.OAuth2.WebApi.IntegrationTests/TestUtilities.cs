@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Security.OAuth2.Authentication;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Validation.AccessTokens;
@@ -18,7 +17,9 @@ namespace D2L.Security.OAuth2 {
 		private static ITokenSigner m_signer;
 
 		static TestUtilities() {
+#pragma warning disable 618
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
+#pragma warning restore 618
 
 			m_signer = EcDsaTokenSignerFactory
 				.Create( publicKeyDataProvider, EcDsaTokenSignerFactory.Curve.P256 );

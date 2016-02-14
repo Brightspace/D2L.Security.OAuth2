@@ -7,6 +7,7 @@ using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.TestFrameworks;
+using D2L.Services;
 using HttpMock;
 using Newtonsoft.Json;
 

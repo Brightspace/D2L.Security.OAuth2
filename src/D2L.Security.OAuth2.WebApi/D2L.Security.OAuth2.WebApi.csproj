@@ -41,8 +41,8 @@
       <HintPath>..\..\packages\D2L.Security.OAuth2.4.4.0.0\lib\net451\D2L.Security.OAuth2.dll</HintPath>
     </Reference>
     <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

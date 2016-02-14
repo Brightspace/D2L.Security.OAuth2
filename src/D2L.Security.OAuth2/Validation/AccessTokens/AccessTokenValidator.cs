@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;

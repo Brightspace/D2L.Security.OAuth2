@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using D2L.Services;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Scopes;
