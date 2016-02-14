@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{731C8174
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.UnitTests", "test\D2L.Security.OAuth2.UnitTests\D2L.Security.OAuth2.UnitTests.csproj", "{95CE1314-E961-4C64-B410-43903BD3A04C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.IntegrationTests", "test\D2L.Security.OAuth2.Tests\D2L.Security.OAuth2.IntegrationTests.csproj", "{F5667A7E-955D-4402-86C4-8DFB65768AE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.IntegrationTests", "test\D2L.Security.OAuth2.IntegrationTests\D2L.Security.OAuth2.IntegrationTests.csproj", "{F5667A7E-955D-4402-86C4-8DFB65768AE1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi.UnitTests", "test\D2L.Security.OAuth2.WebApi.UnitTests\D2L.Security.OAuth2.WebApi.UnitTests.csproj", "{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}"
 EndProject
