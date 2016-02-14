@@ -12,8 +12,8 @@ namespace D2L {
 		/// </summary>
 		/// <param name="this"></param>
 		/// <param name="principal">This principals access token will be used</param>
-		public static void AuthenticateAs( this HttpClient @this, ID2LPrincipal principal ) {
-			@this.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+		public static void AuthenticateAs( this HttpRequestMessage @this, ID2LPrincipal principal ) {
+			@this.Headers.Authorization = new AuthenticationHeaderValue(
 				scheme: "Bearer",
 				parameter: principal.AccessToken.SensitiveRawAccessToken
 			);	
