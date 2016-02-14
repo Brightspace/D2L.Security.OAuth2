@@ -3,17 +3,14 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Security.OAuth2.TestFramework;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using NUnit.Framework;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	[TestFixture]
-	[Ignore( "These rely on internal infrastructure to run" )]
 	internal sealed class TestAccessTokenProviderTests {
-
-		private const string DEV_AUTH_URL = "https://auth-dev.proddev.d2l/core";
+		private const string DEV_AUTH_URL = "https://dev-auth.brightspace.com/core";
 
 		private readonly ClaimSet testClaimSet = new ClaimSet( "ExpandoClient", Guid.NewGuid() );
 		private readonly Scope[] testScopes = {
@@ -51,6 +48,5 @@ namespace D2L.Security.OAuth2.TestFramework {
 				Assert.Throws<HttpRequestException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync() );
 			}
 		}
-
 	}
 }

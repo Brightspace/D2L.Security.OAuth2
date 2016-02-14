@@ -7,10 +7,8 @@ using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	[TestFixture]
-	[Ignore( "These rely on internal infrastructure to run" )]
-	[Category( "Integration" )]
 	internal sealed class TestAccessTokenTests {
-		private const string DEV_AUTH_URL = "https://auth-dev.proddev.d2l/core";
+		private const string DEV_AUTH_URL = "https://dev-auth.brightspace.com/core";
 
 		[Test]
 		public async void TestGetToken_WithTenantID_IsValid() {

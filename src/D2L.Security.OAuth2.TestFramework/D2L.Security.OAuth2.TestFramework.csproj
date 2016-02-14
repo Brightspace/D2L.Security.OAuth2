@@ -89,7 +89,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="D2L.Security.OAuth2.TestFramework.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
