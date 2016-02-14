@@ -4,16 +4,21 @@ using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 
 namespace D2L.Security.OAuth2.Principal {
-
 	/// <summary>
 	/// Principal class that is D2L-specific
 	/// </summary>
 	public interface ID2LPrincipal {
-
 		/// <summary>
 		/// Only valid if the <see cref="Type"/> is User
 		/// </summary>
-		string UserId { get; }
+		long UserId { get; }
+
+		/// <summary>
+		/// If this doesn't equal UserId it means that impersonation is going on and
+		/// this is the userId of the impersonator.
+		/// Only valid if the <see cref="Type"/> is User.
+		/// </summary>
+		long ActualUserId { get; }
 
 		/// <summary>
 		/// Only valid if the <see cref="Type"/> is User or Service
@@ -31,7 +36,7 @@ namespace D2L.Security.OAuth2.Principal {
 		IEnumerable<Scope> Scopes { get; }
 
 		/// <summary>
-		/// The access token that the principal was constructed from
+		/// 
 		/// </summary>
 		IAccessToken AccessToken { get; }
 	}

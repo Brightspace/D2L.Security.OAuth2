@@ -59,20 +59,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			Assert.IsFalse( scopes.Any() );
 		}
 
-		[Test]
-		public void GetUserId_Success() {
-			string expected = "userid-1337";
-			var accessTokenMock = new Mock<IAccessToken>();
-			MockClaim( accessTokenMock, Constants.Claims.USER_ID, expected.ToString() );
-			Assert.AreEqual( expected, accessTokenMock.Object.GetUserId() );
-		}
-		
-		[Test]
-		public void GetUserId_None_ReturnsNull() {
-			var accessTokenMock = new Mock<IAccessToken>();
-			Assert.IsNull( accessTokenMock.Object.GetUserId() );
-		}
-
 		private void MockClaim( Mock<IAccessToken> accessTokenMock, string claimName, string claimValue ) {
 			Claim claim = new Claim( claimName, claimValue );
 			Claim[] claims = new Claim[] { claim };
