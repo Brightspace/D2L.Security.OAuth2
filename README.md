@@ -4,8 +4,6 @@
 
 C# implementation of Brightspace OAuth 2.0.
 
-For WebAPI-specific extensions, see [D2L.Security.OAuth2.WebApi](https://github.com/Brightspace/D2L.Security.OAuth2.WebApi).
-
 ## Contributing
 
 1. **Fork** the repository. Committing directly against this repository is
