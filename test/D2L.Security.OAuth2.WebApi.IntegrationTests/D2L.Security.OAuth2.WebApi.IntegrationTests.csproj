@@ -110,7 +110,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\D2L.Security.OAuth2.WebApi\D2L.Security.OAuth2.WebApi.csproj">
+    <ProjectReference Include="..\..\src\D2L.Security.OAuth2.WebApi\D2L.Security.OAuth2.WebApi.csproj">
       <Project>{c9140879-73e6-4767-b12b-17581793e419}</Project>
       <Name>D2L.Security.OAuth2.WebApi</Name>
     </ProjectReference>
