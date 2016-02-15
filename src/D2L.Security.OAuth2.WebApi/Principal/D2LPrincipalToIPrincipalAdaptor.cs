@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Security.Principal;
-using System.Threading;
-using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 
