@@ -78,11 +78,8 @@
     <Compile Include="Authorization\RequireClaimAttribute.cs" />
     <Compile Include="Authorization\RequireScopeAttribute.cs" />
     <Compile Include="Extensions\System.Security.Claims.ClaimsPrincipal.Extensions.cs" />
-    <Compile Include="Principal\D2LPrincipalAdapter.cs" />
     <Compile Include="Principal\D2LPrincipalToIPrincipalAdaptor.cs" />
-    <Compile Include="Principal\PrincipalNotAssignedException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scopes\ScopeAuthorizeAttribute.cs" />
     <Compile Include="TaskHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
