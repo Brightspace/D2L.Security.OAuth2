@@ -17,11 +17,11 @@
         "System.Runtime": "4.0.21-beta-*",
         "System.Runtime.Serialization.Json": "4.0.1-beta-*",
         "System.Security.Cryptography.Cng": "4.0.0-beta-*",
+        "System.Security.Cryptography.Csp": "4.0.0-beta-*",
         "System.Security.Cryptography.RSA": "4.0.0-beta-*",
         "System.Security.Claims": "4.0.1-beta-*"
     },
     "frameworks": {
-        "dnxcore50": { },
-        "net451": { }
+        "dnxcore50": { }
     }
 }
