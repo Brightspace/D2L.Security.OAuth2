@@ -46,7 +46,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, Guid.NewGuid(), randomRsaParameters );
-				Assert.Throws<HttpRequestException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync() );
+				Assert.Throws<AuthServiceException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync() );
 			}
 		}
 	}

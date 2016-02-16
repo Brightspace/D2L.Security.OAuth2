@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="D2L.Services.Core.Exceptions">
+      <HintPath>..\..\packages\D2L.Services.Core.Exceptions.1.0.0.27289\lib\net451\D2L.Services.Core.Exceptions.dll</HintPath>
+    </Reference>
     <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
       <Private>True</Private>
@@ -78,6 +81,7 @@
     <Compile Include="Keys\Development\InMemoryPublicKeyDataProviderTests.cs" />
     <Compile Include="Keys\JsonWebKeyTests.cs" />
     <Compile Include="Provisioning\AccessTokenProviderFactoryTests.cs" />
+    <Compile Include="Provisioning\AuthServiceClientTests.cs" />
     <Compile Include="Provisioning\Default\AccessTokenProviderTests.cs" />
     <Compile Include="Provisioning\CachedAccessTokenProviderTests.cs" />
     <Compile Include="Provisioning\Default\AuthServiceClientTests.cs" />
@@ -91,6 +95,7 @@
     <Compile Include="TestUtilities\Mocks\PublicKeyProviderMock.cs" />
     <Compile Include="TestUtilities\RequestBuilder.cs" />
     <Compile Include="Utilities\DateTimeExtensionTests.cs" />
+    <Compile Include="Utilities\MockHttpClient.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenExtensionsTests.cs" />
     <Compile Include="Validation\AccessTokenValidatorTests.cs" />
     <Compile Include="Validation\Request\HttpRequestExtensionsTests.AuthHeader.cs" />

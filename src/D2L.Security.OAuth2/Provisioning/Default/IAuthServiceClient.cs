@@ -16,6 +16,10 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		/// <param name="assertion">A JWT signed by the private key of the entity requesting the token</param>
 		/// <param name="scopes">List of scopes to include in the access token</param>
 		/// <returns>A JWT token from the auth service signed with the auth service's private key</returns>
+		/// <exception cref="AuthServiceException">
+		/// The auth service could not be reached, or it did not respond with
+		/// a status code indicating success.
+		/// </exception>
 		Task<IAccessToken> ProvisionAccessTokenAsync(
 			string assertion,
 			IEnumerable<Scope> scopes
