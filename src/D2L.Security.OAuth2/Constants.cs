@@ -35,6 +35,13 @@ namespace D2L.Security.OAuth2 {
 		/// </summary>
 		public static class Claims {
 			/// <summary>
+			/// If this exists it indicates the "sub" of this token is being
+			/// impersonated by the user indicated in this claim
+			/// (This is a D2L-custom claim)
+			/// </summary>
+			public const string ACTUAL_USER_ID = "actualsub";
+
+			/// <summary>
 			/// The "audience" for this JWT. Currently not really used. See the
 			/// TENANT_ID claim for something that behaves like this implies
 			/// https://tools.ietf.org/html/rfc7519#section-4.1.3
@@ -58,13 +65,6 @@ namespace D2L.Security.OAuth2 {
 			/// https://tools.ietf.org/html/rfc7519#section-4.1.4
 			/// </summary>
 			public const string EXPIRY = "exp";
-
-			/// <summary>
-			/// If this exists it indicates the "sub" of this token is being
-			/// impersonated by the user indicated in this claim
-			/// (This is a D2L-custom claim)
-			/// </summary>
-			public const string IMPERSONATING_USER_ID = "impsub";
 
 			/// <summary>
 			/// The Unix timestamp for when this JWT was issued
@@ -115,12 +115,6 @@ namespace D2L.Security.OAuth2 {
 			/// https://tools.ietf.org/html/rfc7519#section-4.1.2
 			/// </summary>
 			public const string USER_ID = "sub";
-
-			/// <summary>
-			/// The XSRF token for a user access token. Only used by LE.
-			/// (This is a D2L-custom claim)
-			/// </summary>
-			public const string XSRF_TOKEN = "xt";
 		}
 
 		/// <summary>

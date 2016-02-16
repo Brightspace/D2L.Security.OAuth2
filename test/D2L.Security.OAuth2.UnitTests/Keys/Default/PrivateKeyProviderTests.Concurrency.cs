@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens;
 using System.Reflection;
 using System.Threading;
+using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Keys.Default {

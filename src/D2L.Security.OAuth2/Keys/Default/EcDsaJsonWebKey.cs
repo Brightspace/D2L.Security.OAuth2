@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 
@@ -60,7 +61,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					crv = m_curve,
 					x = m_x,
 					y = m_y,
-					exp = ExpiresAt.Value.ToUnixTime()
+					exp = (long)ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
 				};
 			}
 

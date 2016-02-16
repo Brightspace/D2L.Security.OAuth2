@@ -5,10 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
+
+#if DNXCORE50
+using System.IdentityModel.Tokens.Jwt;
+#endif
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed class AccessTokenValidator : IAccessTokenValidator {
-
 		internal static string[] ALLOWED_SIGNATURE_ALGORITHMS = new string[] {
 			"RS256",
 			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha256Signature,
@@ -40,7 +44,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			var unvalidatedToken = (JwtSecurityToken)tokenHandler.ReadToken(
 				token
 			);
-			
+
 			if( !ALLOWED_SIGNATURE_ALGORITHMS.Contains( unvalidatedToken.SignatureAlgorithm ) ) {
 				string message = string.Format(
 					"Signature algorithm '{0}' is not supported.  Permitted algorithms are '{1}'",
@@ -79,7 +83,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					token,
 					validationParameters,
 					out securityToken
-					);
+        );
 				accessToken = new AccessToken( ( JwtSecurityToken )securityToken );
 			} catch( SecurityTokenExpiredException ) {
 				throw new ExpiredTokenException( "The access token is expired" );

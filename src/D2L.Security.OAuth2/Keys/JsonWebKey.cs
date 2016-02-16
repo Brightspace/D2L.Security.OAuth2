@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Script.Serialization;
 using D2L.Security.OAuth2.Keys.Default;
+using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Keys {
-
 	/// <summary>
 	/// Json Web Key (JWK) base class
 	/// </summary>
@@ -56,7 +55,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <param name="json">The json JWK</param>
 		/// <returns>A <see cref="JsonWebKey"/></returns>
 		public static JsonWebKey FromJson( string json ) {
-			var data = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>( json );
+			var data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
 
 			if( !data.ContainsKey( "use" ) ) {
 				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
@@ -79,7 +78,7 @@ namespace D2L.Security.OAuth2.Keys {
 			DateTime? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
 				long ts = long.Parse( data[ "exp" ].ToString() );
-				expiresAt = DateTimeExtensions.FromUnixTime( ts );
+				expiresAt = DateTimeHelpers.FromUnixTime( ts );
 			}
 
 			switch( data[ "kty" ].ToString() ) {

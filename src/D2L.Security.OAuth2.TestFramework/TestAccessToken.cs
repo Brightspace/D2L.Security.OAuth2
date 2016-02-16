@@ -6,15 +6,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Services;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 
 namespace D2L.Security.OAuth2.TestFramework {
-
 	/// <summary>
 	/// Convienence class for tests to quickly get an auth token string
 	/// </summary>
 	public static class TestAccessToken {
-
 		private const string DEFAULT_ISSUER = "ExpandoClient";
 
 		/// <summary>
@@ -54,9 +53,6 @@ namespace D2L.Security.OAuth2.TestFramework {
 			}
 			if( userId != null ) {
 				claimSet.Add( new Claim( Constants.Claims.USER_ID, userId ) );
-			}
-			if( xsrfToken != null ) {
-				claimSet.Add( new Claim( Constants.Claims.XSRF_TOKEN, xsrfToken ) );
 			}
 			return await GetToken( tokenProvisioningEndpoint, claimSet, new[] { new Scope( "*", "*", "*" ) } ).SafeAsync();
 		}

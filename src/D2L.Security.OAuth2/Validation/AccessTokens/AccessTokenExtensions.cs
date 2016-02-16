@@ -5,13 +5,6 @@ using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal static class AccessTokenExtensions {
-
-		/// <param name="token">An access token</param>
-		/// <returns>The value of the Xsrf token. Returns null if one was not found.</returns>
-		internal static string GetXsrfToken( this IAccessToken token ) {
-			return token.GetClaimValue( Constants.Claims.XSRF_TOKEN );
-		}
-
 		/// <param name="token">An access token</param>
 		/// <returns>The access token id. Returns null if one was not found.</returns>
 		internal static string GetAccessTokenId( this IAccessToken token ) {
@@ -41,10 +34,17 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			return scopesArray;
 		}
 
-		/// <param name="token">An access token</param>
-		/// <returns>The user id. Returns null if one was not found.</returns>
-		internal static string GetUserId( this IAccessToken token ) {
-			return token.GetClaimValue( Constants.Claims.USER_ID );
+		internal static bool TryGetUserId( this IAccessToken token, out long userId ) {
+			return token.TryGetLongClaim( Constants.Claims.USER_ID, out userId );
+		}
+
+		internal static bool TryGetActualUserId( this IAccessToken token, out long actualUserId ) {
+			return token.TryGetLongClaim( Constants.Claims.ACTUAL_USER_ID, out actualUserId );
+		}
+
+		private static bool TryGetLongClaim( this IAccessToken token, string claim, out long val ) {
+			string str = token.GetClaimValue( claim );
+			return long.TryParse( str, out val );
 		}
 
 		/// <param name="token">An access token</param>

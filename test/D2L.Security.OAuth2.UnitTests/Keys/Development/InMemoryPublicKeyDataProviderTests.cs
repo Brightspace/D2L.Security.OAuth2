@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.TestUtilities;
+using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Keys.Development {
@@ -14,7 +15,6 @@ namespace D2L.Security.OAuth2.Keys.Development {
 #pragma warning disable 618
 			m_publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
 #pragma warning restore 618
-
 		}
 
 		[Test]

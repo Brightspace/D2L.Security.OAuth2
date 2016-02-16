@@ -2,11 +2,10 @@
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-
 	internal sealed class LocalPublicKeyProvider : IPublicKeyProvider {
-
 		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
 		private readonly IInMemoryPublicKeyCache m_cache;
 

@@ -42,6 +42,13 @@
     <Reference Include="D2L.Services.Core.Exceptions">
       <HintPath>..\..\packages\D2L.Services.Core.Exceptions.1.0.0\lib\net451\D2L.Services.Core.Exceptions.dll</HintPath>
     </Reference>
+    <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
@@ -60,7 +67,7 @@
     <Compile Include="Caching\CacheResponse.cs" />
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
-    <Compile Include="Extensions\System.Net.Http.HttpClient.Extensions.cs" />
+    <Compile Include="Extensions\System.Net.Http.HttpRequestMessage.Extensions.cs" />
     <Compile Include="Keys\Default\D2LSecurityToken.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Keys\Caching\InMemoryPublicKeyCache.cs" />
@@ -127,7 +134,6 @@
     <Compile Include="Provisioning\Default\INonCachingAccessTokenProvider.cs" />
     <Compile Include="Provisioning\Default\AccessToken.cs" />
     <Compile Include="Provisioning\Default\AccessTokenProvider.cs" />
-    <Compile Include="Provisioning\Default\SerializationHelper.cs" />
     <Compile Include="Provisioning\IAccessToken.cs" />
     <Compile Include="Provisioning\IAccessTokenProvider.cs" />
     <Compile Include="Provisioning\TokenCacheKeyBuilder.cs" />
@@ -135,11 +141,9 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Keys\JsonWebKey.cs" />
     <Compile Include="Keys\Default\RsaJsonWebKey.cs" />
-    <Compile Include="Utilities\DateTimeExtensions.cs" />
+    <Compile Include="Utilities\DateTimeHelpers.cs" />
     <Compile Include="Utilities\DateTimeProvider.cs" />
     <Compile Include="Utilities\IDateTimeProvider.cs" />
-    <Compile Include="Utilities\IEnumerableClaimExtensions.cs" />
-    <Compile Include="Utilities\TaskExtensions.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
     <Compile Include="Validation\AccessTokens\IAccessToken.cs" />
     <Compile Include="Principal\AnonymousPrincipal.cs" />
@@ -149,8 +153,6 @@
     <Compile Include="Keys\Constants.cs" />
     <Compile Include="Validation\Exceptions\PublicKeyNotFoundException.cs" />
     <Compile Include="Validation\Exceptions\ValidationException.cs" />
-    <Compile Include="Validation\Exceptions\XsrfException.cs" />
-    <Compile Include="Validation\Request\AuthenticationMode.cs" />
     <Compile Include="Validation\Request\RequestValidationConstants.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenExtensions.cs" />
     <Compile Include="Validation\Request\RequestAuthenticator.cs" />

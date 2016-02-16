@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using D2L.Services;
 using D2L.Security.OAuth2.Utilities;
 using Moq;
 using NUnit.Framework;

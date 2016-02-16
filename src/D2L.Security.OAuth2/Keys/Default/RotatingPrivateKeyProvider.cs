@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Utilities;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class RotatingPrivateKeyProvider : IPrivateKeyProvider {

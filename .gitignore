@@ -9,3 +9,4 @@ docs/output
 *.DotSettings
 *.lock.json
 .nuget/NuGet.exe
+*.exe

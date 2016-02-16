@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
+using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-
 	internal sealed class SavingPrivateKeyProvider : IPrivateKeyProvider {
-
 		private readonly IPrivateKeyProvider m_inner;
 		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
 

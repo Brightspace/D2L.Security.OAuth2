@@ -16,8 +16,12 @@ namespace D2L.Security.OAuth2.Principal {
 			m_scopes = Enumerable.Empty<Scope>();
 		}
 
-		string ID2LPrincipal.UserId {
+		long ID2LPrincipal.UserId {
 			get { throw new InvalidOperationException( "Cannot access UserId for an Anonymous Principal" ); }
+		}
+
+		long ID2LPrincipal.ActualUserId {
+			get { throw new InvalidOperationException( "Cannot access ActualUserId for an Anonymous Principal" ); }
 		}
 
 		Guid ID2LPrincipal.TenantId {
