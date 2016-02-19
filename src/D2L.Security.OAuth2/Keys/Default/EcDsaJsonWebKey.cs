@@ -84,7 +84,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				keyFactory: () => {
 					var publicBlob = ECCPublicKeyBlobFormatter.Instance.BuildECCPublicBlob( this );
 					var key = new ECDsaSecurityKey( publicBlob, CngKeyBlobFormat.EccPublicBlob );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
+					return key;
 				}
 			);
 			

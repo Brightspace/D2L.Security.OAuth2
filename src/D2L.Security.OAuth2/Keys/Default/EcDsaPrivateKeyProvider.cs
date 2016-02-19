@@ -31,8 +31,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 
 			D2LSecurityToken result = m_d2lSecurityTokenFactory.Create( () => {
-				var key = new ECDsaSecurityKey( privateBlob, CngKeyBlobFormat.EccPrivateBlob );
-				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
+				return new ECDsaSecurityKey( privateBlob, CngKeyBlobFormat.EccPrivateBlob );
 			} );
 
 			return Task.FromResult( result );
