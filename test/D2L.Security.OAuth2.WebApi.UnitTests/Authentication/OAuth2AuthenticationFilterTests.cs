@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		[Test]
 		public async Task AuthenticateAsync_ValidationException_401() {
 			m_requestAuthenticator
-				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
+				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
 				.Throws( new ExpiredTokenException( "bleh" ) );
 
 			await m_authenticationFilter
@@ -65,7 +65,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		[ExpectedException(typeof(InvalidCastException))]
 		public async Task AuthenticateAsync_OtherException_Throws() {
 			m_requestAuthenticator
-				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
+				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
 				.Throws<InvalidCastException>();
 			
 			await m_authenticationFilter
@@ -81,7 +81,7 @@ namespace D2L.Security.OAuth2.Authentication {
 			var principal = principalMock.Object;
 
 			m_requestAuthenticator
-				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
+				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
 				.ReturnsAsync( principal );
 
 			m_principalRegistry
@@ -110,7 +110,7 @@ namespace D2L.Security.OAuth2.Authentication {
 			var principal = principalMock.Object;
 
 			m_requestAuthenticator
-				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>(), It.IsAny<AuthenticationMode>() ) )
+				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
 				.ReturnsAsync( principal );
 			
 			m_principalRegistry
