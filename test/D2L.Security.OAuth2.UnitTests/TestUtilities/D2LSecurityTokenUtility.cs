@@ -33,10 +33,8 @@ namespace D2L.Security.OAuth2.TestUtilities {
 				validFrom,
 				validTo,
 				keyFactory: () => {
-					var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
-					csp.ImportParameters( privateKey );
-					var key = new RsaSecurityKey( csp );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, csp );
+					var key = new RsaSecurityKey( privateKey );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
 				}
 			);
 		}

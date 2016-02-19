@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,17 +8,13 @@ using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 
-#if DNXCORE50
-using System.IdentityModel.Tokens.Jwt;
-#endif
-
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed class AccessTokenValidator : IAccessTokenValidator {
 		internal static string[] ALLOWED_SIGNATURE_ALGORITHMS = new string[] {
 			"RS256",
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha256Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha384Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha512Signature
+			"ES256",
+			"ES384",
+			"ES512"
 		};
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
@@ -72,7 +69,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				ValidateAudience = false,
 				ValidateIssuer = false,
 				RequireSignedTokens = true,
-				IssuerSigningToken = signingToken
+				IssuerSigningKey = signingToken.SigningKey
 			};
 
 			IAccessToken accessToken;

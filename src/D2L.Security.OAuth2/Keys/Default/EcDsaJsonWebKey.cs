@@ -75,15 +75,6 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			};
 		}
 
-		private ECDsaCng BuildEcDsaCng() {
-			byte[] publicBlob = ECCPublicKeyBlobFormatter.Instance.BuildECCPublicBlob( this );
-			using( var cng = CngKey.Import( publicBlob, CngKeyBlobFormat.EccPublicBlob ) ) {
-				// ECDsaCng copies the CngKey, hence the using
-				var ecDsa = new ECDsaCng( cng );
-				return ecDsa;
-			}
-		}
-
 		internal override D2LSecurityToken ToSecurityToken() {
 
 			var token = new D2LSecurityToken(
@@ -91,9 +82,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				validFrom: DateTime.UtcNow,
 				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
-					var cng = BuildEcDsaCng();
-					var key = new EcDsaSecurityKey( cng );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, cng );
+					var publicBlob = ECCPublicKeyBlobFormatter.Instance.BuildECCPublicBlob( this );
+					var key = new ECDsaSecurityKey( publicBlob, CngKeyBlobFormat.EccPublicBlob );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
 				}
 			);
 			

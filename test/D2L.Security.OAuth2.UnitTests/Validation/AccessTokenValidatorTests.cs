@@ -9,6 +9,7 @@ using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using Moq;
 using NUnit.Framework;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace D2L.Security.OAuth2.Validation {
 	[TestFixture]

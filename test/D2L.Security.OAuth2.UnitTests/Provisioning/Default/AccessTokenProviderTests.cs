@@ -10,6 +10,7 @@ using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Scopes;
 using Moq;
 using NUnit.Framework;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 	[TestFixture]
@@ -62,7 +63,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			var publicKeys = ( await m_publicKeyDataProvider.GetAllAsync().SafeAsync() ).ToList();
 
 			string expectedKeyId = publicKeys.First().Id.ToString();
-			string actualKeyId = m_actualAssertion.Header.SigningKeyIdentifier[ 0 ].Id;
+			string actualKeyId = m_actualAssertion.Header.Kid;
 
 			Assert.AreEqual( 1, publicKeys.Count );
 			Assert.AreEqual( expectedKeyId, actualKeyId );
