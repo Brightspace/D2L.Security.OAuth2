@@ -64,7 +64,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 		private async Task<ID2LPrincipal> AuthenticateAsync( HttpAuthenticationContext context ) {
 			ID2LPrincipal principal = await m_requestAuthenticator
-				.AuthenticateAsync( context.Request, AuthenticationMode.Full )
+				.AuthenticateAsync( context.Request )
 				.SafeAsync();
 
 			return principal;

@@ -27,6 +27,10 @@ namespace D2L.Security.OAuth2.Principal {
 			get { return m_principal.AccessToken; }
 		}
 
+		long ID2LPrincipal.ActualUserId {
+			get { return m_principal.ActualUserId; }
+		}
+
 		IEnumerable<Scope> ID2LPrincipal.Scopes {
 			get { return m_principal.Scopes; }
 		}
@@ -39,7 +43,7 @@ namespace D2L.Security.OAuth2.Principal {
 			get { return m_principal.Type; }
 		}
 
-		string ID2LPrincipal.UserId {
+		long ID2LPrincipal.UserId {
 			get { return m_principal.UserId; }
 		}
 

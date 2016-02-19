@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2", "src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj", "{676FB8C0-D021-475E-941B-03BE21769294}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi", "src\D2L.Security.OAuth2.WebApi\D2L.Security.OAuth2.WebApi.csproj", "{C9140879-73E6-4767-B12B-17581793E419}"
+	ProjectSection(ProjectDependencies) = postProject
+		{676FB8C0-D021-475E-941B-03BE21769294} = {676FB8C0-D021-475E-941B-03BE21769294}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.TestFramework", "src\D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj", "{F10655CB-E66D-4DF7-8991-10C26C8FAF18}"
 EndProject
