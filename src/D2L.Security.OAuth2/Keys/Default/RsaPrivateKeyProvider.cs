@@ -21,7 +21,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 
 			D2LSecurityToken result = m_d2lSecurityTokenFactory.Create( () => {
-				return new RsaSecurityKey( privateKey );
+				var key = new RsaSecurityKey( privateKey );
+				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
 			} );
 
 			return Task.FromResult( result );

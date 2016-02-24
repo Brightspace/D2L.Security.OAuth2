@@ -33,7 +33,8 @@ namespace D2L.Security.OAuth2.TestUtilities {
 				validFrom,
 				validTo,
 				keyFactory: () => {
-					return new RsaSecurityKey( privateKey );
+					var key = new RsaSecurityKey( privateKey );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
 				}
 			);
 		}

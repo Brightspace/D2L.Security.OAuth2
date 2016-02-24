@@ -77,7 +77,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				validFrom: DateTime.UtcNow,
 				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
-					return new RsaSecurityKey( m_parameters );
+					var key = new RsaSecurityKey( m_parameters );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
 				}
 			);
 			

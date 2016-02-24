@@ -41,7 +41,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				KEY_ID,
 				DateTime.UtcNow,
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
-				() => null as AsymmetricSecurityKey
+				() => null as Tuple<AsymmetricSecurityKey, IDisposable>
 			);
 
 			m_keyCache
@@ -99,7 +99,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				KEY_ID,
 				DateTime.UtcNow,
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
-				() => null as AsymmetricSecurityKey
+				() => null as Tuple<AsymmetricSecurityKey, IDisposable>
 			);
 			m_keyCache
 				.InSequence( seq )
@@ -154,7 +154,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				KEY_ID,
 				DateTime.UtcNow,
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
-				() => null as AsymmetricSecurityKey
+				() => null as Tuple<AsymmetricSecurityKey, IDisposable>
 			);
 			m_keyCache
 				.InSequence( seq )
