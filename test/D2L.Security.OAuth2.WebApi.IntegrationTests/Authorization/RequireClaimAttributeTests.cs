@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Authorization {
 				.RunBasicAuthTest( RequireClaimAttributeTestsController.ROUTE, jwt, HttpStatusCode.Forbidden )
 				.SafeAsync();
 
-			StringAssert.Contains( "missing_claim", body );
+			StringAssert.Contains( Constants.Claims.USER_ID, body );
 		}
 
 		[Test]

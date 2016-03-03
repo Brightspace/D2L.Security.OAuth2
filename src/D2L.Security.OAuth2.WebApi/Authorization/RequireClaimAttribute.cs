@@ -38,7 +38,10 @@ namespace D2L.Security.OAuth2.Authorization {
 		) {
 			var response = actionContext
 				.Request
-				.CreateErrorResponse( HttpStatusCode.Forbidden, "missing_claim" );
+				.CreateErrorResponse(
+					HttpStatusCode.Forbidden,
+					String.Format( "Missing claim: '{0}'", m_claimType )
+				);
 
 			actionContext.Response = response;
 		}
