@@ -1,4 +1,4 @@
-﻿D2L.Security.OAuth2.SecurityTokens
+D2L.Security.OAuth2.SecurityTokens
 ==================================
 
 This code defines interfaces to manage `D2LSecurityToken` objects and provides default implementations.
@@ -11,7 +11,7 @@ Services will need to sign assertions for the JWT bearer token grant using the o
 
 Steps:
 
-1. Implemenent an `ISecurityTokenProvider` that persists keys.
+1. Implement an `ISecurityTokenProvider` that persists keys.
     - You can *prototype* with the `InMemorySecurityTokenProvider` provided by this library.
 2. Dependency inject `ISecurityTokenProvider` using the `RollingSecurityTokenProvider` implementation (defined in this library) passing your `ISecurityTokenProvider` as its inner implementation.
 
