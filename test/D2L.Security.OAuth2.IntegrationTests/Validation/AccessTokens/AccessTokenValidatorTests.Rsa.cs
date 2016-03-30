@@ -28,6 +28,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				m_authService.SetupJwks().Wait();
 			}
 
+			[TestFixtureTearDown]
+			public void TestFixtureTearDown() {
+				m_authService.SafeDispose();
+			}
 
 			[Test]
 			public async Task ValidateAsync_GoodSignature_Succeeds() {

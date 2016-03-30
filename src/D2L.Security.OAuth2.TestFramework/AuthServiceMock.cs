@@ -12,7 +12,7 @@ using HttpMock;
 using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.TestFramework {
-	public sealed class AuthServiceMock {
+	public sealed class AuthServiceMock : IDisposable {
 		private readonly IHttpServer m_server;
 		private readonly string m_host;
 
@@ -110,6 +110,10 @@ namespace D2L.Security.OAuth2.TestFramework {
 			return await m_tokenSigner
 				.SignAsync( token )
 				.SafeAsync();
+		}
+		
+		public void Dispose() {
+			m_server.SafeDispose();
 		}
 	}
 }
