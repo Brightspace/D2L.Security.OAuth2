@@ -4,9 +4,16 @@ using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal class JsonWebKeySet {
+		private readonly Uri m_src;
 		private readonly List<JsonWebKey> m_keys = new List<JsonWebKey>();
 
-		public JsonWebKeySet( string json ) {
+		public JsonWebKeySet( string json, Uri src ) {
+			if ( src == null ) {
+				throw new ArgumentNullException( "src" );
+			}
+
+			m_src = src;
+
 			try {
 				var data = JsonConvert.DeserializeObject<Dictionary<string, List<object>>>( json );
 
@@ -42,5 +49,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public IEnumerator<JsonWebKey> GetEnumerator() {
 			return m_keys.GetEnumerator();
 		}
+
+		public Uri Source { get { return m_src; } }
 	}
 }

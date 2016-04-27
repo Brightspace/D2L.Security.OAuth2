@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).SafeAsync() ) {
 					response.EnsureSuccessStatusCode();
 					string jsonResponse = await response.Content.ReadAsStringAsync().SafeAsync();
-					var jwks = new JsonWebKeySet( jsonResponse );
+					var jwks = new JsonWebKeySet( jsonResponse, m_jwksEndpoint );
 					return jwks;
 				}
 			} catch( HttpRequestException e ) {
