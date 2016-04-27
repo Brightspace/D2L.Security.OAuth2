@@ -76,7 +76,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 								.ToJwkDto()
 						}
 					}
-				)
+				),
+				new Uri( "http://localhost/dummy" )
 			);
 			m_jwksProvider
 				.InSequence( seq )
@@ -132,7 +133,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 								.ToJwkDto()
 						}
 					}
-				)
+				),
+				new Uri( "http://localhost/dummy" )
 			);
 			m_jwksProvider
 				.InSequence( seq )

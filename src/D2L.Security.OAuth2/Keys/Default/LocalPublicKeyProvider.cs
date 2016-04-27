@@ -6,6 +6,9 @@ using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class LocalPublicKeyProvider : IPublicKeyProvider {
+
+		private const string PUBLIC_KEY_SOURCE = "Local DB";
+
 		private readonly IPublicKeyDataProvider m_publicKeyDataProvider;
 		private readonly IInMemoryPublicKeyCache m_cache;
 
@@ -41,9 +44,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				return result;
 			}
 
-			throw new PublicKeyNotFoundException(
-				string.Format( "Could not find public key with id '{0}'", id )
-			);
+			throw new PublicKeyNotFoundException( id, PUBLIC_KEY_SOURCE );
 		}
 	}
 }

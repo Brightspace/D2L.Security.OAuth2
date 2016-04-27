@@ -35,9 +35,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				return result;
 			}
 
-			throw new PublicKeyNotFoundException(
-				string.Format( "Could not find public key with id '{0}'", id )
-			);
+			throw new PublicKeyNotFoundException( id, jwks.Source.AbsoluteUri );
 		}
 
 		private static void CacheJwks( IInMemoryPublicKeyCache cache, JsonWebKeySet jwks ) {
