@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Security.OAuth2, Version=4.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\src\D2L.Security.OAuth2\bin\Debug\D2L.Security.OAuth2.dll</HintPath>
-    </Reference>
     <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
@@ -92,6 +88,10 @@
     <ProjectReference Include="..\..\src\D2L.Security.OAuth2.WebApi\D2L.Security.OAuth2.WebApi.csproj">
       <Project>{c9140879-73e6-4767-b12b-17581793e419}</Project>
       <Name>D2L.Security.OAuth2.WebApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj">
+      <Project>{676fb8c0-d021-475e-941b-03be21769294}</Project>
+      <Name>D2L.Security.OAuth2</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
