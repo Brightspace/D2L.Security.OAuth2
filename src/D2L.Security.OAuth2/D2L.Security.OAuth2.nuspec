@@ -7,7 +7,7 @@
 		<authors>$author$</authors>
 		<owners>$author$</owners>
 
-		<projectUrl>https://git.dev.d2l/projects/AUTH/repos/D2L.Security.OAuth2</projectUrl>
+		<projectUrl>https://github.com/Brightsapce/D2L.Security.OAuth2</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<copyright>Copyright 2016</copyright>

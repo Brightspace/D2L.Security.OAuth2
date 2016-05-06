@@ -7,11 +7,11 @@
 		<authors>$author$</authors>
 		<owners>$author$</owners>
 
-		<projectUrl>https://github.com/Brightspace/D2L.Security.OAuth2.WebApi</projectUrl>
+		<projectUrl>https://github.com/Brightspace/D2L.Security.OAuth2</projectUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>$description$</description>
 		<copyright>Copyright 2016</copyright>
-		
+
 		<dependencies>
 			<dependency id="D2L.Security.OAuth2" version="$version$" />
 		</dependencies>
