@@ -7,17 +7,17 @@ C# libraries for integrating with Brightspace OAuth 2.0.
 ## Libraries
 
 ### D2L.Security.OAuth2
-[![NuGet](https://img.shields.io/nuget/dt/D2L.Security.OAuth2.svg)](https://www.nuget.org/packages/D2L.Security.OAuth2)
+[![NuGet](https://img.shields.io/nuget/v/D2L.Security.OAuth2.svg?maxAge=2592000)]()
 
 Core functionality for request validation and token provisioning.
 
 ### D2L.Security.OAuth2.WebApi
-[![NuGet](https://img.shields.io/nuget/dt/D2L.Security.OAuth2.WebApi.svg)](https://www.nuget.org/packages/D2L.Security.OAuth2.WebApi)
+[![NuGet](https://img.shields.io/nuget/v/D2L.Security.OAuth2.WebApi.svg?maxAge=2592000)]()
 
 WebAPI integration in the form of filters/attributes/etc.
 
 ### D2L.Security.OAuth2.TestFramework
-[![NuGet](https://img.shields.io/nuget/dt/D2L.Security.OAuth2.TestFramework.svg)](https://www.nuget.org/packages/D2L.Security.OAuth2.TestFramework)
+[![NuGet](https://img.shields.io/nuget/v/D2L.Security.OAuth2.TestFramework.svg?maxAge=2592000)]()
 
 Helper library for writing tests.
 
