@@ -29,12 +29,20 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 					return jwks;
 				}
 			} catch( HttpRequestException e ) {
-				string message = string.Format(
-					"Error while looking up JWKS at {0}: {1}",
-					m_jwksEndpoint,
-					e.Message );
-				throw new PublicKeyLookupFailureException( message, e );
+				throw CreateException( e );
+			} catch( JsonWebKeyParseException e ) {
+				throw CreateException( e );
 			}
+		}
+
+		private Exception CreateException( Exception e ) {
+			string message = string.Format(
+				"Error while looking up JWKS at {0}: {1}",
+				m_jwksEndpoint,
+				e.Message
+			);
+
+			return new PublicKeyLookupFailureException( message, e );
 		}
 
 		private static Uri BuildJwksEndpoint( Uri authEndpoint ) {

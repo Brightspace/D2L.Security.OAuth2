@@ -30,6 +30,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				}
 			} catch( InvalidOperationException e ) {
 				throw new JsonWebKeyParseException( "error parsing jwks", e );
+			} catch( JsonReaderException e ) {
+				throw new JsonWebKeyParseException( "Couldn't deserialize jwks from: " + json, e );
 			}
 
 		}
