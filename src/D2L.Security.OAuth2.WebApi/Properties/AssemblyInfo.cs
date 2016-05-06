@@ -14,9 +14,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct( "Brightspace" )]
 
 // Nuget: Version
-[assembly: AssemblyInformationalVersion( "5.0.2.0" )]
-[assembly: AssemblyVersion( "5.0.2.0" )]
-[assembly: AssemblyFileVersion( "5.0.2.0" )]
+[assembly: AssemblyInformationalVersion( "5.0.3.0" )]
+[assembly: AssemblyVersion( "5.0.3.0" )]
+[assembly: AssemblyFileVersion( "5.0.3.0" )]
 
 [assembly: AssemblyCopyright( "Copyright © Desire2Learn" )]
 
