@@ -6,6 +6,8 @@ C# libraries for integrating with Brightspace OAuth 2.0.
 
 ## Libraries
 
+The libraries in this repository are published in lock-step. It is recommended that you maintain a consistent version number on any of these that you depend on. Mixing versions as of 5.x is not supported.
+
 ### D2L.Security.OAuth2
 [![NuGet](https://img.shields.io/nuget/v/D2L.Security.OAuth2.svg?maxAge=7200)](https://www.nuget.org/packages/D2L.Security.OAuth2/)
 
