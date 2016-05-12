@@ -8,14 +8,20 @@ using D2L.Services;
 
 namespace D2L.Security.OAuth2.Authorization {
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
-	public sealed class RequireClaimAttribute : AuthorizeAttribute {
+	public sealed class RequireClaimAttribute : OAuth2AuthorizeAttribute {
 		private readonly string m_claimType;
 
 		public RequireClaimAttribute( string claimType ) {
 			m_claimType = claimType;
 		}
 
-		protected override bool IsAuthorized( HttpActionContext actionContext ) {
+		protected override uint Order {
+			get {
+				return 2;
+			}
+		}
+
+		protected override bool IsAuthorizedInternal( HttpActionContext actionContext ) {
 			var principal = actionContext
 				.ControllerContext
 				.RequestContext
@@ -33,7 +39,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			return hasClaim;
 		}
 
-		protected override void HandleUnauthorizedRequest(
+		protected override void HandleUnauthorizedRequestInternal(
 			HttpActionContext actionContext
 		) {
 			var response = actionContext

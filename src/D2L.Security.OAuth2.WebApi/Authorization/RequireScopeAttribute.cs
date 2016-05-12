@@ -10,7 +10,7 @@ using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Authorization {
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
-	public sealed class RequireScopeAttribute : AuthorizeAttribute {
+	public sealed class RequireScopeAttribute : OAuth2AuthorizeAttribute {
 		private readonly Scope m_requiredScope;
 
 		public RequireScopeAttribute(
@@ -31,7 +31,11 @@ namespace D2L.Security.OAuth2.Authorization {
 			m_requiredScope = new Scope( group, resource, permission );
 		}
 
-		protected override bool IsAuthorized( HttpActionContext actionContext ) {
+		protected override uint Order {
+			get { return 1; }
+		}
+
+		protected override bool IsAuthorizedInternal( HttpActionContext actionContext ) {
 			var principal = actionContext.ControllerContext.RequestContext.Principal as ID2LPrincipal;
 
 			if( principal == null ) {
@@ -43,7 +47,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			return isAuthorized;
 		}
 
-		protected override void HandleUnauthorizedRequest( HttpActionContext actionContext ) {
+		protected override void HandleUnauthorizedRequestInternal( HttpActionContext actionContext ) {
 			var response = actionContext.Request.CreateErrorResponse( HttpStatusCode.Forbidden, "insufficient_scope" );
 			response.Headers.Add( "WWW-Authenticate", "Bearer error=\"insufficient_scope\"" );
 
