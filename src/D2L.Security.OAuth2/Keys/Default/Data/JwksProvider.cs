@@ -35,6 +35,12 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			}
 		}
 
+		string IJwksProvider.Namespace {
+			get {
+				return m_jwksEndpoint.AbsoluteUri;
+			}
+		}
+
 		private Exception CreateException( Exception e ) {
 			string message = string.Format(
 				"Error while looking up JWKS at {0}: {1}",

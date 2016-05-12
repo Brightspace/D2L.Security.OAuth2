@@ -11,7 +11,7 @@ using D2L.Security.OAuth2.Keys.Default;
 namespace D2L.Security.OAuth2.Keys.Caching {
 	internal sealed class InMemoryPublicKeyCache : IInMemoryPublicKeyCache {
 
-		private const string CACHE_PREFIX = "D2L.Security.OAuth2_PublicKeyCache_";
+		private const string CACHE_KEY_PATTERN = "D2L.Security.OAuth2_PublicKeyCache_{0}_{1}";
 
 		private readonly MemoryCache m_cache;
 
@@ -27,9 +27,9 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 			m_cache = cache;
 		}
 
-		void IInMemoryPublicKeyCache.Set( D2LSecurityToken key ) {
+		void IInMemoryPublicKeyCache.Set( string srcNamespace, D2LSecurityToken key ) {
 			m_cache.Set(
-				BuildCacheKey( key.KeyId ),
+				BuildCacheKey( srcNamespace, key.KeyId ),
 				key,
 				new CacheItemPolicy() {
 					AbsoluteExpiration = key.ValidTo
@@ -37,13 +37,13 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 			);
 		}
 
-		D2LSecurityToken IInMemoryPublicKeyCache.Get( Guid keyId ) {
-			var result = m_cache.Get( BuildCacheKey( keyId ) ) as D2LSecurityToken;
+		D2LSecurityToken IInMemoryPublicKeyCache.Get( string srcNamespace, Guid keyId ) {
+			var result = m_cache.Get( BuildCacheKey( srcNamespace, keyId ) ) as D2LSecurityToken;
 			return result;
 		}
 
-		private static string BuildCacheKey( Guid keyId ) {
-			string result = CACHE_PREFIX + keyId;
+		private static string BuildCacheKey( string srcNamespace, Guid keyId ) {
+			string result = string.Format( CACHE_KEY_PATTERN, srcNamespace, keyId );
 			return result;
 		}
 

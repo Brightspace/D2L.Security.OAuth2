@@ -15,15 +15,21 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		private Mock<IInMemoryPublicKeyCache> m_keyCache;
 		private IPublicKeyProvider m_publicKeyProvider;
 
+        private string SRC_NAMESPACE;
 		private Guid KEY_ID;
 
 		[SetUp]
 		public void BeforeEach() {
 			m_jwksProvider = new Mock<IJwksProvider>( MockBehavior.Strict );
 			m_keyCache = new Mock<IInMemoryPublicKeyCache>( MockBehavior.Strict );
+            SRC_NAMESPACE = Guid.NewGuid().ToString();
 			KEY_ID = Guid.NewGuid();
 
-			m_publicKeyProvider = new RemotePublicKeyProvider(
+            m_jwksProvider
+                .Setup( x => x.Namespace )
+                .Returns( SRC_NAMESPACE );
+
+            m_publicKeyProvider = new RemotePublicKeyProvider(
 				m_jwksProvider.Object,
 				m_keyCache.Object
 			);
@@ -39,7 +45,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 
 			m_keyCache
-				.Setup( x => x.Get( KEY_ID ) )
+				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns( cachedKey );
 
 			D2LSecurityToken result = await m_publicKeyProvider
@@ -47,7 +53,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.SafeAsync();
 
 			m_keyCache
-				.Verify( x => x.Get( KEY_ID ) );
+				.Verify( x => x.Get( SRC_NAMESPACE, KEY_ID ) );
 
 			Assert.AreEqual( cachedKey, result );
 		}
@@ -58,7 +64,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			m_keyCache
 				.InSequence( seq )
-				.Setup( x => x.Get( KEY_ID ) )
+				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns<D2LSecurityToken>( null );
 
 			var otherKeyId = Guid.NewGuid();
@@ -85,9 +91,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.ReturnsAsync( jwks );
 
 			m_keyCache
-				.Setup( x => x.Set( It.Is<D2LSecurityToken>( k => k.KeyId == KEY_ID ) ) );
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == KEY_ID ) ) );
 			m_keyCache
-				.Setup( x => x.Set( It.Is<D2LSecurityToken>( k => k.KeyId == otherKeyId ) ) );
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == otherKeyId ) ) );
 
 			var cachedKey = new D2LSecurityToken(
 				KEY_ID,
@@ -97,7 +103,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 			m_keyCache
 				.InSequence( seq )
-				.Setup( x => x.Get( KEY_ID ) )
+				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns( cachedKey );
 
 			D2LSecurityToken result = await m_publicKeyProvider
@@ -115,7 +121,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			m_keyCache
 				.InSequence( seq )
-				.Setup( x => x.Get( KEY_ID ) )
+				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns<D2LSecurityToken>( null );
 
 			var otherKeyId = Guid.NewGuid();
@@ -142,7 +148,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.ReturnsAsync( jwks );
 
 			m_keyCache
-				.Setup( x => x.Set( It.Is<D2LSecurityToken>( k => k.KeyId == KEY_ID ) ) );
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == KEY_ID ) ) );
 
 			var cachedKey = new D2LSecurityToken(
 				KEY_ID,
@@ -152,7 +158,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 			m_keyCache
 				.InSequence( seq )
-				.Setup( x => x.Get( KEY_ID ) )
+				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns( cachedKey );
 
 			D2LSecurityToken result = await m_publicKeyProvider
@@ -160,7 +166,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.SafeAsync();
 
 			m_keyCache.VerifyAll();
-			m_keyCache.Verify( x => x.Set( It.IsAny<D2LSecurityToken>() ), Times.Once );
+			m_keyCache.Verify( x => x.Set( SRC_NAMESPACE, It.IsAny<D2LSecurityToken>() ), Times.Once );
 
 			Assert.AreEqual( cachedKey, result );
 		}
