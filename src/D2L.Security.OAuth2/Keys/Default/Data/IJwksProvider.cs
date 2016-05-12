@@ -3,5 +3,6 @@
 namespace D2L.Security.OAuth2.Keys.Default.Data {
 	internal interface IJwksProvider {
 		Task<JsonWebKeySet> RequestJwksAsync();
+		string Namespace { get; }
 	}
 }

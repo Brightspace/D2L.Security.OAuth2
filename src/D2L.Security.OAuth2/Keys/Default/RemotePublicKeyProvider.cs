@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( Guid id ) {
-			D2LSecurityToken result = m_cache.Get( id );
+			D2LSecurityToken result = m_cache.Get( m_jwksProvider.Namespace, id );
 			if( result != null ) {
 				return result;
 			}
@@ -28,9 +28,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.RequestJwksAsync()
 				.SafeAsync();
 
-			CacheJwks( m_cache, jwks );
+			CacheJwks( m_cache, m_jwksProvider.Namespace, jwks );
 
-			result = m_cache.Get( id );
+			result = m_cache.Get( m_jwksProvider.Namespace, id );
 			if( result != null ) {
 				return result;
 			}
@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			throw new PublicKeyNotFoundException( id, jwks.Source.AbsoluteUri );
 		}
 
-		private static void CacheJwks( IInMemoryPublicKeyCache cache, JsonWebKeySet jwks ) {
+		private static void CacheJwks( IInMemoryPublicKeyCache cache, string srcNamespace, JsonWebKeySet jwks ) {
 			foreach( var jwk in jwks ) {
 				D2LSecurityToken token;
 				try {
@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					continue;
 				}
 
-				cache.Set( token );
+				cache.Set( srcNamespace, token );
 			}
 		}
 	}
