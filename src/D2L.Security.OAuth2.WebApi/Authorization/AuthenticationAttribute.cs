@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.Authorization {
 	/// Restrict which kinds of authenticated users are authorized to use these APIs
 	/// </summary>
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
-	public sealed class AuthenticationAttribute : AuthorizeAttribute {
+	public sealed class AuthenticationAttribute : OAuth2AuthorizeAttribute {
 		private readonly bool m_allowUsers;
 		private readonly bool m_allowServices;
 
@@ -32,7 +32,13 @@ namespace D2L.Security.OAuth2.Authorization {
 			m_allowServices = services;
 		}
 
-		protected override bool IsAuthorized( HttpActionContext context ) {
+		protected override uint Order {
+			get {
+				return 0;
+			}
+		}
+
+		protected override bool IsAuthorizedInternal( HttpActionContext context ) {
 			var principal = context.RequestContext.Principal as ID2LPrincipal;
 
 			if( principal == null ) {
