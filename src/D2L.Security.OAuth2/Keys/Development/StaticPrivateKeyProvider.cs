@@ -29,7 +29,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 				validTo: DateTime.UtcNow + TimeSpan.FromDays( 365 ),
 				keyFactory: () => {
 					var key = new RsaSecurityKey( m_rsaParameters );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, null );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, key.Rsa );
 				} )
 				.Ref();
 
