@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -31,8 +31,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 
 			D2LSecurityToken result = m_d2lSecurityTokenFactory.Create( () => {
-				var key = new ECDsaSecurityKey( privateBlob, CngKeyBlobFormat.EccPrivateBlob );
-				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, key.CngKey );
+				using( var cng = CngKey.Import( privateBlob, CngKeyBlobFormat.EccPrivateBlob ) ) {
+					// ECDsaCng copies the CngKey, hence the using
+					var ecDsa = new ECDsaCng( cng );
+					var key = new ECDsaSecurityKey( ecDsa );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, ecDsa );
+				}
 			} );
 
 			return Task.FromResult( result );

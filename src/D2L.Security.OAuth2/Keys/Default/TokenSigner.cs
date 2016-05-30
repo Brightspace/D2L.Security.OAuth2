@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using D2L.Services;
 

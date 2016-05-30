@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IdentityModel.Tokens;
-using D2L.Security.OAuth2.Provisioning;
+﻿using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 

@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading;
+using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 
@@ -61,20 +61,20 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			var key = GetKey();
 
 			if( key is RsaSecurityKey ) {
-				signatureAlgorithm = SecurityAlgorithms.RSA_SHA256;
+				signatureAlgorithm = SecurityAlgorithms.RsaSha256;
 			} else if( key is ECDsaSecurityKey ) {
 				var ecdsaKey = key as ECDsaSecurityKey;
-				switch( ecdsaKey.CngKey.KeySize ) {
+				switch( ecdsaKey.KeySize ) {
 					case 256: {
-						signatureAlgorithm = SecurityAlgorithms.ECDSA_SHA256;
+						signatureAlgorithm = SecurityAlgorithms.EcdsaSha256;
 						break;
 					}
 					case 384: {
-						signatureAlgorithm = SecurityAlgorithms.ECDSA_SHA384;
+						signatureAlgorithm = SecurityAlgorithms.EcdsaSha384;
 						break;
 					}
 					case 521: {
-						signatureAlgorithm = SecurityAlgorithms.ECDSA_SHA512;
+						signatureAlgorithm = SecurityAlgorithms.EcdsaSha512;
 						break;
 					}
 					default: {
@@ -115,7 +115,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				return new RsaJsonWebKey( KeyId, ValidTo, parameters );
 			} else if( key is ECDsaSecurityKey && !includePrivateParameters ) {
 				var ecDsaKey = key as ECDsaSecurityKey;
-				byte[] publicBlob = ecDsaKey.CngKey.Export( CngKeyBlobFormat.EccPublicBlob );
+				var ecDsaCng = ecDsaKey.ECDsa as ECDsaCng;
+				var cng = ecDsaCng?.Key;
+
+				if (cng == null) {
+					throw new Exception();
+				}
+
+				byte[] publicBlob = cng.Export( CngKeyBlobFormat.EccPublicBlob );
 
 				return new EcDsaJsonWebKey( KeyId, ValidTo, publicBlob );
 			}

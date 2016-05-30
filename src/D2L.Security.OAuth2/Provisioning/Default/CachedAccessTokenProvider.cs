@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Services;
+using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {

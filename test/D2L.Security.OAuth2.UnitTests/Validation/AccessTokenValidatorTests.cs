@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using D2L.Services;
 using D2L.Security.OAuth2.Keys.Default;
