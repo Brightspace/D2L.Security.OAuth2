@@ -16,6 +16,8 @@ namespace D2L.Security.OAuth2.Scopes {
 		}
 
 		[TestCase( "g:r:p", "g:r:p", Description = "Grant exact scope" )]
+		[TestCase( "a:b:c,d", "a:b:c,d", Description = "Grant multiple scope exactly" )]
+		[TestCase( "a:b:c,d", "a:b:d,c", Description = "Grant multiple scope exactly, different permission order" )]
 		[TestCase( "g:r:p,p2", "g:r:p", Description = "Grant first permission" )]
 		[TestCase( "g:r:p,p2", "g:r:p2", Description = "Grant second permission" )]
 		[TestCase( "g:r:*", "g:r:p", Description = "Grant all permissions on exact resource in exact group" )]

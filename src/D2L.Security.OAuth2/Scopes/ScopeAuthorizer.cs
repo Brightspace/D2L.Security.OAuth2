@@ -30,12 +30,10 @@ namespace D2L.Security.OAuth2.Scopes {
 			var resourceScopes = groupScopes
 				.Where( s => IsMatch( s.Resource, requiredScope.Resource ) );
 
-			var permissionScopes = resourceScopes
-				.Where( s => s.Permissions.Any(
-					p => requiredScope.Permissions.All( rp => IsMatch( p, rp ) )
-				) );
+			var authorized = requiredScope.Permissions
+				.All( rp => resourceScopes.Any( r => r.Permissions.Any( p => IsMatch( p, rp )) ) );
 
-			return permissionScopes.Any();
+			return authorized;
 		}
 
 		private static bool IsMatch( string pattern, string actual ) {
