@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.Scopes {
 
 			var permissionScopes = resourceScopes
 				.Where( s => s.Permissions.Any(
-					p => IsMatch( p, requiredScope.Permissions[0] )
+					p => requiredScope.Permissions.All( rp => IsMatch( p, rp ) )
 				) );
 
 			return permissionScopes.Any();

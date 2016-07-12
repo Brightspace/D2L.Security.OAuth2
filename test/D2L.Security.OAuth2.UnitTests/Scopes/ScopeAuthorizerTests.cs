@@ -16,7 +16,8 @@ namespace D2L.Security.OAuth2.Scopes {
 		}
 
 		[TestCase( "g:r:p", "g:r:p", Description = "Grant exact scope" )]
-		[TestCase( "g:r:p,p2", "g:r:p", Description = "Grant extra permissions" )]
+		[TestCase( "g:r:p,p2", "g:r:p", Description = "Grant first permission" )]
+		[TestCase( "g:r:p,p2", "g:r:p2", Description = "Grant second permission" )]
 		[TestCase( "g:r:*", "g:r:p", Description = "Grant all permissions on exact resource in exact group" )]
 		[TestCase( "g:*:*", "g:r:p", Description = "Grant all permissions on all resources in exact group" )]
 		[TestCase( "*:*:*", "g:r:p", Description = "Grant all permissions on all resources in all groups" )]
@@ -34,6 +35,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		}
 
 		[TestCase( "g:r:p2", "g:r:p", Description = "Permission does not match" )]
+		[TestCase( "g:r:p,p2", "g:r:p,p3", Description = "Extra permission is not granted" )]
 		[TestCase( "g:r2:p", "g:r:p", Description = "Resource does not match" )]
 		[TestCase( "g2:r:p", "g:r:p", Description = "Group does not match" )]
 		[TestCase( "*:*:p2", "g:r:p", Description = "Permission does not match - with wildcards" )]
