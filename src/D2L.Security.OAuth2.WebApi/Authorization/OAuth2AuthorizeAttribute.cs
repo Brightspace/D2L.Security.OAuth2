@@ -18,13 +18,13 @@ namespace D2L.Security.OAuth2.Authorization {
 
 			var actionAttributes = actionContext
 				.ActionDescriptor
-				.GetCustomAttributes<OAuth2AuthorizeAttribute>( inherit: false );
+				.GetCustomAttributes<OAuth2AuthorizeAttribute>();
 			var actionAttributeTypes = actionAttributes
 				.Select( x => x.GetType() );
 			var controllerAttributes = actionContext
 				.ActionDescriptor
 				.ControllerDescriptor
-				.GetCustomAttributes<OAuth2AuthorizeAttribute>( inherit: false );
+				.GetCustomAttributes<OAuth2AuthorizeAttribute>();
 
 			var oauth2Attributes = actionAttributes
 				.Union( controllerAttributes.Where( x => !actionAttributeTypes.Contains( x.GetType() ) ) )
