@@ -30,8 +30,11 @@ namespace D2L.Security.OAuth2.Scopes {
 			var resourceScopes = groupScopes
 				.Where( s => IsMatch( s.Resource, requiredScope.Resource ) );
 
+			var grantedPermissions = resourceScopes
+				.SelectMany( s => s.Permissions );
+
 			var authorized = requiredScope.Permissions
-				.All( rp => resourceScopes.Any( r => r.Permissions.Any( p => IsMatch( p, rp )) ) );
+				.All( rp => grantedPermissions.Any( p => IsMatch( p, rp ) ) );
 
 			return authorized;
 		}
