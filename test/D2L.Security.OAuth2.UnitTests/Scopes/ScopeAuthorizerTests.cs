@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Scopes {
@@ -17,6 +18,8 @@ namespace D2L.Security.OAuth2.Scopes {
 
 		[TestCase( "g:r:p", "g:r:p", Description = "Grant exact scope" )]
 		[TestCase( "a:b:c,d", "a:b:c,d", Description = "Grant multiple scope exactly" )]
+		[TestCase( "a:b:c a:b:d", "a:b:c,d", Description = "Grant multiple scope, validate when compressed" )]
+		[TestCase( "a:b:c d:e:f", "d:e:f", Description = "Grant multiple scope uncompressed, validate partial" )]
 		[TestCase( "a:b:c,d", "a:b:d,c", Description = "Grant multiple scope exactly, different permission order" )]
 		[TestCase( "g:r:p,p2", "g:r:p", Description = "Grant first permission" )]
 		[TestCase( "g:r:p,p2", "g:r:p2", Description = "Grant second permission" )]
@@ -29,13 +32,14 @@ namespace D2L.Security.OAuth2.Scopes {
 			string grantedScopePattern,
 			string requiredScopePattern) {
 
-			var grantedScopes = new[] { Scope.Parse( grantedScopePattern ) };
+			var grantedScopes = ParseScopePattern( grantedScopePattern );
 
 			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.Parse( requiredScopePattern ) );
 
 			isAuthorized.Should().BeTrue();
 		}
 
+		[TestCase( "a:b:c a:b:d", "a:b:c,o", Description = "Grant partial uncompressed permissions" )]
 		[TestCase( "g:r:p2", "g:r:p", Description = "Permission does not match" )]
 		[TestCase( "g:r:p,p2", "g:r:p,p3", Description = "Extra permission is not granted" )]
 		[TestCase( "g:r2:p", "g:r:p", Description = "Resource does not match" )]
@@ -47,11 +51,19 @@ namespace D2L.Security.OAuth2.Scopes {
 			string grantedScopePattern,
 			string requiredScopePattern ) {
 
-			var grantedScopes = new[] { Scope.Parse( grantedScopePattern ) };
+			var grantedScopes = ParseScopePattern( grantedScopePattern );
 
 			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, Scope.Parse( requiredScopePattern ) );
 
 			isAuthorized.Should().BeFalse();
+		}
+
+		private IEnumerable<Scope> ParseScopePattern( string scopePatterns ) {
+			var scopes = new List<Scope>();
+			foreach( var scopePattern in scopePatterns.Split( ' ' ) ) {
+				scopes.Add( Scope.Parse( scopePattern ) );
+			}
+			return scopes;
 		}
 	}
 }
