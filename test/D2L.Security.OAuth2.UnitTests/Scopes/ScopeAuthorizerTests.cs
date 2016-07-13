@@ -17,6 +17,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		}
 
 		[TestCase( "g:r:p", "g:r:p", Description = "Grant exact scope" )]
+		[TestCase( "g:r:p", "g:r:p,p", Description = "Grant exact scope, request same permission multiple times" )]
 		[TestCase( "a:b:c,d", "a:b:c,d", Description = "Grant multiple scope exactly" )]
 		[TestCase( "a:b:c a:b:d", "a:b:c,d", Description = "Grant multiple scope, validate when compressed" )]
 		[TestCase( "a:b:c d:e:f", "d:e:f", Description = "Grant multiple scope uncompressed, validate partial" )]
@@ -25,6 +26,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		[TestCase( "g:r:p,p2", "g:r:p2", Description = "Grant second permission" )]
 		[TestCase( "g:r:*", "g:r:p", Description = "Grant all permissions on exact resource in exact group" )]
 		[TestCase( "g:*:*", "g:r:p", Description = "Grant all permissions on all resources in exact group" )]
+		[TestCase( "g:*:*", "g:r:*,p", Description = "Grant all permission, request redundant permission" )]
 		[TestCase( "*:*:*", "g:r:p", Description = "Grant all permissions on all resources in all groups" )]
 		[TestCase( "*:*:p", "g:r:p", Description = "Grant exact permission on all resources in all groups" )]
 		[TestCase( "*:r:p", "g:r:p", Description = "Grant exact permission on exact resource in all groups" )]
