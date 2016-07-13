@@ -59,11 +59,9 @@ namespace D2L.Security.OAuth2.Scopes {
 		}
 
 		private IEnumerable<Scope> ParseScopePattern( string scopePatterns ) {
-			var scopes = new List<Scope>();
 			foreach( var scopePattern in scopePatterns.Split( ' ' ) ) {
-				scopes.Add( Scope.Parse( scopePattern ) );
+				yield return Scope.Parse( scopePattern );
 			}
-			return scopes;
 		}
 	}
 }
