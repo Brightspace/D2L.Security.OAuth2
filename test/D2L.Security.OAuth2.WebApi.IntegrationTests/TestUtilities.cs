@@ -34,6 +34,7 @@ namespace D2L.Security.OAuth2 {
 
 		public static async Task<string> GetAccessTokenValidForAMinute(
 			long? userId = null,
+			long? actualUserId = null,
 			string scope = null,
 			Guid? tenantId = null,
 			DateTime? issuedAtTime = null
@@ -49,6 +50,10 @@ namespace D2L.Security.OAuth2 {
 
 			if( userId != null ) {
 				claims.Add( new Claim( Constants.Claims.USER_ID, userId.Value.ToString() ) );
+			}
+
+			if ( actualUserId != null ) {
+				claims.Add( new Claim( Constants.Claims.ACTUAL_USER_ID, actualUserId.Value.ToString() ) );
 			}
 
 			return await m_signer.SignAsync(

@@ -70,6 +70,7 @@
     <Compile Include="Authentication\OAuth2AuthenticationFilter.cs" />
     <Compile Include="Authorization\AuthenticationAttribute.cs" />
     <Compile Include="Authorization\DefaultAuthorizationAttribute.cs" />
+    <Compile Include="Authorization\NoImpersonationAttribute.cs" />
     <Compile Include="Authorization\NoRequiredScopeAttribute.cs" />
     <Compile Include="Authorization\OAuth2AuthorizeAttribute.cs" />
     <Compile Include="Authorization\RequireClaimAttribute.cs" />
