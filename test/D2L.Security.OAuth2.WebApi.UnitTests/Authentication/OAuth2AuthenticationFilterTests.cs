@@ -51,7 +51,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		public async Task AuthenticateAsync_ValidationException_401() {
 			m_requestAuthenticator
 				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
-				.Throws( new ExpiredTokenException( "bleh" ) );
+				.Throws( new ExpiredTokenException() );
 
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
