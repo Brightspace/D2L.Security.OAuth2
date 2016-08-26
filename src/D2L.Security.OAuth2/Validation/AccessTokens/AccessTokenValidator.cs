@@ -85,8 +85,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					out securityToken
         );
 				accessToken = new AccessToken( ( JwtSecurityToken )securityToken );
-			} catch( SecurityTokenExpiredException ) {
-				throw new ExpiredTokenException( "The access token is expired" );
+			} catch( SecurityTokenExpiredException e ) {
+				throw new ExpiredTokenException( e );
 			} catch( Exception e ) {
 				throw new ValidationException( "Unknown validation exception", e );
 			}

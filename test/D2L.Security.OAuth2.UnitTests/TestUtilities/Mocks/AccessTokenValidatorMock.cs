@@ -18,7 +18,7 @@ namespace D2L.Security.OAuth2.TestUtilities.Mocks {
 			if( expectedExceptionType == typeof( ValidationException ) ) {
 				invocation.Throws( new ValidationException( "" ) );
 			} else if( expectedExceptionType != null ) {
-				invocation.Throws( ( Exception )Activator.CreateInstance( expectedExceptionType, "" ) );
+				invocation.Throws( ( Exception )Activator.CreateInstance( expectedExceptionType ) );
 			} else {
 				Assert.IsNotNull( accessTokenAfterValidation );
 				invocation.ReturnsAsync( accessTokenAfterValidation );
