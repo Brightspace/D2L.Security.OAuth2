@@ -30,6 +30,9 @@ namespace D2L.Security.OAuth2.Keys.Development {
 				keyFactory: () => {
 					var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 					csp.ImportParameters( m_rsaParameters );
+#if __MonoCS__ || MONO
+					var key = new MonoRsaSecurityKey( csp );
+#endif
 					var key = new RsaSecurityKey( csp );
 					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, csp );
 				} )
