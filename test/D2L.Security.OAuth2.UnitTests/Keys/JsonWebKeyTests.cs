@@ -53,7 +53,7 @@ namespace D2L.Security.OAuth2.Keys {
 		public async Task FromJson_GeneratedKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new RsaPrivateKeyProvider(
 				new D2LSecurityTokenFactory(
-					new DateTimeProvider(),
+					DateTimeProvider.Instance,
 					TimeSpan.FromHours( 1 )
 				)
 			);
@@ -75,7 +75,7 @@ namespace D2L.Security.OAuth2.Keys {
 		public async Task FromJson_GeneratedECKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new EcDsaPrivateKeyProvider(
 				new D2LSecurityTokenFactory(
-					new DateTimeProvider(),
+					DateTimeProvider.Instance,
 					TimeSpan.FromHours( 1 )
 				),
 				CngAlgorithm.ECDsaP256

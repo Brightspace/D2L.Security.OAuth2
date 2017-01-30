@@ -1,5 +1,6 @@
 ﻿using System;
 using D2L.Security.OAuth2.Keys.Default;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys {
 
@@ -28,7 +29,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 			ISanePublicKeyDataProvider saneProvider = publicKeyDataProvider as ISanePublicKeyDataProvider;
 			if( saneProvider == null ) {
-				saneProvider = new ExpiringPublicKeyDataProvider( publicKeyDataProvider );
+				saneProvider = new ExpiringPublicKeyDataProvider( publicKeyDataProvider, DateTimeProvider.Instance );
 			}
 
 			return saneProvider;

@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					throw new ArgumentException( "Private key lifetime must exceed the rotation period", "keyLifetime" );
 				}
 
-				dateTimeProvider = dateTimeProvider ?? new DateTimeProvider();
+				dateTimeProvider = dateTimeProvider ?? DateTimeProvider.Instance;
 
 				ID2LSecurityTokenFactory d2lSecurityTokenFactory = new D2LSecurityTokenFactory(
 					dateTimeProvider,

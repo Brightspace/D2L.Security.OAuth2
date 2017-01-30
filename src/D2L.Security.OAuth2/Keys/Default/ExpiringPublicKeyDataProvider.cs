@@ -2,20 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class ExpiringPublicKeyDataProvider : ISanePublicKeyDataProvider {
 		private readonly IPublicKeyDataProvider m_inner;
+		private readonly IDateTimeProvider m_dateTimeProvider;
 
 		public ExpiringPublicKeyDataProvider(
-			IPublicKeyDataProvider inner
+			IPublicKeyDataProvider inner,
+			IDateTimeProvider dateTimeProvider
 		) {
 			if( inner == null ) {
 				throw new ArgumentNullException( "inner" );
 			}
 
+			if( dateTimeProvider == null ) {
+				throw new ArgumentException( nameof( dateTimeProvider ) );
+			}
+
 			m_inner = inner;
+			m_dateTimeProvider = dateTimeProvider;
 		}
 
 		async Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
@@ -70,7 +78,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return m_inner.DeleteAsync( id );
 		}
 
-		async Task<JsonWebKey> KeyExpirationHelper( JsonWebKey key ) {
+		private async Task<JsonWebKey> KeyExpirationHelper( JsonWebKey key ) {
 			if( key == null ) {
 				return null;
 			}
@@ -79,7 +87,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				throw new InvalidOperationException( "Stored public keys need expiry info" );
 			}
 
-			TimeSpan dt = key.ExpiresAt.Value - DateTime.UtcNow;
+			TimeSpan dt = key.ExpiresAt.Value - m_dateTimeProvider.UtcNow;
 
 			if( dt < TimeSpan.FromSeconds( 0 ) ) {
 				await ( this as IPublicKeyDataProvider )
