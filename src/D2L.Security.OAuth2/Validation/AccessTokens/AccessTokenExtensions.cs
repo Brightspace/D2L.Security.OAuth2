@@ -4,7 +4,10 @@ using System.Security.Claims;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
-	internal static class AccessTokenExtensions {
+	/// <summary>
+	/// Extension methods for IAccessToken
+	/// </summary>
+	public static class AccessTokenExtensions {
 		/// <param name="token">An access token</param>
 		/// <returns>The access token id. Returns null if one was not found.</returns>
 		internal static string GetAccessTokenId( this IAccessToken token ) {
@@ -13,13 +16,13 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 		/// <param name="token">An access token</param>
 		/// <returns>The tenant id. Returns null if one was not found.</returns>
-		internal static string GetTenantId( this IAccessToken token ) {
+		public static string GetTenantId( this IAccessToken token ) {
 			return token.GetClaimValue( Constants.Claims.TENANT_ID );
 		}
 		
 		/// <param name="token">An access token</param>
 		/// <returns>The scopes</returns>
-		internal static IEnumerable<Scope> GetScopes( this IAccessToken token ) {
+		public static IEnumerable<Scope> GetScopes( this IAccessToken token ) {
 			string scopes = token.GetClaimValue( Constants.Claims.SCOPE );
 
 			if( string.IsNullOrEmpty( scopes ) ) {
@@ -33,12 +36,18 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				.ToArray();
 			return scopesArray;
 		}
-
-		internal static bool TryGetUserId( this IAccessToken token, out long userId ) {
+		
+		/// <param name="token">An access token</param>
+		/// <param name="userId">The value of the sub claim</param>
+		/// <returns>True if the sub claim has a value. False if not.</returns>
+		public static bool TryGetUserId( this IAccessToken token, out long userId ) {
 			return token.TryGetLongClaim( Constants.Claims.USER_ID, out userId );
 		}
 
-		internal static bool TryGetActualUserId( this IAccessToken token, out long actualUserId ) {
+		/// <param name="token">An access token</param>
+		/// <param name="actualUserId">The value of the actualsub claim</param>
+		/// <returns>True if the actualsub claim has a value. False if not.</returns>
+		public static bool TryGetActualUserId( this IAccessToken token, out long actualUserId ) {
 			return token.TryGetLongClaim( Constants.Claims.ACTUAL_USER_ID, out actualUserId );
 		}
 
