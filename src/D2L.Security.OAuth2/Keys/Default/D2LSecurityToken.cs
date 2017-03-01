@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading;
+using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 
@@ -32,7 +32,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_validTo = validTo;
 
 			m_key = new ThreadLocal<Tuple<AsymmetricSecurityKey, IDisposable>>(
-				valueFactory: keyFactory,
+				valueFactory: () => {
+					var result = keyFactory();
+					result.Item1.KeyId = id.ToString();
+					return result;
+				},
 				trackAllValues: true
 			);
 		}
@@ -48,50 +52,43 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public bool HasPrivateKey {
-			get { return GetKey().HasPrivateKey(); }
-		}
-
-		public AsymmetricAlgorithm GetAsymmetricAlgorithm() {
-			if( GetKey() is X509AsymmetricSecurityKey ) {
-				throw new InvalidOperationException(
-					"This hacky thing is not applicable to the X509AsymmetricSecurityKey implementation"
-				);
-			}
-
-			// Note: RsaSecurityKey ignores the "algorithm" parameter here.
-			// See http://referencesource.microsoft.com/#System.IdentityModel/System/IdentityModel/Tokens/RsaSecurityKey.cs,63
-
-			AsymmetricAlgorithm alg = GetKey()
-				.GetAsymmetricAlgorithm( "", HasPrivateKey );
-
-			return alg;
+			get { return GetKey().HasPrivateKey; }
 		}
 
 		public SigningCredentials GetSigningCredentials() {
 			string signatureAlgorithm;
-			string digestAlgorithm;
 
 			var key = GetKey();
 
 			if( key is RsaSecurityKey ) {
-				signatureAlgorithm = SecurityAlgorithms.RsaSha256Signature;
-				digestAlgorithm = SecurityAlgorithms.Sha256Digest;
-			} else if( key is EcDsaSecurityKey ) {
-				var ecdsaKey = key as EcDsaSecurityKey;
-				signatureAlgorithm = ecdsaKey.SignatureAlgorithm;
-				digestAlgorithm = ecdsaKey.DigestAlgorithm;
+				signatureAlgorithm = SecurityAlgorithms.RsaSha256;
+			} else if( key is ECDsaSecurityKey ) {
+				var ecdsaKey = key as ECDsaSecurityKey;
+				switch( ecdsaKey.KeySize ) {
+					case 256: {
+						signatureAlgorithm = SecurityAlgorithms.EcdsaSha256;
+						break;
+					}
+					case 384: {
+						signatureAlgorithm = SecurityAlgorithms.EcdsaSha384;
+						break;
+					}
+					case 521: {
+						signatureAlgorithm = SecurityAlgorithms.EcdsaSha512;
+						break;
+					}
+					default: {
+						throw new NotImplementedException();
+					}
+				}
 			} else {
 				throw new NotImplementedException();
 			}
 
-			var keyIdentifierClause = new NamedKeySecurityKeyIdentifierClause( name: "kid", id: Id );
-			var securityKeyIdentifier = new SecurityKeyIdentifier( keyIdentifierClause );
-
 			var signingCredentials = new SigningCredentials(
-				GetKey(),
-				signatureAlgorithm,
-				digestAlgorithm,
-				securityKeyIdentifier );
+				key,
+				signatureAlgorithm
+			);
 
 			return signingCredentials;
 		}
@@ -100,13 +97,32 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			var key = GetKey();
 
 			if( key is RsaSecurityKey ) {
-				var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
-				RSAParameters p = csp.ExportParameters( includePrivateParameters );
+				var rsaKey = key as RsaSecurityKey;
 
-				return new RsaJsonWebKey( KeyId, ValidTo, p );
-			} else if( key is EcDsaSecurityKey && !includePrivateParameters ) {
-				var ecDsa = GetAsymmetricAlgorithm() as ECDsaCng;
-				byte[] publicBlob = ecDsa.Key.Export( CngKeyBlobFormat.EccPublicBlob );
+				if( includePrivateParameters && !rsaKey.HasPrivateKey ) {
+					throw new Exception();
+				}
+
+				var parameters = rsaKey.Parameters;
+
+				if( !includePrivateParameters && rsaKey.HasPrivateKey ) {
+					var publicParameters = new RSAParameters();
+					publicParameters.Modulus = parameters.Modulus;
+					publicParameters.Exponent = parameters.Exponent;
+					parameters = publicParameters;
+				}
+
+				return new RsaJsonWebKey( KeyId, ValidTo, parameters );
+			} else if( key is ECDsaSecurityKey && !includePrivateParameters ) {
+				var ecDsaKey = key as ECDsaSecurityKey;
+				var ecDsaCng = ecDsaKey.ECDsa as ECDsaCng;
+				var cng = ecDsaCng?.Key;
+
+				if (cng == null) {
+					throw new Exception();
+				}
+
+				byte[] publicBlob = cng.Export( CngKeyBlobFormat.EccPublicBlob );
 
 				return new EcDsaJsonWebKey( KeyId, ValidTo, publicBlob );
 			}

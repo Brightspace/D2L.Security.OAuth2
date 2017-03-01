@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
-using System.Security.Claims;
-
-#if DNXCORE50
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-#endif
+using System.Security.Claims;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed class AccessToken : IAccessToken {

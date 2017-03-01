@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Threading;
 using D2L.Services;
@@ -102,7 +103,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				ValidateIssuer = false,
 				ValidateLifetime = false,
 				RequireSignedTokens = true,
-				IssuerSigningToken = securityToken
+				IssuerSigningKey = securityToken.SigningKey
 			};
 			SecurityToken validatedToken;
 			validationTokenHandler.ValidateToken(

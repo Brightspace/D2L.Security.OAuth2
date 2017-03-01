@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using D2L.Services;
 
@@ -77,10 +77,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				validFrom: DateTime.UtcNow,
 				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
-					var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
-					rsa.ImportParameters( m_parameters );
-					var key = new RsaSecurityKey( rsa );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, rsa );
+					var key = new RsaSecurityKey( m_parameters );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, key.Rsa );
 				}
 			);
 			

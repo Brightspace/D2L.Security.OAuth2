@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using D2L.Services;
 
@@ -78,7 +78,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		private ECDsaCng BuildEcDsaCng() {
 			byte[] publicBlob = ECCPublicKeyBlobFormatter.Instance.BuildECCPublicBlob( this );
 			using( var cng = CngKey.Import( publicBlob, CngKeyBlobFormat.EccPublicBlob ) ) {
-				// ECDsaCng copies the CngKey, hence the using
+				// ECDs copies the CngKey, hence the using
 				var ecDsa = new ECDsaCng( cng );
 				return ecDsa;
 			}
@@ -92,8 +92,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
 					var cng = BuildEcDsaCng();
-					var key = new EcDsaSecurityKey( cng );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, cng );
+					var key = new ECDsaSecurityKey( cng );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, key.ECDsa );
 				}
 			);
 			
