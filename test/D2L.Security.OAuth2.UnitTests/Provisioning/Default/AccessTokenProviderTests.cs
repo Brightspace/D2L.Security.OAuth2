@@ -46,7 +46,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		[Test]
-		public async void ProvisionAccessTokenAsync_AssertionTokenIsSigned() {
+		public async Task ProvisionAccessTokenAsync_AssertionTokenIsSigned() {
 			var claims = new List<Claim>{
 				new Claim( Constants.Claims.ISSUER, TestData.ISSUER ),
 				new Claim( Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() ),

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using D2L.Services;
 using D2L.Security.OAuth2.Keys.Caching;
@@ -36,7 +37,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[Test]
-		async public void ItShouldReturnFromCacheWhenKeyIsInCache() {
+		public async Task ItShouldReturnFromCacheWhenKeyIsInCache() {
 			var cachedKey = new D2LSecurityToken(
 				KEY_ID,
 				DateTime.UtcNow,
@@ -59,7 +60,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[Test]
-		async public void ItShouldRetrieveJwksAndCacheKeysWhenKeyIsNotInCache() {
+	    public async Task ItShouldRetrieveJwksAndCacheKeysWhenKeyIsNotInCache() {
 			var seq = new MockSequence();
 
 			m_keyCache
@@ -116,7 +117,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[Test]
-		async public void ItShouldRetrieveJwksAndIgnoreInvalidKeysWithoutErroring() {
+		public async Task ItShouldRetrieveJwksAndIgnoreInvalidKeysWithoutErroring() {
 			var seq = new MockSequence();
 
 			m_keyCache

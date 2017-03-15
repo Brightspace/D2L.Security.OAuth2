@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		[Test]
-		public async void ProvisionAccessTokenAsync_NotCached_CallsThroughToAccessTokenProviderAndValueIsThenCached() {
+		public async Task ProvisionAccessTokenAsync_NotCached_CallsThroughToAccessTokenProviderAndValueIsThenCached() {
 
 			IAccessToken accessToken = new AccessToken( BuildTestToken() );
 
@@ -60,7 +60,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		[Test]
-		public async void ProvisionAccessTokenAsync_AlreadyCached_UsesCachedValueAndDoesNotCallThroughToAccessTokenProvider() {
+		public async Task ProvisionAccessTokenAsync_AlreadyCached_UsesCachedValueAndDoesNotCallThroughToAccessTokenProvider() {
 
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken() ) ) );
@@ -73,7 +73,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		[Test]
-		public async void ProvisionAccessTokenAsync_TokenIsAlreadyCachedButIsWithinGracePeriod_NewTokenIsProvisionedAndCached() {
+		public async Task ProvisionAccessTokenAsync_TokenIsAlreadyCachedButIsWithinGracePeriod_NewTokenIsProvisionedAndCached() {
 
 			IAccessToken accessToken = new AccessToken( BuildTestToken() );
 
@@ -94,7 +94,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		[Test]
-		public async void ProvisionAccessTokenAsync_UserClaimProvided_UserCacheUsed() {
+		public async Task ProvisionAccessTokenAsync_UserClaimProvided_UserCacheUsed() {
 
 			m_userTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken( specifyUserClaim: true ) ) ) );
@@ -108,7 +108,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		[Test]
-		public async void ProvisionAccessTokenAsync_ServiceClaimProvided_ServiceCacheUsed() {
+		public async Task ProvisionAccessTokenAsync_ServiceClaimProvided_ServiceCacheUsed() {
 
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken( specifyUserClaim: false ) ) ) );
@@ -121,7 +121,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		[Test]
-		public async void ProvisionAccessTokenAsync_CallPassThroughOverload_CallsOtherOverload() {
+		public async Task ProvisionAccessTokenAsync_CallPassThroughOverload_CallsOtherOverload() {
 
 			const string key = "{\"claims\":[{\"name\":\"iss\",\"value\":\"TheIssuer\"}],\"scopes\":[]}";
 

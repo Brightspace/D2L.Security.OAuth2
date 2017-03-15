@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
 using D2L.Services;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
@@ -19,24 +20,24 @@ namespace D2L.Security.OAuth2.TestFramework {
 		};
 
 		[Test]
-		public async void TestAccessTokenProvider_TokenIsValid() {
+		public async Task TestAccessTokenProvider_TokenIsValid() {
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync();
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
+				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
 			}
 		}
 
 		[Test]
-		public async void TestAccessTokenProvider_SuppliedRSAParameters_TokenIsValid() {
+		public async Task TestAccessTokenProvider_SuppliedRSAParameters_TokenIsValid() {
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestStaticKeyProvider.TestKeyId, TestStaticKeyProvider.TestRSAParameters );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync();
 
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
-				Assert.DoesNotThrow( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
+				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
 			}
 		}
 
@@ -46,7 +47,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, Guid.NewGuid(), randomRsaParameters );
-				Assert.Throws<AuthServiceException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync() );
+				Assert.ThrowsAsync<AuthServiceException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync() );
 			}
 		}
 	}

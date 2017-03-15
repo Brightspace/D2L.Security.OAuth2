@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		private IHttpServer m_jwksServer;
 		private string m_host;
 		
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public void TestFixtureSetUp() {
 			m_jwksServer = HttpMockFactory.Create( out m_host );
 			
@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			).Return( HTML ).WithStatus( HttpStatusCode.OK );
 		}
 
-		[TestFixtureTearDown]
+		[OneTimeTearDown]
 		public void TestFixtureTearDown() {
 			m_jwksServer.Dispose();
 		}
@@ -80,29 +80,31 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		}
 
 		[Test]
-		[ExpectedException( typeof( PublicKeyLookupFailureException ) )]
-		public async Task RequestJwksAsync_404_Throws() {
+		public void RequestJwksAsync_404_Throws() {
 			IJwksProvider publicKeyProvider = new JwksProvider(
 				new HttpClient(),
 				new Uri( m_host + BAD_PATH )
 			);
 
-			JsonWebKeySet jwks = await publicKeyProvider
-				.RequestJwksAsync()
-				.SafeAsync();
+			Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
+				JsonWebKeySet jwks = await publicKeyProvider
+					.RequestJwksAsync()
+					.SafeAsync();
+			} );
 		}
 
 		[Test]
-		[ExpectedException( typeof( PublicKeyLookupFailureException ) )]
-		public async Task RequestJwksAsync_CantReachServer_Throws() {
+		public void RequestJwksAsync_CantReachServer_Throws() {
 			IJwksProvider publicKeyProvider = new JwksProvider(
 				new HttpClient(),
 				new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" )
 			);
 
-			JsonWebKeySet jwks = await publicKeyProvider
+			Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
+				JsonWebKeySet jwks = await publicKeyProvider
 				.RequestJwksAsync()
 				.SafeAsync();
+			} );
 		}
 	}
 }
