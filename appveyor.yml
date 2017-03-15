@@ -14,3 +14,9 @@ build:
 configuration:
 - Debug
 - Release
+test:
+  assemblies:
+    - D2L.Security.OAuth2.IntegrationTests.dll
+    - D2L.Security.OAuth2.UnitTests.dll
+    - D2L.Security.OAuth2.WebApi.IntegrationTests.dll
+    - D2L.Security.OAuth2.WebApi.UnitTests.dll
