@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		private readonly string ENCODED_GRANT_TYPE = WebUtility.UrlEncode( Constants.GrantTypes.JWT_BEARER );
 
 		[Test]
-		async public void CorrectlyEncodesBody_NoScope() {
+		public async Task CorrectlyEncodesBody_NoScope() {
 			string requestBody = null;
 			Action<string> requestBodyReceiver = x => requestBody = x;
 
@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		[Test]
-		async public void CorrectlyEncodesBody_OneScope() {
+		public async Task CorrectlyEncodesBody_OneScope() {
 			string requestBody = null;
 			Action<string> requestBodyReceiver = x => requestBody = x;
 
@@ -64,7 +64,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		[Test]
-		async public void CorrectlyEncodesBody_ManyScopes() {
+		public async Task CorrectlyEncodesBody_ManyScopes() {
 			string requestBody = null;
 			Action<string> requestBodyReceiver = x => requestBody = x;
 
@@ -90,7 +90,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		[Test]
-		async public void CorrectlyReadsResponse() {
+		public async Task CorrectlyReadsResponse() {
 			using( var httpClient = CreateMockedHttpClient( x => { }, responseContent: TestData.ValidHttpResponseBody ) ) {
 				var client = CreateClient( httpClient );
 				var assertion = "123";

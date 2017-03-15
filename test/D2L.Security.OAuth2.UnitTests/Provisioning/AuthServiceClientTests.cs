@@ -18,7 +18,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		private const string TEST_URI = "http://www.unit.test";
 		
 		[Test]
-		public async void ServiceDown_ExpectServiceException_ConnectionFailure() {
+		public async Task ServiceDown_ExpectServiceException_ConnectionFailure() {
 			await RunTest_ExpectServiceException(
 				mockClient: MockHttpClient.Create(
 					throwsException: new HttpRequestException()
@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 		
 		[Test]
-		public async void Timeout_ExpectServiceException_Timeout() {
+		public async Task Timeout_ExpectServiceException_Timeout() {
 			await RunTest_ExpectServiceException(
 				mockClient: MockHttpClient.Create(
 					throwsException: new TaskCanceledException()
@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 		
 		[Test]
-		public async void ErrorStatusCode_EmptyResponse_ExpectServiceException_ErrorResponse() {
+		public async Task ErrorStatusCode_EmptyResponse_ExpectServiceException_ErrorResponse() {
 			await RunTest_ExpectServiceException(
 				mockClient: MockHttpClient.Create(
 					responseStatus: HttpStatusCode.NotFound,
@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 		
 		[Test]
-		public async void ErrorStatusCode_ValidErrorObject_ExpectServiceException_ErrorResponse() {
+		public async Task ErrorStatusCode_ValidErrorObject_ExpectServiceException_ErrorResponse() {
 			const string ERROR_NAME = "TestError";
 			const string ERROR_DETAIL = "Test error details";
 			
@@ -68,7 +68,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 		
 		[Test]
-		public async void ErrorStatusCodeAndInvalidJson_ExpectServiceException_ErrorResponse() {
+		public async Task ErrorStatusCodeAndInvalidJson_ExpectServiceException_ErrorResponse() {
 			const string AUTH_RESPONSE_CONTENT = "{ \"invalid\": \"format\" }";
 			
 			await RunTest_ExpectServiceException(
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 		
 		[Test]
-		public async void NoContent_ExpectServiceException_ClientError() {
+		public async Task NoContent_ExpectServiceException_ClientError() {
 			await RunTest_ExpectServiceException(
 				mockClient: MockHttpClient.Create(
 					responseStatus: HttpStatusCode.OK,
@@ -94,7 +94,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 		
 		[Test]
-		public async void InvalidJson_ExpectServiceException_ClientError() {
+		public async Task InvalidJson_ExpectServiceException_ClientError() {
 			const string AUTH_RESPONSE_CONTENT = "{ \"invalid\": \"format\" }";
 			
 			await RunTest_ExpectServiceException(
@@ -111,7 +111,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 		
 		[Test]
-		public async void ValidResponse_ExpectSuccess() {
+		public async Task ValidResponse_ExpectSuccess() {
 			const string TEST_TOKEN = "test-token";
 			await RunTest_ExpectSuccess(
 				mockClient: MockHttpClient.Create(

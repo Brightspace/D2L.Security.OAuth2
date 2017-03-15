@@ -17,7 +17,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			private AuthServiceMock m_authService;
 			private IAccessTokenValidator m_accessTokenValidator;
 
-			[TestFixtureSetUp]
+			[OneTimeSetUp]
 			public void TestFixtureSetUp() {
 				m_authService = new AuthServiceMock( AuthServiceMock.KeyType.ECDSA_P256 );
 				m_accessTokenValidator = AccessTokenValidatorFactory.CreateRemoteValidator(
@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				m_authService.SetupJwks().Wait();
 			}
 
-			[TestFixtureTearDown]
+			[OneTimeTearDown]
 			public void TestFixtureTearDown() {
 				m_authService.SafeDispose();
 			}
