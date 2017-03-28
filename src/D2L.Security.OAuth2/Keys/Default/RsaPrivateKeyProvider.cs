@@ -25,8 +25,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				csp.ImportParameters( privateKey );
 #if __MonoCS__ || MONO
 				var key = new MonoRsaSecurityKey( csp );
+#else
+				var key = new RsaSecurityKey(csp);
 #endif
-				var key = new RsaSecurityKey( csp );
 				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, csp );
 			} );
 

@@ -72,8 +72,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			string digestAlgorithm;
 
 			var key = GetKey();
-
-			if( key is RsaSecurityKey || key is MonoRsaSecurityKey ) {
+#if __MonoCS__ || MONO
+			if( key is MonoRsaSecurityKey || key is RsaSecurityKey ) {
+#else
+			if ( key is RsaSecurityKey ) {
+#endif
 				signatureAlgorithm = SecurityAlgorithms.RsaSha256Signature;
 				digestAlgorithm = SecurityAlgorithms.Sha256Digest;
 			} else if( key is EcDsaSecurityKey ) {

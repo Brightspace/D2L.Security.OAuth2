@@ -81,8 +81,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					rsa.ImportParameters( m_parameters );
 #if __MonoCS__ || MONO
 					var key = new MonoRsaSecurityKey( rsa );
-#endif
+#else
 					var key = new RsaSecurityKey( rsa );
+#endif
 					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, rsa );
 				}
 			);
