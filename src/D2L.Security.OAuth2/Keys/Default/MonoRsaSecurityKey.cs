@@ -28,23 +28,43 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public override bool IsAsymmetricAlgorithm( string algorithm ) {
-			switch( algorithm ) {
+			if (String.IsNullOrWhiteSpace(algorithm)) {
+				throw new ArgumentNullException( "algorithm" );
+			}
+
+			switch ( algorithm ) {
 				case SecurityAlgorithms.RsaSha1Signature:
 				case SecurityAlgorithms.RsaSha256Signature:
 				case SecurityAlgorithms.RsaOaepKeyWrap:
 				case SecurityAlgorithms.RsaV15KeyWrap:
 					return true;
-				default:
-					return false;
 			}
+
+			return false;
 		}
 
 		public override bool IsSupportedAlgorithm( string algorithm ) {
-			throw new NotImplementedException();
+			if (String.IsNullOrWhiteSpace(algorithm)) {
+				throw new ArgumentNullException( "algorithm" );
+			}
+
+			switch (algorithm) {
+				case SecurityAlgorithms.RsaSha1Signature:
+				case SecurityAlgorithms.RsaSha256Signature:
+				case SecurityAlgorithms.RsaOaepKeyWrap:
+				case SecurityAlgorithms.RsaV15KeyWrap:
+					return true;
+			}
+
+			throw new NotSupportedException($"{algorithm} is not supported");
 		}
 
 		public override bool IsSymmetricAlgorithm( string algorithm ) {
-			switch( algorithm ) {
+			if (String.IsNullOrWhiteSpace(algorithm)) {
+				throw new ArgumentNullException( "algorithm" );
+			}
+
+			switch ( algorithm ) {
 				case SecurityAlgorithms.HmacSha1Signature:
 				case SecurityAlgorithms.HmacSha256Signature:
 				case SecurityAlgorithms.Aes128Encryption:
@@ -59,9 +79,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				case SecurityAlgorithms.Psha1KeyDerivation:
 				case SecurityAlgorithms.Psha1KeyDerivationDec2005:
 					return true;
-				default:
-					return false;
 			}
+
+			throw new NotSupportedException($"{algorithm} is not supported");
 		}
 
 		public override AsymmetricAlgorithm GetAsymmetricAlgorithm( string algorithm, bool privateKey ) {
@@ -87,7 +107,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				case SecurityAlgorithms.RsaSha256Signature:
 					return SHA256.Create();
 				default:
-					throw new Exception( string.Format( "Unsupported algorithm '{0}", algorithm ) );
+					throw new NotSupportedException( $"{algorithm} is not supported" );
 			}
 
 		}
