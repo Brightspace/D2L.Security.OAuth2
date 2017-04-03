@@ -104,7 +104,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 #if __MonoCS__ || MONO
 			if( key is MonoRsaSecurityKey || key is RsaSecurityKey ) {
 #else
-			if (key is RsaSecurityKey) {
+			if ( key is RsaSecurityKey ) {
 #endif
 				var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
 				RSAParameters p = csp.ExportParameters( includePrivateParameters );

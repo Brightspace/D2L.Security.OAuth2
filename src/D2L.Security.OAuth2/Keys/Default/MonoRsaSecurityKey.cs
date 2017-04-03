@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace D2L.Security.OAuth2.Keys.Default {
+
 #if __MonoCS__ || MONO
 	internal sealed class MonoRsaSecurityKey : AsymmetricSecurityKey {
 
@@ -28,11 +29,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public override bool IsAsymmetricAlgorithm( string algorithm ) {
-			if (String.IsNullOrWhiteSpace(algorithm)) {
+			if( String.IsNullOrWhiteSpace( algorithm ) ) {
 				throw new ArgumentNullException( "algorithm" );
 			}
 
-			switch ( algorithm ) {
+			switch( algorithm ) {
 				case SecurityAlgorithms.RsaSha1Signature:
 				case SecurityAlgorithms.RsaSha256Signature:
 				case SecurityAlgorithms.RsaOaepKeyWrap:
@@ -44,11 +45,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public override bool IsSupportedAlgorithm( string algorithm ) {
-			if (String.IsNullOrWhiteSpace(algorithm)) {
+			if( String.IsNullOrWhiteSpace( algorithm ) ) {
 				throw new ArgumentNullException( "algorithm" );
 			}
 
-			switch (algorithm) {
+			switch( algorithm ) {
 				case SecurityAlgorithms.RsaSha1Signature:
 				case SecurityAlgorithms.RsaSha256Signature:
 				case SecurityAlgorithms.RsaOaepKeyWrap:
@@ -60,11 +61,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public override bool IsSymmetricAlgorithm( string algorithm ) {
-			if (String.IsNullOrWhiteSpace(algorithm)) {
+			if( String.IsNullOrWhiteSpace( algorithm ) ) {
 				throw new ArgumentNullException( "algorithm" );
 			}
 
-			switch (algorithm) {
+			switch( algorithm ) {
 				case SecurityAlgorithms.RsaSha1Signature:
 				case SecurityAlgorithms.RsaSha256Signature:
 				case SecurityAlgorithms.RsaOaepKeyWrap:
@@ -98,7 +99,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				case SecurityAlgorithms.RsaSha256Signature:
 					return SHA256.Create();
 				default:
-					throw new NotSupportedException($"Unsupported algorithm '{algorithm}'");
+					throw new NotSupportedException( $"Unsupported algorithm '{algorithm}'" );
 			}
 
 		}
@@ -127,5 +128,4 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 	}
 #endif
-
 }
