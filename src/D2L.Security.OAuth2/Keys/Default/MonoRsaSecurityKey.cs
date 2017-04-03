@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-
+#if __MonoCS__ || MONO
 	internal sealed class MonoRsaSecurityKey : AsymmetricSecurityKey {
 
 		private readonly RSA m_rsa;
@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					return true;
 			}
 
-			return false;
+			throw new NotSupportedException( $"Unsupported algorithm '{algorithm}'" );
 		}
 
 		public override bool IsSupportedAlgorithm( string algorithm ) {
@@ -56,7 +56,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					return true;
 			}
 
-			throw new NotSupportedException($"{algorithm} is not supported");
+			return false;
 		}
 
 		public override bool IsSymmetricAlgorithm( string algorithm ) {
@@ -81,7 +81,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					return true;
 			}
 
-			throw new NotSupportedException($"{algorithm} is not supported");
+			throw new NotSupportedException( $"Unsupported algorithm '{algorithm}'" );
 		}
 
 		public override AsymmetricAlgorithm GetAsymmetricAlgorithm( string algorithm, bool privateKey ) {
@@ -135,5 +135,6 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 	}
+#endif
 
 }
