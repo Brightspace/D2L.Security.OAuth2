@@ -107,7 +107,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				case SecurityAlgorithms.RsaSha256Signature:
 					return SHA256.Create();
 				default:
-					throw new NotSupportedException( $"{algorithm} is not supported" );
+					throw new NotSupportedException($"Unsupported algorithm '{algorithm}'");
 			}
 
 		}
