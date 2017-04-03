@@ -64,21 +64,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				throw new ArgumentNullException( "algorithm" );
 			}
 
-			switch ( algorithm ) {
-				case SecurityAlgorithms.HmacSha1Signature:
-				case SecurityAlgorithms.HmacSha256Signature:
-				case SecurityAlgorithms.Aes128Encryption:
-				case SecurityAlgorithms.Aes192Encryption:
-				case SecurityAlgorithms.DesEncryption:
-				case SecurityAlgorithms.Aes256Encryption:
-				case SecurityAlgorithms.TripleDesEncryption:
-				case SecurityAlgorithms.Aes128KeyWrap:
-				case SecurityAlgorithms.Aes192KeyWrap:
-				case SecurityAlgorithms.Aes256KeyWrap:
-				case SecurityAlgorithms.TripleDesKeyWrap:
-				case SecurityAlgorithms.Psha1KeyDerivation:
-				case SecurityAlgorithms.Psha1KeyDerivationDec2005:
-					return true;
+			switch (algorithm) {
+				case SecurityAlgorithms.RsaSha1Signature:
+				case SecurityAlgorithms.RsaSha256Signature:
+				case SecurityAlgorithms.RsaOaepKeyWrap:
+				case SecurityAlgorithms.RsaV15KeyWrap:
+					return false;
 			}
 
 			throw new NotSupportedException( $"Unsupported algorithm '{algorithm}'" );
