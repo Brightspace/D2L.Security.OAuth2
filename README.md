@@ -1,6 +1,9 @@
 # D2L.Security.OAuth2
 
-[![Build status](https://ci.appveyor.com/api/projects/status/id5byt9yitcek417/branch/master?svg=true)](https://ci.appveyor.com/project/Brightspace/d2l-security-oauth2/branch/master)
+| Platform   | Build status |
+|------------|--------------|
+| Windows    | [![Windows](https://ci.appveyor.com/api/projects/status/id5byt9yitcek417/branch/master?svg=true)](https://ci.appveyor.com/project/Brightspace/d2l-security-oauth2/branch/master) |
+| Linux+Mono | [![Linux](https://travis-ci.org/Brightspace/D2L.Security.OAuth2.svg?branch=master)](https://travis-ci.org/Brightspace/D2L.Security.OAuth2) |
 
 C# libraries for integrating with Brightspace OAuth 2.0.
 
