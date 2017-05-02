@@ -49,6 +49,9 @@ namespace D2L.Security.OAuth2.Scopes {
 		[TestCase( "*:*:p2", "g:r:p", Description = "Permission does not match - with wildcards" )]
 		[TestCase( "*:r2:*", "g:r:p", Description = "Permission does not match - with wildcards" )]
 		[TestCase( "g2*:*:*", "g:r:p", Description = "Permission does not match - with wildcards" )]
+		[TestCase( "G:r:p", "g:r:p", Description = "Permission does not match (case sensitivity)" )]
+		[TestCase( "g:R:p", "g:r:p", Description = "Permission does not match (case sensitivity)" )]
+		[TestCase( "g:r:P", "g:r:p", Description = "Permission does not match (case sensitivity)" )]
 		public void RequiredScopeIsNotGranted_AuthorizationShouldBeDenied(
 			string grantedScopePattern,
 			string requiredScopePattern ) {
