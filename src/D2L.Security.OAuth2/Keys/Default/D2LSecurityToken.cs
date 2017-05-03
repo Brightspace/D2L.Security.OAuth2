@@ -73,7 +73,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			var key = GetKey();
 
-			if( key is RsaSecurityKey ) {
+			if( key is RsaSecurityKey || key is MonoRsaSecurityKey ) {
 				signatureAlgorithm = SecurityAlgorithms.RsaSha256Signature;
 				digestAlgorithm = SecurityAlgorithms.Sha256Digest;
 			} else if( key is EcDsaSecurityKey ) {
@@ -99,7 +99,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public JsonWebKey ToJsonWebKey( bool includePrivateParameters = false ) {
 			var key = GetKey();
 
-			if( key is RsaSecurityKey ) {
+			if( key is RsaSecurityKey || key is MonoRsaSecurityKey ) {
 				var csp = GetAsymmetricAlgorithm() as RSACryptoServiceProvider;
 				RSAParameters p = csp.ExportParameters( includePrivateParameters );
 
