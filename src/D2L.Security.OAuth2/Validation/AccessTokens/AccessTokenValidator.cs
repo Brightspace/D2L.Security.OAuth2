@@ -36,8 +36,14 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			string token
 		) {
 			var tokenHandler = m_tokenHandler.Value;
+			var tokenInParts = token.Split( '.' );	// header.payload.signature
 
-			if( !tokenHandler.CanReadToken( token ) ) {
+			if(
+				!tokenHandler.CanReadToken( token ) ||
+				// https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/issues/482
+				!IsValidPart( tokenInParts[0] ) ||
+				!IsValidPart( tokenInParts[1] )
+			) {
 				throw new ValidationException( "Couldn't parse token" );
 			}
 
@@ -92,6 +98,16 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 
 			return accessToken;
+		}
+
+		private static bool IsValidPart( string @string ) {
+			// https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/blob/a18c4d6fbef3a48cd734bd8a027fdb9013b27c3e/src/Microsoft.IdentityModel.Tokens/Base64UrlEncoder.cs#L148
+			try {
+				Base64UrlEncoder.Decode( @string );
+				return true;
+			} catch( Exception ex ) when( ex is ArgumentNullException || ex is FormatException ) {
+				return false;
+			}
 		}
 	}
 }

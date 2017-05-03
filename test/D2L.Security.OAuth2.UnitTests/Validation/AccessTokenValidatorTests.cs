@@ -15,13 +15,15 @@ namespace D2L.Security.OAuth2.Validation {
 	public class AccessTokenValidatorTests {
 		private readonly Uri m_jwksEndpoint = new Uri( "http://someplace.somewhere" );
 
-		[Test]
-		public void ValidateAsync_GarbageJwt_Throws() {
+		[TestCase( "garbage" )]
+		[TestCase( "1.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ", TestName = "NonBase64UrlEncoded Header" )]
+		[TestCase( "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.1.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ", TestName = "NonBase64UrlEncoded Payload" )]
+		public void ValidateAsync_NonBase64StringJwt_Throws( string token ) {
 			var publicKeyProvider = new Mock<IPublicKeyProvider>( MockBehavior.Strict ).Object;
 			IAccessTokenValidator accessTokenValidator = new AccessTokenValidator( publicKeyProvider );
 
 			Assert.Throws<ValidationException>( () =>
-				accessTokenValidator.ValidateAsync( "garbage" ).SafeAsync().GetAwaiter().GetResult()
+				accessTokenValidator.ValidateAsync( token ).SafeAsync().GetAwaiter().GetResult()
 			);
 		}
 
