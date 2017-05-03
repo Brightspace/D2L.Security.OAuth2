@@ -41,7 +41,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		}
 
 		private static bool IsMatch( string pattern, string actual ) {
-			return pattern == "*" || String.Equals( pattern, actual, StringComparison.OrdinalIgnoreCase );
+			return pattern == "*" || String.Equals( pattern, actual, StringComparison.Ordinal );
 		}
 
 	}
