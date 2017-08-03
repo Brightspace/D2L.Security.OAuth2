@@ -12,5 +12,11 @@ namespace D2L.Security.OAuth2.Validation.Exceptions {
 		/// </summary>
 		public PublicKeyLookupFailureException( string message, Exception inner )
 			: base( message, inner ) {}
+
+		/// <summary>
+		/// Constructs a new <see cref="PublicKeyLookupFailureException"/>
+		/// </summary>
+		public PublicKeyLookupFailureException( string message )
+			: base( message ) {}
 	}
 }
