@@ -85,6 +85,7 @@
     <Compile Include="Keys\Default\EcDsaPrivateKeyProvider.Factory.cs">
       <DependentUpon>EcDsaPrivateKeyProvider.cs</DependentUpon>
     </Compile>
+    <Compile Include="Keys\Default\MonoRsaSecurityKey.cs" />
     <Compile Include="Keys\Default\RotatingPrivateKeyProvider.cs" />
     <Compile Include="Keys\Default\EcDsaPrivateKeyProvider.cs" />
     <Compile Include="Keys\Default\EcDsaSecurityKey.cs" />

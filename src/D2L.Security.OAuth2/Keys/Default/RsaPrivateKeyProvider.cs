@@ -23,7 +23,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			D2LSecurityToken result = m_d2lSecurityTokenFactory.Create( () => {
 				var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 				csp.ImportParameters( privateKey );
+#if __MonoCS__ || MONO
+				var key = new MonoRsaSecurityKey( csp );
+#else
 				var key = new RsaSecurityKey( csp );
+#endif
 				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, csp );
 			} );
 

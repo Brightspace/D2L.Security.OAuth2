@@ -79,7 +79,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				keyFactory: () => {
 					var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 					rsa.ImportParameters( m_parameters );
+#if __MonoCS__ || MONO
+					var key = new MonoRsaSecurityKey( rsa );
+#else
 					var key = new RsaSecurityKey( rsa );
+#endif
 					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, rsa );
 				}
 			);
