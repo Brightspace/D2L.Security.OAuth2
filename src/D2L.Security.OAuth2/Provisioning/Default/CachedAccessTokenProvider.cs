@@ -15,14 +15,17 @@ using System.IdentityModel.Tokens.Jwt;
 namespace D2L.Security.OAuth2.Provisioning.Default {
 	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {
 		private readonly INonCachingAccessTokenProvider m_accessTokenProvider;
+		private readonly Uri m_authEndpoint;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
 		private readonly JwtSecurityTokenHandler m_tokenHandler;
 
 		public CachedAccessTokenProvider(
 			INonCachingAccessTokenProvider accessTokenProvider,
+			Uri authEndpoint,
 			TimeSpan tokenRefreshGracePeriod
-    ) {
+		) {
 			m_accessTokenProvider = accessTokenProvider;
+			m_authEndpoint = authEndpoint;
 			m_tokenRefreshGracePeriod = tokenRefreshGracePeriod;
 
 			m_tokenHandler = new JwtSecurityTokenHandler();
@@ -32,7 +35,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			ClaimSet claimSet,
 			IEnumerable<Scope> scopes,
 			ICache cache
-    ) {
+		) {
 			var @this = this as IAccessTokenProvider;
 			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).SafeAsync();
 		}
@@ -41,7 +44,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			IEnumerable<Claim> claims,
 			IEnumerable<Scope> scopes,
 			ICache cache
-    ) {
+		) {
 			if( cache == null ) {
 				cache = new NullCache();
 			}
@@ -49,7 +52,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			claims = claims.ToList();
 			scopes = scopes.ToList();
 
-			string cacheKey = TokenCacheKeyBuilder.BuildKey( claims, scopes );
+			string cacheKey = TokenCacheKeyBuilder.BuildKey( m_authEndpoint, claims, scopes );
 
 			CacheResponse cacheResponse = await cache.GetAsync( cacheKey ).SafeAsync();
 

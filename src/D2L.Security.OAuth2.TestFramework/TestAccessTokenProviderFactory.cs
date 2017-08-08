@@ -35,11 +35,12 @@ namespace D2L.Security.OAuth2.TestFramework {
 #pragma warning disable 618
 			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( keyId, rsaParameters );
 #pragma warning restore 618
+			Uri authEndpoint = new Uri( tokenProvisioningEndpoint );
 			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
-			IAuthServiceClient authServiceClient = new AuthServiceClient( httpClient, new Uri( tokenProvisioningEndpoint ) );
+			IAuthServiceClient authServiceClient = new AuthServiceClient( httpClient, authEndpoint );
 			INonCachingAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( tokenSigner, authServiceClient );
 
-			return new CachedAccessTokenProvider( noCacheTokenProvider, Timeout.InfiniteTimeSpan );
+			return new CachedAccessTokenProvider( noCacheTokenProvider, authEndpoint, Timeout.InfiniteTimeSpan );
 		}
 
 	}

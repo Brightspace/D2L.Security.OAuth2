@@ -123,7 +123,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		[Test]
 		public async Task ProvisionAccessTokenAsync_CallPassThroughOverload_CallsOtherOverload() {
 
-			const string key = "{\"claims\":[{\"name\":\"iss\",\"value\":\"TheIssuer\"}],\"scopes\":[]}";
+			const string key = "{\"issuer\":\"https://example.com/\",\"claims\":[{\"name\":\"iss\",\"value\":\"TheIssuer\"}],\"scopes\":[]}";
 
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( key ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken() ) ) );
@@ -139,6 +139,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		private IAccessTokenProvider GetCachedAccessTokenProvider( int tokenRefreshGracePeriod = 120 ) {
 			return new CachedAccessTokenProvider(
 				m_accessTokenProviderMock.Object,
+				new Uri( "https://example.com" ),
 				TimeSpan.FromSeconds( tokenRefreshGracePeriod )
 				);
 		}

@@ -29,7 +29,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			INonCachingAccessTokenProvider accessTokenProvider =
 				new AccessTokenProvider( tokenSigner, authServiceClient );
 
-			return new CachedAccessTokenProvider( accessTokenProvider, tokenRefreshGracePeriod );
+			return new CachedAccessTokenProvider( accessTokenProvider, authEndpoint, tokenRefreshGracePeriod );
 		}
 	}
 }
