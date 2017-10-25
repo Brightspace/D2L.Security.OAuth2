@@ -71,7 +71,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		}
 
 		Task IAuthenticationFilter.ChallengeAsync( HttpAuthenticationChallengeContext context, CancellationToken cancellationToken ) {
-			return TaskHelpers.CompletedTask;
+			return Task.CompletedTask;
 		}
 
 		bool IFilter.AllowMultiple {
