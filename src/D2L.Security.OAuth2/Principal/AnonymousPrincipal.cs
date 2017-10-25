@@ -10,12 +10,6 @@ namespace D2L.Security.OAuth2.Principal {
 
 		private static readonly IAccessToken ANONYMOUS_ACCESS_TOKEN = new AnonymousAccessToken();
 
-		private readonly IEnumerable<Scope> m_scopes;
-		
-		public AnonymousPrincipal() {
-			m_scopes = Enumerable.Empty<Scope>();
-		}
-
 		long ID2LPrincipal.UserId {
 			get { throw new InvalidOperationException( "Cannot access UserId for an Anonymous Principal" ); }
 		}
@@ -33,7 +27,7 @@ namespace D2L.Security.OAuth2.Principal {
 		}
 
 		IEnumerable<Scope> ID2LPrincipal.Scopes {
-			get { return m_scopes; }
+			get { return Enumerable.Empty<Scope>(); }
 		}
 
 		IAccessToken ID2LPrincipal.AccessToken {

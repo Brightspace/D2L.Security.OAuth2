@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Threading;
@@ -13,12 +14,12 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed class AccessTokenValidator : IAccessTokenValidator {
-		internal static string[] ALLOWED_SIGNATURE_ALGORITHMS = new string[] {
+		internal static readonly ImmutableHashSet<string> ALLOWED_SIGNATURE_ALGORITHMS = ImmutableHashSet.Create(
 			"RS256",
 			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha256Signature,
 			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha384Signature,
 			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha512Signature
-		};
+		);
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
 		private readonly ThreadLocal<JwtSecurityTokenHandler> m_tokenHandler = new ThreadLocal<JwtSecurityTokenHandler>(

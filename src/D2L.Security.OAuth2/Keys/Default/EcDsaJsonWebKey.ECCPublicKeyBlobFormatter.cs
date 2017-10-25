@@ -5,7 +5,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	partial class EcDsaJsonWebKey {
 		private sealed class ECCPublicKeyBlobFormatter {
 
-			internal static ECCPublicKeyBlobFormatter Instance = new ECCPublicKeyBlobFormatter();
+			internal static readonly ECCPublicKeyBlobFormatter Instance = new ECCPublicKeyBlobFormatter();
 
 			internal enum KeyBlobMagicNumber {
 				ECDSA_PUBLIC_P256 = 0x31534345,
