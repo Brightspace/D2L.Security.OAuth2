@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Scopes {
 
@@ -8,11 +11,12 @@ namespace D2L.Security.OAuth2.Scopes {
 	/// functionality. Scope strings have the following representation: {group}:{resource}:{permission[,permission]*}.
 	/// Wildcards can be used in any of the three segments.
 	/// </summary>
+	[Immutable]
 	public sealed class Scope {
 
 		private readonly string m_group;
 		private readonly string m_resource;
-		private readonly string[] m_permissions;
+		private readonly ImmutableArray<string> m_permissions;
 
 		/// <summary>
 		/// Constructs a new <see cref="Scope"/>
@@ -39,7 +43,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		public Scope( string group, string resource, string[] permissions ) {
 			m_group = group;
 			m_resource = resource;
-			m_permissions = permissions.OrderBy( x => x ).ToArray();
+			m_permissions = permissions.OrderBy( x => x ).ToImmutableArray();
 		}
 
 		/// <summary>
@@ -62,7 +66,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		/// The third part of a scope, which represents a set of permissions. It is the lowest 
 		/// level part of a scope definition. Examples: read, write.
 		/// </summary>
-		public string[] Permissions {
+		public IReadOnlyList<string> Permissions {
 			get { return m_permissions; }
 		}
 

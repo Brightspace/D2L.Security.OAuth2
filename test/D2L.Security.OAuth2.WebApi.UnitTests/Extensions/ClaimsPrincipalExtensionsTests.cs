@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using D2L.Security.OAuth2.Scopes;
@@ -37,7 +38,7 @@ namespace D2L.Security.OAuth2 {
 				Assert.AreEqual( groups[i], scope.Group );
 				Assert.AreEqual( resources[i], scope.Resource );
 
-				Assert.AreEqual( 1, scope.Permissions.Length );
+				Assert.AreEqual( 1, scope.Permissions.Count );
 				Assert.AreEqual( permissions[i], scope.Permissions[0] );
 			}
 		}
@@ -53,8 +54,8 @@ namespace D2L.Security.OAuth2 {
 			Assert.AreEqual( "g", actual.Group );
 			Assert.AreEqual( "r", actual.Resource );
 
-			string[] actualPermissions = actual.Permissions;
-			Assert.AreEqual( 2, actualPermissions.Length );
+			IReadOnlyList<string> actualPermissions = actual.Permissions;
+			Assert.AreEqual( 2, actualPermissions.Count );
 			Assert.AreEqual( "p0", actualPermissions[0] );
 			Assert.AreEqual( "p1", actualPermissions[1] );
 		}
@@ -80,7 +81,7 @@ namespace D2L.Security.OAuth2 {
 			Assert.AreEqual( "a", scopes[0].Group );
 			Assert.AreEqual( "b", scopes[0].Resource );
 
-			Assert.AreEqual( 1, scopes[0].Permissions.Length );
+			Assert.AreEqual( 1, scopes[0].Permissions.Count );
 			Assert.AreEqual( "c", scopes[0].Permissions[0] );
 		}
 
