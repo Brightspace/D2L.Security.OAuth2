@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Scopes {
 			isParsed.Should().BeTrue();
 			scope.Group.Should().Be( group );
 			scope.Resource.Should().Be( resource );
-			scope.Permissions.ShouldAllBeEquivalentTo( permissions );
+			CollectionAssert.AreEquivalent( permissions, scope.Permissions );
 		}
 	}
 }
