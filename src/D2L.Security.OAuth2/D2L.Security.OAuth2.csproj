@@ -39,8 +39,8 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.CodeStyle.Annotations, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\D2L.CodeStyle.Annotations.0.16.0\lib\net20\D2L.CodeStyle.Annotations.dll</HintPath>
+    <Reference Include="D2L.CodeStyle.Annotations, Version=0.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\D2L.CodeStyle.Annotations.0.17.0\lib\net20\D2L.CodeStyle.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="D2L.Services.Core.Exceptions">
       <HintPath>..\..\packages\D2L.Services.Core.Exceptions.1.0.0.27289\lib\net451\D2L.Services.Core.Exceptions.dll</HintPath>
