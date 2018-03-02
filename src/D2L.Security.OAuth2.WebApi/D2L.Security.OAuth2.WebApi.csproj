@@ -37,6 +37,9 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="D2L.CodeStyle.Annotations, Version=0.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\D2L.CodeStyle.Annotations.0.17.0\lib\net20\D2L.CodeStyle.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
       <Private>True</Private>
