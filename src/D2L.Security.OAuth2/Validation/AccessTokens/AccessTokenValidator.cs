@@ -89,7 +89,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			} catch( SecurityTokenExpiredException e ) {
 				throw new ExpiredTokenException( e );
 			} catch( SecurityTokenNotYetValidException e ) {
-				throw new ValidationException( "Token was from the future (nbf)", e );
+				throw new ValidationException( "Token is from the future (nbf)", e );
 			} catch( Exception e ) {
 				throw new ValidationException( "Unknown validation exception", e );
 			}
