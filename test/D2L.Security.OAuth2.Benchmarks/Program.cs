@@ -1,11 +1,10 @@
-﻿using D2L.Security.OAuth2.Benchmarks.FullStackValidation;
+﻿using BenchmarkDotNet.Running;
+using D2L.Security.OAuth2.Benchmarks.FullStackValidation;
 
 namespace D2L.Security.OAuth2.Benchmarks {
-	internal class Program {
-		private static void Main( string[] args ) {
-			FullStackValidationBenchmarks.Run();
-
-			System.Environment.Exit( 0 );
+	class Program {
+		static void Main( string[] args ) {
+			BenchmarkRunner.Run<FullStackValidationBenchmarks>();
 		}
 	}
 }
