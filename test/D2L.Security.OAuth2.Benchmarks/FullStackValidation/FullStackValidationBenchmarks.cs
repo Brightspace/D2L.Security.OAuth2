@@ -1,27 +1,49 @@
 ﻿using System;
-using BenchmarkIt;
+using System.Collections.Generic;
+using BenchmarkDotNet.Attributes;
 
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
-	internal sealed class FullStackValidationBenchmarks {
+	[CsvMeasurementsExporter, RPlotExporter, RankColumn]
+	public class FullStackValidationBenchmarks {
 
-		private const int WARMUP_ITERATIONS = 1000;
-		private static TimeSpan RUNTIME = TimeSpan.FromSeconds( 4 );
+		private readonly IEnumerable<IDisposable> m_disposable;
 
-		public static void Run() {
-			Console.WriteLine( typeof( FullStackValidationBenchmarks ).Name );
-			Console.WriteLine( string.Format( "Warmup: {0} iterations", WARMUP_ITERATIONS ) );
-			Console.WriteLine( string.Format( "Runtime: {0} seconds/benchmark", RUNTIME.Seconds ) );
-			Console.WriteLine();
+		private readonly Action es256;
+		private readonly Action es384;
+		private readonly Action es512;
+		private readonly Action rs256;
 
-			Benchmark
-				.This( "RS256", ( ( IBenchmark )new RS256() ).GetRunner() )
-				.Against.This( "ES256", ( ( IBenchmark )new ES256() ).GetRunner() )
-				.Against.This( "ES384", ( ( IBenchmark )new ES384() ).GetRunner() )
-				.Against.This( "ES512", ( ( IBenchmark )new ES512() ).GetRunner() )
-				.WithWarmup( WARMUP_ITERATIONS )
-				.For( RUNTIME.Seconds )
-				.Seconds()
-				.PrintComparison();
+		public FullStackValidationBenchmarks() {
+			IBenchmark es256 = new ES256();
+			IBenchmark es384 = new ES384();
+			IBenchmark es512 = new ES512();
+			IBenchmark rs256 = new RS256();
+
+			this.es256 = es256.GetRunner();
+			this.es384 = es384.GetRunner();
+			this.es512 = es512.GetRunner();
+			this.rs256 = rs256.GetRunner();
+
+			m_disposable = new[] { es256, es384, es512, rs256 };
+		}
+
+		[Benchmark]
+		public void ES256() => es256();
+
+		[Benchmark]
+		public void ES384() => es384();
+
+		[Benchmark]
+		public void ES512() => es512();
+
+		[Benchmark]
+		public void RS256() => rs256();
+
+		[GlobalCleanup]
+		public void Dispose() {
+			foreach( IDisposable disposable in m_disposable ) {
+				disposable.Dispose();
+			}
 		}
 
 	}
