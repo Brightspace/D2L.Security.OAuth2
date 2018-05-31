@@ -1,5 +1,5 @@
 ﻿namespace D2L.Security.OAuth2.Provisioning {
-	
+
 	/// <summary>
 	/// An abstraction for access tokens
 	/// </summary>

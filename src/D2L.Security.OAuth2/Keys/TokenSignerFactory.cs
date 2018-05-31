@@ -1,6 +1,4 @@
 ﻿using System;
-using D2L.Security.OAuth2.Keys.Default;
-using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys {
 

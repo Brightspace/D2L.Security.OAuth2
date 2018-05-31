@@ -1,5 +1,4 @@
-﻿using D2L.Security.OAuth2.Keys;
-using D2L.Security.OAuth2.Validation.AccessTokens;
+﻿using D2L.Security.OAuth2.Validation.AccessTokens;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 
@@ -7,7 +6,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 	/// A factory for creating <see cref="IRequestAuthenticator"/> instances.
 	/// </summary>
 	public static class RequestAuthenticatorFactory {
-		
+
 		/// <summary>
 		/// Creates an <see cref="IRequestAuthenticator"/> instance.
 		/// </summary>

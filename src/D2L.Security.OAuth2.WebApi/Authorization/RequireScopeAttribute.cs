@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Threading;
-using System.Web.Http;
 using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Scopes;
@@ -18,7 +15,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			string resource,
 			string permission
 		) {
-			if(  string.IsNullOrWhiteSpace( group ) ) {
+			if( string.IsNullOrWhiteSpace( group ) ) {
 				throw new ArgumentException( "group cannot be null or empty.", "group" );
 			}
 			if( string.IsNullOrWhiteSpace( resource ) ) {

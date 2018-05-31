@@ -10,7 +10,7 @@ using D2L.Security.OAuth2.Validation.Request;
 namespace D2L.Security.OAuth2.TestUtilities {
 	internal static class RequestBuilder {
 		#region HttpRequestMessage
-		
+
 		internal static HttpRequestMessage WithAuthHeader( this HttpRequestMessage httpRequestMessage, string authHeaderValue ) {
 			return httpRequestMessage.WithAuthHeader( RequestValidationConstants.BearerTokens.SCHEME, authHeaderValue );
 		}

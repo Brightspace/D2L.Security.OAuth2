@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		private readonly List<JsonWebKey> m_keys = new List<JsonWebKey>();
 
 		public JsonWebKeySet( string json, Uri src ) {
-			if ( src == null ) {
+			if( src == null ) {
 				throw new ArgumentNullException( "src" );
 			}
 

@@ -8,13 +8,13 @@ namespace D2L.Security.OAuth2.TestUtilities.Mocks {
 		internal static Mock<IPublicKeyProvider> Create(
 			Uri jwksEndpoint,
 			Guid keyId,
-			D2LSecurityToken token
+			D2LSecurityKey token
 		) {
 			var mock = new Mock<IPublicKeyProvider>();
 
 			mock.Setup( p => p.GetByIdAsync(
 				keyId
-			)).Returns( Task.FromResult( token ) );
+			) ).Returns( Task.FromResult( token ) );
 
 			return mock;
 		}

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Services;
 using Moq;
 using NUnit.Framework;
 
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				.Setup( x => x.ProvisionAccessTokenAsync( It.IsAny<string>(), It.IsAny<IEnumerable<Scope>>() ) )
 				.Callback<string, IEnumerable<Scope>>( ( assertion, _ ) => {
 					var tokenHandler = new JwtSecurityTokenHandler();
-					m_actualAssertion = (JwtSecurityToken)tokenHandler.ReadToken( assertion );
+					m_actualAssertion = ( JwtSecurityToken )tokenHandler.ReadToken( assertion );
 				} )
 				.ReturnsAsync( null );
 
@@ -62,7 +62,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			var publicKeys = ( await m_publicKeyDataProvider.GetAllAsync().SafeAsync() ).ToList();
 
 			string expectedKeyId = publicKeys.First().Id.ToString();
-			string actualKeyId = m_actualAssertion.Header.SigningKeyIdentifier[ 0 ].Id;
+			string actualKeyId = m_actualAssertion.Header.Kid;
 
 			Assert.AreEqual( 1, publicKeys.Count );
 			Assert.AreEqual( expectedKeyId, actualKeyId );

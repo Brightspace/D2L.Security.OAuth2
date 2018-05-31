@@ -17,7 +17,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			m_httpClient = httpClient;
 			m_authEndpoint = authEndpoint;
 		}
-		
+
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwksAsync() {
 			var url = GetJwksEndpoint( m_authEndpoint );
 
@@ -59,7 +59,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 						.ReadAsStringAsync()
 						.SafeAsync();
 
-					return JsonWebKey.FromJson( json);
+					return JsonWebKey.FromJson( json );
 				}
 			} catch( HttpRequestException e ) {
 				throw CreateException( e, url );
@@ -108,7 +108,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		private static string MakeSureThereIsATrailingSlash( Uri uri ) {
 			string root = uri.ToString();
-			if ( root[root.Length - 1 ] == '/') {
+			if( root[ root.Length - 1 ] == '/' ) {
 				return root;
 			}
 

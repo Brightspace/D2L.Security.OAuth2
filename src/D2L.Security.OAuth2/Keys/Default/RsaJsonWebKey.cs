@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using D2L.Services;
+using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 
@@ -58,7 +58,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					use = "sig",
 					n = modulus,
 					e = exponent,
-					exp = (long)ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
+					exp = ( long )ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
 				};
 			}
 
@@ -71,8 +71,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			};
 		}
 
-		internal override D2LSecurityToken ToSecurityToken() {
-			var token = new D2LSecurityToken(
+		internal override D2LSecurityKey ToSecurityKey() {
+			var token = new D2LSecurityKey(
 				id: Id,
 				validFrom: DateTime.UtcNow,
 				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
@@ -83,7 +83,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, rsa );
 				}
 			);
-			
+
 			return token;
 		}
 
@@ -91,7 +91,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		///	Get the internal RsaParameters 
 		/// </summary>
 		/// <returns></returns>
-		[Obsolete("Do not use this if you are not LMS 10.5.1!")]
+		[Obsolete( "Do not use this if you are not LMS 10.5.1!" )]
 		public RSAParameters GetRsaParameters() {
 			return m_parameters;
 		}

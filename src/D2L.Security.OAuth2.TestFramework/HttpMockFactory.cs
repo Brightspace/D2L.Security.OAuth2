@@ -13,7 +13,7 @@ namespace D2L.Security.OAuth2.TestFrameworks {
 		private static int GetFreePort() {
 			TcpListener tcpListener = new TcpListener( IPAddress.Loopback, 0 );
 			tcpListener.Start();
-			int port = ( (IPEndPoint)tcpListener.LocalEndpoint ).Port;
+			int port = ( ( IPEndPoint )tcpListener.LocalEndpoint ).Port;
 			tcpListener.Stop();
 			return port;
 		}

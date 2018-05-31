@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Utilities;
+using D2L.Services;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Keys {
 		[Test]
 		public void FromJson_ParsesStaticRsaKeyWithExp() {
 			Guid id = Guid.NewGuid();
-			long exp = (long)DateTime.UtcNow.TimeSinceUnixEpoch().TotalSeconds;
+			long exp = ( long )DateTime.UtcNow.TimeSinceUnixEpoch().TotalSeconds;
 			string example =
 				@"{""exp"":" + exp + @",""kid"":""" + id + @""",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
 
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 			Assert.AreEqual( id, key.Id );
 			Assert.IsTrue( key.ExpiresAt.HasValue );
-			Assert.AreEqual( exp, (long)key.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
+			Assert.AreEqual( exp, ( long )key.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
 		}
 
 		[Test]
@@ -46,19 +46,19 @@ namespace D2L.Security.OAuth2.Keys {
 			Assert.AreEqual( Guid.Parse( "fae33c85-e421-40f5-bebb-8ec8ab778be4" ), key.Id );
 			Assert.IsFalse( key.ExpiresAt.HasValue );
 
-			Assert.DoesNotThrow( () => key.ToSecurityToken() );
+			Assert.DoesNotThrow( () => key.ToSecurityKey() );
 		}
 
 		[Test]
 		public async Task FromJson_GeneratedKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new RsaPrivateKeyProvider(
-				new D2LSecurityTokenFactory(
+				new D2LSecurityKeyFactory(
 					DateTimeProvider.Instance,
 					TimeSpan.FromHours( 1 )
 				)
 			);
 
-			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityKey token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 			JsonWebKey expectedKey = token.ToJsonWebKey();
 
 			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
@@ -67,14 +67,14 @@ namespace D2L.Security.OAuth2.Keys {
 			string actualJson = JsonConvert.SerializeObject( actualKey.ToJwkDto() );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
-			Assert.AreEqual( (long)expectedKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds, (long)actualKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
+			Assert.AreEqual( ( long )expectedKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds, ( long )actualKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
 			Assert.AreEqual( expectedJson, actualJson );
 		}
 
 		[Test]
 		public async Task FromJson_GeneratedECKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new EcDsaPrivateKeyProvider(
-				new D2LSecurityTokenFactory(
+				new D2LSecurityKeyFactory(
 					DateTimeProvider.Instance,
 					TimeSpan.FromHours( 1 )
 				),
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2.Keys {
 			);
 
 			JsonWebKey expectedKey;
-			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
+			using( D2LSecurityKey token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
 				expectedKey = token.ToJsonWebKey();
 			}
 
@@ -92,7 +92,7 @@ namespace D2L.Security.OAuth2.Keys {
 			string actualJson = JsonConvert.SerializeObject( actualKey.ToJwkDto() );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
-			Assert.AreEqual( (long)expectedKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds, (long)actualKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
+			Assert.AreEqual( ( long )expectedKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds, ( long )actualKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
 			Assert.AreEqual( expectedJson, actualJson );
 		}
 	}

@@ -136,12 +136,12 @@ namespace D2L.Security.OAuth2.Scopes {
 				return false;
 			}
 
-			string[] permissionParts = scopeParts[2].Split( ",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
+			string[] permissionParts = scopeParts[ 2 ].Split( ",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
 			if( permissionParts.Length < 1 ) {
 				return false;
 			}
 
-			scope = new Scope( scopeParts[0], scopeParts[1], permissionParts );
+			scope = new Scope( scopeParts[ 0 ], scopeParts[ 1 ], permissionParts );
 
 			return true;
 		}

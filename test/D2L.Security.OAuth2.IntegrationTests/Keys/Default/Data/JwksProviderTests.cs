@@ -2,9 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
 using HttpMock;
 using NUnit.Framework;
 
@@ -24,15 +24,15 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		private IHttpServer m_jwksServer;
 		private string m_host;
-		
+
 		[OneTimeSetUp]
 		public void TestFixtureSetUp() {
 			m_jwksServer = HttpMockFactory.Create( out m_host );
-			
+
 			m_jwksServer.Stub(
 				x => x.Get( GOOD_PATH + JWKS_PATH )
 			).Return( GOOD_JSON ).OK();
-			
+
 			m_jwksServer.Stub(
 				x => x.Get( BAD_PATH )
 			).Return( GOOD_JSON ).WithStatus( HttpStatusCode.InternalServerError );

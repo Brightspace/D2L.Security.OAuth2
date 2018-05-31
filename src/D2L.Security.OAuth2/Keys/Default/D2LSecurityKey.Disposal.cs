@@ -10,14 +10,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	/// disposed under them, and can properly "Dispose" it as they should without effecting other
 	/// consumers / threads.
 	/// </summary>
-	partial class D2LSecurityToken : IDisposable {
-		
+	partial class D2LSecurityKey : IDisposable {
+
 		private readonly object m_disposeLock = new Object();
 
 		private bool m_disposed = false;
 		private int m_refCount = 0;
 
-		internal D2LSecurityToken Ref() {
+		internal D2LSecurityKey Ref() {
 			Interlocked.Increment( ref m_refCount );
 
 			return this;

@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using D2L.Security.OAuth2.Validation.AccessTokens;
 using Moq;
 using NUnit.Framework;
-using D2L.Security.OAuth2.Validation.AccessTokens;
-using System.Security.Claims;
-using System.Collections.Generic;
 
 namespace D2L.Security.OAuth2.Principal {
 	[TestFixture]
@@ -52,7 +52,7 @@ namespace D2L.Security.OAuth2.Principal {
 			var claims = new List<Claim>();
 			long? actualUserId2 = null;
 
-			if ( userId.HasValue) {
+			if( userId.HasValue ) {
 				claims.Add(
 					new Claim(
 						Constants.Claims.USER_ID,
@@ -63,11 +63,11 @@ namespace D2L.Security.OAuth2.Principal {
 				actualUserId2 = userId;
 			}
 
-			if ( actualUserId.HasValue ) {
+			if( actualUserId.HasValue ) {
 				actualUserId2 = actualUserId;
 			}
 
-			if ( actualUserId2.HasValue ) {
+			if( actualUserId2.HasValue ) {
 				claims.Add(
 					new Claim(
 						Constants.Claims.ACTUAL_USER_ID,

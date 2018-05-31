@@ -1,17 +1,18 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+
 using System.Security.Cryptography;
 using D2L.Security.OAuth2.Keys.Default;
+using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.TestUtilities {
 	internal static class D2LSecurityTokenUtility {
-		public static D2LSecurityToken CreateActiveToken( Guid? id = null ) {
+		public static D2LSecurityKey CreateActiveToken( Guid? id = null ) {
 			return CreateTokenWithTimeRemaining(
 				TimeSpan.FromHours( 1 ) - TimeSpan.FromSeconds( 1 ),
 				id );
 		}
 
-		public static D2LSecurityToken CreateTokenWithTimeRemaining(
+		public static D2LSecurityKey CreateTokenWithTimeRemaining(
 			TimeSpan remaining,
 			Guid? id = null
 		) {
@@ -28,7 +29,7 @@ namespace D2L.Security.OAuth2.TestUtilities {
 				privateKey = csp.ExportParameters( includePrivateParameters: true );
 			}
 
-			return new D2LSecurityToken(
+			return new D2LSecurityKey(
 				id.Value,
 				validFrom,
 				validTo,

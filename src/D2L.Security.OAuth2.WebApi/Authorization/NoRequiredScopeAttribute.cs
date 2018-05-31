@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
 	[AttributeUsage( AttributeTargets.Method, AllowMultiple = false )]

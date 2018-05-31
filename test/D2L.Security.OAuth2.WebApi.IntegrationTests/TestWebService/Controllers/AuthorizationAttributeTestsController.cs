@@ -1,6 +1,5 @@
 ﻿using System.Web.Http;
 using D2L.Security.OAuth2.Authorization;
-using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.TestWebService.Controllers {
 	[DefaultAuthorization]

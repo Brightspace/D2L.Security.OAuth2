@@ -5,7 +5,7 @@ using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning {
-	
+
 	/// <summary>
 	/// Provisions access tokens from the auth service
 	/// </summary>

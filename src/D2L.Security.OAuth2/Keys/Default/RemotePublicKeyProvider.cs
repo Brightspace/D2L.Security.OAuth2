@@ -18,8 +18,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_cache = cache;
 		}
 
-		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( Guid id ) {
-			D2LSecurityToken result = m_cache.Get( m_jwksProvider.Namespace, id );
+		async Task<D2LSecurityKey> IPublicKeyProvider.GetByIdAsync( Guid id ) {
+			D2LSecurityKey result = m_cache.Get( m_jwksProvider.Namespace, id );
 			if( result != null ) {
 				return result;
 			}
@@ -40,9 +40,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private static void CacheJwks( IInMemoryPublicKeyCache cache, string srcNamespace, JsonWebKeySet jwks ) {
 			foreach( var jwk in jwks ) {
-				D2LSecurityToken token;
+				D2LSecurityKey token;
 				try {
-					token = jwk.ToSecurityToken();
+					token = jwk.ToSecurityKey();
 				} catch {
 					continue;
 				}

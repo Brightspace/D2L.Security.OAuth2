@@ -111,7 +111,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 				.SignAsync( token )
 				.SafeAsync();
 		}
-		
+
 		public void Dispose() {
 			m_server.SafeDispose();
 		}

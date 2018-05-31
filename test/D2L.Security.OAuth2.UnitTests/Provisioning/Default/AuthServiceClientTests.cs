@@ -4,8 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Services;
 using Moq;
 using Moq.Protected;
 using NUnit.Framework;
@@ -30,11 +30,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				var parameters = requestBody
 					.Split( '&' )
 					.Select( x => x.Split( '=' ) )
-					.ToDictionary( x => x[0], x => x[1] );
+					.ToDictionary( x => x[ 0 ], x => x[ 1 ] );
 
-				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters["grant_type"] );
-				Assert.AreEqual( assertion, parameters["assertion"] );
-				Assert.AreEqual( string.Empty, parameters["scope"] );
+				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters[ "grant_type" ] );
+				Assert.AreEqual( assertion, parameters[ "assertion" ] );
+				Assert.AreEqual( string.Empty, parameters[ "scope" ] );
 			}
 		}
 
@@ -55,11 +55,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				var parameters = requestBody
 					.Split( '&' )
 					.Select( x => x.Split( '=' ) )
-					.ToDictionary( x => x[0], x => x[1] );
+					.ToDictionary( x => x[ 0 ], x => x[ 1 ] );
 
-				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters["grant_type"] );
-				Assert.AreEqual( assertion, parameters["assertion"] );
-				Assert.AreEqual( "foo%3Abar%3Abaz", parameters["scope"] );
+				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters[ "grant_type" ] );
+				Assert.AreEqual( assertion, parameters[ "assertion" ] );
+				Assert.AreEqual( "foo%3Abar%3Abaz", parameters[ "scope" ] );
 			}
 		}
 
@@ -81,11 +81,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				var parameters = requestBody
 					.Split( '&' )
 					.Select( x => x.Split( '=' ) )
-					.ToDictionary( x => x[0], x => x[1] );
+					.ToDictionary( x => x[ 0 ], x => x[ 1 ] );
 
-				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters["grant_type"] );
-				Assert.AreEqual( assertion, parameters["assertion"] );
-				Assert.AreEqual( "foo%3Abar%3Abaz+quux%3Amrr%3Arawr", parameters["scope"] );
+				Assert.AreEqual( ENCODED_GRANT_TYPE, parameters[ "grant_type" ] );
+				Assert.AreEqual( assertion, parameters[ "assertion" ] );
+				Assert.AreEqual( "foo%3Abar%3Abaz+quux%3Amrr%3Arawr", parameters[ "scope" ] );
 			}
 		}
 
@@ -122,7 +122,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				.ReturnsAsync( new HttpResponseMessage() {
 					StatusCode = HttpStatusCode.OK,
 					Content = new StringContent( TestData.ValidHttpResponseBody )
-				} ); ;
+				} );
+			;
 
 			var httpClient = new HttpClient( messageHandler.Object, true );
 			return httpClient;

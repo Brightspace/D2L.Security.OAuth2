@@ -62,12 +62,12 @@ namespace D2L.Security.OAuth2.Authentication {
 		}
 
 		[Test]
-		[ExpectedException(typeof(InvalidCastException))]
+		[ExpectedException( typeof( InvalidCastException ) )]
 		public async Task AuthenticateAsync_OtherException_Throws() {
 			m_requestAuthenticator
 				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
 				.Throws<InvalidCastException>();
-			
+
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();
@@ -86,7 +86,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 			m_principalRegistry
 				.Setup( pr => pr.Register( m_authenticationContext, principalMock.Object ) );
-			
+
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();
@@ -112,10 +112,10 @@ namespace D2L.Security.OAuth2.Authentication {
 			m_requestAuthenticator
 				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
 				.ReturnsAsync( principal );
-			
+
 			m_principalRegistry
 				.Setup( pr => pr.Register( m_authenticationContext, principalMock.Object ) );
-			
+
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();

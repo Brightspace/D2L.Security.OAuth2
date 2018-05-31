@@ -9,7 +9,7 @@
 		/// Principal represents a user. Applies when the sub claim is set on the principal
 		/// </summary>
 		User,
-		
+
 		/// <summary>
 		/// Principal represents a service. Applies when the sub claim is not set on the principal
 		/// </summary>

@@ -2,9 +2,9 @@
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.TestFramework {

@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 				dateTimeProvider = dateTimeProvider ?? DateTimeProvider.Instance;
 
-				ID2LSecurityTokenFactory d2lSecurityTokenFactory = new D2LSecurityTokenFactory(
+				ID2LSecurityKeyFactory d2lSecurityTokenFactory = new D2LSecurityKeyFactory(
 					dateTimeProvider,
 					keyLifetime
 				);

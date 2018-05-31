@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		public static string GetTenantId( this IAccessToken token ) {
 			return token.GetClaimValue( Constants.Claims.TENANT_ID );
 		}
-		
+
 		/// <param name="token">An access token</param>
 		/// <returns>The scopes</returns>
 		public static IEnumerable<Scope> GetScopes( this IAccessToken token ) {
@@ -36,7 +36,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				.ToArray();
 			return scopesArray;
 		}
-		
+
 		/// <param name="token">An access token</param>
 		/// <param name="userId">The value of the sub claim</param>
 		/// <returns>True if the sub claim has a value. False if not.</returns>
