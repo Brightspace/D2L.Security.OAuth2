@@ -8,15 +8,28 @@ using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Services;
+using HttpMock;
 using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 	internal abstract class FullStackValidationBenchmark : IBenchmark {
+
+		private HttpClient m_httpClient = new HttpClient();
+		private IHttpServer m_httpServer = null;
+
+		void IDisposable.Dispose() {
+			m_httpClient.Dispose();
+			m_httpClient = null;
+
+			m_httpServer.Dispose();
+			m_httpServer = null;
+		}
+
 		Action IBenchmark.GetRunner() {
 			SetUp( out Uri host, out string token, out Guid id );
 
 			IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator(
-				new HttpClient(),
+				m_httpClient,
 				host
 			);
 
@@ -28,7 +41,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 		protected abstract ITokenSigner GetTokenSigner( IPublicKeyDataProvider p );
 
 		private void SetUp( out Uri host, out string token, out Guid id ) {
-			var server = HttpMockFactory.Create( out string hostStr );
+			m_httpServer = HttpMockFactory.Create( out string hostStr );
 
 			host = new Uri( hostStr );
 
@@ -58,7 +71,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 			id = jwk.Id;
 
-			server
+			m_httpServer
 				.Stub( r => r.Get( "/.well-known/jwks" ) )
 				.Return( JsonConvert.SerializeObject( new { keys = new object[] { jwk.ToJwkDto() } } ) )
 				.OK();
