@@ -9,7 +9,14 @@ namespace D2L.Security.OAuth2 {
 
 			IEnumerable<Scope> grantedScopes = principal.FindAll( Constants.Claims.SCOPE )
 				.SelectMany( c => c.Value.Split( ' ' ) )
-				.Select( Scope.Parse )
+				.Select( scopeString => {
+					Scope scope;
+					if( Scope.TryParse( scopeString, out scope ) ) {
+						return scope;
+					}
+
+					return null;
+				} )
 				.Where( s => s != null );
 
 			return grantedScopes;
