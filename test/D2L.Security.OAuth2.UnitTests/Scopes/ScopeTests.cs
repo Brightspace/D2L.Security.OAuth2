@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Scopes {
@@ -31,6 +32,11 @@ namespace D2L.Security.OAuth2.Scopes {
 			isParsed.Should().BeFalse();
 		}
 
+		[TestCaseSource( nameof( InvalidScopeCases ) )]
+		public void ScopeParse_InvalidScopePattern_Throws( string scopePattern ) {
+			Assert.That( () => Scope.Parse( scopePattern ), Throws.ArgumentException );
+		}
+
 
 		internal static TestCaseData[] ValidScopeScopes = new[] {
 			new TestCaseData( "g:r:p", "g", "r", new[] { "p" } ).SetDescription( "Single permission" ),
@@ -51,6 +57,19 @@ namespace D2L.Security.OAuth2.Scopes {
 			scope.Group.Should().Be( group );
 			scope.Resource.Should().Be( resource );
 			CollectionAssert.AreEquivalent( permissions, scope.Permissions );
+		}
+
+		[TestCaseSource( nameof( ValidScopeScopes ) )]
+		public void ScopeParse_ValidScopePattern_Returns(
+			string scopePattern,
+			string group,
+			string resource,
+			string[] permissions
+		) {
+			Scope scope = Scope.Parse( scopePattern );
+			Assert.That( scope.Group, Is.EqualTo( group ) );
+			Assert.That( scope.Resource, Is.EqualTo( resource ) );
+			Assert.That( scope.Permissions, Is.EquivalentTo( permissions ) );
 		}
 	}
 }
