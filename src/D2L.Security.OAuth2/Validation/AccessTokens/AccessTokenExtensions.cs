@@ -31,7 +31,14 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			Scope[] scopesArray = scopes
 				.Split( ' ' )
-				.Select( scopeString => Scope.Parse( scopeString ) )
+				.Select( scopeString => {
+					Scope scope;
+					if( Scope.TryParse( scopeString, out scope ) ) {
+						return scope;
+					}
+
+					return null;
+				} )
 				.Where( x => x != null )
 				.ToArray();
 			return scopesArray;

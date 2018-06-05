@@ -124,26 +124,13 @@ namespace D2L.Security.OAuth2.Scopes {
 		/// *:*:read                    => Read only for all resources in all groups
 		/// </example>
 		public static bool TryParse( string scopePattern, out Scope scope ) {
-
-			scope = null;
-
-			if( String.IsNullOrWhiteSpace( scopePattern ) ) {
+			try {
+				scope = Parse( scopePattern );
+				return true;
+			} catch {
+				scope = null;
 				return false;
 			}
-
-			string[] scopeParts = scopePattern.Split( ":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
-			if( scopeParts.Length != 3 || scopeParts.Any( String.IsNullOrWhiteSpace ) ) {
-				return false;
-			}
-
-			string[] permissionParts = scopeParts[2].Split( ",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
-			if( permissionParts.Length < 1 ) {
-				return false;
-			}
-
-			scope = new Scope( scopeParts[0], scopeParts[1], permissionParts );
-
-			return true;
 		}
 
 		/// <summary>
@@ -151,12 +138,24 @@ namespace D2L.Security.OAuth2.Scopes {
 		/// </summary>
 		/// <param name="scopePattern">The scope pattern in the form of
 		/// group:resource:permission[,permission]*.</param>
-		/// <returns>If the scope is properly parsed, returns the <see cref="Scope"/> object,
-		/// otherwise null.</returns>lan
+		/// <returns>If the scope is formatted correctly, returns the <see cref="Scope"/> object</returns>
+		/// <exception cref="ArgumentException"></exception>
 		public static Scope Parse( string scopePattern ) {
-			Scope scope;
-			TryParse( scopePattern, out scope );
-			return scope;
+			if( String.IsNullOrWhiteSpace( scopePattern ) ) {
+				throw new ArgumentException( "Expected a non-empty string", nameof( scopePattern ) );
+			}
+
+			string[] scopeParts = scopePattern.Split( ":".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
+			if( scopeParts.Length != 3 || scopeParts.Any( String.IsNullOrWhiteSpace ) ) {
+				throw new ArgumentException( "Expected 3 scope parts", nameof( scopePattern ) );
+			}
+
+			string[] permissionParts = scopeParts[ 2 ].Split( ",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries );
+			if( permissionParts.Length < 1 ) {
+				throw new ArgumentException( "Expected one or more permissions in permission part", nameof( scopePattern ) );
+			}
+
+			return new Scope( scopeParts[ 0 ], scopeParts[ 1 ], permissionParts );
 		}
 
 	}
