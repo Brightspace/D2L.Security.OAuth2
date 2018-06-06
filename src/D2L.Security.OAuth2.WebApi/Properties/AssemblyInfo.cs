@@ -5,9 +5,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDescription( "A library that implements Web API components for authenticating D2L services." )]
 [assembly: AssemblyCompany( "Desire2Learn" )]
 [assembly: AssemblyProduct( "Brightspace" )]
-[assembly: AssemblyInformationalVersion( "6.0.1.0" )]
-[assembly: AssemblyVersion( "6.0.1.0" )]
-[assembly: AssemblyFileVersion( "6.0.1.0" )]
+[assembly: AssemblyInformationalVersion( "7.0.0.0" )]
+[assembly: AssemblyVersion( "7.0.0.0" )]
+[assembly: AssemblyFileVersion( "7.0.0.0" )]
 
 [assembly: AssemblyCopyright( "Copyright © Desire2Learn" )]
 
