@@ -1,0 +1,13 @@
+<!--
+	If you edit this file edit the version in build and restart VS.
+
+	You will also need to delete .vs/ folders because of a caching bug:
+		https://github.com/dotnet/project-system/issues/2888
+
+	See includes/cleanup-for-vs-cache-bug.include for how this was done last time.
+-->
+<Project>
+	<PropertyGroup>
+		<LangVersion>7.3</LangVersion>
+	</PropertyGroup>
+</Project>

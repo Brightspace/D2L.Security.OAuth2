@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2 {
 		const long PORT = 8916; // TODO: do this better
 		private IDisposable m_disposeHandle;
 
-		[SetUp]
+		[OneTimeSetUp]
 		public void BeforeAnyTests() {
 			var options = new StartOptions();
 			options.Urls.Add( "http://+:" + PORT );
@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2 {
 
 		}
 
-		[TearDown]
+		[OneTimeTearDown]
 		public void AfterAllTests() {
 			m_disposeHandle.SafeDispose();
 		}
