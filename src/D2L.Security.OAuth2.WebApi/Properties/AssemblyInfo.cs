@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyProduct( "Brightspace" )]
 [assembly: AssemblyInformationalVersion( "7.1.0.0" )]
 [assembly: AssemblyVersion( "7.1.0.0" )]
-[assembly: AssemblyFileVersion( "7.10.0.0" )]
+[assembly: AssemblyFileVersion( "7.1.0.0" )]
 
 [assembly: AssemblyCopyright( "Copyright © Desire2Learn" )]
 
