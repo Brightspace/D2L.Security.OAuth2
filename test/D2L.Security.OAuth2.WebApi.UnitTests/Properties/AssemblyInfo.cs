@@ -10,7 +10,7 @@ using NUnit.Framework;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Desire2Learn")]
 [assembly: AssemblyProduct("D2L.Security.WebApiAuth.Tests")]
-[assembly: AssemblyCopyright("Copyright © Desire2Learn 2015")]
+[assembly: AssemblyCopyright("Copyright © Desire2Learn 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

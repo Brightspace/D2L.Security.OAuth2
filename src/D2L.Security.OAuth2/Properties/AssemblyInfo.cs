@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Desire2Learn")]
 [assembly: AssemblyProduct("D2L.Security.OAuth2")]
-[assembly: AssemblyCopyright("Copyright © D2L 2016")]
+[assembly: AssemblyCopyright("Copyright © D2L 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,9 +32,9 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion( "7.0.0.0" )]
-[assembly: AssemblyFileVersion( "7.0.0.0" )]
-[assembly: AssemblyInformationalVersion( "7.0.0.0" )]
+[assembly: AssemblyVersion( "7.1.0.0" )]
+[assembly: AssemblyFileVersion( "7.1.0.0" )]
+[assembly: AssemblyInformationalVersion( "7.1.0.0" )]
 
 [assembly: InternalsVisibleTo( "D2L.Security.OAuth2.TestFramework" )]
 [assembly: InternalsVisibleTo( "D2L.Security.OAuth2.Benchmarks" )]

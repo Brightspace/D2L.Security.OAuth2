@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "D2L.Security.OAuth2.Benchmarks" )]
-[assembly: AssemblyCopyright( "Copyright ©  2015" )]
+[assembly: AssemblyCopyright( "Copyright ©  2018" )]
 [assembly: AssemblyTrademark( "" )]
 [assembly: AssemblyCulture( "" )]
 
