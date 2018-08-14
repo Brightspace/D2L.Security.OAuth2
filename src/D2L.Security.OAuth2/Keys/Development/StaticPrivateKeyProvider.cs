@@ -2,6 +2,7 @@
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Keys.Default;
 
 namespace D2L.Security.OAuth2.Keys.Development {
@@ -12,6 +13,10 @@ namespace D2L.Security.OAuth2.Keys.Development {
 	[Obsolete("Only use this in tests and for prototyping.")]
 	internal sealed class StaticPrivateKeyProvider : IPrivateKeyProvider {
 		private readonly Guid m_keyId;
+		[Mutability.Audited(
+			"Todd Lang",
+			"14-Aug-2018",
+			".Net class that is not mutable but can't be marked.")]
 		private readonly RSAParameters m_rsaParameters;
 
 		public StaticPrivateKeyProvider(
