@@ -1,8 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 
@@ -13,8 +12,16 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		private readonly IDateTimeProvider m_dateTimeProvider;
 		private readonly TimeSpan m_keyRotationPeriod;
 
+		[Mutability.Audited(
+			"Todd Lang",
+			"14-Aug-2018",
+			".Net class we can't mark, used internally without mutability." )]
 		private readonly SemaphoreSlim m_privateKeyLock = new SemaphoreSlim( initialCount: 1 );
 
+		[Mutability.Audited(
+			"Todd Lang",
+			"14-Aug-2018",
+			"Used internally, protected threaded access, no way to modify externally." )]
 		private D2LSecurityToken m_privateKey;
 
 		public RotatingPrivateKeyProvider(
@@ -26,7 +33,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_dateTimeProvider = dateTimeProvider;
 			m_keyRotationPeriod = keyRotationPeriod;
 		}
-		
+
 		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 
 			// Hold a local reference so that we know we are talking about the same key
@@ -42,7 +49,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					privateKey = m_privateKey;
 
 					if( NeedFreshPrivateKey( privateKey ) ) {
-						m_privateKey = (await m_inner.GetSigningCredentialsAsync().SafeAsync()).Ref();
+						m_privateKey = ( await m_inner.GetSigningCredentialsAsync().SafeAsync() ).Ref();
 
 						if( privateKey != null ) {
 							privateKey.Dispose();

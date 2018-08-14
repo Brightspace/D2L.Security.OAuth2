@@ -2,11 +2,16 @@
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed partial class EcDsaPrivateKeyProvider : IPrivateKeyProvider {
 
 		private readonly ID2LSecurityTokenFactory m_d2lSecurityTokenFactory;
+		[Mutability.Audited(
+			"Todd Lang",
+			"14-Aug-2018",
+			".Net class we can't mark.")]
 		private readonly CngAlgorithm m_algorithm;
 
 		public EcDsaPrivateKeyProvider(

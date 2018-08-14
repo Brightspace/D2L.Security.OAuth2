@@ -1,10 +1,12 @@
 ﻿using System.Threading.Tasks;
+using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Keys {
 
 	/// <summary>
 	/// An abstraction for signing tokens
 	/// </summary>
+	[Immutable]
 	public interface ITokenSigner {
 
 		/// <summary>

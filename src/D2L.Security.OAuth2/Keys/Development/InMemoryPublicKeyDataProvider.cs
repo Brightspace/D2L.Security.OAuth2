@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Keys.Development {
 
@@ -12,6 +13,10 @@ namespace D2L.Security.OAuth2.Keys.Development {
 	/// </summary>
 	[Obsolete("Only use this in tests and for prototyping without a db")]
 	public sealed class InMemoryPublicKeyDataProvider : IPublicKeyDataProvider {
+		[Mutability.Audited(
+			"Todd Lang",
+			"14-Aug-2018",
+			"Only used in tests, mutability not a concern here.")]
 		private readonly ConcurrentDictionary<Guid, JsonWebKey> m_keys = new ConcurrentDictionary<Guid, JsonWebKey>();
 
 		Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {

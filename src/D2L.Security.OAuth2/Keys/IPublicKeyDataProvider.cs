@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Keys {
 
 	/// <summary>
 	/// Data provider for public keys that belong to this service
 	/// </summary>
+	[Immutable]
 	public interface IPublicKeyDataProvider {
 
 		/// <summary>
