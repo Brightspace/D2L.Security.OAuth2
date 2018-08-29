@@ -35,7 +35,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			}
 		}
 
-		async Task<JsonWebKey> IJwksProvider.RequestJwkAsync( Guid keyId ) {
+		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( Guid keyId ) {
 			var url = GetJwkEndpoint( m_authEndpoint, keyId );
 			try {
 				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 					// so in practice this should only happen when it's
 					// actually important, if it ever happens.
 					if( res.StatusCode == HttpStatusCode.NotFound ) {
-						return await FallbackToJwks( keyId ).SafeAsync();
+						return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
 					}
 
 					res.EnsureSuccessStatusCode();
@@ -59,27 +59,14 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 						.ReadAsStringAsync()
 						.SafeAsync();
 
-					return JsonWebKey.FromJson( json);
+					JsonWebKey jwk = JsonWebKey.FromJson( json );
+					return new JsonWebKeySet( jwk, url );
 				}
 			} catch( HttpRequestException e ) {
 				throw CreateException( e, url );
 			} catch( JsonWebKeyParseException e ) {
 				throw CreateException( e, url );
 			}
-		}
-
-		private async Task<JsonWebKey> FallbackToJwks( Guid keyId ) {
-			var allKeys = await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
-
-			JsonWebKey theKey;
-
-			if( !allKeys.TryGetKey( keyId, out theKey ) ) {
-				throw new PublicKeyLookupFailureException(
-					$"couldn't find public key {keyId} after falling back to jwks route"
-				);
-			}
-
-			return theKey;
 		}
 
 		string IJwksProvider.Namespace => m_authEndpoint.AbsoluteUri;
