@@ -89,14 +89,20 @@ namespace D2L.Security.OAuth2.TestFramework {
 				.GetAllAsync()
 				.SafeAsync();
 
-			IEnumerable<object> keysDto = keys
-				.Select( k => k.ToJwkDto() );
+			List<object> keyDtos = new List<object>();
+			foreach( JsonWebKey key in keys ) {
+				object dto = key.ToJwkDto();
+				keyDtos.Add( dto );
 
-			var jwksDto = new {
-				keys = keysDto
-			};
+				m_server
+					.Stub( r => r.Get( $"jwk/{ key.Id }" ) )
+					.Return( JsonConvert.SerializeObject( dto ) )
+					.OK();
+			}
 
-			string jwksJson = JsonConvert.SerializeObject( jwksDto );
+			string jwksJson = JsonConvert.SerializeObject( new {
+				keys = keyDtos
+			} );
 
 			m_server
 				.Stub( r => r.Get( "/.well-known/jwks" ) )
