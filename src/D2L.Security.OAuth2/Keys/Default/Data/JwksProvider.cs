@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		async Task<JsonWebKey> IJwksProvider.RequestJwkAsync( Guid keyId ) {
 			var url = GetJwkEndpoint( m_authEndpoint, keyId );
 			try {
-				using( var res = await m_httpClient.GetAsync( url ) ) {
+				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
 					// This is temporary while we try to fully deprecate the
 					// JWKS route. 404 might mean the key doesn't exist (which
 					// will make the call to jwks likely return 200 but still
@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 					// so in practice this should only happen when it's
 					// actually important, if it ever happens.
 					if( res.StatusCode == HttpStatusCode.NotFound ) {
-						return await FallbackToJwks( keyId );
+						return await FallbackToJwks( keyId ).SafeAsync();
 					}
 
 					res.EnsureSuccessStatusCode();
@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		}
 
 		private async Task<JsonWebKey> FallbackToJwks( Guid keyId ) {
-			var allKeys = await ( this as IJwksProvider ).RequestJwksAsync();
+			var allKeys = await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
 
 			JsonWebKey theKey;
 
