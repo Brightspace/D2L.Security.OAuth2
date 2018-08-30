@@ -88,7 +88,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 			m_jwksProvider
 				.InSequence( seq )
-				.Setup( x => x.RequestJwksAsync() )
+				.Setup( x => x.RequestJwkAsync( KEY_ID ) )
 				.ReturnsAsync( jwks );
 
 			m_keyCache
@@ -145,7 +145,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 			m_jwksProvider
 				.InSequence( seq )
-				.Setup( x => x.RequestJwksAsync() )
+				.Setup( x => x.RequestJwkAsync( KEY_ID ) )
 				.ReturnsAsync( jwks );
 
 			m_keyCache
