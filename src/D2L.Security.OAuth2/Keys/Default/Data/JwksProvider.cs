@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 					// expect many "legitimate" 404s (keys that don't exist.)
 					// so in practice this should only happen when it's
 					// actually important, if it ever happens.
-					if( res.StatusCode == HttpStatusCode.NotFound ) {
+					if( res.StatusCode != HttpStatusCode.OK ) {
 						return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
 					}
 

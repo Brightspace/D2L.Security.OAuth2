@@ -164,5 +164,27 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 				Assert.AreEqual( GOOD_JWK_ID, jwk.Id );
 			}
 		}
+
+		[Test]
+		public async Task RequestJwkAsync_500_Fallback_Success() {
+			using( SetupJwkServer( out string host, hasJwk: false, jwkStatusCode: HttpStatusCode.InternalServerError ) )
+			using( HttpClient httpClient = new HttpClient() ) {
+				IJwksProvider jwksProvider = new JwksProvider(
+					httpClient,
+					new Uri( host + GOOD_PATH )
+				);
+
+				JsonWebKeySet jwks = await jwksProvider
+					.RequestJwkAsync( GOOD_JWK_ID )
+					.SafeAsync();
+				Assert.IsNotNull( jwks );
+
+				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
+				//jwksServer.AssertWasCalled( x => x.Get( GOOD_PATH + JWKS_PATH ) );
+
+				Assert.IsTrue( jwks.TryGetKey( GOOD_JWK_ID, out JsonWebKey jwk ) );
+				Assert.AreEqual( GOOD_JWK_ID, jwk.Id );
+			}
+		}
 	}
 }
