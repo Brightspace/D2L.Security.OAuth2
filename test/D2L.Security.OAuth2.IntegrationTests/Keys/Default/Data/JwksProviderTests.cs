@@ -43,9 +43,10 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		[Test]
 		public async Task SuccessCase() {
-			using( SetupJwkServer( out string host ) ) {
+			using( SetupJwkServer( out string host ) )
+			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
-					new HttpClient(),
+					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
 
@@ -61,9 +62,10 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		[Test]
 		public void RequestJwksAsync_HTML_Throws() {
-			using( SetupJwkServer( out string host ) ) {
+			using( SetupJwkServer( out string host ) )
+			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
-					new HttpClient(),
+					httpClient,
 					new Uri( host + HTML_PATH )
 				);
 
@@ -79,9 +81,10 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		[Test]
 		public void RequestJwksAsync_404_Throws() {
-			using( SetupJwkServer( out string host ) ) {
+			using( SetupJwkServer( out string host ) )
+			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
-					new HttpClient(),
+					httpClient,
 					new Uri( host + BAD_PATH )
 				);
 
@@ -95,9 +98,10 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		[Test]
 		public void RequestJwksAsync_CantReachServer_Throws() {
-			using( SetupJwkServer( out string host ) ) {
+			using( SetupJwkServer( out string host ) )
+			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
-					new HttpClient(),
+					httpClient,
 					new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" )
 				);
 
