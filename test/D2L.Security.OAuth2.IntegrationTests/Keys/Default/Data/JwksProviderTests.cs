@@ -21,90 +21,92 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		private static string GOOD_JSON = @"{""keys"": [" + GOOD_JWK + "]}";
 		private static string HTML = "<html><body><p>This isn't JSON eh</p></body></html>";
 
-
-		private IHttpServer m_jwksServer;
-		private string m_host;
-		
-		[OneTimeSetUp]
-		public void TestFixtureSetUp() {
-			m_jwksServer = HttpMockFactory.Create( out m_host );
+		private IHttpServer SetupJwkServer(
+			out string host
+		) {
+			IHttpServer jwksServer = HttpMockFactory.Create( out host );
 			
-			m_jwksServer.Stub(
+			jwksServer.Stub(
 				x => x.Get( GOOD_PATH + JWKS_PATH )
 			).Return( GOOD_JSON ).OK();
 			
-			m_jwksServer.Stub(
+			jwksServer.Stub(
 				x => x.Get( BAD_PATH )
 			).Return( GOOD_JSON ).WithStatus( HttpStatusCode.InternalServerError );
 
-			m_jwksServer.Stub(
+			jwksServer.Stub(
 				x => x.Get( HTML_PATH + JWKS_PATH )
 			).Return( HTML ).WithStatus( HttpStatusCode.OK );
-		}
 
-		[OneTimeTearDown]
-		public void TestFixtureTearDown() {
-			m_jwksServer.Dispose();
+			return jwksServer;
 		}
 
 		[Test]
 		public async Task SuccessCase() {
-			IJwksProvider publicKeyProvider = new JwksProvider(
-				new HttpClient(),
-				new Uri( m_host + GOOD_PATH )
-			);
+			using( SetupJwkServer( out string host ) ) {
+				IJwksProvider publicKeyProvider = new JwksProvider(
+					new HttpClient(),
+					new Uri( host + GOOD_PATH )
+				);
 
-			JsonWebKeySet jwks = await publicKeyProvider
-				.RequestJwksAsync()
-				.SafeAsync();
-			JsonWebKey jwk;
+				JsonWebKeySet jwks = await publicKeyProvider
+					.RequestJwksAsync()
+					.SafeAsync();
+				JsonWebKey jwk;
 
-			Assert.IsNotNull( jwks );
-			Assert.IsTrue( jwks.TryGetKey( GOOD_JWK_ID, out jwk ) );
+				Assert.IsNotNull( jwks );
+				Assert.IsTrue( jwks.TryGetKey( GOOD_JWK_ID, out jwk ) );
+			}
 		}
 
 		[Test]
 		public void RequestJwksAsync_HTML_Throws() {
-			IJwksProvider publicKeyProvider = new JwksProvider(
-				new HttpClient(),
-				new Uri( m_host + HTML_PATH )
-			);
-
-			var e = Assert.Throws<PublicKeyLookupFailureException>( () =>
-				publicKeyProvider
-					.RequestJwksAsync()
-					.SafeWait()
+			using( SetupJwkServer( out string host ) ) {
+				IJwksProvider publicKeyProvider = new JwksProvider(
+					new HttpClient(),
+					new Uri( host + HTML_PATH )
 				);
 
-			StringAssert.Contains( "<body>", e.Message );
+				var e = Assert.Throws<PublicKeyLookupFailureException>( () =>
+					publicKeyProvider
+						.RequestJwksAsync()
+						.SafeWait()
+					);
+
+				StringAssert.Contains( "<body>", e.Message );
+			}
 		}
 
 		[Test]
 		public void RequestJwksAsync_404_Throws() {
-			IJwksProvider publicKeyProvider = new JwksProvider(
-				new HttpClient(),
-				new Uri( m_host + BAD_PATH )
-			);
+			using( SetupJwkServer( out string host ) ) {
+				IJwksProvider publicKeyProvider = new JwksProvider(
+					new HttpClient(),
+					new Uri( host + BAD_PATH )
+				);
 
-			Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
-				JsonWebKeySet jwks = await publicKeyProvider
-					.RequestJwksAsync()
-					.SafeAsync();
-			} );
+				Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
+					JsonWebKeySet jwks = await publicKeyProvider
+						.RequestJwksAsync()
+						.SafeAsync();
+				} );
+			}
 		}
 
 		[Test]
 		public void RequestJwksAsync_CantReachServer_Throws() {
-			IJwksProvider publicKeyProvider = new JwksProvider(
-				new HttpClient(),
-				new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" )
-			);
+			using( SetupJwkServer( out string host ) ) {
+				IJwksProvider publicKeyProvider = new JwksProvider(
+					new HttpClient(),
+					new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" )
+				);
 
-			Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
-				JsonWebKeySet jwks = await publicKeyProvider
-				.RequestJwksAsync()
-				.SafeAsync();
-			} );
+				Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
+					JsonWebKeySet jwks = await publicKeyProvider
+					.RequestJwksAsync()
+					.SafeAsync();
+				} );
+			}
 		}
 	}
 }
