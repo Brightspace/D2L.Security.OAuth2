@@ -12,7 +12,7 @@ using SimpleLogInterface;
 namespace D2L.Security.OAuth2 {
 	[SetUpFixture]
 	public sealed class SetUpFixture {
-		const long PORT = 8916; // TODO: do this better
+		private const long PORT = 8916; // TODO: do this better
 		private IDisposable m_disposeHandle;
 
 		[OneTimeSetUp]

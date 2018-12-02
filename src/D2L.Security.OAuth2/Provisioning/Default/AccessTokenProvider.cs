@@ -40,8 +40,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			DateTime now = DateTime.UtcNow;
 
-			string issuer;
-			if( !claims.TryGetClaim( Constants.Claims.ISSUER, out issuer ) ) {
+			if( !claims.TryGetClaim( Constants.Claims.ISSUER, out string issuer ) ) {
 				throw new InvalidOperationException( "missing issuer claim" );
 			}
 

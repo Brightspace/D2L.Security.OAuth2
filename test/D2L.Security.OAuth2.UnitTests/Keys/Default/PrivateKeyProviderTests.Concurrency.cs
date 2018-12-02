@@ -104,11 +104,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				RequireSignedTokens = true,
 				IssuerSigningToken = securityToken
 			};
-			SecurityToken validatedToken;
 			validationTokenHandler.ValidateToken(
 				signedToken,
 				validationParameters,
-				out validatedToken
+				out SecurityToken validatedToken
 				);
 
 			JwtSecurityToken validatedJwt = validatedToken as JwtSecurityToken;

@@ -26,16 +26,14 @@ namespace D2L.Security.OAuth2.Principal {
 				() => m_accessToken.GetScopes().ToList()
 			);
 
-			long userId;
-			if( !m_accessToken.TryGetUserId( out userId ) ) {
+			if( !m_accessToken.TryGetUserId( out long userId ) ) {
 				m_principalType = PrincipalType.Service;
 				return;
 			}
 
 			m_userId = userId;
 
-			long actualUserId;
-			if( !m_accessToken.TryGetActualUserId( out actualUserId ) ) {
+			if( !m_accessToken.TryGetActualUserId( out long actualUserId ) ) {
 				// Doing this means that code that wants to ignore
 				// impersonation can do so with less branching.
 				m_actualUserId = userId;
@@ -80,8 +78,7 @@ namespace D2L.Security.OAuth2.Principal {
 		private Guid GetTenantId() {
 			string strTenantId = m_accessToken.GetTenantId();
 
-			Guid tenantId;
-			if( !Guid.TryParse( strTenantId, out tenantId ) ) {
+			if( !Guid.TryParse( strTenantId, out Guid tenantId ) ) {
 				string message = string.Format( "TenantId '{0}' is not a valid Guid", strTenantId );
 				throw new Exception( message );
 			}

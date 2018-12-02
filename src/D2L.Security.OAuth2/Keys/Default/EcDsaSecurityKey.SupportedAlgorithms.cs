@@ -1,6 +1,6 @@
 ﻿
 namespace D2L.Security.OAuth2.Keys.Default {
-	partial class EcDsaSecurityKey {
+	internal partial class EcDsaSecurityKey {
 		public static class SupportedSecurityAlgorithms {
 			public const string ECDsaSha256Signature = "ES256";
 			public const string ECDsaSha384Signature = "ES384";

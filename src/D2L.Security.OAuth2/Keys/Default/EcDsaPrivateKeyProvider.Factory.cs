@@ -3,8 +3,7 @@ using System.Security.Cryptography;
 using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-
-	partial class EcDsaPrivateKeyProvider {
+	internal partial class EcDsaPrivateKeyProvider {
 
 		internal static class Factory {
 

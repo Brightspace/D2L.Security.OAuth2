@@ -64,7 +64,7 @@ namespace D2L.Security.OAuth2.Utilities {
 				m_createMockResponse = mockResponseFunction;
 			}
 
-			protected async override Task<HttpResponseMessage> SendAsync(
+			protected override async Task<HttpResponseMessage> SendAsync(
 				HttpRequestMessage request,
 				CancellationToken cancellationToken
 			) {

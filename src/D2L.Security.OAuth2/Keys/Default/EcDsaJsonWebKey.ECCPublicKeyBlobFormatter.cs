@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	partial class EcDsaJsonWebKey {
+	internal partial class EcDsaJsonWebKey {
 		private sealed class ECCPublicKeyBlobFormatter {
 
 			internal static readonly ECCPublicKeyBlobFormatter Instance = new ECCPublicKeyBlobFormatter();

@@ -50,11 +50,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					.SafeAsync();
 
 				Assert.IsNotNull( accessToken );
-
-				string subject;
-				string fakeclaim;
-				accessToken.Claims.TryGetClaim( "sub", out subject );
-				accessToken.Claims.TryGetClaim( "fakeclaim", out fakeclaim );
+				accessToken.Claims.TryGetClaim( "sub", out string subject );
+				accessToken.Claims.TryGetClaim( "fakeclaim", out string fakeclaim );
 
 				Assert.AreEqual( SUBJECT, subject );
 				Assert.IsNull( fakeclaim );
@@ -97,7 +94,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				StringAssert.Contains( m_authService.Host.AbsoluteUri, e.Message );
 			}
 
-			private static TestCaseData[] WebCrypto_TestCases = {
+			private static readonly TestCaseData[] WebCrypto_TestCases = {
 				new TestCaseData(
 					"{\"crv\":\"P-256\",\"ext\":true,\"key_ops\":[\"verify\"],\"kty\":\"EC\",\"x\":\"l11cYO8NXZAHiXJfXYkBHesiUEUN5nrjPCL5Rr5tw2M\",\"y\":\"ooSg8_JyPyH7fIA5MGTy99aVwSy7PYwogW32WkVOb-E\",\"kid\":\"c9f4fe54-417e-4279-8676-fc3c605c4720\",\"use\":\"sig\"}",
 					"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImM5ZjRmZTU0LTQxN2UtNDI3OS04Njc2LWZjM2M2MDVjNDcyMCJ9.eyJleHAiOjE0MzM4NzE1MjUsImlzcyI6ImZha2UgaXNzdWVyIn0.yA4WNemRpUreSh9qgMh_ePGqhgn328ghJ_HG7WOBKQV98eFNm3FIvweoiSzHvl49Z6YTdV4Up7NDD7UcZ-52cw"
@@ -114,8 +111,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			[Test, TestCaseSource( "WebCrypto_TestCases" )]
 			public void ValidateAsync_GoodSignature_Succeeds_WebCrypto( string jwk, string token ) {
-				string host;
-				var mockServer = HttpMockFactory.Create( out host );
+				var mockServer = HttpMockFactory.Create( out string host );
 
 				mockServer
 					.Stub( r => r.Get( "/.well-known/jwks" ) )

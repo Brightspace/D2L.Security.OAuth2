@@ -32,8 +32,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			Scope[] scopesArray = scopes
 				.Split( ' ' )
 				.Select( scopeString => {
-					Scope scope;
-					if( Scope.TryParse( scopeString, out scope ) ) {
+					if( Scope.TryParse( scopeString, out Scope scope ) ) {
 						return scope;
 					}
 

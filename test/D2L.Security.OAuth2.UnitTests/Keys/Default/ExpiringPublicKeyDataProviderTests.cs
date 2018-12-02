@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	[TestFixture]
 	internal sealed class ExpiringPublicKeyDataProviderTests {
 
-		private static DateTime NOW = new DateTime( 2 );
+		private static readonly DateTime NOW = new DateTime( 2 );
 
 		private Mock<IPublicKeyDataProvider> m_mockPublicKeyDataProvider;
 		private IPublicKeyDataProvider m_publicKeyDataProvider;
