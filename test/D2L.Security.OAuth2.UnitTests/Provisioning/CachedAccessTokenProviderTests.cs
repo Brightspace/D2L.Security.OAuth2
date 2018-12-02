@@ -4,10 +4,10 @@ using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Provisioning.Default;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Services;
 using Moq;
 using NUnit.Framework;
 
@@ -150,7 +150,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			) {
 
 			string userClaim = specifyUserClaim ? ",\"sub\": \"169\"" : string.Empty;
-			long expiry = (long)DateTime.UtcNow.AddSeconds( tokenExpiryInSeconds ).TimeSinceUnixEpoch().TotalSeconds;
+			long expiry = ( long )DateTime.UtcNow.AddSeconds( tokenExpiryInSeconds ).TimeSinceUnixEpoch().TotalSeconds;
 
 			const string part1 = "{\"alg\": \"RS256\",\"typ\": \"JWT\"}";
 			string part2 = string.Format( "{{\"exp\": \"{0}\"{1}}}", expiry, userClaim );

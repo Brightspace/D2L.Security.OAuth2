@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public Guid KeyId { get { return m_id; } }
-		
+
 		public override DateTime ValidFrom {
 			get { return m_validFrom; }
 		}

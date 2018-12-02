@@ -7,7 +7,7 @@ namespace D2L.Security.OAuth2.Utilities {
 
 		private const int SPECIAL_DAY_SECONDS = 1234567890;
 		private readonly DateTime SPECIAL_DAY = new DateTime( 2009, 2, 13, 23, 31, 30, DateTimeKind.Utc );
-		
+
 		[Test]
 		public void FromUnixTime_0_IsEpoch() {
 			DateTime actual = DateTimeHelpers.FromUnixTime( 0 );

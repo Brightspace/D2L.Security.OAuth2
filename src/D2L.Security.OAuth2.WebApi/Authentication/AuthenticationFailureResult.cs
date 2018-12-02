@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		private readonly Exception m_exception;
 
 		public AuthenticationFailureResult( Exception exception ) {
-			m_exception = exception;	
+			m_exception = exception;
 		}
 
 		public Task<HttpResponseMessage> ExecuteAsync( CancellationToken cancellationToken ) {
@@ -31,11 +31,11 @@ namespace D2L.Security.OAuth2.Authentication {
 
 		// See https://tools.ietf.org/html/draft-nottingham-http-problem-06
 		private sealed class Response {
-			[JsonProperty("title")]
+			[JsonProperty( "title" )]
 			public string Title { get { return "Authentication required"; } }
 
 			[JsonProperty( "status" )]
-			public long Status { get { return (long)HttpStatusCode.Unauthorized; } }
+			public long Status { get { return ( long )HttpStatusCode.Unauthorized; } }
 
 			[JsonProperty( "detail" )]
 			public string Detail { get; set; }

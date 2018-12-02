@@ -4,9 +4,9 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Scopes;
 using D2L.Services;
 using D2L.Services.Core.Exceptions;
-using D2L.Security.OAuth2.Scopes;
 using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
@@ -17,18 +17,18 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 	internal sealed class AuthServiceClient : IAuthServiceClient {
 
 		private const string TOKEN_PATH = "/connect/token";
-		
+
 		private const string SERIALIZATION_ERROR_MESSAGE_PREFIX =
 			"An error occurred while parsing the response from the Auth Service. ";
-		
+
 		internal const string EMPTY_RESPONSE_ERROR_MESSAGE =
 			SERIALIZATION_ERROR_MESSAGE_PREFIX +
 			"The Auth Service's reponse did not have any content.";
-		
+
 		internal const string INVALID_JSON_ERROR_MESSAGE_PREFIX =
 			SERIALIZATION_ERROR_MESSAGE_PREFIX +
 			"The Auth Service responded with: ";
-		
+
 		private readonly HttpClient m_client;
 		private readonly Uri m_tokenProvisioningEndpoint;
 
@@ -85,7 +85,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 						innerException: exception
 					);
 				}
-				
+
 				string json = null;
 				if( response.Content != null ) {
 					try {
@@ -98,11 +98,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 						);
 					}
 				}
-				
-				
+
+
 				if( !response.IsSuccessStatusCode ) {
 					string errorMessage;
-					
+
 					if( string.IsNullOrWhiteSpace( json ) ) {
 						errorMessage = response.ReasonPhrase;
 					} else {
@@ -113,21 +113,21 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 							errorMessage = string.Concat( response.ReasonPhrase, ": ", json );
 						}
 					}
-					
+
 					throw new AuthServiceException(
 						errorType: ServiceErrorType.ErrorResponse,
 						serviceStatusCode: response.StatusCode,
 						message: errorMessage
 					);
 				}
-				
+
 				if( string.IsNullOrEmpty( json ) ) {
 					throw new AuthServiceException(
 						errorType: ServiceErrorType.ClientError,
 						message: EMPTY_RESPONSE_ERROR_MESSAGE
 					);
 				}
-				
+
 				try {
 					var grant = JsonConvert.DeserializeObject<GrantResponse>( json );
 					return new AccessToken( grant.Token );
@@ -165,16 +165,16 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			var result = builder.ToString();
 			return result;
 		}
-		
+
 		private sealed class GrantResponse {
 			[JsonProperty( PropertyName = "access_token", Required = Required.Always )]
 			public string Token { get; set; }
 		}
-		
+
 		private sealed class ErrorResponse {
 			[JsonProperty( PropertyName = "error", Required = Required.Always )]
 			public string Title { get; set; }
-			
+
 			[JsonProperty( PropertyName = "error_description", Required = Required.Always )]
 			public string Detail { get; set; }
 		}

@@ -21,9 +21,9 @@ namespace D2L.Security.OAuth2 {
 			for( int i = 0; i < groups.Length; i++ ) {
 				builder.AppendFormat(
 					"{0}:{1}:{2} ",
-					groups[i],
-					resources[i],
-					permissions[i]
+					groups[ i ],
+					resources[ i ],
+					permissions[ i ]
 					);
 			}
 			// remove trailing space
@@ -33,13 +33,13 @@ namespace D2L.Security.OAuth2 {
 			Scope[] resolvedScopes = principal.GetGrantedScopes().ToArray();
 
 			for( int i = 0; i < resolvedScopes.Length; i++ ) {
-				Scope scope = resolvedScopes[i];
+				Scope scope = resolvedScopes[ i ];
 
-				Assert.AreEqual( groups[i], scope.Group );
-				Assert.AreEqual( resources[i], scope.Resource );
+				Assert.AreEqual( groups[ i ], scope.Group );
+				Assert.AreEqual( resources[ i ], scope.Resource );
 
 				Assert.AreEqual( 1, scope.Permissions.Count );
-				Assert.AreEqual( permissions[i], scope.Permissions[0] );
+				Assert.AreEqual( permissions[ i ], scope.Permissions[ 0 ] );
 			}
 		}
 
@@ -50,14 +50,14 @@ namespace D2L.Security.OAuth2 {
 			Scope[] scopes = principal.GetGrantedScopes().ToArray();
 			Assert.AreEqual( 2, scopes.Length );
 
-			Scope actual = scopes[1];
+			Scope actual = scopes[ 1 ];
 			Assert.AreEqual( "g", actual.Group );
 			Assert.AreEqual( "r", actual.Resource );
 
 			IReadOnlyList<string> actualPermissions = actual.Permissions;
 			Assert.AreEqual( 2, actualPermissions.Count );
-			Assert.AreEqual( "p0", actualPermissions[0] );
-			Assert.AreEqual( "p1", actualPermissions[1] );
+			Assert.AreEqual( "p0", actualPermissions[ 0 ] );
+			Assert.AreEqual( "p1", actualPermissions[ 1 ] );
 		}
 
 		[TestCase( "" )]
@@ -78,11 +78,11 @@ namespace D2L.Security.OAuth2 {
 			Scope[] scopes = principal.GetGrantedScopes().ToArray();
 
 			Assert.AreEqual( 1, scopes.Length );
-			Assert.AreEqual( "a", scopes[0].Group );
-			Assert.AreEqual( "b", scopes[0].Resource );
+			Assert.AreEqual( "a", scopes[ 0 ].Group );
+			Assert.AreEqual( "b", scopes[ 0 ].Resource );
 
-			Assert.AreEqual( 1, scopes[0].Permissions.Count );
-			Assert.AreEqual( "c", scopes[0].Permissions[0] );
+			Assert.AreEqual( 1, scopes[ 0 ].Permissions.Count );
+			Assert.AreEqual( "c", scopes[ 0 ].Permissions[ 0 ] );
 		}
 
 		private static ClaimsPrincipal PrincipalFromScopeClaim( string scopeClaimValue ) {

@@ -18,23 +18,23 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			switch( m_ECDsa.KeySize ) {
 				case 256: {
-					m_signatureAlgorithm = SupportedSecurityAlgorithms.ECDsaSha256Signature;
-					m_digestAlgorithm = CngAlgorithm.Sha256.Algorithm;
-					break;
-				}
+						m_signatureAlgorithm = SupportedSecurityAlgorithms.ECDsaSha256Signature;
+						m_digestAlgorithm = CngAlgorithm.Sha256.Algorithm;
+						break;
+					}
 				case 384: {
-					m_signatureAlgorithm = SupportedSecurityAlgorithms.ECDsaSha384Signature;
-					m_digestAlgorithm = CngAlgorithm.Sha384.Algorithm;
-					break;
-				}
+						m_signatureAlgorithm = SupportedSecurityAlgorithms.ECDsaSha384Signature;
+						m_digestAlgorithm = CngAlgorithm.Sha384.Algorithm;
+						break;
+					}
 				case 521: {
-					m_signatureAlgorithm = SupportedSecurityAlgorithms.ECDsaSha512Signature;
-					m_digestAlgorithm = CngAlgorithm.Sha512.Algorithm;
-					break;
-				}
+						m_signatureAlgorithm = SupportedSecurityAlgorithms.ECDsaSha512Signature;
+						m_digestAlgorithm = CngAlgorithm.Sha512.Algorithm;
+						break;
+					}
 				default: {
-					throw new Exception( "Unknown key size" );
-				}
+						throw new Exception( "Unknown key size" );
+					}
 			}
 		}
 

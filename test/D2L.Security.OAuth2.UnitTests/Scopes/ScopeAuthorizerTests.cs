@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		[Test]
 		public void NoScopesGranted_AuthorizationShouldBeDenied() {
 
-			var grantedScopes = new Scope[0];
+			var grantedScopes = new Scope[ 0 ];
 			var requiredScope = new Scope( "g", "r", "p" );
 
 			bool isAuthorized = ScopeAuthorizer.IsAuthorized( grantedScopes, requiredScope );
@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		[TestCase( "*:r:p", "g:r:p", Description = "Grant exact permission on exact resource in all groups" )]
 		public void RequiredScopeIsGranted_AuthorizationShouldBeGranted(
 			string grantedScopePattern,
-			string requiredScopePattern) {
+			string requiredScopePattern ) {
 
 			var grantedScopes = ParseScopePattern( grantedScopePattern );
 

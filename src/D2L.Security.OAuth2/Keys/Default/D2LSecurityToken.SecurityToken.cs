@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
-using D2L.Security.OAuth2.Provisioning;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 

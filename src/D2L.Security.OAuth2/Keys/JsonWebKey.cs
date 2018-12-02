@@ -61,7 +61,7 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
 			}
 
-			if ( data[ "use" ].ToString() != "sig" ) {
+			if( data[ "use" ].ToString() != "sig" ) {
 				string msg = String.Format( "invalid 'use' value in JSON web key: {0}", data[ "use" ] );
 				throw new JsonWebKeyParseException( msg );
 			}
@@ -132,12 +132,12 @@ namespace D2L.Security.OAuth2.Keys {
 
 		private static bool HasRsaPrivateKeyMaterial( IReadOnlyDictionary<string, object> data ) {
 			return data.ContainsKey( "d" )
-			    || data.ContainsKey( "p" )
-			    || data.ContainsKey( "q" )
-			    || data.ContainsKey( "dp" )
-			    || data.ContainsKey( "dq" )
-			    || data.ContainsKey( "qi" )
-			    || data.ContainsKey( "oth" );
+				|| data.ContainsKey( "p" )
+				|| data.ContainsKey( "q" )
+				|| data.ContainsKey( "dp" )
+				|| data.ContainsKey( "dq" )
+				|| data.ContainsKey( "qi" )
+				|| data.ContainsKey( "oth" );
 		}
 	}
 
@@ -149,11 +149,11 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// Constructs a new <see cref="JsonWebKeyParseException"/>
 		/// </summary>
-		public JsonWebKeyParseException( string msg ) : base( msg ) {}
+		public JsonWebKeyParseException( string msg ) : base( msg ) { }
 
 		/// <summary>
 		/// Constructs a new <see cref="JsonWebKeyParseException"/>
 		/// </summary>
-		public JsonWebKeyParseException( string msg, Exception inner ) : base( msg, inner ) {}
+		public JsonWebKeyParseException( string msg, Exception inner ) : base( msg, inner ) { }
 	}
 }

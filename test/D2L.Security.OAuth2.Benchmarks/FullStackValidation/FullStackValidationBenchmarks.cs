@@ -14,10 +14,10 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			Console.WriteLine();
 
 			Benchmark
-				.This( "RS256", ( (IBenchmark)new RS256() ).GetRunner() )
-				.Against.This( "ES256", ( (IBenchmark)new ES256() ).GetRunner() )
-				.Against.This( "ES384", ( (IBenchmark)new ES384() ).GetRunner() )
-				.Against.This( "ES512", ( (IBenchmark)new ES512() ).GetRunner() )
+				.This( "RS256", ( ( IBenchmark )new RS256() ).GetRunner() )
+				.Against.This( "ES256", ( ( IBenchmark )new ES256() ).GetRunner() )
+				.Against.This( "ES384", ( ( IBenchmark )new ES384() ).GetRunner() )
+				.Against.This( "ES512", ( ( IBenchmark )new ES512() ).GetRunner() )
 				.WithWarmup( WARMUP_ITERATIONS )
 				.For( RUNTIME.Seconds )
 				.Seconds()

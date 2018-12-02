@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.TestWebService.Controllers;
 using D2L.Services;

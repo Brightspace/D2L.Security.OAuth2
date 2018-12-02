@@ -1,22 +1,21 @@
-﻿using D2L.Security.OAuth2.Provisioning;
+﻿using System;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
 using D2L.Security.OAuth2.Provisioning.Default;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services.Core.Exceptions;
 using NUnit.Framework;
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Provisioning {
-	
+
 	[TestFixture]
 	[Category( "Unit" )]
 	internal sealed class AuthServiceClientTests {
-		
+
 		private const string TEST_URI = "http://www.unit.test";
-		
+
 		[Test]
 		public async Task ServiceDown_ExpectServiceException_ConnectionFailure() {
 			await RunTest_ExpectServiceException(
@@ -26,7 +25,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 				expectedErrorType: ServiceErrorType.ConnectionFailure
 			);
 		}
-		
+
 		[Test]
 		public async Task Timeout_ExpectServiceException_Timeout() {
 			await RunTest_ExpectServiceException(
@@ -36,7 +35,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 				expectedErrorType: ServiceErrorType.Timeout
 			);
 		}
-		
+
 		[Test]
 		public async Task ErrorStatusCode_EmptyResponse_ExpectServiceException_ErrorResponse() {
 			await RunTest_ExpectServiceException(
@@ -48,12 +47,12 @@ namespace D2L.Security.OAuth2.Provisioning {
 				expectedMessage: "Not Found"
 			);
 		}
-		
+
 		[Test]
 		public async Task ErrorStatusCode_ValidErrorObject_ExpectServiceException_ErrorResponse() {
 			const string ERROR_NAME = "TestError";
 			const string ERROR_DETAIL = "Test error details";
-			
+
 			await RunTest_ExpectServiceException(
 				mockClient: MockHttpClient.Create(
 					responseStatus: HttpStatusCode.NotFound,
@@ -66,11 +65,11 @@ namespace D2L.Security.OAuth2.Provisioning {
 				expectedMessage: string.Concat( ERROR_NAME, ": ", ERROR_DETAIL )
 			);
 		}
-		
+
 		[Test]
 		public async Task ErrorStatusCodeAndInvalidJson_ExpectServiceException_ErrorResponse() {
 			const string AUTH_RESPONSE_CONTENT = "{ \"invalid\": \"format\" }";
-			
+
 			await RunTest_ExpectServiceException(
 				mockClient: MockHttpClient.Create(
 					responseStatus: HttpStatusCode.NotFound,
@@ -80,7 +79,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 				expectedMessage: string.Concat( "Not Found: ", AUTH_RESPONSE_CONTENT )
 			);
 		}
-		
+
 		[Test]
 		public async Task NoContent_ExpectServiceException_ClientError() {
 			await RunTest_ExpectServiceException(
@@ -92,11 +91,11 @@ namespace D2L.Security.OAuth2.Provisioning {
 				expectedMessage: AuthServiceClient.EMPTY_RESPONSE_ERROR_MESSAGE
 			);
 		}
-		
+
 		[Test]
 		public async Task InvalidJson_ExpectServiceException_ClientError() {
 			const string AUTH_RESPONSE_CONTENT = "{ \"invalid\": \"format\" }";
-			
+
 			await RunTest_ExpectServiceException(
 				mockClient: MockHttpClient.Create(
 					responseStatus: HttpStatusCode.OK,
@@ -109,7 +108,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 				)
 			);
 		}
-		
+
 		[Test]
 		public async Task ValidResponse_ExpectSuccess() {
 			const string TEST_TOKEN = "test-token";
@@ -121,7 +120,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 				expectedToken: TEST_TOKEN
 			);
 		}
-		
+
 		private async Task RunTest_ExpectServiceException(
 			HttpClient mockClient,
 			ServiceErrorType expectedErrorType,
@@ -133,14 +132,14 @@ namespace D2L.Security.OAuth2.Provisioning {
 			} catch( ServiceException ex ) {
 				exception = ex;
 			}
-			
+
 			Assert.IsNotNull( exception );
 			Assert.AreEqual( expectedErrorType, exception.ErrorType );
 			if( expectedMessage != null ) {
 				Assert.AreEqual( expectedMessage, exception.Message );
 			}
 		}
-		
+
 		private async Task RunTest_ExpectSuccess(
 			HttpClient mockClient,
 			string expectedToken
@@ -148,7 +147,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessToken token = await RunTestHelper( mockClient );
 			Assert.AreEqual( expectedToken, token.Token );
 		}
-		
+
 		private async Task<IAccessToken> RunTestHelper( HttpClient mockClient ) {
 			IAuthServiceClient client = new AuthServiceClient(
 				httpClient: mockClient,
@@ -156,10 +155,10 @@ namespace D2L.Security.OAuth2.Provisioning {
 			);
 			return await client.ProvisionAccessTokenAsync(
 				assertion: string.Empty,
-				scopes: new Scope[]{}
+				scopes: new Scope[] { }
 			);
 		}
-		
+
 	}
-	
+
 }

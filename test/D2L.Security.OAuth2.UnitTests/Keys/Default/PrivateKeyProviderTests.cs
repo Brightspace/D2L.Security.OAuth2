@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.Utilities;
+using D2L.Services;
 using Moq;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	[TestFixture]
 	internal sealed partial class PrivateKeyProviderTests {
-		private const long ROTATION_PERIOD_SECONDS = 10*60;
-		private const long KEY_LIFETIME_SECONDS = 60*60;
+		private const long ROTATION_PERIOD_SECONDS = 10 * 60;
+		private const long KEY_LIFETIME_SECONDS = 60 * 60;
 		private static readonly TimeSpan KEY_LIFETIME = TimeSpan.FromSeconds( KEY_LIFETIME_SECONDS );
 		private static readonly TimeSpan ROTATION_PERIOD = TimeSpan.FromSeconds( ROTATION_PERIOD_SECONDS );
 
@@ -44,10 +44,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			Assert.NotNull( key );
 		}
 
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase((KEY_LIFETIME_SECONDS - ROTATION_PERIOD_SECONDS) / 2)]
-		[TestCase(KEY_LIFETIME_SECONDS - ROTATION_PERIOD_SECONDS - 1)]
+		[TestCase( 0 )]
+		[TestCase( 1 )]
+		[TestCase( ( KEY_LIFETIME_SECONDS - ROTATION_PERIOD_SECONDS ) / 2 )]
+		[TestCase( KEY_LIFETIME_SECONDS - ROTATION_PERIOD_SECONDS - 1 )]
 		public async Task GetSigningCredentialsAsync_SecondCallShortlyAfter_ReturnsSameKey( long offsetSeconds ) {
 			DateTime now = DateTime.UtcNow;
 
@@ -62,12 +62,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			Assert.AreEqual( key1.KeyId, key2.KeyId );
 		}
 
-		[TestCase(0)]
-		[TestCase(1)]
-		[TestCase(ROTATION_PERIOD_SECONDS / 2)]
-		[TestCase(ROTATION_PERIOD_SECONDS - 1)]
-		[TestCase(ROTATION_PERIOD_SECONDS)]
-		[TestCase(ROTATION_PERIOD_SECONDS + 1)]
+		[TestCase( 0 )]
+		[TestCase( 1 )]
+		[TestCase( ROTATION_PERIOD_SECONDS / 2 )]
+		[TestCase( ROTATION_PERIOD_SECONDS - 1 )]
+		[TestCase( ROTATION_PERIOD_SECONDS )]
+		[TestCase( ROTATION_PERIOD_SECONDS + 1 )]
 		public async Task GetSigningCredentialsAsync_KeyDuringOrAfterRotationPeriod_ReturnsNewKey( long offsetSeconds ) {
 			DateTime now = DateTime.UtcNow;
 

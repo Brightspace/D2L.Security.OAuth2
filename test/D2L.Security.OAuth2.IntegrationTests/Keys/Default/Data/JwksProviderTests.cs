@@ -2,9 +2,9 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
 using HttpMock;
 using NUnit.Framework;
 
@@ -28,11 +28,11 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			HttpStatusCode jwkStatusCode = HttpStatusCode.OK
 		) {
 			IHttpServer jwksServer = HttpMockFactory.Create( out host );
-			
+
 			jwksServer.Stub(
 				x => x.Get( GOOD_PATH + JWKS_PATH )
 			).Return( GOOD_JSON ).OK();
-			
+
 			jwksServer.Stub(
 				x => x.Get( BAD_PATH )
 			).Return( GOOD_JSON ).WithStatus( HttpStatusCode.InternalServerError );
@@ -145,7 +145,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		[Test]
 		public async Task RequestJwkAsync_404_Fallback_Success() {
-			using( SetupJwkServer( out string host, hasJwk: false, jwkStatusCode: HttpStatusCode.NotFound  ) )
+			using( SetupJwkServer( out string host, hasJwk: false, jwkStatusCode: HttpStatusCode.NotFound ) )
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,

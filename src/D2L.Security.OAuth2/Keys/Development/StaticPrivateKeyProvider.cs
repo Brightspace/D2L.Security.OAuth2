@@ -9,7 +9,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 	/// <summary>
 	/// A private key provider with a fixed key for testing purposes
 	/// </summary>
-	[Obsolete("Only use this in tests and for prototyping.")]
+	[Obsolete( "Only use this in tests and for prototyping." )]
 	internal sealed class StaticPrivateKeyProvider : IPrivateKeyProvider {
 		private readonly Guid m_keyId;
 		private readonly RSAParameters m_rsaParameters;
@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			RSAParameters rsaParameters
 		) {
 			m_keyId = keyId;
-			m_rsaParameters = rsaParameters;	
+			m_rsaParameters = rsaParameters;
 		}
 
 		public Task<D2LSecurityToken> GetSigningCredentialsAsync() {

@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.Principal {
 
 			IEnumerable<Claim> IAccessToken.Claims {
 				get { return Enumerable.Empty<Claim>(); }
-			} 
+			}
 
 			string IAccessToken.SensitiveRawAccessToken {
 				get { return ""; }

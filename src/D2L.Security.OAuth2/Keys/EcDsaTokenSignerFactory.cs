@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
 using D2L.Security.OAuth2.Keys.Default;
-using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys {
 
@@ -66,18 +65,18 @@ namespace D2L.Security.OAuth2.Keys {
 			CngAlgorithm algorithm;
 			switch( curve ) {
 				case Curve.P521: {
-					algorithm = CngAlgorithm.ECDsaP521;
-					break;
-				}
+						algorithm = CngAlgorithm.ECDsaP521;
+						break;
+					}
 				case Curve.P384: {
-					algorithm = CngAlgorithm.ECDsaP384;
-					break;
-				}
+						algorithm = CngAlgorithm.ECDsaP384;
+						break;
+					}
 				case Curve.P256:
 				default: {
-					algorithm = CngAlgorithm.ECDsaP256;
-					break;
-				}
+						algorithm = CngAlgorithm.ECDsaP256;
+						break;
+					}
 			}
 
 			IPrivateKeyProvider privateKeyProvider = EcDsaPrivateKeyProvider

@@ -52,7 +52,7 @@ namespace D2L.Security.OAuth2 {
 				claims.Add( new Claim( Constants.Claims.USER_ID, userId.Value.ToString() ) );
 			}
 
-			if ( actualUserId != null ) {
+			if( actualUserId != null ) {
 				claims.Add( new Claim( Constants.Claims.ACTUAL_USER_ID, actualUserId.Value.ToString() ) );
 			}
 
@@ -68,7 +68,7 @@ namespace D2L.Security.OAuth2 {
 		}
 
 		public static Task<string> RunBasicAuthTest( string route, HttpStatusCode expectedStatusCode ) {
-			return RunBasicAuthTest( route, null, expectedStatusCode ); 
+			return RunBasicAuthTest( route, null, expectedStatusCode );
 		}
 
 		public static async Task<string> RunBasicAuthTest( string route, string jwt, HttpStatusCode expectedStatusCode ) {
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2 {
 					req.Headers.Authorization = new AuthenticationHeaderValue( "Bearer", jwt );
 				}
 
-				using ( var resp = await client.SendAsync( req ).SafeAsync() ) {
+				using( var resp = await client.SendAsync( req ).SafeAsync() ) {
 					Assert.AreEqual( expectedStatusCode, resp.StatusCode );
 
 					string body = await resp

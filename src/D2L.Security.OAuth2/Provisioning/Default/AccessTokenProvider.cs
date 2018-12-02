@@ -23,7 +23,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
-			ClaimSet claimSet,	
+			ClaimSet claimSet,
 			IEnumerable<Scope> scopes
 		) {
 			var @this = this as INonCachingAccessTokenProvider;

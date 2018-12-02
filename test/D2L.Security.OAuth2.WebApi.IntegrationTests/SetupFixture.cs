@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Net.Http;
 using System.Web.Http;
+using D2L.Security.OAuth2.Authentication;
+using D2L.Services;
 using Microsoft.Owin.Hosting;
+using Moq;
 using NUnit.Framework;
 using Owin;
 using SimpleLogInterface;
-using D2L.Services;
-using D2L.Security.OAuth2.Authentication;
-using Moq;
 
 namespace D2L.Security.OAuth2 {
 	[SetUpFixture]
@@ -51,7 +51,7 @@ namespace D2L.Security.OAuth2 {
 			config.Filters.Add( authFilter );
 
 			config.MapHttpAttributeRoutes();
-			
+
 			config.EnsureInitialized();
 
 			appBuilder.UseWebApi( config );

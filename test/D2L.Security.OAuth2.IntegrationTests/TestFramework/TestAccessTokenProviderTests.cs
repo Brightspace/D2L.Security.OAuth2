@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using D2L.Services;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.Services;
 using NUnit.Framework;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 

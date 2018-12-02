@@ -10,7 +10,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 	/// <summary>
 	/// A simple in-memory key data provider to be used only for testing and prototyping purposes.
 	/// </summary>
-	[Obsolete("Only use this in tests and for prototyping without a db")]
+	[Obsolete( "Only use this in tests and for prototyping without a db" )]
 	public sealed class InMemoryPublicKeyDataProvider : IPublicKeyDataProvider {
 		private readonly ConcurrentDictionary<Guid, JsonWebKey> m_keys = new ConcurrentDictionary<Guid, JsonWebKey>();
 
@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 
 		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
 			JsonWebKey removedKey;
-			m_keys.TryRemove( id, out removedKey);
+			m_keys.TryRemove( id, out removedKey );
 			return Task.Delay( 0 );
 		}
 	}

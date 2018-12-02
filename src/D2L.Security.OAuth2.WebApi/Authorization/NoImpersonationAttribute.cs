@@ -11,8 +11,8 @@ namespace D2L.Security.OAuth2.Authorization {
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
 	public sealed class NoImpersonationAttribute : OAuth2AuthorizeAttribute {
 		protected override uint Order {
-      get { return 0; }
-    }
+			get { return 0; }
+		}
 
 		protected override bool IsAuthorizedInternal( HttpActionContext actionContext ) {
 			var principal = actionContext
@@ -20,11 +20,11 @@ namespace D2L.Security.OAuth2.Authorization {
 				.RequestContext
 				.Principal as ID2LPrincipal;
 
-			if ( principal == null ) {
+			if( principal == null ) {
 				return true;
 			}
 
-			if ( principal.Type != PrincipalType.User ) {
+			if( principal.Type != PrincipalType.User ) {
 				return true;
 			}
 

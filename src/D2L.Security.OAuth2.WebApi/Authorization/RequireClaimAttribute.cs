@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
 using D2L.Services;

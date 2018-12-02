@@ -7,7 +7,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// <param name="request">The request</param>
 		/// <returns>The value of the bearer token, or null if the bearer token is not set</returns>
 		internal static string GetBearerTokenValue( this HttpRequest request ) {
-			string headerValue = request.Headers[RequestValidationConstants.Headers.AUTHORIZATION];
+			string headerValue = request.Headers[ RequestValidationConstants.Headers.AUTHORIZATION ];
 			if( headerValue == null ) {
 				return null;
 			}

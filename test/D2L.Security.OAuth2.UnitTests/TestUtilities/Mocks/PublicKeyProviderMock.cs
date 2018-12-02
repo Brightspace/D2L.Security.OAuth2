@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.TestUtilities.Mocks {
 
 			mock.Setup( p => p.GetByIdAsync(
 				keyId
-			)).Returns( Task.FromResult( token ) );
+			) ).Returns( Task.FromResult( token ) );
 
 			return mock;
 		}

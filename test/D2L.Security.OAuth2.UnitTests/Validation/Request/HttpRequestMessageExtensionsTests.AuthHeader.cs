@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				.WithAuthHeader( expected );
 			Assert.AreEqual( expected, httpRequestMessage.GetBearerTokenValue() );
 		}
-		
+
 		[Test]
 		public void GetBearerTokenValue_NullRequest_ExpectNull() {
 			Assert.Throws<NullReferenceException>(
