@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Utilities;
@@ -26,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_dateTimeProvider = dateTimeProvider;
 			m_keyRotationPeriod = keyRotationPeriod;
 		}
-		
+
 		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 
 			// Hold a local reference so that we know we are talking about the same key
@@ -42,7 +40,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					privateKey = m_privateKey;
 
 					if( NeedFreshPrivateKey( privateKey ) ) {
-						m_privateKey = (await m_inner.GetSigningCredentialsAsync().SafeAsync()).Ref();
+						m_privateKey = ( await m_inner.GetSigningCredentialsAsync().SafeAsync() ).Ref();
 
 						if( privateKey != null ) {
 							privateKey.Dispose();

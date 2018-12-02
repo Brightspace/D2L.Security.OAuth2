@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Claims;
 using System.Linq;
+using System.Security.Claims;
 
 namespace D2L.Security.OAuth2.Provisioning {
 	/// <summary>
@@ -29,7 +29,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			if( tenantId.HasValue ) {
 				m_claims.Add( new Claim( Constants.Claims.TENANT_ID, tenantId.Value.ToString() ) );
 			}
-			
+
 			if( !string.IsNullOrWhiteSpace( user ) ) {
 				m_claims.Add( new Claim( Constants.Claims.USER_ID, user ) );
 			}

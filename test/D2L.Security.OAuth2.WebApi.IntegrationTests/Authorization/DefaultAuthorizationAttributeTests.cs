@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using NUnit.Framework;
 using D2L.Services;
+using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Authorization {
 	[TestFixture]
@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			HttpStatusCode expectedStatusCode
 		) {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
-				userId: userId == 0 ? (long?)null : userId,
+				userId: userId == 0 ? ( long? )null : userId,
 				scope: scope
 			).SafeAsync();
 
@@ -48,9 +48,9 @@ namespace D2L.Security.OAuth2.Authorization {
 				.SafeAsync();
 		}
 
-		[TestCase("")]
-		[TestCase("*:*:*")]
-		[TestCase("foo:*:*")]
+		[TestCase( "" )]
+		[TestCase( "*:*:*" )]
+		[TestCase( "foo:*:*" )]
 		public async Task NoScope_NoMatterWhatScope_204( string scope ) {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				scope: scope

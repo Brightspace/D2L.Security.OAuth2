@@ -61,7 +61,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					crv = m_curve,
 					x = m_x,
 					y = m_y,
-					exp = (long)ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
+					exp = ( long )ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
 				};
 			}
 
@@ -96,7 +96,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, cng );
 				}
 			);
-			
+
 			return token;
 		}
 	}

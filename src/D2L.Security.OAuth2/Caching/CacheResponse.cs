@@ -1,5 +1,5 @@
 ﻿namespace D2L.Security.OAuth2.Caching {
-	
+
 	/// <summary>
 	/// Holds a response from a cache get request
 	/// </summary>

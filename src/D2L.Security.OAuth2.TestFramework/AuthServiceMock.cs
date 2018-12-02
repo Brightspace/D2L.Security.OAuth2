@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
@@ -117,7 +116,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 				.SignAsync( token )
 				.SafeAsync();
 		}
-		
+
 		public void Dispose() {
 			m_server.SafeDispose();
 		}

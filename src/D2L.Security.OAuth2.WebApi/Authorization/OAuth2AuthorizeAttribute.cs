@@ -44,7 +44,7 @@ namespace D2L.Security.OAuth2.Authorization {
 		protected override void HandleUnauthorizedRequest( HttpActionContext actionContext ) {
 			var props = actionContext.Request.Properties;
 
-			var attr = (OAuth2AuthorizeAttribute)props[ FAILING_ATTR_PROP ];
+			var attr = ( OAuth2AuthorizeAttribute )props[ FAILING_ATTR_PROP ];
 
 			attr.HandleUnauthorizedRequestInternal( actionContext );
 		}

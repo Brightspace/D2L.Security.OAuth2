@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_d2lSecurityTokenFactory = d2lSecurityTokenFactory;
 			m_algorithm = algorithm;
 		}
-		
+
 		Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			var creationParams = new CngKeyCreationParameters() {
 				ExportPolicy = CngExportPolicies.AllowPlaintextExport,

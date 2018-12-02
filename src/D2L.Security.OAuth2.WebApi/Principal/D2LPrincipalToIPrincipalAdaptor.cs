@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.Principal {
 	/// </summary>
 	internal sealed class D2LPrincipalToIPrincipalAdaptor : IPrincipal, ID2LPrincipal {
 		private readonly ID2LPrincipal m_principal;
-		[Mutability.Audited("Todd Lang", "02-Mar-2018", ".Net class can't modify, but is immutable.")]
+		[Mutability.Audited( "Todd Lang", "02-Mar-2018", ".Net class can't modify, but is immutable." )]
 		private readonly IIdentity m_identity;
 
 		public D2LPrincipalToIPrincipalAdaptor( ID2LPrincipal principal ) {
@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Principal {
 		Guid ID2LPrincipal.TenantId {
 			get { return m_principal.TenantId; }
 		}
-		
+
 		PrincipalType ID2LPrincipal.Type {
 			get { return m_principal.Type; }
 		}

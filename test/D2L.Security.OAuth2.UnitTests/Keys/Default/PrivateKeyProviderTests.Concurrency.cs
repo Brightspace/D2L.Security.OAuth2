@@ -59,8 +59,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			Console.WriteLine( "Done in " + MethodBase.GetCurrentMethod().Name + " at " + DateTime.UtcNow + " UTC" );
 		}
 
-		private static void Runner( 
-			IPrivateKeyProvider provider, 
+		private static void Runner(
+			IPrivateKeyProvider provider,
 			ManualResetEventSlim go,
 			int threadNumber
 		) {
@@ -79,7 +79,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				}
 			}
 		}
-		
+
 		private static string Sign( D2LSecurityToken securityToken ) {
 			JwtSecurityToken jwt = new JwtSecurityToken(
 					issuer: TEST_ISSUER,
@@ -92,9 +92,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return signedToken;
 		}
 
-		private static void AssertSignatureVerifiable( 
-			D2LSecurityToken securityToken, 
-			string signedToken 
+		private static void AssertSignatureVerifiable(
+			D2LSecurityToken securityToken,
+			string signedToken
 		) {
 			JwtSecurityTokenHandler validationTokenHandler = new JwtSecurityTokenHandler();
 			TokenValidationParameters validationParameters = new TokenValidationParameters() {

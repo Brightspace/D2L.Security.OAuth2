@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	/// consumers / threads.
 	/// </summary>
 	partial class D2LSecurityToken : IDisposable {
-		
+
 		private readonly object m_disposeLock = new Object();
 
 		private bool m_disposed = false;

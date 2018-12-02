@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.IdentityModel.Tokens;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
@@ -42,7 +41,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new ValidationException( "Couldn't parse token" );
 			}
 
-			var unvalidatedToken = (JwtSecurityToken)tokenHandler.ReadToken(
+			var unvalidatedToken = ( JwtSecurityToken )tokenHandler.ReadToken(
 				token
 			);
 
@@ -59,7 +58,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new InvalidTokenException( "KeyId not found in token" );
 			}
 
-			string keyId = unvalidatedToken.Header["kid"].ToString();
+			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
 			Guid id;
 			if( !Guid.TryParse( keyId, out id ) ) {
 				throw new InvalidTokenException( string.Format( "Non-guid kid claim: {0}", keyId ) );
@@ -84,7 +83,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					token,
 					validationParameters,
 					out securityToken
-        		);
+				);
 				accessToken = new AccessToken( ( JwtSecurityToken )securityToken );
 			} catch( SecurityTokenExpiredException e ) {
 				throw new ExpiredTokenException( e );

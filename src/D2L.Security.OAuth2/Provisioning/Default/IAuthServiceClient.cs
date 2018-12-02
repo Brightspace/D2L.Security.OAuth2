@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
-	
+
 	/// <summary>
 	/// Calls the Auth Service to provision access tokens
 	/// </summary>

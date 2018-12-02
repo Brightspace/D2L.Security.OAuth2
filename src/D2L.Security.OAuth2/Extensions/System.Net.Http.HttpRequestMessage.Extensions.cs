@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using D2L.Security.OAuth2.Principal;
 
@@ -16,7 +15,7 @@ namespace D2L {
 			@this.Headers.Authorization = new AuthenticationHeaderValue(
 				scheme: "Bearer",
 				parameter: principal.AccessToken.SensitiveRawAccessToken
-			);	
+			);
 		}
 	}
 }

@@ -12,13 +12,13 @@ namespace D2L.Security.OAuth2.Validation.Exceptions {
 		/// <summary>
 		/// Constructs a new <see cref="ExpiredTokenException"/>
 		/// </summary>
-		public ExpiredTokenException() : base( MESSAGE ) {}
+		public ExpiredTokenException() : base( MESSAGE ) { }
 
 
 		/// <summary>
 		/// Constructs a new <see cref="ExpiredTokenException"/>
 		/// </summary>
-		public ExpiredTokenException( Exception inner ) : base( MESSAGE, inner ) {}
+		public ExpiredTokenException( Exception inner ) : base( MESSAGE, inner ) { }
 
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -38,7 +37,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			var allowFromAttribute = context.ActionDescriptor.GetCustomAttributes<AuthenticationAttribute>().SingleOrDefault();
 			var allowFromAttribute2 = context.ActionDescriptor.ControllerDescriptor.ControllerType.GetCustomAttributes( typeof( AuthenticationAttribute ), inherit: false ).SingleOrDefault();
 
-			if ( allowFromAttribute == null && allowFromAttribute2 == null ) {
+			if( allowFromAttribute == null && allowFromAttribute2 == null ) {
 				throw new Exception( "You must specify the types of callers for this API with [AllowFrom(...)]" );
 			}
 		}

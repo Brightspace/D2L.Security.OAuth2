@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		private static readonly ID2LPrincipal ANONYMOUS_PRINCIPAL = new AnonymousPrincipal();
 
 		private readonly IAccessTokenValidator m_accessTokenValidator;
-		
+
 		internal RequestAuthenticator( IAccessTokenValidator accessTokenValidator ) {
 			m_accessTokenValidator = accessTokenValidator;
 		}

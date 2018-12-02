@@ -5,14 +5,14 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Utilities {
-	
+
 	/// <summary>
 	/// A utility used to create a "mock" HttpClient that does not actually make
 	/// a web request, but instead always returns a given response or throws a
 	/// given exception.
 	/// </summary>
 	internal static class MockHttpClient {
-		
+
 		/// <summary>
 		/// Creates a "mock" HttpClient that does not actually make a web
 		/// request, but instead always returns the given response.
@@ -32,12 +32,12 @@ namespace D2L.Security.OAuth2.Utilities {
 			if( responseContent != null ) {
 				response.Content = new StringContent( responseContent );
 			}
-			
+
 			return new HttpClient(
 				new MockResponseHandler( () => response )
 			);
 		}
-		
+
 		/// <summary>
 		/// Creates a "mock" HttpClient that does not actually make a web
 		/// request, but instead always throws the given exception
@@ -53,17 +53,17 @@ namespace D2L.Security.OAuth2.Utilities {
 				new MockResponseHandler( () => { throw throwsException; } )
 			);
 		}
-		
+
 		private class MockResponseHandler : DelegatingHandler {
-			
+
 			private readonly Func<HttpResponseMessage> m_createMockResponse;
-			
+
 			public MockResponseHandler(
 				Func<HttpResponseMessage> mockResponseFunction
 			) {
 				m_createMockResponse = mockResponseFunction;
 			}
-			
+
 			protected async override Task<HttpResponseMessage> SendAsync(
 				HttpRequestMessage request,
 				CancellationToken cancellationToken
@@ -71,6 +71,6 @@ namespace D2L.Security.OAuth2.Utilities {
 				return await Task.Run( m_createMockResponse );
 			}
 		}
-		
+
 	}
 }

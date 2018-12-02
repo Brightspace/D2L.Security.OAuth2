@@ -87,7 +87,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 			m_principalRegistry
 				.Setup( pr => pr.Register( m_authenticationContext, principalMock.Object ) );
-			
+
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();
@@ -113,10 +113,10 @@ namespace D2L.Security.OAuth2.Authentication {
 			m_requestAuthenticator
 				.Setup( ra => ra.AuthenticateAsync( It.IsAny<HttpRequestMessage>() ) )
 				.ReturnsAsync( principal );
-			
+
 			m_principalRegistry
 				.Setup( pr => pr.Register( m_authenticationContext, principalMock.Object ) );
-			
+
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
 				.SafeAsync();

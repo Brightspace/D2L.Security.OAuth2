@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.TestWebService.Controllers {
 		// being said it's still a complete test of this attribute that happens to
 		// be easy to set up.
 		[HttpGet]
-		[Route(ROUTE)]
+		[Route( ROUTE )]
 		[RequireClaim( Constants.Claims.USER_ID )]
 		[NoRequiredScope]
 		public void RequireSubjectClaimExplicitly() { }

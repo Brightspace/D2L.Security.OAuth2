@@ -2,19 +2,19 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
-using D2L.Services;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.TestUtilities;
 using D2L.Security.OAuth2.TestUtilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
+using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	[TestFixture]
 	public class RequestAuthenticatorTests {
 		private const string ACCESS_TOKEN = "some token";
-		
+
 		[Test]
 		public async Task TokenInHeader_SuccessCase() {
 			await RunTest(
@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				expected_principalType: PrincipalType.Anonymous
 			).SafeAsync();
 		}
-		
+
 		[Test]
 		public async Task TokenExpired() {
 			await RunTest(
@@ -66,7 +66,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			} catch( Exception e ) {
 				exception = e;
 			}
-			
+
 			CheckExpectations(
 				principal,
 				exception,
@@ -86,7 +86,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			} catch( Exception e ) {
 				exception = e;
 			}
-			
+
 			CheckExpectations(
 				principal,
 				exception,
