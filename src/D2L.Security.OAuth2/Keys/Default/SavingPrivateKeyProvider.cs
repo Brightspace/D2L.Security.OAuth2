@@ -14,8 +14,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_publicKeyDataProvider = publicKeyDataProvider;
 		}
 
-		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
-			D2LSecurityToken result = await m_inner.GetSigningCredentialsAsync().SafeAsync();
+		async Task<D2LSecurityKey> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+			D2LSecurityKey result = await m_inner.GetSigningCredentialsAsync().SafeAsync();
 
 			JsonWebKey jwk = result.ToJsonWebKey();
 

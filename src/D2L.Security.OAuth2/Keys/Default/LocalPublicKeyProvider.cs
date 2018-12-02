@@ -28,8 +28,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_cache = cache;
 		}
 
-		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( Guid id ) {
-			D2LSecurityToken result = m_cache.Get( PUBLIC_KEY_SOURCE, id );
+		async Task<D2LSecurityKey> IPublicKeyProvider.GetByIdAsync( Guid id ) {
+			D2LSecurityKey result = m_cache.Get( PUBLIC_KEY_SOURCE, id );
 			if( result != null ) {
 				return result;
 			}
@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.SafeAsync();
 
 			if( jwk != null ) {
-				result = jwk.ToSecurityToken();
+				result = jwk.ToSecurityKey();
 				m_cache.Set( PUBLIC_KEY_SOURCE, result );
 				return result;
 			}

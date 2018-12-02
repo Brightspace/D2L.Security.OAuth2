@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
+using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Development {
 
@@ -22,8 +22,8 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			m_rsaParameters = rsaParameters;
 		}
 
-		public Task<D2LSecurityToken> GetSigningCredentialsAsync() {
-			var creds = new D2LSecurityToken(
+		public Task<D2LSecurityKey> GetSigningCredentialsAsync() {
+			var creds = new D2LSecurityKey(
 				id: m_keyId,
 				validFrom: DateTime.UtcNow - TimeSpan.FromDays( 1 ),
 				validTo: DateTime.UtcNow + TimeSpan.FromDays( 365 ),

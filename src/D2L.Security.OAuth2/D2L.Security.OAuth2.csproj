@@ -47,8 +47,19 @@
       <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.JsonWebTokens.5.3.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Logging.5.3.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.IdentityModel.Tokens.5.3.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -57,8 +68,8 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.IdentityModel" />
-    <Reference Include="System.IdentityModel.Tokens.Jwt">
-      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.4.0.1\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.IdentityModel.Tokens.Jwt.5.3.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.WebRequest" />
@@ -73,16 +84,17 @@
     <Compile Include="Caching\ICache.cs" />
     <Compile Include="Caching\NullCache.cs" />
     <Compile Include="Extensions\System.Net.Http.HttpRequestMessage.Extensions.cs" />
-    <Compile Include="Keys\Default\D2LSecurityToken.cs" />
+    <Compile Include="Keys\Default\D2LCryptoProviderFactory.cs" />
+    <Compile Include="Keys\Default\D2LSecurityKey.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Keys\Caching\InMemoryPublicKeyCache.cs" />
-    <Compile Include="Keys\Default\D2LSecurityToken.Disposal.cs">
-      <DependentUpon>D2LSecurityToken.cs</DependentUpon>
+    <Compile Include="Keys\Default\D2LSecurityKey.Disposal.cs">
+      <DependentUpon>D2LSecurityKey.cs</DependentUpon>
     </Compile>
-    <Compile Include="Keys\Default\D2LSecurityToken.SecurityToken.cs">
-      <DependentUpon>D2LSecurityToken.cs</DependentUpon>
+    <Compile Include="Keys\Default\D2LSecurityKey.SecurityKey.cs">
+      <DependentUpon>D2LSecurityKey.cs</DependentUpon>
     </Compile>
-    <Compile Include="Keys\Default\D2LSecurityTokenFactory.cs" />
+    <Compile Include="Keys\Default\D2LSecurityKeyFactory.cs" />
     <Compile Include="Keys\Default\EcDsaJsonWebKey.cs" />
     <Compile Include="Keys\Default\EcDsaJsonWebKey.ECCPublicKeyBlobFormatter.cs">
       <DependentUpon>EcDsaJsonWebKey.cs</DependentUpon>
@@ -92,16 +104,6 @@
     </Compile>
     <Compile Include="Keys\Default\RotatingPrivateKeyProvider.cs" />
     <Compile Include="Keys\Default\EcDsaPrivateKeyProvider.cs" />
-    <Compile Include="Keys\Default\EcDsaSecurityKey.cs" />
-    <Compile Include="Keys\Default\EcDsaSecurityKey.EcDsaSignatureDeformatter.cs">
-      <DependentUpon>EcDsaSecurityKey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Keys\Default\EcDsaSecurityKey.EcDsaSignatureFormatter.cs">
-      <DependentUpon>EcDsaSecurityKey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Keys\Default\EcDsaSecurityKey.SupportedAlgorithms.cs">
-      <DependentUpon>EcDsaSecurityKey.cs</DependentUpon>
-    </Compile>
     <Compile Include="Keys\Default\ExpiringPublicKeyDataProvider.cs" />
     <Compile Include="Keys\Default\ID2LSecurityTokenFactory.cs" />
     <Compile Include="Keys\Default\ISanePublicKeyDataProvider.cs" />

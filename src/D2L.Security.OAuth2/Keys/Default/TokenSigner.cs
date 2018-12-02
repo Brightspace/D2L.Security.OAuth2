@@ -1,4 +1,4 @@
-﻿using System.IdentityModel.Tokens;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using D2L.Services;
 
@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		async Task<string> ITokenSigner.SignAsync( UnsignedToken token ) {
 			JwtSecurityToken jwt;
-			using( D2LSecurityToken securityToken = await m_privateKeyProvider
+			using( D2LSecurityKey securityToken = await m_privateKeyProvider
 				.GetSigningCredentialsAsync()
 				.SafeAsync()
 			) {

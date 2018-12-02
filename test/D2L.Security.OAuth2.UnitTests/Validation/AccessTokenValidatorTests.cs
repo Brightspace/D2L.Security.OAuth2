@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.TestUtilities;
@@ -7,6 +7,7 @@ using D2L.Security.OAuth2.TestUtilities.Mocks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 using NUnit.Framework;
 
@@ -75,7 +76,7 @@ namespace D2L.Security.OAuth2.Validation {
 			Type expectedExceptionType = null
 		) {
 			Guid keyId = Guid.NewGuid();
-			D2LSecurityToken signingToken = D2LSecurityTokenUtility.CreateActiveToken( id: keyId );
+			D2LSecurityKey signingToken = D2LSecurityTokenUtility.CreateActiveToken( id: keyId );
 			SigningCredentials signingCredentials = null;
 			if( signJwt ) {
 				signingCredentials = signingToken.GetSigningCredentials();

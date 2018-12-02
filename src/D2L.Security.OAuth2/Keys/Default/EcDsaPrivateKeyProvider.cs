@@ -1,7 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed partial class EcDsaPrivateKeyProvider : IPrivateKeyProvider {
@@ -17,7 +17,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_algorithm = algorithm;
 		}
 
-		Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+		Task<D2LSecurityKey> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			var creationParams = new CngKeyCreationParameters() {
 				ExportPolicy = CngExportPolicies.AllowPlaintextExport,
 				KeyUsage = CngKeyUsages.Signing
@@ -30,11 +30,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				}
 			}
 
-			D2LSecurityToken result = m_d2lSecurityTokenFactory.Create( () => {
+			D2LSecurityKey result = m_d2lSecurityTokenFactory.Create( () => {
 				using( var cng = CngKey.Import( privateBlob, CngKeyBlobFormat.EccPrivateBlob ) ) {
 					// ECDsaCng copies the CngKey, hence the using
 					var ecDsa = new ECDsaCng( cng );
-					var key = new EcDsaSecurityKey( ecDsa );
+					var key = new ECDsaSecurityKey( ecDsa );
 					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, ecDsa );
 				}
 			} );

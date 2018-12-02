@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Threading;
 using D2L.Services;
+using Microsoft.IdentityModel.Tokens;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Keys.Default {
@@ -27,7 +28,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		) {
 			IPrivateKeyProvider provider = new RotatingPrivateKeyProvider(
 				new RsaPrivateKeyProvider(
-					new D2LSecurityTokenFactory(
+					new D2LSecurityKeyFactory(
 						m_mockDateTimeProvider.Object,
 						TimeSpan.FromMilliseconds( keyLifeTimeMilliseconds )
 					)
@@ -68,7 +69,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			go.Wait();
 
 			for( int i = 0; i < SIGNATURES_PER_THREAD; i++ ) {
-				using( D2LSecurityToken securityToken = provider.GetSigningCredentialsAsync()
+				using( D2LSecurityKey securityToken = provider.GetSigningCredentialsAsync()
 					.SafeAsync()
 					.GetAwaiter()
 					.GetResult()
@@ -80,7 +81,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 		}
 
-		private static string Sign( D2LSecurityToken securityToken ) {
+		private static string Sign( D2LSecurityKey securityToken ) {
 			JwtSecurityToken jwt = new JwtSecurityToken(
 					issuer: TEST_ISSUER,
 					signingCredentials: securityToken.GetSigningCredentials()
@@ -93,7 +94,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		private static void AssertSignatureVerifiable(
-			D2LSecurityToken securityToken,
+			D2LSecurityKey securityKey,
 			string signedToken
 		) {
 			JwtSecurityTokenHandler validationTokenHandler = new JwtSecurityTokenHandler();
@@ -102,7 +103,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				ValidateIssuer = false,
 				ValidateLifetime = false,
 				RequireSignedTokens = true,
-				IssuerSigningToken = securityToken
+				IssuerSigningKey = securityKey,
+				CryptoProviderFactory = new D2LCryptoProviderFactory()
 			};
 			validationTokenHandler.ValidateToken(
 				signedToken,

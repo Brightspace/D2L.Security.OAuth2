@@ -27,9 +27,9 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 			m_cache = cache;
 		}
 
-		void IInMemoryPublicKeyCache.Set( string srcNamespace, D2LSecurityToken key ) {
+		void IInMemoryPublicKeyCache.Set( string srcNamespace, D2LSecurityKey key ) {
 			m_cache.Set(
-				BuildCacheKey( srcNamespace, key.KeyId ),
+				BuildCacheKey( srcNamespace, key.Id ),
 				key,
 				new CacheItemPolicy() {
 					AbsoluteExpiration = key.ValidTo
@@ -37,8 +37,8 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 			);
 		}
 
-		D2LSecurityToken IInMemoryPublicKeyCache.Get( string srcNamespace, Guid keyId ) {
-			var result = m_cache.Get( BuildCacheKey( srcNamespace, keyId ) ) as D2LSecurityToken;
+		D2LSecurityKey IInMemoryPublicKeyCache.Get( string srcNamespace, Guid keyId ) {
+			var result = m_cache.Get( BuildCacheKey( srcNamespace, keyId ) ) as D2LSecurityKey;
 			return result;
 		}
 

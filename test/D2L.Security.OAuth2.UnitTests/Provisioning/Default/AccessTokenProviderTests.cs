@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -62,7 +62,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			var publicKeys = ( await m_publicKeyDataProvider.GetAllAsync().SafeAsync() ).ToList();
 
 			string expectedKeyId = publicKeys.First().Id.ToString();
-			string actualKeyId = m_actualAssertion.Header.SigningKeyIdentifier[ 0 ].Id;
+			string actualKeyId = m_actualAssertion.Header.Kid;
 
 			Assert.AreEqual( 1, publicKeys.Count );
 			Assert.AreEqual( expectedKeyId, actualKeyId );

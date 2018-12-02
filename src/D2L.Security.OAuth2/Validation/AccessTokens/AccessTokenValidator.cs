@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
+using Microsoft.IdentityModel.Tokens;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;
@@ -14,10 +15,10 @@ using System.IdentityModel.Tokens.Jwt;
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed class AccessTokenValidator : IAccessTokenValidator {
 		internal static readonly ImmutableHashSet<string> ALLOWED_SIGNATURE_ALGORITHMS = ImmutableHashSet.Create(
-			"RS256",
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha256Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha384Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha512Signature
+			SecurityAlgorithms.RsaSha256,
+			SecurityAlgorithms.EcdsaSha256,
+			SecurityAlgorithms.EcdsaSha384,
+			SecurityAlgorithms.EcdsaSha512
 		);
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
@@ -63,7 +64,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new InvalidTokenException( string.Format( "Non-guid kid claim: {0}", keyId ) );
 			}
 
-			D2LSecurityToken signingToken = await m_publicKeyProvider
+			D2LSecurityKey signingKey = await m_publicKeyProvider
 				.GetByIdAsync( id )
 				.SafeAsync();
 
@@ -71,7 +72,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				ValidateAudience = false,
 				ValidateIssuer = false,
 				RequireSignedTokens = true,
-				IssuerSigningToken = signingToken
+				IssuerSigningKey = signingKey,
+				CryptoProviderFactory = new D2LCryptoProviderFactory()
 			};
 
 			IAccessToken accessToken;
