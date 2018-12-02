@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Services;
+using Microsoft.IdentityModel.Tokens;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;

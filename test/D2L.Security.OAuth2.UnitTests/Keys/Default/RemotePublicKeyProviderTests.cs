@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Keys.Default.Data;
 using D2L.Security.OAuth2.TestUtilities;
 using D2L.Services;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 using NUnit.Framework;
 
@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task ItShouldReturnFromCacheWhenKeyIsInCache() {
-			var cachedKey = new D2LSecurityToken(
+			var cachedKey = new D2LSecurityKey(
 				KEY_ID,
 				DateTime.UtcNow,
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns( cachedKey );
 
-			D2LSecurityToken result = await m_publicKeyProvider
+			D2LSecurityKey result = await m_publicKeyProvider
 				.GetByIdAsync( KEY_ID )
 				.SafeAsync();
 
@@ -66,7 +66,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_keyCache
 				.InSequence( seq )
 				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
-				.Returns<D2LSecurityToken>( null );
+				.Returns<D2LSecurityKey>( null );
 
 			var otherKeyId = Guid.NewGuid();
 			var jwks = new JsonWebKeySet(
@@ -92,11 +92,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.ReturnsAsync( jwks );
 
 			m_keyCache
-				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == KEY_ID ) ) );
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityKey>( k => k.Id == KEY_ID ) ) );
 			m_keyCache
-				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == otherKeyId ) ) );
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityKey>( k => k.Id == otherKeyId ) ) );
 
-			var cachedKey = new D2LSecurityToken(
+			var cachedKey = new D2LSecurityKey(
 				KEY_ID,
 				DateTime.UtcNow,
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
@@ -107,7 +107,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns( cachedKey );
 
-			D2LSecurityToken result = await m_publicKeyProvider
+			D2LSecurityKey result = await m_publicKeyProvider
 				.GetByIdAsync( KEY_ID )
 				.SafeAsync();
 
@@ -123,7 +123,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_keyCache
 				.InSequence( seq )
 				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
-				.Returns<D2LSecurityToken>( null );
+				.Returns<D2LSecurityKey>( null );
 
 			var otherKeyId = Guid.NewGuid();
 			var jwks = new JsonWebKeySet(
@@ -149,9 +149,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.ReturnsAsync( jwks );
 
 			m_keyCache
-				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == KEY_ID ) ) );
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityKey>( k => k.Id == KEY_ID ) ) );
 
-			var cachedKey = new D2LSecurityToken(
+			var cachedKey = new D2LSecurityKey(
 				KEY_ID,
 				DateTime.UtcNow,
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
@@ -162,12 +162,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns( cachedKey );
 
-			D2LSecurityToken result = await m_publicKeyProvider
+			D2LSecurityKey result = await m_publicKeyProvider
 				.GetByIdAsync( KEY_ID )
 				.SafeAsync();
 
 			m_keyCache.VerifyAll();
-			m_keyCache.Verify( x => x.Set( SRC_NAMESPACE, It.IsAny<D2LSecurityToken>() ), Times.Once );
+			m_keyCache.Verify( x => x.Set( SRC_NAMESPACE, It.IsAny<D2LSecurityKey>() ), Times.Once );
 
 			Assert.AreEqual( cachedKey, result );
 		}

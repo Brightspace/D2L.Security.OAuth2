@@ -46,19 +46,19 @@ namespace D2L.Security.OAuth2.Keys {
 			Assert.AreEqual( Guid.Parse( "fae33c85-e421-40f5-bebb-8ec8ab778be4" ), key.Id );
 			Assert.IsFalse( key.ExpiresAt.HasValue );
 
-			Assert.DoesNotThrow( () => key.ToSecurityToken() );
+			Assert.DoesNotThrow( () => key.ToSecurityKey() );
 		}
 
 		[Test]
 		public async Task FromJson_GeneratedKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new RsaPrivateKeyProvider(
-				new D2LSecurityTokenFactory(
+				new D2LSecurityKeyFactory(
 					DateTimeProvider.Instance,
 					TimeSpan.FromHours( 1 )
 				)
 			);
 
-			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityKey token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 			JsonWebKey expectedKey = token.ToJsonWebKey();
 
 			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
@@ -74,7 +74,7 @@ namespace D2L.Security.OAuth2.Keys {
 		[Test]
 		public async Task FromJson_GeneratedECKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new EcDsaPrivateKeyProvider(
-				new D2LSecurityTokenFactory(
+				new D2LSecurityKeyFactory(
 					DateTimeProvider.Instance,
 					TimeSpan.FromHours( 1 )
 				),
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2.Keys {
 			);
 
 			JsonWebKey expectedKey;
-			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
+			using( D2LSecurityKey token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
 				expectedKey = token.ToJsonWebKey();
 			}
 

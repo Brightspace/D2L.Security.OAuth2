@@ -17,7 +17,7 @@ namespace D2L.Security.OAuth2.Keys {
 		private readonly Guid m_id;
 		private readonly DateTime? m_expiresAt;
 
-		internal abstract D2LSecurityToken ToSecurityToken();
+		internal abstract D2LSecurityKey ToSecurityKey();
 
 		/// <summary>
 		/// Construct a new <see cref="JsonWebKey"/> instance

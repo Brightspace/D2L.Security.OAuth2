@@ -13,7 +13,7 @@ namespace D2L.Security.OAuth2.TestUtilities {
 			throw new NotImplementedException();
 		}
 
-		internal override D2LSecurityToken ToSecurityToken() {
+		internal override D2LSecurityKey ToSecurityKey() {
 			throw new NotImplementedException();
 		}
 	}
