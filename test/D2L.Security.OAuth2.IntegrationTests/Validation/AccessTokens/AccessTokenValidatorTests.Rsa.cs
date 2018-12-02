@@ -50,11 +50,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					.SafeAsync();
 
 				Assert.IsNotNull( accessToken );
-
-				string subject;
-				string fakeclaim;
-				accessToken.Claims.TryGetClaim( "sub", out subject );
-				accessToken.Claims.TryGetClaim( "fakeclaim", out fakeclaim );
+				accessToken.Claims.TryGetClaim( "sub", out string subject );
+				accessToken.Claims.TryGetClaim( "fakeclaim", out string fakeclaim );
 
 				Assert.AreEqual( SUBJECT, subject );
 				Assert.IsNull( fakeclaim );

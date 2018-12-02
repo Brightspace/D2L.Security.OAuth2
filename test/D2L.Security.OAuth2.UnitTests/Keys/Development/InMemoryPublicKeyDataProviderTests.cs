@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Keys.Development {
 	[TestFixture]
-	sealed class InMemoryPublicKeyDataProviderTests {
+	internal sealed class InMemoryPublicKeyDataProviderTests {
 		private IPublicKeyDataProvider m_publicKeyDataProvider;
 
 		[SetUp]

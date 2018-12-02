@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	partial class EcDsaSecurityKey {
+	internal partial class EcDsaSecurityKey {
 		internal sealed class EcDsaSignatureDeformatter : AsymmetricSignatureDeformatter {
 
 			private ECDsa m_key;

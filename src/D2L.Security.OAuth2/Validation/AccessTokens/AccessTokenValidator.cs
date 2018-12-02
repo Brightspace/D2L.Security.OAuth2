@@ -59,8 +59,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 
 			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
-			Guid id;
-			if( !Guid.TryParse( keyId, out id ) ) {
+			if( !Guid.TryParse( keyId, out Guid id ) ) {
 				throw new InvalidTokenException( string.Format( "Non-guid kid claim: {0}", keyId ) );
 			}
 
@@ -78,11 +77,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			IAccessToken accessToken;
 
 			try {
-				SecurityToken securityToken;
 				tokenHandler.ValidateToken(
 					token,
 					validationParameters,
-					out securityToken
+					out SecurityToken securityToken
 				);
 				accessToken = new AccessToken( ( JwtSecurityToken )securityToken );
 			} catch( SecurityTokenExpiredException e ) {

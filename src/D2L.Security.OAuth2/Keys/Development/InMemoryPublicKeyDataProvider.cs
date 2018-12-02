@@ -15,8 +15,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		private readonly ConcurrentDictionary<Guid, JsonWebKey> m_keys = new ConcurrentDictionary<Guid, JsonWebKey>();
 
 		Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
-			JsonWebKey key;
-			if( !m_keys.TryGetValue( id, out key ) ) {
+			if( !m_keys.TryGetValue( id, out JsonWebKey key ) ) {
 				return Task.FromResult<JsonWebKey>( null );
 			}
 			return Task.FromResult( key );
@@ -37,8 +36,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		}
 
 		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
-			JsonWebKey removedKey;
-			m_keys.TryRemove( id, out removedKey );
+			m_keys.TryRemove( id, out JsonWebKey removedKey );
 			return Task.Delay( 0 );
 		}
 	}

@@ -13,10 +13,7 @@ using Newtonsoft.Json;
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 	internal abstract class FullStackValidationBenchmark : IBenchmark {
 		Action IBenchmark.GetRunner() {
-			Uri host;
-			string token;
-			Guid id;
-			SetUp( out host, out token, out id );
+			SetUp( out Uri host, out string token, out Guid id );
 
 			IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator(
 				new HttpClient(),
@@ -31,8 +28,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 		protected abstract ITokenSigner GetTokenSigner( IPublicKeyDataProvider p );
 
 		private void SetUp( out Uri host, out string token, out Guid id ) {
-			string hostStr;
-			var server = HttpMockFactory.Create( out hostStr );
+			var server = HttpMockFactory.Create( out string hostStr );
 
 			host = new Uri( hostStr );
 

@@ -10,7 +10,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	/// disposed under them, and can properly "Dispose" it as they should without effecting other
 	/// consumers / threads.
 	/// </summary>
-	partial class D2LSecurityToken : IDisposable {
+	internal partial class D2LSecurityToken : IDisposable {
 
 		private readonly object m_disposeLock = new Object();
 

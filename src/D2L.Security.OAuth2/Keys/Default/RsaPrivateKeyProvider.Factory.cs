@@ -2,8 +2,7 @@
 using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-
-	partial class RsaPrivateKeyProvider {
+	internal partial class RsaPrivateKeyProvider {
 
 		internal static class Factory {
 

@@ -25,8 +25,7 @@ namespace D2L.Security.OAuth2.Scopes {
 
 		[TestCaseSource( nameof( InvalidScopeCases ) )]
 		public void InvalidScopePattern_IsNotParsed( string scopePattern ) {
-			Scope scope = null;
-			bool isParsed = Scope.TryParse( scopePattern, out scope );
+			bool isParsed = Scope.TryParse( scopePattern, out Scope scope );
 
 			isParsed.Should().BeFalse();
 		}
@@ -49,8 +48,7 @@ namespace D2L.Security.OAuth2.Scopes {
 			string resource,
 			string[] permissions ) {
 
-			Scope scope = null;
-			bool isParsed = Scope.TryParse( scopePattern, out scope );
+			bool isParsed = Scope.TryParse( scopePattern, out Scope scope );
 
 			isParsed.Should().BeTrue();
 			scope.Group.Should().Be( group );
