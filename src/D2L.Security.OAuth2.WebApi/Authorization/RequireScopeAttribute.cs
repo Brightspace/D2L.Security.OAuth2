@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http.Controllers;
+using D2L.Security.OAuth2.Authorization.Exceptions;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Scopes;
 
@@ -39,16 +38,11 @@ namespace D2L.Security.OAuth2.Authorization {
 				return false;
 			}
 
-			bool isAuthorized = ScopeAuthorizer.IsAuthorized( principal.Scopes, m_requiredScope );
+			if( ScopeAuthorizer.IsAuthorized( principal.Scopes, m_requiredScope ) ) {
+				return true;
+			}
 
-			return isAuthorized;
-		}
-
-		protected override void HandleUnauthorizedRequestInternal( HttpActionContext actionContext ) {
-			var response = actionContext.Request.CreateErrorResponse( HttpStatusCode.Forbidden, "insufficient_scope" );
-			response.Headers.Add( "WWW-Authenticate", "Bearer error=\"insufficient_scope\"" );
-
-			actionContext.Response = response;
+			throw new InsufficientScopeException( m_requiredScope );
 		}
 	}
 }

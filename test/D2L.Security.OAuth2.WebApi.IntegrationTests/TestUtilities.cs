@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -10,6 +11,7 @@ using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using D2L.Security.OAuth2.Validation.Request;
 using D2L.Services;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2 {
@@ -67,11 +69,15 @@ namespace D2L.Security.OAuth2 {
 			).SafeAsync();
 		}
 
-		public static Task<string> RunBasicAuthTest( string route, HttpStatusCode expectedStatusCode ) {
+		public static Task RunBasicAuthTest( string route, HttpStatusCode expectedStatusCode ) {
 			return RunBasicAuthTest( route, null, expectedStatusCode );
 		}
 
-		public static async Task<string> RunBasicAuthTest( string route, string jwt, HttpStatusCode expectedStatusCode ) {
+		public static Task RunBasicAuthTest( string route, string jwt, HttpStatusCode expectedStatusCode ) {
+			return RunBasicAuthTest<object>( route, jwt, expectedStatusCode );
+		}
+
+		public static async Task<(T Body, HttpResponseHeaders Headers)> RunBasicAuthTest<T>( string route, string jwt, HttpStatusCode expectedStatusCode ) {
 			using( var client = SetUpFixture.GetHttpClient() ) {
 
 				var req = new HttpRequestMessage();
@@ -90,7 +96,7 @@ namespace D2L.Security.OAuth2 {
 						.ReadAsStringAsync()
 						.SafeAsync();
 
-					return body;
+					return (JsonConvert.DeserializeObject<T>( body ), resp.Headers);
 				}
 			}
 		}

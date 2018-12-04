@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Authorization {
 
 
 		[Test]
-		public async Task Basic_NoAuthentication_403() {
+		public async Task Basic_NoAuthentication_401() {
 			await TestUtilities.RunBasicAuthTest( "/authorization/basic", HttpStatusCode.Unauthorized )
 				.SafeAsync();
 		}

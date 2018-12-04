@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http.Controllers;
+using D2L.Security.OAuth2.Authorization.Exceptions;
 using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Authorization {
@@ -46,10 +49,24 @@ namespace D2L.Security.OAuth2.Authorization {
 					return false;
 
 				case PrincipalType.User:
-					return m_allowUsers;
+					if( m_allowUsers ) {
+						return true;
+					}
+
+					throw new OAuth2Exception(
+						error: OAuth2Exception.Type.invalid_token,
+						errorDescription: "Users are not allowed to access this API."
+					);
 
 				case PrincipalType.Service:
-					return m_allowServices;
+					if( m_allowServices ) {
+						return true;
+					}
+
+					throw new OAuth2Exception(
+						error: OAuth2Exception.Type.invalid_token,
+						errorDescription: "Services are not allowed to access this API."
+					);
 
 				default:
 					throw new NotImplementedException();

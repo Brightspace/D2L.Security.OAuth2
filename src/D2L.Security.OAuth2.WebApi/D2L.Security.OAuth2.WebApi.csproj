@@ -87,9 +87,12 @@
     <Compile Include="Authentication\OAuth2AuthenticationFilter.cs" />
     <Compile Include="Authorization\AuthenticationAttribute.cs" />
     <Compile Include="Authorization\DefaultAuthorizationAttribute.cs" />
+    <Compile Include="Authorization\Exceptions\InsufficientScopeException.cs" />
     <Compile Include="Authorization\NoImpersonationAttribute.cs" />
     <Compile Include="Authorization\NoRequiredScopeAttribute.cs" />
     <Compile Include="Authorization\OAuth2AuthorizeAttribute.cs" />
+    <Compile Include="Authorization\Exceptions\OAuth2Exception.cs" />
+    <Compile Include="Authorization\OAuth2ErrorResponse.cs" />
     <Compile Include="Authorization\RequireClaimAttribute.cs" />
     <Compile Include="Authorization\RequireScopeAttribute.cs" />
     <Compile Include="Extensions\System.Security.Claims.ClaimsPrincipal.Extensions.cs" />

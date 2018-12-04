@@ -6,26 +6,20 @@ using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Authorization {
 	[TestFixture]
-	internal sealed class RequireClaimAttributeTests {
-		[Test]
-		public async Task NoToken_Unauthorized() {
-			await TestUtilities
-				.RunBasicAuthTest( RequireClaimAttributeTestsController.ROUTE, HttpStatusCode.Unauthorized )
-				.SafeAsync();
-		}
+	internal sealed class RequireScopeAttributeTests {
 
 		[Test]
-		public async Task ServiceToken_Unauthorized() {
+		public async Task Token_Scope_XYZ_403() {
 			string jwt = await TestUtilities
-				.GetAccessTokenValidForAMinute( userId: null )
+				.GetAccessTokenValidForAMinute( userId: 123, scope: "x:y:z" )
 				.SafeAsync();
 
 			var response = await TestUtilities
-				.RunBasicAuthTest<OAuth2ErrorResponse>( RequireClaimAttributeTestsController.ROUTE, jwt, HttpStatusCode.Unauthorized )
+				.RunBasicAuthTest<OAuth2ErrorResponse>( RequireScopeAttributeTestsController.ROUTE, jwt, HttpStatusCode.Forbidden )
 				.SafeAsync();
 
-			string expectedError = "invalid_token";
-			string expectedErrorDescription = $"Missing claim: '{ Constants.Claims.USER_ID }'";
+			string expectedError = "insufficient_scope";
+			string expectedErrorDescription = $"Required scope: 'a:b:c'";
 
 			Assert.AreEqual( expectedError, response.Body.Error );
 			Assert.AreEqual( expectedErrorDescription, response.Body.ErrorDescription );
@@ -36,13 +30,13 @@ namespace D2L.Security.OAuth2.Authorization {
 		}
 
 		[Test]
-		public async Task UserToken_OK() {
+		public async Task Token_Scope_ABC_Okay() {
 			string jwt = await TestUtilities
-				.GetAccessTokenValidForAMinute( userId: 123 )
+				.GetAccessTokenValidForAMinute( userId: 123, scope: "a:b:c" )
 				.SafeAsync();
 
 			await TestUtilities
-				.RunBasicAuthTest( RequireClaimAttributeTestsController.ROUTE, jwt, HttpStatusCode.NoContent )
+				.RunBasicAuthTest( RequireScopeAttributeTestsController.ROUTE, jwt, HttpStatusCode.NoContent )
 				.SafeAsync();
 		}
 	}

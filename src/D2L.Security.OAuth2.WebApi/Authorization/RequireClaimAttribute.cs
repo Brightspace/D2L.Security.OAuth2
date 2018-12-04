@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http.Controllers;
+using D2L.Security.OAuth2.Authorization.Exceptions;
 using D2L.Security.OAuth2.Principal;
 using D2L.Services;
 
@@ -30,25 +29,14 @@ namespace D2L.Security.OAuth2.Authorization {
 				return false;
 			}
 
-			bool hasClaim = principal
-				.AccessToken
-				.Claims
-				.HasClaim( m_claimType );
+			if( principal.AccessToken.Claims.HasClaim( m_claimType ) ) {
+				return true;
+			}
 
-			return hasClaim;
-		}
-
-		protected override void HandleUnauthorizedRequestInternal(
-			HttpActionContext actionContext
-		) {
-			var response = actionContext
-				.Request
-				.CreateErrorResponse(
-					HttpStatusCode.Forbidden,
-					String.Format( "Missing claim: '{0}'", m_claimType )
-				);
-
-			actionContext.Response = response;
+			throw new OAuth2Exception(
+				error: OAuth2Exception.Type.invalid_token,
+				errorDescription: $"Missing claim: '{ m_claimType }'"
+			);
 		}
 	}
 }
