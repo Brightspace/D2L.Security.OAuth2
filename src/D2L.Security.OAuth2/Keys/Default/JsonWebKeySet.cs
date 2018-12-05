@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal class JsonWebKeySet {
-		private readonly Uri m_src;
-		private readonly List<JsonWebKey> m_keys = new List<JsonWebKey>();
+	internal sealed class JsonWebKeySet {
+		private readonly ImmutableArray<JsonWebKey> m_keys;
 
 		public JsonWebKeySet( string json, Uri src ) {
-			if( src == null ) {
-				throw new ArgumentNullException( "src" );
-			}
-
-			m_src = src;
+			Source = src ?? throw new ArgumentNullException( nameof( src ) );
 
 			try {
 				var data = JsonConvert.DeserializeObject<Dictionary<string, List<object>>>( json );
@@ -23,11 +19,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 				List<object> keyObjects = data[ "keys" ];
 
+				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
 				foreach( object keyObject in keyObjects ) {
 					string keyJson = JsonConvert.SerializeObject( keyObject );
 					JsonWebKey key = JsonWebKey.FromJson( keyJson );
-					m_keys.Add( key );
+					builder.Add( key );
 				}
+				m_keys = builder.ToImmutable();
 			} catch( InvalidOperationException e ) {
 				throw new JsonWebKeyParseException( "error parsing jwks", e );
 			} catch( JsonReaderException e ) {
@@ -37,8 +35,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		internal JsonWebKeySet( JsonWebKey jsonWebKey, Uri src ) {
-			m_src = src;
-			m_keys.Add( jsonWebKey );
+			Source = src;
+			m_keys = ImmutableArray.Create( jsonWebKey );
 		}
 
 		public bool TryGetKey( Guid keyId, out JsonWebKey key ) {
@@ -54,9 +52,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public IEnumerator<JsonWebKey> GetEnumerator() {
-			return m_keys.GetEnumerator();
+			return ( m_keys as IEnumerable<JsonWebKey> ).GetEnumerator();
 		}
 
-		public Uri Source { get { return m_src; } }
+		public Uri Source { get; }
 	}
 }
