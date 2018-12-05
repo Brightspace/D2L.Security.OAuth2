@@ -16,16 +16,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			ISanePublicKeyDataProvider publicKeyDataProvider,
 			IInMemoryPublicKeyCache cache
 		) {
-			if( publicKeyDataProvider == null ) {
-				throw new ArgumentNullException( "publicKeyDataProvider" );
-			}
-
-			if( cache == null ) {
-				throw new ArgumentNullException( "cache" );
-			}
-
-			m_publicKeyDataProvider = publicKeyDataProvider;
-			m_cache = cache;
+			m_publicKeyDataProvider = publicKeyDataProvider ?? throw new ArgumentNullException( nameof( publicKeyDataProvider ) );
+			m_cache = cache ?? throw new ArgumentNullException( nameof( cache ) );
 		}
 
 		async Task<D2LSecurityKey> IPublicKeyProvider.GetByIdAsync( Guid id ) {
