@@ -5,8 +5,8 @@ namespace D2L.Security.OAuth2.Utilities {
 
 		internal static readonly IDateTimeProvider Instance = new DateTimeProvider();
 
-		public DateTime UtcNow {
-			get { return DateTime.UtcNow; }
+		public DateTimeOffset UtcNow {
+			get { return DateTimeOffset.UtcNow; }
 		}
 	}
 }

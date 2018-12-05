@@ -105,7 +105,6 @@
     <Compile Include="TestUtilities\Mocks\AccessTokenValidatorMock.cs" />
     <Compile Include="TestUtilities\Mocks\PublicKeyProviderMock.cs" />
     <Compile Include="TestUtilities\RequestBuilder.cs" />
-    <Compile Include="Utilities\DateTimeExtensionTests.cs" />
     <Compile Include="Utilities\MockHttpClient.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenExtensionsTests.cs" />
     <Compile Include="Validation\AccessTokenValidatorTests.cs" />
