@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Principal {
 
+	[Immutable]
 	internal sealed class D2LPrincipal : ID2LPrincipal {
 
 		private readonly IAccessToken m_accessToken;

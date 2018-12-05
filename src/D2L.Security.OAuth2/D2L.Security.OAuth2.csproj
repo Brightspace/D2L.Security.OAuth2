@@ -177,7 +177,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Analyzer Include="..\..\packages\D2L.CodeStyle.Analyzers.0.74.0\lib\net47\D2L.CodeStyle.Analyzers.dll" />
+    <Analyzer Include="..\..\packages\D2L.CodeStyle.Analyzers.0.93.0\analyzers\dotnet\cs\D2L.CodeStyle.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

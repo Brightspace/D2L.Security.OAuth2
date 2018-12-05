@@ -4,11 +4,13 @@ using System.Security.Principal;
 using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Principal {
 	/// <summary>
 	/// This class can serve as either an IPrincipal or an ID2LPrincipal
 	/// </summary>
+	[Immutable]
 	internal sealed class D2LPrincipalToIPrincipalAdaptor : IPrincipal, ID2LPrincipal {
 		private readonly ID2LPrincipal m_principal;
 		[Mutability.Audited( "Todd Lang", "02-Mar-2018", ".Net class can't modify, but is immutable." )]
