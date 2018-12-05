@@ -14,16 +14,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			IPublicKeyDataProvider inner,
 			IDateTimeProvider dateTimeProvider
 		) {
-			if( inner == null ) {
-				throw new ArgumentNullException( "inner" );
-			}
-
-			if( dateTimeProvider == null ) {
-				throw new ArgumentException( nameof( dateTimeProvider ) );
-			}
-
-			m_inner = inner;
-			m_dateTimeProvider = dateTimeProvider;
+			m_inner = inner ?? throw new ArgumentNullException( nameof( inner ) );
+			m_dateTimeProvider = dateTimeProvider ?? throw new ArgumentException( nameof( dateTimeProvider ) );
 		}
 
 		async Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
