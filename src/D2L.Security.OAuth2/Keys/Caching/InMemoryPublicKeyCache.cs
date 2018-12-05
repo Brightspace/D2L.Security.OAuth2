@@ -1,11 +1,5 @@
 using System;
-
-#if !DNXCORE50
 using System.Runtime.Caching;
-#else
-using Microsoft.Framework.Caching.Memory;
-#endif
-
 using D2L.Security.OAuth2.Keys.Default;
 
 namespace D2L.Security.OAuth2.Keys.Caching {
@@ -20,11 +14,7 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 		public InMemoryPublicKeyCache(
 			MemoryCache cache
 		) {
-			if( cache == null ) {
-				throw new ArgumentNullException( "cache" );
-			}
-
-			m_cache = cache;
+			m_cache = cache ?? throw new ArgumentNullException( nameof( cache ) );
 		}
 
 		void IInMemoryPublicKeyCache.Set( string srcNamespace, D2LSecurityKey key ) {
