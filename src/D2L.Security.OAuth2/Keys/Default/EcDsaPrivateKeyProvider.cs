@@ -35,7 +35,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					// ECDsaCng copies the CngKey, hence the using
 					var ecDsa = new ECDsaCng( cng );
 					var key = new ECDsaSecurityKey( ecDsa );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, ecDsa );
+					return ( key, ecDsa );
 				}
 			} );
 

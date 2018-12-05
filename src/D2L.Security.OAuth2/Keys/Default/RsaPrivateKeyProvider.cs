@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 				csp.ImportParameters( privateKey );
 				var key = new RsaSecurityKey( csp );
-				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, csp );
+				return ( key, csp );
 			} );
 
 			return Task.FromResult( result );

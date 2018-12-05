@@ -11,13 +11,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		// such as RSACryptoServiceProvider are not thread-safe
 		// This allows us to share the D2LSecurityToken across threads, while still
 		// respecting the thread safety warning of those implemtnations
-		private readonly ThreadLocal<Tuple<AsymmetricSecurityKey, IDisposable>> m_key;
+		private readonly ThreadLocal<(AsymmetricSecurityKey Key, IDisposable Disposable)> m_key;
 
 		public D2LSecurityKey(
 			Guid id,
 			DateTime validFrom,
 			DateTime validTo,
-			Func<Tuple<AsymmetricSecurityKey, IDisposable>> keyFactory
+			Func<(AsymmetricSecurityKey Key, IDisposable)> keyFactory
 		) {
 			if( validFrom >= validTo ) {
 				throw new ArgumentException( "validFrom must be before validTo" );
@@ -27,10 +27,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			ValidFrom = validFrom;
 			ValidTo = validTo;
 
-			m_key = new ThreadLocal<Tuple<AsymmetricSecurityKey, IDisposable>>(
+			m_key = new ThreadLocal<(AsymmetricSecurityKey, IDisposable)>(
 				valueFactory: () => {
 					var result = keyFactory();
-					result.Item1.KeyId = KeyId;
+					result.Key.KeyId = KeyId;
 					return result;
 				},
 				trackAllValues: true
@@ -92,7 +92,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 		}
 
-		internal AsymmetricSecurityKey GetKey() => m_key.Value.Item1;
+		internal AsymmetricSecurityKey GetKey() => m_key.Value.Key;
 
 	}
 }
