@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Keys {
 		[Test]
 		public void FromJson_ParsesStaticRsaKeyWithExp() {
 			string id = Guid.NewGuid().ToString();
-			long exp = ( long )DateTime.UtcNow.TimeSinceUnixEpoch().TotalSeconds;
+			long exp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 			string example =
 				@"{""exp"":" + exp + @",""kid"":""" + id + @""",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
 
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 			Assert.AreEqual( id, key.Id );
 			Assert.IsTrue( key.ExpiresAt.HasValue );
-			Assert.AreEqual( exp, ( long )key.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
+			Assert.AreEqual( exp, key.ExpiresAt.Value.ToUnixTimeSeconds() );
 		}
 
 		[Test]
@@ -67,7 +67,7 @@ namespace D2L.Security.OAuth2.Keys {
 			string actualJson = JsonConvert.SerializeObject( actualKey.ToJwkDto() );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
-			Assert.AreEqual( ( long )expectedKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds, ( long )actualKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
+			Assert.AreEqual( expectedKey.ExpiresAt.Value.ToUnixTimeSeconds(), actualKey.ExpiresAt.Value.ToUnixTimeSeconds() );
 			Assert.AreEqual( expectedJson, actualJson );
 		}
 
@@ -92,7 +92,7 @@ namespace D2L.Security.OAuth2.Keys {
 			string actualJson = JsonConvert.SerializeObject( actualKey.ToJwkDto() );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
-			Assert.AreEqual( ( long )expectedKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds, ( long )actualKey.ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds );
+			Assert.AreEqual( expectedKey.ExpiresAt.Value.ToUnixTimeSeconds(), actualKey.ExpiresAt.Value.ToUnixTimeSeconds() );
 			Assert.AreEqual( expectedJson, actualJson );
 		}
 	}

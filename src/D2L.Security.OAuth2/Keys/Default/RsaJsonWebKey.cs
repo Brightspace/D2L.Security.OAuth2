@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="rsaParameters">The parameters needed to by the RSA algorithm</param>
 		public RsaJsonWebKey(
 			string id,
-			DateTime expiresAt,
+			DateTimeOffset expiresAt,
 			RSAParameters rsaParameters
 		) : base( id, expiresAt ) {
 			m_parameters = rsaParameters;
@@ -35,7 +35,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="e">The RSA exponent</param>
 		public RsaJsonWebKey(
 			string id,
-			DateTime? expiresAt,
+			DateTimeOffset? expiresAt,
 			string n,
 			string e
 		) : base( id, expiresAt ) {
@@ -58,7 +58,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					use = "sig",
 					n = modulus,
 					e = exponent,
-					exp = ( long )ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
+					exp = ExpiresAt.Value.ToUnixTimeSeconds()
 				};
 			}
 
@@ -74,8 +74,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		internal override D2LSecurityToken ToSecurityToken() {
 			var token = new D2LSecurityToken(
 				id: Id,
-				validFrom: DateTime.UtcNow,
-				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
+				validFrom: DateTimeOffset.UtcNow,
+				validTo: ExpiresAt ?? DateTimeOffset.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
 					var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 					rsa.ImportParameters( m_parameters );

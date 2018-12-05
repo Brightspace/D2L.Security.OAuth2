@@ -146,7 +146,6 @@
     <Compile Include="Scopes\ScopeAuthorizer.cs" />
     <Compile Include="Keys\JsonWebKey.cs" />
     <Compile Include="Keys\Default\RsaJsonWebKey.cs" />
-    <Compile Include="Utilities\DateTimeHelpers.cs" />
     <Compile Include="Utilities\DateTimeProvider.cs" />
     <Compile Include="Utilities\IDateTimeProvider.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorFactory.cs" />
