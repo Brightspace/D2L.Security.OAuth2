@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.Keys {
 		public const string KEY_ID = "kid";
 
 		private readonly Guid m_id;
-		private readonly DateTime? m_expiresAt;
+		private readonly DateTimeOffset? m_expiresAt;
 
 		internal abstract D2LSecurityKey ToSecurityKey();
 
@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <param name="expiresAt">When the key expires</param>
-		protected JsonWebKey( Guid id, DateTime? expiresAt ) {
+		protected JsonWebKey( Guid id, DateTimeOffset? expiresAt ) {
 			m_id = id;
 			m_expiresAt = expiresAt;
 		}
@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// When the key expires
 		/// </summary>
-		public virtual DateTime? ExpiresAt {
+		public virtual DateTimeOffset? ExpiresAt {
 			get { return m_expiresAt; }
 		}
 
@@ -75,10 +75,10 @@ namespace D2L.Security.OAuth2.Keys {
 			}
 
 			Guid id = Guid.Parse( data[ "kid" ].ToString() );
-			DateTime? expiresAt = null;
+			DateTimeOffset? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
 				long ts = long.Parse( data[ "exp" ].ToString() );
-				expiresAt = DateTimeHelpers.FromUnixTime( ts );
+				expiresAt = DateTimeOffset.FromUnixTimeSeconds( ts );
 			}
 
 			switch( data[ "kty" ].ToString() ) {

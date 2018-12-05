@@ -20,8 +20,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			Func<(AsymmetricSecurityKey, IDisposable)> keyFactory
 		) {
 			Guid id = Guid.NewGuid();
-			DateTime validFrom = m_dateTimeProvider.UtcNow;
-			DateTime validTo = validFrom + m_keyLifetime;
+			DateTimeOffset validFrom = m_dateTimeProvider.UtcNow;
+			DateTimeOffset validTo = validFrom + m_keyLifetime;
 
 			var result = new D2LSecurityKey(
 				id: id,

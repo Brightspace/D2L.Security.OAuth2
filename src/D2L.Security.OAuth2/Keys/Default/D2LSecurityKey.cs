@@ -15,8 +15,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		public D2LSecurityKey(
 			Guid id,
-			DateTime validFrom,
-			DateTime validTo,
+			DateTimeOffset validFrom,
+			DateTimeOffset validTo,
 			Func<(AsymmetricSecurityKey Key, IDisposable)> keyFactory
 		) {
 			if( validFrom >= validTo ) {
@@ -38,8 +38,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		public Guid Id { get; }
-		public DateTime ValidFrom { get; }
-		public DateTime ValidTo { get; }
+		public DateTimeOffset ValidFrom { get; }
+		public DateTimeOffset ValidTo { get; }
 
 		public SigningCredentials GetSigningCredentials() {
 			var signingCredentials = new SigningCredentials(
