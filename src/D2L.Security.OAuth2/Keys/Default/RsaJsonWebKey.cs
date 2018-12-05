@@ -80,7 +80,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					var rsa = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 					rsa.ImportParameters( m_parameters );
 					var key = new RsaSecurityKey( rsa );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, rsa );
+					return ( key, rsa );
 				}
 			);
 

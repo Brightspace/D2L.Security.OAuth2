@@ -93,7 +93,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				keyFactory: () => {
 					var cng = BuildEcDsaCng();
 					var key = new ECDsaSecurityKey( cng );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, cng );
+					return ( key, cng );
 				}
 			);
 
