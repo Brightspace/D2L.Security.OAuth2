@@ -4,26 +4,12 @@ using System.Threading.Tasks;
 namespace D2L.Security.OAuth2.Caching {
 	internal sealed class NullCache : ICache {
 
-		Task<CacheResponse> ICache.GetAsync( string key ) {
+		private static readonly CacheResponse NULL_RESPONSE = new CacheResponse( success: false, value: null );
 
-			return Task.FromResult(
-				new CacheResponse(
-					success: false,
-					value: null
-				)
-			);
-		}
+		Task<CacheResponse> ICache.GetAsync( string key ) => Task.FromResult( NULL_RESPONSE );
 
-		Task ICache.SetAsync(
-			string key,
-			string value,
-			TimeSpan expiry
-		) {
-			return Task.FromResult( 0 );
-		}
+		Task ICache.SetAsync( string key, string value, TimeSpan expiry ) => Task.CompletedTask;
 
-		Task ICache.RemoveAsync( string key ) {
-			return Task.FromResult( 0 );
-		}
+		Task ICache.RemoveAsync( string key ) => Task.CompletedTask;
 	}
 }
