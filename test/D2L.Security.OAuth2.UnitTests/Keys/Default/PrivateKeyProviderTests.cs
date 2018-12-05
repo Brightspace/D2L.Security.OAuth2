@@ -22,7 +22,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[SetUp]
 		public void SetUp() {
 			m_mockPublicKeyDataProvider = new Mock<ISanePublicKeyDataProvider>( MockBehavior.Strict );
-			m_mockPublicKeyDataProvider.Setup( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ) ).Returns( Task.Delay( 0 ) );
+			m_mockPublicKeyDataProvider.Setup( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ) ).Returns( Task.CompletedTask );
 
 			m_mockDateTimeProvider = new Mock<IDateTimeProvider>();
 			m_mockDateTimeProvider.Setup( dp => dp.UtcNow ).Returns( () => DateTime.UtcNow );

@@ -32,12 +32,12 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			if( !m_keys.TryAdd( key.Id, key ) ) {
 				throw new InvalidOperationException( "Attempted to add a key twice" );
 			}
-			return Task.Delay( 0 );
+			return Task.CompletedTask;
 		}
 
 		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
 			m_keys.TryRemove( id, out JsonWebKey removedKey );
-			return Task.Delay( 0 );
+			return Task.CompletedTask;
 		}
 	}
 }
