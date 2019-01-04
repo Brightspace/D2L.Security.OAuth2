@@ -39,18 +39,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			var url = GetJwkEndpoint( m_authEndpoint, keyId );
 			try {
 				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
-					// This is temporary while we try to fully deprecate the
-					// JWKS route. 404 might mean the key doesn't exist (which
-					// will make the call to jwks likely return 200 but still
-					// result in no key - that's fine but slow) or the jwk
-					// route isn't supported which will make this recover (but
-					// slowely.) Where it matters (the LMS and auth) JWK is
-					// supported so this shouldn't be necessary. We don't
-					// expect many "legitimate" 404s (keys that don't exist.)
-					// so in practice this should only happen when it's
-					// actually important, if it ever happens.
-					if( res.StatusCode != HttpStatusCode.OK ) {
-						return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
+					if ( res.StatusCode == HttpStatusCode.NotFound ) {
+						return JsonWebKeySet.Empty( url );
 					}
 
 					res.EnsureSuccessStatusCode();

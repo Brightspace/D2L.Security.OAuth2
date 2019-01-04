@@ -8,6 +8,7 @@ using D2L.Security.OAuth2.TestFramework;
 using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
@@ -113,10 +114,13 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			public void ValidateAsync_GoodSignature_Succeeds_WebCrypto( string jwk, string token ) {
 				var mockServer = HttpMockFactory.Create( out string host );
 
+				var keyId = (string)JsonConvert.DeserializeObject<Dictionary<string, object>>( jwk )["kid"];
+
 				mockServer
-					.Stub( r => r.Get( "/.well-known/jwks" ) )
-					.Return( @"{""keys"":[" + jwk + "]}" )
+					.Stub( r => r.Get( $"/jwk/{keyId}" ) )
+					.Return( jwk )
 					.OK();
+
 
 				// We expect these to be expired because they are static
 				// The rest of the validation should have otherwise proceeded swimmingly
