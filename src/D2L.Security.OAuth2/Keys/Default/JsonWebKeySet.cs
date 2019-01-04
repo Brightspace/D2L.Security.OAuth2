@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private JsonWebKeySet( ImmutableArray<JsonWebKey> keys, Uri src ) {
 			m_keys = keys;
-			Source = src ?? throw new NotImplementedException( nameof( src ) );
+			Source = src ?? throw new ArgumentNullException( nameof( src ) );
 		}
 
 		internal static JsonWebKeySet Empty( Uri src ) {
