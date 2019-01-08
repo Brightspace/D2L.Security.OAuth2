@@ -34,9 +34,19 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		}
 
-		internal JsonWebKeySet( JsonWebKey jsonWebKey, Uri src ) {
-			Source = src;
-			m_keys = ImmutableArray.Create( jsonWebKey );
+		internal JsonWebKeySet( JsonWebKey jsonWebKey, Uri src )
+			: this(
+				ImmutableArray.Create( jsonWebKey ),
+				src
+			) { }
+
+		private JsonWebKeySet( ImmutableArray<JsonWebKey> keys, Uri src ) {
+			m_keys = keys;
+			Source = src ?? throw new ArgumentNullException( nameof( src ) );
+		}
+
+		internal static JsonWebKeySet Empty( Uri src ) {
+			return new JsonWebKeySet( ImmutableArray<JsonWebKey>.Empty, src );
 		}
 
 		public bool TryGetKey( Guid keyId, out JsonWebKey key ) {

@@ -94,7 +94,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 				keyDtos.Add( dto );
 
 				m_server
-					.Stub( r => r.Get( $"jwk/{ key.Id }" ) )
+					.Stub( r => r.Get( $"/jwk/{ key.Id }" ) )
 					.Return( JsonConvert.SerializeObject( dto ) )
 					.OK();
 			}
