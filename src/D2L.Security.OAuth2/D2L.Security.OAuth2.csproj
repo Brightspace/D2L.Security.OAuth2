@@ -127,7 +127,6 @@
     <Compile Include="Keys\Default\Data\JwksProvider.cs" />
     <Compile Include="Keys\RsaTokenSignerFactory.cs" />
     <Compile Include="Keys\TokenSignerFactory.cs" />
-    <Compile Include="Keys\UnsignedComplexToken.cs" />
     <Compile Include="Keys\UnsignedToken.cs" />
     <Compile Include="Principal\D2LPrincipal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
