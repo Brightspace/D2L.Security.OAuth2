@@ -32,9 +32,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
             var token = new UnsignedToken(
                 issuer: "issuer",
                 audience: "audience",
-                claims: new List<Claim>() {
-                    new Claim("scopes", "a:b:c a:b:d"),
-                    new Claim("tenantid", "325cb46b-488d-4061-aa2c-eef5a12b6b7c")
+                claims: new Dictionary<string, object>() {
+					{ "scopes", "a:b:c a:b:d" },
+					{ "tenantid", "325cb46b-488d-4061-aa2c-eef5a12b6b7c" }
                 },
                 notBefore: new DateTime( 2019, 1, 1, 0, 0, 0, DateTimeKind.Utc ),
                 expiresAt: new DateTime( 2019, 1, 1, 1, 0, 30, DateTimeKind.Utc )

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.TestFramework;
@@ -40,7 +39,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					.SignTokenBackdoor( new UnsignedToken(
 						"fake issuer",
 						"fake audience",
-						new List<Claim> { new Claim( "sub", SUBJECT ) },
+						new Dictionary<string, object> { { "sub", SUBJECT } },
 						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
 						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
 					.SafeAsync();
@@ -63,7 +62,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					.SignTokenBackdoor( new UnsignedToken(
 						"fake issuer",
 						"fake audience",
-						new List<Claim>(),
+						new Dictionary<string, object>(),
 						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
 						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
 					.SafeAsync();
