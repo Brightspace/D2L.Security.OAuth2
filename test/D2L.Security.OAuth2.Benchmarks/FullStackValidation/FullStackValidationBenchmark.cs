@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Claims;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.TestFrameworks;
@@ -41,7 +40,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 				.SignAsync( new UnsignedToken(
 					"some issuer",
 					"some audience",
-					new List<Claim>(),
+					new Dictionary<string, object>(),
 					DateTime.Now,
 					DateTime.Now + TimeSpan.FromDays( 1 )
 				) )

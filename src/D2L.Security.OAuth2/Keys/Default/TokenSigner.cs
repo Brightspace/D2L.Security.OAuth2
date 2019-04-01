@@ -1,5 +1,8 @@
 ﻿using System.IdentityModel.Tokens;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
@@ -22,11 +25,19 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				jwt = new JwtSecurityToken(
 					issuer: token.Issuer,
 					audience: token.Audience,
-					claims: token.Claims,
+					claims: Enumerable.Empty<Claim>(),
 					notBefore: token.NotBefore,
 					expires: token.ExpiresAt,
 					signingCredentials: securityToken.GetSigningCredentials()
 				);
+
+				var claims = token.Claims;
+				foreach( var claim in claims ) {
+					if( jwt.Payload.ContainsKey( claim.Key ) ) {
+						throw new ValidationException( $"'{claim.Key}' is already part of the payload" );
+					}
+					jwt.Payload.Add( claim.Key, claim.Value );
+				}
 
 				var jwtHandler = new JwtSecurityTokenHandler();
 

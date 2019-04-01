@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Keys {
-
 	/// <summary>
 	/// An abstraction for signing tokens
 	/// </summary>

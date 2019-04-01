@@ -44,10 +44,14 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				throw new InvalidOperationException( "missing issuer claim" );
 			}
 
+			var filteredClaims = claims
+				.Where( t => t.Type != Constants.Claims.ISSUER )
+				.ToDictionary( t => t.Type, t => (object)t.Value );
+
 			var unsignedToken = new UnsignedToken(
 				issuer: issuer,
 				audience: Constants.ASSERTION_AUDIENCE,
-				claims: claims,
+				claims: filteredClaims,
 				notBefore: now,
 				expiresAt: now + Constants.ASSERTION_TOKEN_LIFETIME );
 

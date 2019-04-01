@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
@@ -43,17 +42,17 @@ namespace D2L.Security.OAuth2 {
 			scope = scope ?? "*:*:*";
 			tenantId = tenantId ?? Guid.NewGuid();
 
-			var claims = new List<Claim>();
+			var claims = new Dictionary<string, object>();
 
-			claims.Add( new Claim( Constants.Claims.SCOPE, scope ) );
-			claims.Add( new Claim( Constants.Claims.TENANT_ID, tenantId.ToString() ) );
+			claims.Add( Constants.Claims.SCOPE, scope );
+			claims.Add( Constants.Claims.TENANT_ID, tenantId.ToString() );
 
 			if( userId != null ) {
-				claims.Add( new Claim( Constants.Claims.USER_ID, userId.Value.ToString() ) );
+				claims.Add( Constants.Claims.USER_ID, userId.Value.ToString() );
 			}
 
 			if( actualUserId != null ) {
-				claims.Add( new Claim( Constants.Claims.ACTUAL_USER_ID, actualUserId.Value.ToString() ) );
+				claims.Add( Constants.Claims.ACTUAL_USER_ID, actualUserId.Value.ToString() );
 			}
 
 			return await m_signer.SignAsync(

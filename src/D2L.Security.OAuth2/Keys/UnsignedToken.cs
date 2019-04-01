@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Security.Claims;
 
 namespace D2L.Security.OAuth2.Keys {
 
@@ -11,7 +9,7 @@ namespace D2L.Security.OAuth2.Keys {
 	public sealed class UnsignedToken {
 		private readonly string m_issuer;
 		private readonly string m_audience;
-		private readonly ReadOnlyCollection<Claim> m_claims;
+		private readonly IReadOnlyDictionary<string, object> m_claims;
 		private readonly DateTime m_notBefore;
 		private readonly DateTime m_expiresAt;
 
@@ -26,13 +24,13 @@ namespace D2L.Security.OAuth2.Keys {
 		public UnsignedToken(
 			string issuer,
 			string audience,
-			IList<Claim> claims,
+			IReadOnlyDictionary<string, object> claims,
 			DateTime notBefore,
 			DateTime expiresAt
 		) {
 			m_issuer = issuer;
 			m_audience = audience;
-			m_claims = new ReadOnlyCollection<Claim>( claims );
+			m_claims = claims;
 			m_notBefore = notBefore;
 			m_expiresAt = expiresAt;
 		}
@@ -54,7 +52,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// The token's claims
 		/// </summary>
-		public ReadOnlyCollection<Claim> Claims {
+		public IReadOnlyDictionary<string, object> Claims {
 			get { return m_claims; }
 		}
 
