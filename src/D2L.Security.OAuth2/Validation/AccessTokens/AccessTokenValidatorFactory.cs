@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			HttpClient httpClient,
 			Uri authEndpoint
 		) {
-			var jwksProvider = new JwksProvider(
+			var jwksProvider = new D2LJwksProvider(
 				httpClient,
 				authEndpoint
 			);
@@ -52,5 +52,27 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			return result;
 		}
 
+		/// <summary>
+		/// Creates an <see cref="IAccessTokenValidator"/> for Standard OAuth2 instance backed by a remote token signer.
+		/// </summary>
+		/// <param name="httpClient"><see cref="HttpClient"/> instance with which requests will be made. The lifecycle of the <see cref="HttpClient"/> is not managed. It will not be disposed by the validator.</param>
+		/// <param name="authEndpoint">The URI of the remote JWKS file</param>
+		/// <returns></returns>
+		public static IAccessTokenValidator CreateRemoteStandardValidator(
+			HttpClient httpClient,
+			Uri authEndpoint
+		) {
+			var jwksProvider = new StandardJwksProvider(
+				httpClient,
+				authEndpoint
+			);
+			var publicKeyProvider = new RemotePublicKeyProvider(
+				jwksProvider,
+				new InMemoryPublicKeyCache()
+			);
+
+			var result = new AccessTokenValidator( publicKeyProvider );
+			return result;
+		}
 	}
 }

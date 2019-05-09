@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 
 		public Task<D2LSecurityToken> GetSigningCredentialsAsync() {
 			var creds = new D2LSecurityToken(
-				id: m_keyId,
+				id: m_keyId.ToString(),
 				validFrom: DateTime.UtcNow - TimeSpan.FromDays( 1 ),
 				validTo: DateTime.UtcNow + TimeSpan.FromDays( 365 ),
 				keyFactory: () => {

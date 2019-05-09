@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// </summary>
 		public const string KEY_ID = "kid";
 
-		private readonly Guid m_id;
+		private readonly string m_id;
 		private readonly DateTime? m_expiresAt;
 
 		internal abstract D2LSecurityToken ToSecurityToken();
@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <param name="expiresAt">When the key expires</param>
-		protected JsonWebKey( Guid id, DateTime? expiresAt ) {
+		protected JsonWebKey( string id, DateTime? expiresAt ) {
 			m_id = id;
 			m_expiresAt = expiresAt;
 		}
@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// The key id (kid)
 		/// </summary>
-		public virtual Guid Id {
+		public virtual string Id {
 			get { return m_id; }
 		}
 
@@ -74,7 +74,7 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new JsonWebKeyParseException( "missing 'kid' parameter in JSON web key" );
 			}
 
-			Guid id = Guid.Parse( data[ "kid" ].ToString() );
+			string id = data[ "kid" ].ToString();
 			DateTime? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
 				long ts = long.Parse( data[ "exp" ].ToString() );

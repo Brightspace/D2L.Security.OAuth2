@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="expiresAt">When the key expires</param>
 		/// <param name="publicBlob">Blob in <see cref="CngKeyBlobFormat.EccPublicBlob"/> format</param>
 		public EcDsaJsonWebKey(
-			Guid id,
+			string id,
 			DateTime? expiresAt,
 			byte[] publicBlob
 		) : base( id, expiresAt ) {
@@ -37,7 +37,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="x">The x position of the point on the curve</param>
 		/// <param name="y">The y position of the point on the curve</param>
 		public EcDsaJsonWebKey(
-			Guid id,
+			string id,
 			DateTime? expiresAt,
 			string curve,
 			string x,
@@ -55,7 +55,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public override object ToJwkDto() {
 			if( ExpiresAt.HasValue ) {
 				return new {
-					kid = Id.ToString(),
+					kid = Id,
 					kty = "EC",
 					use = "sig",
 					crv = m_curve,
@@ -66,7 +66,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 
 			return new {
-				kid = Id.ToString(),
+				kid = Id,
 				kty = "EC",
 				use = "sig",
 				crv = m_curve,

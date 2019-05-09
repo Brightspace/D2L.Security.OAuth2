@@ -2,15 +2,16 @@
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
-	internal sealed class JwksProvider : IJwksProvider {
+	internal sealed class D2LJwksProvider : IJwksProvider {
 		private readonly HttpClient m_httpClient;
 		private readonly Uri m_authEndpoint;
 
-		public JwksProvider(
+		public D2LJwksProvider(
 			HttpClient httpClient,
 			Uri authEndpoint
 		) {
@@ -35,7 +36,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			}
 		}
 
-		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( Guid keyId ) {
+		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( string keyId ) {
 			var url = GetJwkEndpoint( m_authEndpoint, keyId );
 			try {
 				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
@@ -77,10 +78,10 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			return new PublicKeyLookupFailureException( message, e );
 		}
 
-		private static Uri GetJwkEndpoint( Uri authEndpoint, Guid keyId ) {
+		private static Uri GetJwkEndpoint( Uri authEndpoint, string keyId ) {
 			string authRoot = MakeSureThereIsATrailingSlash( authEndpoint );
 
-			authRoot += $"jwk/{keyId}";
+			authRoot += $"jwk/{HttpUtility.UrlEncode( keyId )}";
 
 			return new Uri( authRoot );
 		}
@@ -95,7 +96,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		private static string MakeSureThereIsATrailingSlash( Uri uri ) {
 			string root = uri.ToString();
-			if( root[ root.Length - 1 ] == '/' ) {
+			if( root[root.Length - 1] == '/' ) {
 				return root;
 			}
 

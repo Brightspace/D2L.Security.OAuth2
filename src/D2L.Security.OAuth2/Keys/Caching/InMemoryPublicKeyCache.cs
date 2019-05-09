@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 #if !DNXCORE50
 using System.Runtime.Caching;
@@ -37,12 +37,12 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 			);
 		}
 
-		D2LSecurityToken IInMemoryPublicKeyCache.Get( string srcNamespace, Guid keyId ) {
+		D2LSecurityToken IInMemoryPublicKeyCache.Get( string srcNamespace, string keyId ) {
 			var result = m_cache.Get( BuildCacheKey( srcNamespace, keyId ) ) as D2LSecurityToken;
 			return result;
 		}
 
-		private static string BuildCacheKey( string srcNamespace, Guid keyId ) {
+		private static string BuildCacheKey( string srcNamespace, string keyId ) {
 			string result = string.Format( CACHE_KEY_PATTERN, srcNamespace, keyId );
 			return result;
 		}

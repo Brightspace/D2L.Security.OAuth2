@@ -17,14 +17,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		private IPublicKeyProvider m_publicKeyProvider;
 
 		private string SRC_NAMESPACE;
-		private Guid KEY_ID;
+		private string KEY_ID;
 
 		[SetUp]
 		public void BeforeEach() {
 			m_jwksProvider = new Mock<IJwksProvider>( MockBehavior.Strict );
 			m_keyCache = new Mock<IInMemoryPublicKeyCache>( MockBehavior.Strict );
 			SRC_NAMESPACE = Guid.NewGuid().ToString();
-			KEY_ID = Guid.NewGuid();
+			KEY_ID = Guid.NewGuid().ToString();
 
 			m_jwksProvider
 				.Setup( x => x.Namespace )
@@ -68,7 +68,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns<D2LSecurityToken>( null );
 
-			var otherKeyId = Guid.NewGuid();
+			var otherKeyId = Guid.NewGuid().ToString();
 			var jwks = new JsonWebKeySet(
 				new JavaScriptSerializer().Serialize(
 					new {
@@ -125,7 +125,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Setup( x => x.Get( SRC_NAMESPACE, KEY_ID ) )
 				.Returns<D2LSecurityToken>( null );
 
-			var otherKeyId = Guid.NewGuid();
+			var otherKeyId = Guid.NewGuid().ToString();
 			var jwks = new JsonWebKeySet(
 				new JavaScriptSerializer().Serialize(
 					new {

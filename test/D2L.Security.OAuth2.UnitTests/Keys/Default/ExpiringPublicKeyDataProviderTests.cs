@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task GetByIdAsync_EmptyDb_ReturnsNull() {
-			Guid id = Guid.NewGuid();
+			string id = Guid.NewGuid().ToString();
 			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( null );
 
 			JsonWebKey result = await m_publicKeyDataProvider
@@ -51,11 +51,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task GetByIdAsync_InvalidId_ReturnsNull() {
-			JsonWebKey key = new JsonWebKeyStub( Guid.NewGuid() );
+			JsonWebKey key = new JsonWebKeyStub( Guid.NewGuid().ToString() );
 			AddKeyToDb( key );
 
 
-			Guid id = Guid.NewGuid();
+			string id = Guid.NewGuid().ToString();
 			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( null );
 
 			JsonWebKey result = await m_publicKeyDataProvider
@@ -67,7 +67,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task GetByIdAsync_ValidId_ReturnsKey() {
-			JsonWebKey key = new JsonWebKeyStub( Guid.NewGuid() );
+			JsonWebKey key = new JsonWebKeyStub( Guid.NewGuid().ToString() );
 			AddKeyToDb( key );
 
 			JsonWebKey result = await m_publicKeyDataProvider
@@ -80,7 +80,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task GetByIdAsync_ExpiredKey_DeletesAndReturnsNull() {
-			JsonWebKey key = new JsonWebKeyStub( Guid.NewGuid(), NOW - TimeSpan.FromTicks( 1 ) );
+			JsonWebKey key = new JsonWebKeyStub( Guid.NewGuid().ToString(), NOW - TimeSpan.FromTicks( 1 ) );
 			AddKeyToDb( key );
 			m_mockPublicKeyDataProvider.Setup( kp => kp.DeleteAsync( key.Id ) ).Returns( Task.Delay( 0 ) );
 
@@ -95,8 +95,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task GetByIdAsync_OtherKeyExpired_GetsDeletedAsWell() {
-			JsonWebKey freshKey = new JsonWebKeyStub( Guid.NewGuid() );
-			JsonWebKey expiredKey = new JsonWebKeyStub( Guid.NewGuid(), NOW - TimeSpan.FromTicks( 1 ) );
+			JsonWebKey freshKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
+			JsonWebKey expiredKey = new JsonWebKeyStub( Guid.NewGuid().ToString(), NOW - TimeSpan.FromTicks( 1 ) );
 			AddKeyToDb( freshKey );
 			AddKeyToDb( expiredKey );
 			m_mockPublicKeyDataProvider
@@ -128,8 +128,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task GetAll_MixOfKeys_ReturnsUnexpiredAndDeletesExpired() {
-			var goodIds = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
-			var mehIds = new[] { Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid() };
+			var goodIds = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
+			var mehIds = new[] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() };
 			var keys = new[] {
 				new JsonWebKeyStub( goodIds[ 0 ] ),
 				new JsonWebKeyStub( mehIds[ 0 ], NOW - TimeSpan.FromTicks( 1 ) ),
@@ -154,7 +154,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.GetAllAsync()
 				.SafeAsync();
 
-			IEnumerable<Guid> ids = result.Select( k => k.Id );
+			IEnumerable<string> ids = result.Select( k => k.Id );
 
 			foreach( var id in mehIds ) {
 				var kid = id; // copy the GUID to appease the compiler

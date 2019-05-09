@@ -100,7 +100,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
 			var ids = keys.Select( k => k.KeyId ).ToList();
-			foreach( Guid id in ids ) {
+			foreach( string id in ids ) {
 				Assert.AreEqual( ids[ 0 ], id );
 			}
 		}
