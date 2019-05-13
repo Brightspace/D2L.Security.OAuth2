@@ -111,6 +111,7 @@
     </Compile>
     <Compile Include="Keys\Default\SavingPrivateKeyProvider.cs" />
     <Compile Include="Keys\EcDsaTokenSignerFactory.cs" />
+    <Compile Include="Utilities\StringKeyIdHelpers.cs" />
     <Compile Include="Keys\PublicKeyDataProviderFactory.cs" />
     <Compile Include="Keys\Default\RemotePublicKeyProvider.cs" />
     <Compile Include="Keys\Caching\IInMemoryPublicKeyCache.cs" />

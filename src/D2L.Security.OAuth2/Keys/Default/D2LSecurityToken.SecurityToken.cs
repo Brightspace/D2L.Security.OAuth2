@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Tokens;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal partial class D2LSecurityToken : SecurityToken {
@@ -34,7 +35,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			var clause = keyIdentifierClause as NamedKeySecurityKeyIdentifierClause;
 			return clause != null
 				&& clause.Name.Equals( OAuth2.Constants.Claims.KEY_ID, StringComparison.Ordinal )
-				&& clause.Id.Equals( KeyId, StringComparison.Ordinal );
+				&& clause.Id.KeyIdEquals( KeyId );
 		}
 	}
 }

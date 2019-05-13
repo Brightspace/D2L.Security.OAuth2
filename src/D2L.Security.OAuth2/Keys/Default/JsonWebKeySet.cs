@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using D2L.Security.OAuth2.Utilities;
 using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Keys.Default {
@@ -17,7 +18,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
 				}
 
-				List<object> keyObjects = data[ "keys" ];
+				List<object> keyObjects = data["keys"];
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
 				foreach( object keyObject in keyObjects ) {
@@ -41,7 +42,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		public bool TryGetKey( string keyId, out JsonWebKey key ) {
 			foreach( JsonWebKey currentKey in m_keys ) {
-				if( currentKey.Id == keyId ) {
+				if( currentKey.Id.KeyIdEquals( keyId ) ) {
 					key = currentKey;
 					return true;
 				}
