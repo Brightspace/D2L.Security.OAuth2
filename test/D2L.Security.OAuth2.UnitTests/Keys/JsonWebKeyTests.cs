@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Keys {
 	internal sealed class JsonWebKeyTests {
 		[Test]
 		public void FromJson_ParsesStaticRsaKeyWithoutExp() {
-			Guid id = Guid.NewGuid();
+			string id = Guid.NewGuid().ToString();
 			string example =
 				@"{""kid"":""" + id + @""",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
 
@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 		[Test]
 		public void FromJson_ParsesStaticRsaKeyWithExp() {
-			Guid id = Guid.NewGuid();
+			string id = Guid.NewGuid().ToString();
 			long exp = ( long )DateTime.UtcNow.TimeSinceUnixEpoch().TotalSeconds;
 			string example =
 				@"{""exp"":" + exp + @",""kid"":""" + id + @""",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
@@ -43,7 +43,7 @@ namespace D2L.Security.OAuth2.Keys {
 		public void FromJson_ParsesStaticEcKeyWithoutExp( string jwk ) {
 			JsonWebKey key = JsonWebKey.FromJson( jwk );
 
-			Assert.AreEqual( Guid.Parse( "fae33c85-e421-40f5-bebb-8ec8ab778be4" ), key.Id );
+			Assert.AreEqual( "fae33c85-e421-40f5-bebb-8ec8ab778be4", key.Id );
 			Assert.IsFalse( key.ExpiresAt.HasValue );
 
 			Assert.DoesNotThrow( () => key.ToSecurityToken() );

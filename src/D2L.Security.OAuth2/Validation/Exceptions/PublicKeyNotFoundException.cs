@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.Validation.Exceptions {
 		/// <summary>
 		/// Constructs a new <see cref="PublicKeyNotFoundException"/>
 		/// </summary>
-		public PublicKeyNotFoundException( Guid id, string source )
+		public PublicKeyNotFoundException( string id, string source )
 			: base( string.Format( "Could not find public key with id '{0}' from '{1}'", id, source ) ) { }
 	}
 }

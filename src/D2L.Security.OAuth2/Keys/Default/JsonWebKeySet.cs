@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_keys = ImmutableArray.Create( jsonWebKey );
 		}
 
-		public bool TryGetKey( Guid keyId, out JsonWebKey key ) {
+		public bool TryGetKey( string keyId, out JsonWebKey key ) {
 			foreach( JsonWebKey currentKey in m_keys ) {
 				if( currentKey.Id == keyId ) {
 					key = currentKey;

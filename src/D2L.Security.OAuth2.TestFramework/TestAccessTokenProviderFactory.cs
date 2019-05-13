@@ -11,7 +11,7 @@ using D2L.Security.OAuth2.Provisioning.Default;
 namespace D2L.Security.OAuth2.TestFramework {
 	public static class TestAccessTokenProviderFactory {
 
-		private static readonly Guid TestKeyId = TestStaticKeyProvider.TestKeyId;
+		private static readonly string TestKeyId = TestStaticKeyProvider.TestKeyId;
 
 		/// <summary>
 		///  Creates an IAccessTokenProvider with test credentials. Your ClaimSet should have the issuer "ExpandoClient". You can request any Scope.
@@ -31,7 +31,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		/// <param name="keyId">The id of the security token</param>
 		/// <param name="rsaParameters">The public and private key for the supplied key id</param>
 		/// <returns>An IAccessTokenProvider with the supplied test credentials</returns>
-		public static IAccessTokenProvider Create( HttpClient httpClient, String tokenProvisioningEndpoint, Guid keyId, RSAParameters rsaParameters ) {
+		public static IAccessTokenProvider Create( HttpClient httpClient, String tokenProvisioningEndpoint, string keyId, RSAParameters rsaParameters ) {
 #pragma warning disable 618
 			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( keyId, rsaParameters );
 #pragma warning restore 618

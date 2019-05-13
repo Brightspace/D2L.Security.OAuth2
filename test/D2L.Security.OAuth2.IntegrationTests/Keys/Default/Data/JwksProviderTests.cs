@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		private const string HTML_PATH = "/html";
 		private const string JWKS_PATH = "/.well-known/jwks";
 
-		private static Guid GOOD_JWK_ID = Guid.NewGuid();
+		private static string GOOD_JWK_ID = Guid.NewGuid().ToString();
 		private static readonly string GOOD_JWK = @"{""kid"":""" + GOOD_JWK_ID + @""",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
 		private static readonly string GOOD_JSON = @"{""keys"": [" + GOOD_JWK + "]}";
 		private static readonly string HTML = "<html><body><p>This isn't JSON eh</p></body></html>";
