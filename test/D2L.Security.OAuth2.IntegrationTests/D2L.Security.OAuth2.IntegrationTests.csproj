@@ -77,7 +77,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Keys\Default\Data\JwksProviderTests.cs" />
+    <Compile Include="Keys\Default\Data\StandardJwksProviderTests.cs" />
+    <Compile Include="Keys\Default\Data\D2LJwksProviderTests.cs" />
     <Compile Include="TestFramework\TestAccessTokenProviderTests.cs" />
     <Compile Include="TestFramework\TestAccessTokenTests.cs" />
     <Compile Include="Validation\AccessTokens\AccessTokenValidatorTests.Rsa.cs" />

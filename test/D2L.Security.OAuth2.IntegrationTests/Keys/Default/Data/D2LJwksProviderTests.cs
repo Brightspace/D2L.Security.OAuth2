@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
 	[TestFixture]
-	public class JwksProviderTests {
+	public class D2LJwksProviderTests {
 		private const string GOOD_PATH = "/goodpath";
 		private const string BAD_PATH = "/badpath";
 		private const string HTML_PATH = "/html";
@@ -61,7 +61,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task SuccessCase() {
 			using( SetupJwkServer( out string host ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider publicKeyProvider = new JwksProvider(
+				IJwksProvider publicKeyProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
@@ -80,7 +80,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public void RequestJwksAsync_HTML_Throws() {
 			using( SetupJwkServer( out string host ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider publicKeyProvider = new JwksProvider(
+				IJwksProvider publicKeyProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + HTML_PATH )
 				);
@@ -99,7 +99,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public void RequestJwksAsync_404_Throws() {
 			using( SetupJwkServer( out string host ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider publicKeyProvider = new JwksProvider(
+				IJwksProvider publicKeyProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + BAD_PATH )
 				);
@@ -116,7 +116,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public void RequestJwksAsync_CantReachServer_Throws() {
 			using( SetupJwkServer( out string host ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider publicKeyProvider = new JwksProvider(
+				IJwksProvider publicKeyProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" )
 				);
@@ -133,7 +133,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task RequestJwkAsync_Success() {
 			using( SetupJwkServer( out string host, hasJwk: true, jwkStatusCode: HttpStatusCode.OK ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider jwksProvider = new JwksProvider(
+				IJwksProvider jwksProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
@@ -155,7 +155,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task RequestJwkAsync_StringKeyId_Success() {
 			using( SetupJwkServer( out string host, hasJwk: true, jwkStatusCode: HttpStatusCode.OK ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider jwksProvider = new JwksProvider(
+				IJwksProvider jwksProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
@@ -177,7 +177,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task RequestJwkAsync_StringKeyId_InvalidKeyId_Fallback_DoesNotReturnKey() {
 			using( SetupJwkServer( out string host, hasJwk: true, jwkStatusCode: HttpStatusCode.OK ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider jwksProvider = new JwksProvider(
+				IJwksProvider jwksProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
@@ -198,7 +198,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task RequestJwkAsync_404_Fallback_Success() {
 			using( SetupJwkServer( out string host, hasJwk: false, jwkStatusCode: HttpStatusCode.NotFound ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider jwksProvider = new JwksProvider(
+				IJwksProvider jwksProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
@@ -220,7 +220,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task RequestJwkAsync_StringKeyId_404_Fallback_Success() {
 			using( SetupJwkServer( out string host, hasJwk: false, jwkStatusCode: HttpStatusCode.NotFound ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider jwksProvider = new JwksProvider(
+				IJwksProvider jwksProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
@@ -242,7 +242,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task RequestJwkAsync_500_Fallback_Success() {
 			using( SetupJwkServer( out string host, hasJwk: false, jwkStatusCode: HttpStatusCode.InternalServerError ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider jwksProvider = new JwksProvider(
+				IJwksProvider jwksProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);
@@ -264,7 +264,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		public async Task RequestJwkAsync_StringKeyId_500_Fallback_Success() {
 			using( SetupJwkServer( out string host, hasJwk: false, jwkStatusCode: HttpStatusCode.InternalServerError ) )
 			using( HttpClient httpClient = new HttpClient() ) {
-				IJwksProvider jwksProvider = new JwksProvider(
+				IJwksProvider jwksProvider = new D2LJwksProvider(
 					httpClient,
 					new Uri( host + GOOD_PATH )
 				);

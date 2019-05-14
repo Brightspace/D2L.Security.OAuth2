@@ -7,11 +7,11 @@ using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
-	internal sealed class JwksProvider : IJwksProvider {
+	internal sealed class D2LJwksProvider : IJwksProvider {
 		private readonly HttpClient m_httpClient;
 		private readonly Uri m_authEndpoint;
 
-		public JwksProvider(
+		public D2LJwksProvider(
 			HttpClient httpClient,
 			Uri authEndpoint
 		) {
