@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <returns>The <see cref="JsonWebKey"/> or null if the key doesn't exist or has expired</returns>
-		Task<JsonWebKey> GetByIdAsync( Guid id );
+		Task<JsonWebKey> GetByIdAsync( string id );
 
 		/// <summary>
 		/// Gets all the <see cref="JsonWebKey"/> instances
@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// Deletes a key by key <paramref name="id"/> (kid)
 		/// </summary>
 		/// <param name="id">The key id (kid) of the key to delete</param>
-		Task DeleteAsync( Guid id );
+		Task DeleteAsync( string id );
 
 	}
 }

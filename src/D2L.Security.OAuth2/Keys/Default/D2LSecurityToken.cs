@@ -7,7 +7,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 	internal sealed partial class D2LSecurityToken : SecurityToken {
 
-		private Guid m_id;
+		private string m_id;
 		private readonly DateTime m_validFrom;
 		private readonly DateTime m_validTo;
 
@@ -18,7 +18,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		private readonly ThreadLocal<Tuple<AsymmetricSecurityKey, IDisposable>> m_key;
 
 		public D2LSecurityToken(
-			Guid id,
+			string id,
 			DateTime validFrom,
 			DateTime validTo,
 			Func<Tuple<AsymmetricSecurityKey, IDisposable>> keyFactory
@@ -37,7 +37,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			);
 		}
 
-		public Guid KeyId { get { return m_id; } }
+		public string KeyId { get { return m_id; } }
 
 		public override DateTime ValidFrom {
 			get { return m_validFrom; }

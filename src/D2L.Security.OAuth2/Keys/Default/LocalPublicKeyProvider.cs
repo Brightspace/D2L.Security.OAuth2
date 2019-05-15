@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_cache = cache;
 		}
 
-		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( Guid id ) {
+		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( string id ) {
 			D2LSecurityToken result = m_cache.Get( PUBLIC_KEY_SOURCE, id );
 			if( result != null ) {
 				return result;

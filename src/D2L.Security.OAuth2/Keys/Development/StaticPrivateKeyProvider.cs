@@ -11,11 +11,11 @@ namespace D2L.Security.OAuth2.Keys.Development {
 	/// </summary>
 	[Obsolete( "Only use this in tests and for prototyping." )]
 	internal sealed class StaticPrivateKeyProvider : IPrivateKeyProvider {
-		private readonly Guid m_keyId;
+		private readonly string m_keyId;
 		private readonly RSAParameters m_rsaParameters;
 
 		public StaticPrivateKeyProvider(
-			Guid keyId,
+			string keyId,
 			RSAParameters rsaParameters
 		) {
 			m_keyId = keyId;

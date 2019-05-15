@@ -5,7 +5,7 @@ using D2L.Security.OAuth2.Keys.Default;
 
 namespace D2L.Security.OAuth2.TestUtilities {
 	internal static class D2LSecurityTokenUtility {
-		public static D2LSecurityToken CreateActiveToken( Guid? id = null ) {
+		public static D2LSecurityToken CreateActiveToken( string id = null ) {
 			return CreateTokenWithTimeRemaining(
 				TimeSpan.FromHours( 1 ) - TimeSpan.FromSeconds( 1 ),
 				id );
@@ -13,10 +13,10 @@ namespace D2L.Security.OAuth2.TestUtilities {
 
 		public static D2LSecurityToken CreateTokenWithTimeRemaining(
 			TimeSpan remaining,
-			Guid? id = null
+			string id = null
 		) {
 
-			id = id ?? Guid.NewGuid();
+			id = id ?? Guid.NewGuid().ToString();
 
 			var validTo = DateTime.UtcNow + remaining;
 			var validFrom = validTo - TimeSpan.FromHours( 1 );
@@ -29,7 +29,7 @@ namespace D2L.Security.OAuth2.TestUtilities {
 			}
 
 			return new D2LSecurityToken(
-				id.Value,
+				id,
 				validFrom,
 				validTo,
 				keyFactory: () => {

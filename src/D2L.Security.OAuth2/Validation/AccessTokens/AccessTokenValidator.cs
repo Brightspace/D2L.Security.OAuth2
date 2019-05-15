@@ -59,12 +59,9 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 
 			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
-			if( !Guid.TryParse( keyId, out Guid id ) ) {
-				throw new InvalidTokenException( string.Format( "Non-guid kid claim: {0}", keyId ) );
-			}
 
 			D2LSecurityToken signingToken = await m_publicKeyProvider
-				.GetByIdAsync( id )
+				.GetByIdAsync( keyId )
 				.SafeAsync();
 
 			var validationParameters = new TokenValidationParameters() {

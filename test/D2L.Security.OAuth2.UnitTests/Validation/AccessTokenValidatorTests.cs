@@ -74,7 +74,7 @@ namespace D2L.Security.OAuth2.Validation {
 			DateTime jwtExpiry,
 			Type expectedExceptionType = null
 		) {
-			Guid keyId = Guid.NewGuid();
+			string keyId = Guid.NewGuid().ToString();
 			D2LSecurityToken signingToken = D2LSecurityTokenUtility.CreateActiveToken( id: keyId );
 			SigningCredentials signingCredentials = null;
 			if( signJwt ) {

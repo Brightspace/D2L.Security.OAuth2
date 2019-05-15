@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="expiresAt">When the key expires</param>
 		/// <param name="rsaParameters">The parameters needed to by the RSA algorithm</param>
 		public RsaJsonWebKey(
-			Guid id,
+			string id,
 			DateTime expiresAt,
 			RSAParameters rsaParameters
 		) : base( id, expiresAt ) {
@@ -34,7 +34,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="n">The RSA modulus</param>
 		/// <param name="e">The RSA exponent</param>
 		public RsaJsonWebKey(
-			Guid id,
+			string id,
 			DateTime? expiresAt,
 			string n,
 			string e
@@ -53,7 +53,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			if( ExpiresAt.HasValue ) {
 				return new {
-					kid = Id.ToString(),
+					kid = Id,
 					kty = "RSA",
 					use = "sig",
 					n = modulus,
@@ -63,7 +63,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 
 			return new {
-				kid = Id.ToString(),
+				kid = Id,
 				kty = "RSA",
 				use = "sig",
 				n = modulus,

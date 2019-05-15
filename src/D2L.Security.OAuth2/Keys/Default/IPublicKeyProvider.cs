@@ -13,7 +13,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <returns>The <see cref="D2LSecurityToken"/> or null if the key doesn't exist or has expired</returns>
-		Task<D2LSecurityToken> GetByIdAsync( Guid id );
+		Task<D2LSecurityToken> GetByIdAsync( string id );
 
 	}
 }

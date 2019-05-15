@@ -26,7 +26,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_dateTimeProvider = dateTimeProvider;
 		}
 
-		async Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
+		async Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( string id ) {
 			// We are intentionally fetching *all* public keys from the database
 			// here. This allows us to clean up all expired public keys even if
 			// GetAllAsync() is never explicitly called (e.g. when we switch from
@@ -74,7 +74,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return m_inner.SaveAsync( key );
 		}
 
-		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
+		Task IPublicKeyDataProvider.DeleteAsync( string id ) {
 			return m_inner.DeleteAsync( id );
 		}
 

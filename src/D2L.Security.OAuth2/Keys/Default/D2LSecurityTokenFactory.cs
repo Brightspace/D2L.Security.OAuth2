@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		D2LSecurityToken ID2LSecurityTokenFactory.Create(
 			Func<Tuple<AsymmetricSecurityKey, IDisposable>> keyFactory
 		) {
-			Guid id = Guid.NewGuid();
+			string id = Guid.NewGuid().ToString();
 			DateTime validFrom = m_dateTimeProvider.UtcNow;
 			DateTime validTo = validFrom + m_keyLifetime;
 
