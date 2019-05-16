@@ -13,6 +13,8 @@ namespace D2L.Security.OAuth2.TestFramework {
 	[TestFixture]
 	internal sealed class TestAccessTokenProviderTests {
 		private const string DEV_AUTH_URL = "https://dev-auth.brightspace.com/core";
+		private const string DEV_AUTH_JWKS_URL = "https://dev-auth.brightspace.com/core/.well-known/jwks";
+		private const string DEV_AUTH_JWK_URL = "https://dev-auth.brightspace.com/core/jwk/";
 
 		private readonly ClaimSet testClaimSet = new ClaimSet( "ExpandoClient", Guid.NewGuid() );
 		private readonly Scope[] testScopes = {
@@ -25,7 +27,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync();
 
-				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
+				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_JWKS_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
 			}
 		}
@@ -36,7 +38,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestStaticKeyProvider.TestKeyId, TestStaticKeyProvider.TestRSAParameters );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).SafeAsync();
 
-				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
+				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_JWKS_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token.Token ).SafeAsync() );
 			}
 		}

@@ -14,16 +14,16 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		private const string GOOD_PATH = "/goodpath";
 		private const string BAD_PATH = "/badpath";
 		private const string HTML_PATH = "/html";
+		private const string JWK_PATH = "/jwk/";
 		private const string JWKS_PATH = "/.well-known/jwks";
-		private const string GOOD_JWK_ID_STRING = "NjVBRjY5MDlCMUIwNzU4RTA2QzZFMDQ4QzQ2MDAyQjVDNjk1RTM2Qg";
 
+		private const string GOOD_JWK_ID_STRING = "NjVBRjY5MDlCMUIwNzU4RTA2QzZFMDQ4QzQ2MDAyQjVDNjk1RTM2Qg";
 		private static string GOOD_JWK_ID = Guid.NewGuid().ToString();
+
 		private static readonly string GOOD_JWK = @"{""kid"":""" + GOOD_JWK_ID + @""",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
 		private static readonly string GOOD_JWK_STRING = @"{""kid"":""" + GOOD_JWK_ID_STRING + @""",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
 		private static readonly string GOOD_JSON = @"{""keys"": [" + GOOD_JWK + "," + GOOD_JWK_STRING + "]}";
 		private static readonly string HTML = "<html><body><p>This isn't JSON eh</p></body></html>";
-		private static readonly string GOOD_JWK_PATH = GOOD_PATH + "/jwk/" + GOOD_JWK_ID;
-		private static readonly string GOOD_JWK_STRING_PATH = GOOD_PATH + "/jwk/" + GOOD_JWK_ID_STRING;
 
 		private IHttpServer SetupJwkServer(
 			out string host,
@@ -41,16 +41,16 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			).Return( GOOD_JSON ).WithStatus( HttpStatusCode.InternalServerError );
 
 			jwksServer.Stub(
-				x => x.Get( HTML_PATH + JWKS_PATH )
+				x => x.Get( HTML_PATH )
 			).Return( HTML ).WithStatus( HttpStatusCode.OK );
 
 			jwksServer
-				.Stub( x => x.Get( GOOD_JWK_PATH ) )
+				.Stub( x => x.Get( GOOD_PATH + JWK_PATH + GOOD_JWK_ID ) )
 				.Return( hasJwk ? GOOD_JWK : "" )
 				.WithStatus( jwkStatusCode );
 
 			jwksServer
-				.Stub( x => x.Get( GOOD_JWK_STRING_PATH ) )
+				.Stub( x => x.Get( GOOD_PATH + JWK_PATH + GOOD_JWK_ID_STRING ) )
 				.Return( hasJwk ? GOOD_JWK_STRING : "" )
 				.WithStatus( jwkStatusCode );
 
@@ -63,7 +63,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await publicKeyProvider
@@ -82,7 +83,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + HTML_PATH )
+					jwksEndpoint: new Uri( host + HTML_PATH ),
+					jwkEndpoint: null
 				);
 
 				var e = Assert.Throws<PublicKeyLookupFailureException>( () =>
@@ -101,7 +103,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + BAD_PATH )
+					jwksEndpoint: new Uri( host + BAD_PATH ),
+					jwkEndpoint: null
 				);
 
 				Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
@@ -118,7 +121,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
 					httpClient,
-					new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" )
+					jwksEndpoint: new Uri( "http://foo.bar.fakesite.isurehopethisisneveravalidTLD" ),
+					jwkEndpoint: null
 				);
 
 				Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
@@ -135,7 +139,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await jwksProvider
@@ -157,7 +162,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await jwksProvider
@@ -179,7 +185,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await jwksProvider
@@ -200,7 +207,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await jwksProvider
@@ -222,7 +230,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await jwksProvider
@@ -244,7 +253,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await jwksProvider
@@ -266,7 +276,8 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider jwksProvider = new JwksProvider(
 					httpClient,
-					new Uri( host + GOOD_PATH )
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
 				);
 
 				JsonWebKeySet jwks = await jwksProvider

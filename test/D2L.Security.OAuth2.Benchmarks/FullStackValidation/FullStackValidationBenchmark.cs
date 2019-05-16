@@ -16,7 +16,8 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 			IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator(
 				new HttpClient(),
-				host
+				host,
+				null
 			);
 
 			return delegate {
@@ -29,7 +30,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 		private void SetUp( out Uri host, out string token, out string id ) {
 			var server = HttpMockFactory.Create( out string hostStr );
 
-			host = new Uri( hostStr );
+			host = new Uri( hostStr + "/.well-known/jwks" );
 
 #pragma warning disable 618
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
