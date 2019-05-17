@@ -58,13 +58,13 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		}
 
 		[Test]
-		public async Task SuccessCase() {
+		public async Task RequestJwksAsync_SuccessCase() {
 			using( SetupJwkServer( out string host ) )
 			using( HttpClient httpClient = new HttpClient() ) {
 				IJwksProvider publicKeyProvider = new JwksProvider(
 					httpClient,
 					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
-					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
+					jwkEndpoint: null
 				);
 
 				JsonWebKeySet jwks = await publicKeyProvider
@@ -141,6 +141,29 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 					httpClient,
 					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
 					jwkEndpoint: new Uri( host + GOOD_PATH + JWK_PATH )
+				);
+
+				JsonWebKeySet jwks = await jwksProvider
+					.RequestJwkAsync( GOOD_JWK_ID )
+					.SafeAsync();
+				Assert.IsNotNull( jwks );
+
+				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
+				//jwksServer.AssertWasNotCalled( x => x.Get( GOOD_PATH + JWKS_PATH ) );
+
+				Assert.IsTrue( jwks.TryGetKey( GOOD_JWK_ID, out JsonWebKey jwk ) );
+				Assert.AreEqual( GOOD_JWK_ID, jwk.Id );
+			}
+		}
+
+		[Test]
+		public async Task RequestJwkAsync_NullJwkEndpoint_Fallback_Success() {
+			using( SetupJwkServer( out string host, hasJwk: true, jwkStatusCode: HttpStatusCode.OK ) )
+			using( HttpClient httpClient = new HttpClient() ) {
+				IJwksProvider jwksProvider = new JwksProvider(
+					httpClient,
+					jwksEndpoint: new Uri( host + GOOD_PATH + JWKS_PATH ),
+					jwkEndpoint: null
 				);
 
 				JsonWebKeySet jwks = await jwksProvider
@@ -291,6 +314,18 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 				Assert.IsTrue( jwks.TryGetKey( GOOD_JWK_ID_STRING, out JsonWebKey jwk ) );
 				Assert.AreEqual( GOOD_JWK_ID_STRING, jwk.Id );
 			}
+		}
+
+		[Test]
+		public void Namespace_ReturnsJwksAbsoluteUri() {
+			Uri jwksEndpoint = new Uri( "https://dev.auth.brightspace.com/core/.well-known/jwks" );
+			IJwksProvider jwksProvider = new JwksProvider(
+				httpClient: null,
+				jwksEndpoint: jwksEndpoint,
+				jwkEndpoint: null
+			);
+
+			Assert.AreEqual( jwksEndpoint.AbsoluteUri, jwksProvider.Namespace );
 		}
 	}
 }

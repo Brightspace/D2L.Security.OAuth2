@@ -39,11 +39,11 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( string keyId ) {
 			var url = GetJwkEndpoint( m_jwkEndpoint, keyId );
-			try {
-				if( url == null ) {
-					return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
-				}
+			if( url == null ) {
+				return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
+			}
 
+			try {
 				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
 					// This is temporary while we try to fully deprecate the
 					// JWKS route. 404 might mean the key doesn't exist (which
