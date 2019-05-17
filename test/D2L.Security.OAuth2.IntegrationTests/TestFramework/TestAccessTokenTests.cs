@@ -11,13 +11,15 @@ namespace D2L.Security.OAuth2.TestFramework {
 	[TestFixture]
 	internal sealed class TestAccessTokenTests {
 		private const string DEV_AUTH_URL = "https://dev-auth.brightspace.com/core";
+		private const string DEV_AUTH_JWKS_URL = "https://dev-auth.brightspace.com/core/.well-known/jwks";
+		private const string DEV_AUTH_JWK_URL = "https://dev-auth.brightspace.com/core/jwk/";
 
 		[Test]
 		public async Task TestGetToken_WithTenantID_IsValid() {
 			string token = await TestAccessToken.GetToken( DEV_AUTH_URL, Guid.NewGuid().ToString() ).SafeAsync();
 
 			using( var httpClient = new HttpClient() ) {
-				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
+				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token ).SafeAsync() );
 			}
 		}
@@ -27,7 +29,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 			string token = await TestAccessToken.GetToken( DEV_AUTH_URL, Guid.NewGuid().ToString(), "user", "xsrf" ).SafeAsync();
 
 			using( var httpClient = new HttpClient() ) {
-				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
+				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token ).SafeAsync() );
 			}
 
@@ -40,7 +42,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 			string token = await TestAccessToken.GetToken( DEV_AUTH_URL, claims, scopes ).SafeAsync();
 
 			using( var httpClient = new HttpClient() ) {
-				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ) );
+				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token ).SafeAsync() );
 			}
 

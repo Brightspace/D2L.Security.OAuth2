@@ -9,35 +9,40 @@ using D2L.Services;
 namespace D2L.Security.OAuth2.Keys.Default.Data {
 	internal sealed class JwksProvider : IJwksProvider {
 		private readonly HttpClient m_httpClient;
-		private readonly Uri m_authEndpoint;
+		private readonly Uri m_jwksEndpoint;
+		private readonly Uri m_jwkEndpoint;
 
 		public JwksProvider(
 			HttpClient httpClient,
-			Uri authEndpoint
+			Uri jwksEndpoint,
+			Uri jwkEndpoint
 		) {
 			m_httpClient = httpClient;
-			m_authEndpoint = authEndpoint;
+			m_jwksEndpoint = jwksEndpoint;
+			m_jwkEndpoint = jwkEndpoint;
 		}
 
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwksAsync() {
-			var url = GetJwksEndpoint( m_authEndpoint );
-
 			try {
-				using( HttpResponseMessage response = await m_httpClient.GetAsync( url ).SafeAsync() ) {
+				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).SafeAsync() ) {
 					response.EnsureSuccessStatusCode();
 					string jsonResponse = await response.Content.ReadAsStringAsync().SafeAsync();
-					var jwks = new JsonWebKeySet( jsonResponse, url );
+					var jwks = new JsonWebKeySet( jsonResponse, m_jwksEndpoint );
 					return jwks;
 				}
 			} catch( HttpRequestException e ) {
-				throw CreateException( e, url );
+				throw CreateException( e, m_jwksEndpoint );
 			} catch( JsonWebKeyParseException e ) {
-				throw CreateException( e, url );
+				throw CreateException( e, m_jwksEndpoint );
 			}
 		}
 
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( string keyId ) {
-			var url = GetJwkEndpoint( m_authEndpoint, keyId );
+			var url = GetJwkEndpoint( m_jwkEndpoint, keyId );
+			if( url == null ) {
+				return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
+			}
+
 			try {
 				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
 					// This is temporary while we try to fully deprecate the
@@ -70,7 +75,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			}
 		}
 
-		string IJwksProvider.Namespace => m_authEndpoint.AbsoluteUri;
+		string IJwksProvider.Namespace => m_jwksEndpoint.AbsoluteUri;
 
 		private Exception CreateException( Exception e, Uri endpoint ) {
 			string message = $"Error while looking up key(s) at {endpoint}: {e.Message}";
@@ -79,17 +84,11 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		}
 
 		private static Uri GetJwkEndpoint( Uri authEndpoint, string keyId ) {
+			if( authEndpoint == null ) { return null; }
+
 			string authRoot = MakeSureThereIsATrailingSlash( authEndpoint );
 
-			authRoot += $"jwk/{HttpUtility.UrlEncode( keyId )}";
-
-			return new Uri( authRoot );
-		}
-
-		private static Uri GetJwksEndpoint( Uri authEndpoint ) {
-			string authRoot = MakeSureThereIsATrailingSlash( authEndpoint );
-
-			authRoot += ".well-known/jwks";
+			authRoot += HttpUtility.UrlEncode( keyId );
 
 			return new Uri( authRoot );
 		}

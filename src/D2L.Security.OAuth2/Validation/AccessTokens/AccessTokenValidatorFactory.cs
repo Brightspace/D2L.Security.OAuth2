@@ -33,15 +33,18 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		/// Creates an <see cref="IAccessTokenValidator"/> instance backed by a remote token signer.
 		/// </summary>
 		/// <param name="httpClient"><see cref="HttpClient"/> instance with which requests will be made. The lifecycle of the <see cref="HttpClient"/> is not managed. It will not be disposed by the validator.</param>
-		/// <param name="authEndpoint">The base URI of the remote service</param>
+		/// <param name="jwksEndpoint">The full URI of the remote JWKS</param>
+		/// <param name="jwkEndpoint">The full URI of the remote JWK path</param>
 		/// <returns>A new <see cref="IAccessTokenValidator"/></returns>
 		public static IAccessTokenValidator CreateRemoteValidator(
 			HttpClient httpClient,
-			Uri authEndpoint
+			Uri jwksEndpoint,
+			Uri jwkEndpoint = null
 		) {
 			var jwksProvider = new JwksProvider(
 				httpClient,
-				authEndpoint
+				jwksEndpoint,
+				jwkEndpoint
 			);
 			var publicKeyProvider = new RemotePublicKeyProvider(
 				jwksProvider,
