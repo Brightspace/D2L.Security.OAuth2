@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			// how GetAllAsync is implemented at the moment, but still.
 			keys = keys.ToList();
 
-			JsonWebKey key = keys.SingleOrDefault( jwk => jwk.Id.KeyIdEquals( id.ToString() ) );
+			JsonWebKey key = keys.SingleOrDefault( jwk => new Guid( jwk.Id ) == id );
 
 			return key;
 		}
