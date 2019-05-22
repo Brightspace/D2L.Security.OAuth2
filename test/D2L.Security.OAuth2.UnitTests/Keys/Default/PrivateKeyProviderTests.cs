@@ -22,7 +22,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[SetUp]
 		public void SetUp() {
 			m_mockPublicKeyDataProvider = new Mock<ISanePublicKeyDataProvider>( MockBehavior.Strict );
-			m_mockPublicKeyDataProvider.Setup( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ) ).Returns( Task.Delay( 0 ) );
+			m_mockPublicKeyDataProvider.Setup( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ) ).Returns( Task.Delay( 0 ) );
 
 			m_mockDateTimeProvider = new Mock<IDateTimeProvider>();
 			m_mockDateTimeProvider.Setup( dp => dp.UtcNow ).Returns( () => DateTime.UtcNow );
@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public async Task GetSigningCredentialsAsync_FirstCall_CreatesAndReturnsKey() {
 			D2LSecurityToken key = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
-			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
+			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Once() );
 
 			Assert.NotNull( key );
 		}
@@ -57,7 +57,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now + TimeSpan.FromSeconds( offsetSeconds ) );
 			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
-			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
+			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Once() );
 
 			Assert.AreEqual( key1.KeyId, key2.KeyId );
 		}
@@ -80,7 +80,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
 
-			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Exactly( 2 ) );
+			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Exactly( 2 ) );
 
 			Assert.AreNotEqual( key1.KeyId, key2.KeyId );
 		}
@@ -88,7 +88,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[Test]
 		public async Task GetSigningCredentialsAsync_RaceyFirstCall_CreatesOnlyOneKey() {
 			m_mockPublicKeyDataProvider
-				.Setup( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ) )
+				.Setup( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ) )
 				.Returns( Task.Delay( 100 ) ); // Introduce a delay so that we definitely have some other tasks waiting for the save to complete.
 
 			var tasks = Enumerable
@@ -98,10 +98,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			IEnumerable<D2LSecurityToken> keys = await Task.WhenAll( tasks ).SafeAsync();
 
-			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<JsonWebKey>() ), Times.Once() );
+			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Once() );
 			var ids = keys.Select( k => k.KeyId ).ToList();
 			foreach( string id in ids ) {
-				Assert.AreEqual( ids[ 0 ], id );
+				Assert.AreEqual( ids[0], id );
 			}
 		}
 	}
