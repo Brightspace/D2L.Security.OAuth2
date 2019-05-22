@@ -70,8 +70,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return keys;
 		}
 
-		Task IPublicKeyDataProvider.SaveAsync( JsonWebKey key ) {
-			return m_inner.SaveAsync( key );
+		Task IPublicKeyDataProvider.SaveAsync( Guid id, JsonWebKey key ) {
+			return m_inner.SaveAsync( id, key );
 		}
 
 		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {

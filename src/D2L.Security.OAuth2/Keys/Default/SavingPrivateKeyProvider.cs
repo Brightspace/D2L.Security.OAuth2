@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
@@ -19,7 +20,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey jwk = result.ToJsonWebKey();
 
-			await m_publicKeyDataProvider.SaveAsync( jwk ).SafeAsync();
+			await m_publicKeyDataProvider.SaveAsync( new Guid( jwk.Id ), jwk ).SafeAsync();
 
 			return result;
 		}
