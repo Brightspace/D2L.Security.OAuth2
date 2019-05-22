@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 
 		[Test]
 		public async Task GetById_NoKeys_ReturnsNull() {
-			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid().ToString() ).SafeAsync();
+			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid() ).SafeAsync();
 
 			Assert.IsNull( key );
 		}
@@ -29,7 +29,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			var dummyKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
 			await m_publicKeyDataProvider.SaveAsync( dummyKey ).SafeAsync();
 
-			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid().ToString() ).SafeAsync();
+			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid() ).SafeAsync();
 
 			Assert.IsNull( key );
 		}
@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			var expectedKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
 			await m_publicKeyDataProvider.SaveAsync( expectedKey ).SafeAsync();
 
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedKey.Id ).SafeAsync();
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( new Guid( expectedKey.Id ) ).SafeAsync();
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
 			Assert.AreEqual( expectedKey.ExpiresAt, actualKey.ExpiresAt );
@@ -52,7 +52,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			var dummyKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
 			await m_publicKeyDataProvider.SaveAsync( dummyKey ).SafeAsync();
 
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedKey.Id ).SafeAsync();
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( new Guid( expectedKey.Id ) ).SafeAsync();
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
 			Assert.AreEqual( expectedKey.ExpiresAt, actualKey.ExpiresAt );
@@ -95,15 +95,15 @@ namespace D2L.Security.OAuth2.Keys.Development {
 
 		[Test]
 		public void DeleteAsync_MissingKey_DoesntThrow() {
-			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( Guid.NewGuid().ToString() ).Wait() );
+			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( Guid.NewGuid() ).Wait() );
 		}
 
 		[Test]
 		public async Task DeleteAsync_DoesntDeleteOtherKey() {
 			var expectedKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
 			await m_publicKeyDataProvider.SaveAsync( expectedKey ).SafeAsync();
-			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( Guid.NewGuid().ToString() ).Wait() );
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedKey.Id ).SafeAsync();
+			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( Guid.NewGuid() ).Wait() );
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( new Guid( expectedKey.Id ) ).SafeAsync();
 
 			Assert.IsNotNull( actualKey );
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
@@ -112,8 +112,8 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		[Test]
 		public async Task DeleteAsync_DoesSeemToDeleteKey() {
 			var expectedKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
-			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( expectedKey.Id ).Wait() );
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedKey.Id ).SafeAsync();
+			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( new Guid( expectedKey.Id ) ).Wait() );
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( new Guid( expectedKey.Id ) ).SafeAsync();
 
 			Assert.IsNull( actualKey );
 		}
@@ -121,9 +121,9 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		[Test]
 		public async Task DeleteAsync_DoubleDelete_DoesSeemToDeleteKey() {
 			var expectedKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
-			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( expectedKey.Id ).Wait() );
-			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( expectedKey.Id ).Wait() );
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedKey.Id ).SafeAsync();
+			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( new Guid( expectedKey.Id ) ).Wait() );
+			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( new Guid( expectedKey.Id ) ).Wait() );
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( new Guid( expectedKey.Id ) ).SafeAsync();
 
 			Assert.IsNull( actualKey );
 		}
