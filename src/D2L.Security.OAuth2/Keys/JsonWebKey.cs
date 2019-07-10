@@ -55,7 +55,12 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <param name="json">The json JWK</param>
 		/// <returns>A <see cref="JsonWebKey"/></returns>
 		public static JsonWebKey FromJson( string json ) {
-			var data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
+			Dictionary<string, object> data;
+			try {
+				data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
+			} catch( JsonReaderException e ) {
+				throw new JsonWebKeyParseException( "error deserializing JSON web key string", e );
+			}
 
 			if( !data.ContainsKey( "use" ) ) {
 				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
@@ -77,7 +82,10 @@ namespace D2L.Security.OAuth2.Keys {
 			string id = data[ "kid" ].ToString();
 			DateTime? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
-				long ts = long.Parse( data[ "exp" ].ToString() );
+				if( !long.TryParse( data[ "exp" ].ToString(), out long ts ) ) {
+					string msg = String.Format( "invalid 'exp' value in JSON web key: {0}", data[ "exp" ] );
+					throw new JsonWebKeyParseException( msg );
+				}
 				expiresAt = DateTimeHelpers.FromUnixTime( ts );
 			}
 
