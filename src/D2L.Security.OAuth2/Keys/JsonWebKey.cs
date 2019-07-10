@@ -59,7 +59,7 @@ namespace D2L.Security.OAuth2.Keys {
 			try {
 				data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
 			} catch( JsonReaderException e ) {
-				throw new JsonWebKeyParseException( "error deserializing jwk string", e );
+				throw new JsonWebKeyParseException( "error deserializing JSON web key string", e );
 			}
 
 			if( !data.ContainsKey( "use" ) ) {
