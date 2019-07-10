@@ -82,7 +82,10 @@ namespace D2L.Security.OAuth2.Keys {
 			string id = data[ "kid" ].ToString();
 			DateTime? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
-				long ts = long.Parse( data[ "exp" ].ToString() );
+				if( !long.TryParse( data[ "exp" ].ToString(), out long ts ) ) {
+					string msg = String.Format( "invalid 'exp' value in JSON web key: {0}", data[ "exp" ] );
+					throw new JsonWebKeyParseException( msg );
+				}
 				expiresAt = DateTimeHelpers.FromUnixTime( ts );
 			}
 
