@@ -55,7 +55,12 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <param name="json">The json JWK</param>
 		/// <returns>A <see cref="JsonWebKey"/></returns>
 		public static JsonWebKey FromJson( string json ) {
-			var data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
+			Dictionary<string, object> data;
+			try {
+				data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
+			} catch( JsonReaderException e ) {
+				throw new JsonWebKeyParseException( "error deserializing jwk string", e );
+			}
 
 			if( !data.ContainsKey( "use" ) ) {
 				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
