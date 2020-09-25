@@ -11,6 +11,9 @@ before_build:
 configuration: Release
 platform: Any CPU
 
+test_script:
+	- dotnet test --configuration %CONFIGURATION% --no-build
+
 # nuget:
 #  account_feed: true
 
