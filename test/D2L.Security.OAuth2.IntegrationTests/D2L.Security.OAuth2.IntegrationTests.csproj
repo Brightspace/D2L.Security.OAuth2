@@ -19,7 +19,6 @@
 		<PackageReference Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
 		<PackageReference Include="D2L.Services.Core.Extensions" Version="2.0.3.46" />
 		<PackageReference Include="HttpMock" Version="2.3.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="6.0.6" />
 		<PackageReference Include="NUnit" Version="3.12.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="4.0.1" />
