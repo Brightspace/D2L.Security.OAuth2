@@ -6,6 +6,9 @@
 
 		<Title>D2L.Security.OAuth2</Title>
 		<Description>Library for interacting with OAuth2 based flows in D2L systems</Description>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
 	<ItemGroup>

@@ -6,6 +6,9 @@
 
 		<Title>D2L.Security.OAuth2.TestFramework</Title>
 		<Description>Library for obtaining authorization in tests</Description>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
 	<ItemGroup>

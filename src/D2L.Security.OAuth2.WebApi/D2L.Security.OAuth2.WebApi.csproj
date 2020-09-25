@@ -6,6 +6,9 @@
 
 		<Title>D2L.Security.OAuth2.WebApi</Title>
 		<Description>A library that implements Web API components for authenticating D2L services.</Description>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
 	<ItemGroup>
