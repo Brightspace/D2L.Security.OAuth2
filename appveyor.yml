@@ -1,22 +1,23 @@
-version: 9.0.2.{build}
+
 image: Visual Studio 2019
-pull_requests:
-  do_not_increment_build_number: true
-skip_tags: true
-clone_depth: 5
+
+version: '{build}-{branch}'
+environment:
+  ASSEMBLY_VERSION: 10.0.0
+
 before_build:
-  - nuget restore
-build:
-  publish_nuget: true
-  publish_nuget_symbols: true
-  parallel: true
-  verbosity: minimal
-configuration:
-- Debug
-- Release
-test:
-  assemblies:
-    - D2L.Security.OAuth2.IntegrationTests.dll
-    - D2L.Security.OAuth2.UnitTests.dll
-    - D2L.Security.OAuth2.WebApi.IntegrationTests.dll
-    - D2L.Security.OAuth2.WebApi.UnitTests.dll
+  - dotnet restore
+
+configuration: Release
+platform: Any CPU
+
+# nuget:
+#  account_feed: true
+
+artifacts:
+- path: '**\*.nupkg'
+  name: NuGet
+
+branches:
+  only:
+    - master
