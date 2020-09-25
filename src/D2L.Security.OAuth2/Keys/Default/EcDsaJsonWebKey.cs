@@ -22,7 +22,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="publicBlob">Blob in <see cref="CngKeyBlobFormat.EccPublicBlob"/> format</param>
 		public EcDsaJsonWebKey(
 			string id,
-			DateTime? expiresAt,
+			DateTimeOffset? expiresAt,
 			byte[] publicBlob
 		) : base( id, expiresAt ) {
 			ECCPublicKeyBlobFormatter.Instance.ParsePublicBlob( publicBlob, out m_curve, out m_x, out m_y );
@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="y">The y position of the point on the curve</param>
 		public EcDsaJsonWebKey(
 			string id,
-			DateTime? expiresAt,
+			DateTimeOffset? expiresAt,
 			string curve,
 			string x,
 			string y
@@ -61,7 +61,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					crv = m_curve,
 					x = m_x,
 					y = m_y,
-					exp = ( long )ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
+					exp = ExpiresAt.Value.ToUnixTimeSeconds()
 				};
 			}
 
@@ -88,8 +88,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			var token = new D2LSecurityToken(
 				id: Id,
-				validFrom: DateTime.UtcNow,
-				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
+				validFrom: DateTimeOffset.UtcNow,
+				validTo: ExpiresAt ?? DateTimeOffset.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
 					var cng = BuildEcDsaCng();
 					var key = new EcDsaSecurityKey( cng );

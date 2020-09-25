@@ -8,8 +8,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed partial class D2LSecurityToken : SecurityToken {
 
 		private string m_id;
-		private readonly DateTime m_validFrom;
-		private readonly DateTime m_validTo;
+		private readonly DateTimeOffset m_validFrom;
+		private readonly DateTimeOffset m_validTo;
 
 		// This ThreadLocal is used as most implementations of the SecurityKeys
 		// such as RSACryptoServiceProvider are not thread-safe
@@ -19,8 +19,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		public D2LSecurityToken(
 			string id,
-			DateTime validFrom,
-			DateTime validTo,
+			DateTimeOffset validFrom,
+			DateTimeOffset validTo,
 			Func<Tuple<AsymmetricSecurityKey, IDisposable>> keyFactory
 		) {
 			if( validFrom >= validTo ) {
@@ -40,11 +40,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public string KeyId { get { return m_id; } }
 
 		public override DateTime ValidFrom {
-			get { return m_validFrom; }
+			get { return m_validFrom.UtcDateTime; }
 		}
 
 		public override DateTime ValidTo {
-			get { return m_validTo; }
+			get { return m_validTo.UtcDateTime; }
 		}
 
 		public bool HasPrivateKey {

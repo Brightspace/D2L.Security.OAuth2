@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.Keys {
 		public const string KEY_ID = "kid";
 
 		private readonly string m_id;
-		private readonly DateTime? m_expiresAt;
+		private readonly DateTimeOffset? m_expiresAt;
 
 		internal abstract D2LSecurityToken ToSecurityToken();
 
@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <param name="expiresAt">When the key expires</param>
-		protected JsonWebKey( string id, DateTime? expiresAt ) {
+		protected JsonWebKey( string id, DateTimeOffset? expiresAt ) {
 			m_id = id;
 			m_expiresAt = expiresAt;
 		}
@@ -39,7 +39,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// When the key expires
 		/// </summary>
-		public virtual DateTime? ExpiresAt {
+		public virtual DateTimeOffset? ExpiresAt {
 			get { return m_expiresAt; }
 		}
 
@@ -80,13 +80,13 @@ namespace D2L.Security.OAuth2.Keys {
 			}
 
 			string id = data[ "kid" ].ToString();
-			DateTime? expiresAt = null;
+			DateTimeOffset? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
 				if( !long.TryParse( data[ "exp" ].ToString(), out long ts ) ) {
 					string msg = String.Format( "invalid 'exp' value in JSON web key: {0}", data[ "exp" ] );
 					throw new JsonWebKeyParseException( msg );
 				}
-				expiresAt = DateTimeHelpers.FromUnixTime( ts );
+				expiresAt = DateTimeOffset.FromUnixTimeSeconds( ts );
 			}
 
 			switch( data[ "kty" ].ToString() ) {
