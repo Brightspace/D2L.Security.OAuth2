@@ -31,12 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="D2L.Services.Core.Exceptions">
-      <HintPath>..\..\packages\D2L.Services.Core.Exceptions.1.0.0.27289\lib\net451\D2L.Services.Core.Exceptions.dll</HintPath>
+    <Reference Include="D2L.Services.Core.Exceptions, Version=2.0.1.15, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\D2L.Services.Core.Exceptions.2.0.1.15\lib\netstandard2.0\D2L.Services.Core.Exceptions.dll</HintPath>
     </Reference>
-    <Reference Include="D2L.Services.Core.Extensions, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\D2L.Services.Core.Extensions.1.1.1.0\lib\net451\D2L.Services.Core.Extensions.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="D2L.Services.Core.Extensions, Version=2.0.3.46, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\D2L.Services.Core.Extensions.2.0.3.46\lib\netstandard2.0\D2L.Services.Core.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\..\packages\FluentAssertions.3.2.2\lib\net45\FluentAssertions.dll</HintPath>
