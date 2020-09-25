@@ -2,18 +2,10 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<LangVersion>7.3</LangVersion>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2.WebApi</Title>
 		<Description>A library that implements Web API components for authenticating D2L services.</Description>
-		<Product>D2L.Security.OAuth2</Product>
-		<Version>0.0.0</Version>
-		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/Brightspace/D2L.Security.OAuth2</PackageProjectUrl>
-		<Authors>D2L</Authors>
-		<Company>D2L Corporation</Company>
-		<Copyright>Copyright © D2L Corporation 2018</Copyright>
 	</PropertyGroup>
 
 	<ItemGroup>
