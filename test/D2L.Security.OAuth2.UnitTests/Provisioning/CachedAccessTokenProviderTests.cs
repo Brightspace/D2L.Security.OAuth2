@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( false, null ) ) );
 			m_serviceTokenCacheMock.Setup( x => x.SetAsync( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>() ) )
-				.Returns( Task.FromResult( 0 ) );
+				.Returns( Task.CompletedTask );
 
 			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
 
@@ -80,7 +80,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken( tokenExpiryInSeconds: 60 ) ) ) );
 			m_serviceTokenCacheMock.Setup( x => x.SetAsync( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>() ) )
-				.Returns( Task.FromResult( 0 ) );
+				.Returns( Task.CompletedTask );
 
 			m_accessTokenProviderMock.Setup( x => x.ProvisionAccessTokenAsync( m_claims, m_scopes ) )
 				.Returns( Task.FromResult( accessToken ) );
