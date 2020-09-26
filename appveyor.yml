@@ -10,12 +10,13 @@ platform: Any CPU
 
 before_build:
   - dotnet restore
+  - nuget install Appveyor.TestLogger
 
 build_script:
   - dotnet build --configuration %CONFIGURATION%
 
 test_script:
-  - dotnet test --configuration %CONFIGURATION% --no-build --logger AppVeyor
+  - dotnet test --configuration %CONFIGURATION% --no-build --logger AppVeyor --test-adapter-path .
 
 nuget:
   account_feed: true
