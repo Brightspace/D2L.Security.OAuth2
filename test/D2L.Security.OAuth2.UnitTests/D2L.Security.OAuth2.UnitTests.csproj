@@ -9,7 +9,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
-		<PackageReference Include="D2L.Services.Core.Extensions" Version="2.0.3.46" />
 		<PackageReference Include="FluentAssertions" Version="5.10.3" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
 		<PackageReference Include="Moq" Version="4.14.5" />

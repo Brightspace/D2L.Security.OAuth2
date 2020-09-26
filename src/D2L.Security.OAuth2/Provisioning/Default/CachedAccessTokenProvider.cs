@@ -37,7 +37,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			ICache cache
 		) {
 			var @this = this as IAccessTokenProvider;
-			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).SafeAsync();
+			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).ConfigureAwait( false );
 		}
 
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
@@ -54,7 +54,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			string cacheKey = TokenCacheKeyBuilder.BuildKey( m_authEndpoint, claims, scopes );
 
-			CacheResponse cacheResponse = await cache.GetAsync( cacheKey ).SafeAsync();
+			CacheResponse cacheResponse = await cache.GetAsync( cacheKey ).ConfigureAwait( false );
 
 			if( cacheResponse.Success ) {
 				SecurityToken securityToken = m_tokenHandler.ReadToken( cacheResponse.Value );
@@ -64,11 +64,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 
 			IAccessToken token =
-				await m_accessTokenProvider.ProvisionAccessTokenAsync( claims, scopes ).SafeAsync();
+				await m_accessTokenProvider.ProvisionAccessTokenAsync( claims, scopes ).ConfigureAwait( false );
 
 			DateTime validTo = m_tokenHandler.ReadToken( token.Token ).ValidTo;
 
-			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.UtcNow ).SafeAsync();
+			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.UtcNow ).ConfigureAwait( false );
 			return token;
 		}
 	}

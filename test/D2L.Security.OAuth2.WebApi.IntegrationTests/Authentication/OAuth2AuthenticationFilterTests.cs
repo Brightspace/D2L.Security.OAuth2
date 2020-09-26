@@ -10,7 +10,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		[Test]
 		public async Task Basic_NoAuthAtAll_204() {
 			await TestUtilities.RunBasicAuthTest( "/authentication/basic", HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
@@ -18,7 +18,7 @@ namespace D2L.Security.OAuth2.Authentication {
 			const string GARBAGE_JWT = "foo";
 
 			await TestUtilities.RunBasicAuthTest( "/authentication/basic", GARBAGE_JWT, HttpStatusCode.Unauthorized )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
@@ -26,26 +26,26 @@ namespace D2L.Security.OAuth2.Authentication {
 			string dayOldJwt = await TestUtilities
 				.GetAccessTokenValidForAMinute(
 					issuedAtTime: DateTime.UtcNow - TimeSpan.FromDays( 1 )
-				).SafeAsync();
+				).ConfigureAwait( false );
 
 			await TestUtilities.RunBasicAuthTest( "/authentication/basic", dayOldJwt, HttpStatusCode.Unauthorized )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		public async Task Basic_ValidJwt_204() {
 			string validJwt = await TestUtilities
 				.GetAccessTokenValidForAMinute()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			await TestUtilities.RunBasicAuthTest( "/authentication/basic", validJwt, HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		public async Task Anonymous_NoAuth_204() {
 			await TestUtilities.RunBasicAuthTest( "/authentication/anonymous", HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 	}
 }

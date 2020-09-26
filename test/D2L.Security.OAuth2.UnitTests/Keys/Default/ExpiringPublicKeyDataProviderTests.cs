@@ -44,7 +44,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( id )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNull( result );
 		}
@@ -60,7 +60,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( id )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNull( result );
 		}
@@ -72,7 +72,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( key.Id ) )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( result );
 			Assert.AreEqual( key.Id, result.Id );
@@ -86,7 +86,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( key.Id ) )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			m_mockPublicKeyDataProvider.Verify( kp => kp.DeleteAsync( new Guid( key.Id ) ), Times.Once() );
 
@@ -105,7 +105,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( freshKey.Id ) )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( result );
 			Assert.AreEqual( freshKey.Id, result.Id );
@@ -121,7 +121,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			IEnumerable<JsonWebKey> result = await m_publicKeyDataProvider
 				.GetAllAsync()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsEmpty( result );
 		}
@@ -152,7 +152,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			IEnumerable<JsonWebKey> result = await m_publicKeyDataProvider
 				.GetAllAsync()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			IEnumerable<string> ids = result.Select( k => k.Id );
 

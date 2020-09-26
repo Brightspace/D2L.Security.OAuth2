@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			IAccessToken accessToken = await m_accessTokenValidator
 				.ValidateAsync( bearerToken )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			ID2LPrincipal principal = new D2LPrincipal( accessToken );
 

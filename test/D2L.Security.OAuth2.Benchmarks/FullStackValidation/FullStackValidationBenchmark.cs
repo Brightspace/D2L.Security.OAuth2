@@ -34,7 +34,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 			);
 
 			return delegate {
-				validator.ValidateAsync( token ).SafeAsync().GetAwaiter().GetResult();
+				validator.ValidateAsync( token ).ConfigureAwait( false ).GetAwaiter().GetResult();
 			};
 		}
 
@@ -58,13 +58,13 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 					DateTime.Now,
 					DateTime.Now + TimeSpan.FromDays( 1 )
 				) )
-				.SafeAsync()
+				.ConfigureAwait( false )
 				.GetAwaiter()
 				.GetResult();
 
 			var jwk = publicKeyDataProvider
 				.GetAllAsync()
-				.SafeAsync()
+				.ConfigureAwait( false )
 				.GetAwaiter()
 				.GetResult()
 				.First();

@@ -16,7 +16,6 @@
 			<PrivateAssets>All</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="D2L.CodeStyle.Annotations" Version="0.23.0" />
-		<PackageReference Include="D2L.Services.Core.Extensions" Version="2.0.3.46" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.3" />
 		<PackageReference Include="SimpleLogInterface" Version="1.0.2.0" />
 	</ItemGroup>

@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			for( int i = 0; i < SIGNATURES_PER_THREAD; i++ ) {
 				using( D2LSecurityToken securityToken = provider.GetSigningCredentialsAsync()
-					.SafeAsync()
+					.ConfigureAwait( false )
 					.GetAwaiter()
 					.GetResult()
 				) {

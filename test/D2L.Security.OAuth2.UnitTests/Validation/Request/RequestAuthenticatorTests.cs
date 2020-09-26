@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		public async Task TokenInHeader_SuccessCase() {
 			await RunTest(
 				request_authorizationHeader: ACCESS_TOKEN
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				request_authorizationHeader: string.Empty,
 				expectedExceptionType: null,
 				expected_principalType: PrincipalType.Anonymous
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -36,7 +36,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			await RunTest(
 				request_authorizationHeader: ACCESS_TOKEN,
 				expectedExceptionType: typeof( ExpiredTokenException )
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		private async Task RunTest(
@@ -62,7 +62,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			try {
 				principal = await authenticator.AuthenticateAsync(
 					httpRequestMessage
-					).SafeAsync();
+					).ConfigureAwait( false );
 			} catch( Exception e ) {
 				exception = e;
 			}
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			try {
 				principal = await authenticator.AuthenticateAsync(
 					httpRequest
-				).SafeAsync();
+				).ConfigureAwait( false );
 			} catch( Exception e ) {
 				exception = e;
 			}

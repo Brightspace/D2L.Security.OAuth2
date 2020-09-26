@@ -82,11 +82,11 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 		public async Task SetupJwks() {
 			// Get a private key so public key is saved
-			await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			await m_privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 
 			var keys = await m_publicKeyDataProvider
 				.GetAllAsync()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			List<object> keyDtos = new List<object>();
 			foreach( JsonWebKey key in keys ) {
@@ -114,11 +114,13 @@ namespace D2L.Security.OAuth2.TestFramework {
 		public async Task<string> SignTokenBackdoor( UnsignedToken token ) {
 			return await m_tokenSigner
 				.SignAsync( token )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		public void Dispose() {
-			m_server.SafeDispose();
+			if( m_server != null ) {
+				m_server.Dispose();
+			}
 		}
 	}
 }

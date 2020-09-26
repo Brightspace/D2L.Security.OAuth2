@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			// we should be fine.
 			IEnumerable<JsonWebKey> keys = await ( this as IPublicKeyDataProvider )
 				.GetAllAsync()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			// Using ToList() is important to force evaluation for each key
 			// (SingleOrDefault bails early.) This is actually redundant due to
@@ -47,13 +47,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		async Task<IEnumerable<JsonWebKey>> IPublicKeyDataProvider.GetAllAsync() {
 			IEnumerable<JsonWebKey> keys = await m_inner
 				.GetAllAsync()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			keys = await Task
 				.WhenAll(
 					keys.Select( key => KeyExpirationHelper( key ) ).ToArray()
 				)
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			keys = keys
 				.Where( key => key != null )
@@ -84,7 +84,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			if( dt < TimeSpan.FromSeconds( 0 ) ) {
 				await ( this as IPublicKeyDataProvider )
 					.DeleteAsync( new Guid( key.Id ) )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				return null;
 			}
 

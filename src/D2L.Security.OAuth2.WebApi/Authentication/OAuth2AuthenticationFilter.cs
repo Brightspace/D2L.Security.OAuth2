@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Authentication {
 			ID2LPrincipal principal;
 
 			try {
-				principal = await AuthenticateAsync( context ).SafeAsync();
+				principal = await AuthenticateAsync( context ).ConfigureAwait( false );
 			} catch( ValidationException e ) {
 				m_log.Warn( "Authentication failed", e );
 				context.ErrorResult = new AuthenticationFailureResult( e );
@@ -65,7 +65,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		private async Task<ID2LPrincipal> AuthenticateAsync( HttpAuthenticationContext context ) {
 			ID2LPrincipal principal = await m_requestAuthenticator
 				.AuthenticateAsync( context.Request )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			return principal;
 		}

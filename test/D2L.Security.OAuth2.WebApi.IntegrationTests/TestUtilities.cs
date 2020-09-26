@@ -63,7 +63,7 @@ namespace D2L.Security.OAuth2 {
 					notBefore: issuedAtTime.Value,
 					expiresAt: issuedAtTime.Value + TimeSpan.FromMinutes( 1 )
 				)
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		public static Task<string> RunBasicAuthTest( string route, HttpStatusCode expectedStatusCode ) {
@@ -81,13 +81,13 @@ namespace D2L.Security.OAuth2 {
 					req.Headers.Authorization = new AuthenticationHeaderValue( "Bearer", jwt );
 				}
 
-				using( var resp = await client.SendAsync( req ).SafeAsync() ) {
+				using( var resp = await client.SendAsync( req ).ConfigureAwait( false ) ) {
 					Assert.AreEqual( expectedStatusCode, resp.StatusCode );
 
 					string body = await resp
 						.Content
 						.ReadAsStringAsync()
-						.SafeAsync();
+						.ConfigureAwait( false );
 
 					return body;
 				}

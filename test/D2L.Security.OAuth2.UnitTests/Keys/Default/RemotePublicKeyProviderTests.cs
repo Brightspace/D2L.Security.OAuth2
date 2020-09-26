@@ -58,7 +58,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			D2LSecurityToken result = await m_publicKeyProvider
 				.GetByIdAsync( keyId )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			m_keyCache
 				.Verify( x => x.Get( SRC_NAMESPACE, keyId ) );
@@ -116,7 +116,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			D2LSecurityToken result = await m_publicKeyProvider
 				.GetByIdAsync( keyId )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			m_keyCache.VerifyAll();
 
@@ -171,7 +171,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			D2LSecurityToken result = await m_publicKeyProvider
 				.GetByIdAsync( keyId )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			m_keyCache.VerifyAll();
 			m_keyCache.Verify( x => x.Set( SRC_NAMESPACE, It.IsAny<D2LSecurityToken>() ), Times.Once );

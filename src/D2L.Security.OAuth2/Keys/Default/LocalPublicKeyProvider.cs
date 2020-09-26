@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey jwk = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( id ) )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			if( jwk != null ) {
 				result = jwk.ToSecurityToken();

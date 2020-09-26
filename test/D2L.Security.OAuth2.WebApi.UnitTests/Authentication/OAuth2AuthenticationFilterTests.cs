@@ -55,7 +55,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNull( m_authenticationContext.Principal );
 			Assert.AreEqual( typeof( AuthenticationFailureResult ), m_authenticationContext.ErrorResult.GetType() );
@@ -70,7 +70,7 @@ namespace D2L.Security.OAuth2.Authentication {
 			Assert.ThrowsAsync<InvalidCastException>( async () => {
 				await m_authenticationFilter
 					.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
-					.SafeAsync();
+					.ConfigureAwait( false );
 			} );
 		}
 
@@ -90,7 +90,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( m_authenticationContext.Principal );
 
@@ -119,7 +119,7 @@ namespace D2L.Security.OAuth2.Authentication {
 
 			await m_authenticationFilter
 				.AuthenticateAsync( m_authenticationContext, new CancellationToken() )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( m_authenticationContext.Principal );
 
@@ -136,7 +136,7 @@ namespace D2L.Security.OAuth2.Authentication {
 		public async Task ChallengeAsync_DoesntCrash() {
 			await m_authenticationFilter
 				.ChallengeAsync( null, new CancellationToken() )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 	}
 }

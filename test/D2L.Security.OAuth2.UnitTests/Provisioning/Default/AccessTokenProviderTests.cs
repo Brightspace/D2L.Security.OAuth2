@@ -57,9 +57,9 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			await m_accessTokenProvider
 				.ProvisionAccessTokenAsync( claims, scopes )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
-			var publicKeys = ( await m_publicKeyDataProvider.GetAllAsync().SafeAsync() ).ToList();
+			var publicKeys = ( await m_publicKeyDataProvider.GetAllAsync().ConfigureAwait( false ) ).ToList();
 
 			string expectedKeyId = publicKeys.First().Id.ToString();
 			string actualKeyId = m_actualAssertion.Header.SigningKeyIdentifier[ 0 ].Id;
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			await m_accessTokenProvider
 				.ProvisionAccessTokenAsync( claimSet, new Scope[] { } )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.ISSUER, TestData.ISSUER );
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() );

@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		/// <returns>An auth token string.</returns>
 		public static async Task<string> GetToken( string tokenProvisioningEndpoint, IEnumerable<Claim> claimSet, IEnumerable<Scope> scopes ) {
 			IList<Claim> claims = claimSet.ToList();
-			if( claims.HasClaim( Constants.Claims.ISSUER ) ) {
+			if( claims.Any( c => c.Type == Constants.Claims.ISSUER ) ) {
 				throw new ArgumentException( "The claimSet should not have an issuer" );
 			}
 
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, tokenProvisioningEndpoint );
-				IAccessToken token = await provider.ProvisionAccessTokenAsync( claims, scopes ).SafeAsync();
+				IAccessToken token = await provider.ProvisionAccessTokenAsync( claims, scopes ).ConfigureAwait( false );
 				return token.Token;
 			}
 		}
@@ -54,7 +54,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 			if( userId != null ) {
 				claimSet.Add( new Claim( Constants.Claims.USER_ID, userId ) );
 			}
-			return await GetToken( tokenProvisioningEndpoint, claimSet, new[] { new Scope( "*", "*", "*" ) } ).SafeAsync();
+			return await GetToken( tokenProvisioningEndpoint, claimSet, new[] { new Scope( "*", "*", "*" ) } ).ConfigureAwait( false );
 		}
 
 	}

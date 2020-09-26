@@ -58,7 +58,7 @@ namespace D2L.Security.OAuth2.Keys {
 				)
 			);
 
-			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 			JsonWebKey expectedKey = token.ToJsonWebKey();
 
 			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
@@ -82,7 +82,7 @@ namespace D2L.Security.OAuth2.Keys {
 			);
 
 			JsonWebKey expectedKey;
-			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().SafeAsync() ) {
+			using( D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false ) ) {
 				expectedKey = token.ToJsonWebKey();
 			}
 
