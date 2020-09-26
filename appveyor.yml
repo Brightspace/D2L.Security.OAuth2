@@ -18,9 +18,6 @@ build_script:
 test_script:
   - dotnet test --configuration %CONFIGURATION% --no-build --logger AppVeyor --test-adapter-path .
 
-nuget:
-  account_feed: true
-
 artifacts:
 - path: '**\*.nupkg'
   name: NuGet
