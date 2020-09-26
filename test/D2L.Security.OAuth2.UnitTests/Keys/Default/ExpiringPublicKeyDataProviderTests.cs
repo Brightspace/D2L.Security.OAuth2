@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[Test]
 		public async Task GetByIdAsync_EmptyDb_ReturnsNull() {
 			var id = Guid.NewGuid();
-			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( null );
+			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( value: null );
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( id )
@@ -56,7 +56,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 
 			var id = Guid.NewGuid();
-			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( null );
+			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( value: null );
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( id )

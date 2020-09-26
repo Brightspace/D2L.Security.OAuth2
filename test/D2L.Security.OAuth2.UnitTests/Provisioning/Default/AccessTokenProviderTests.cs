@@ -35,7 +35,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 					var tokenHandler = new JwtSecurityTokenHandler();
 					m_actualAssertion = ( JwtSecurityToken )tokenHandler.ReadToken( assertion );
 				} )
-				.ReturnsAsync( null );
+				.ReturnsAsync( value: null );
 
 #pragma warning disable 618
 			m_publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
