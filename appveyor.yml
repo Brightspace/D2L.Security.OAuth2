@@ -8,6 +8,15 @@ environment:
 configuration: Release
 platform: Any CPU
 
+before_build:
+	- dotnet restore
+
+build_script:
+	- dotnet build --configuration %CONFIGURATION%
+
+test_script:
+	- dotnet test --configuration %CONFIGURATION% --no-build
+
 nuget:
   account_feed: true
 
