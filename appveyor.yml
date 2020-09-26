@@ -15,7 +15,7 @@ build_script:
   - dotnet build --configuration %CONFIGURATION%
 
 test_script:
-  - dotnet test --configuration %CONFIGURATION% --no-build
+  - dotnet test --configuration %CONFIGURATION% --no-build --logger AppVeyor
 
 nuget:
   account_feed: true
