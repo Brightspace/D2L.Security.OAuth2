@@ -10,7 +10,7 @@ platform: Any CPU
 
 before_build:
   - dotnet restore
-  - nuget install Appveyor.TestLogger
+  - nuget install Appveyor.TestLogger -Version 2.0.0
 
 build_script:
   - dotnet build --configuration %CONFIGURATION%
