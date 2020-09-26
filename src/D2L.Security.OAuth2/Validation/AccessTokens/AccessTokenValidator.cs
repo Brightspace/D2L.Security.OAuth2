@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
@@ -14,10 +15,10 @@ using System.IdentityModel.Tokens.Jwt;
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed class AccessTokenValidator : IAccessTokenValidator {
 		internal static readonly ImmutableHashSet<string> ALLOWED_SIGNATURE_ALGORITHMS = ImmutableHashSet.Create(
-			"RS256",
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha256Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha384Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha512Signature
+			SecurityAlgorithms.RsaSha256,
+			SecurityAlgorithms.EcdsaSha256,
+			SecurityAlgorithms.EcdsaSha384,
+			SecurityAlgorithms.EcdsaSha512
 		);
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
@@ -60,7 +61,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
 
-			D2LSecurityToken signingToken = await m_publicKeyProvider
+			D2LSecurityToken signingKey = await m_publicKeyProvider
 				.GetByIdAsync( keyId )
 				.ConfigureAwait( false );
 
@@ -68,7 +69,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				ValidateAudience = false,
 				ValidateIssuer = false,
 				RequireSignedTokens = true,
-				IssuerSigningToken = signingToken
+				IssuerSigningKey = signingKey,
+				CryptoProviderFactory = new D2LCryptoProviderFactory()
 			};
 
 			IAccessToken accessToken;

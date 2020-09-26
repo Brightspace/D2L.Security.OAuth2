@@ -19,7 +19,7 @@
 		<PackageReference Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
 		<PackageReference Include="Newtonsoft.Json" Version="6.0.6" />
 		<PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="4.0.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
 	</ItemGroup>
 
 	<ItemGroup>

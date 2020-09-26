@@ -1,5 +1,6 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.TestUtilities;
@@ -9,6 +10,7 @@ using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 using Moq;
 using NUnit.Framework;
+using Microsoft.IdentityModel.Logging;
 
 namespace D2L.Security.OAuth2.Validation {
 	[TestFixture]
@@ -36,6 +38,7 @@ namespace D2L.Security.OAuth2.Validation {
 
 		[Test]
 		public async Task ExpiredJwt() {
+			IdentityModelEventSource.ShowPII = true;
 			await RunTest(
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddSeconds( -301 ),

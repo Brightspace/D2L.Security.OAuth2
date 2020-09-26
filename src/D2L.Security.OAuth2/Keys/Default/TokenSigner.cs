@@ -1,9 +1,8 @@
-﻿using System.IdentityModel.Tokens;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class TokenSigner : ITokenSigner {
