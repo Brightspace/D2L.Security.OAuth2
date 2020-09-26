@@ -5,17 +5,11 @@ version: '{build}-{branch}'
 environment:
   ASSEMBLY_VERSION: 10.0.0
 
-before_build:
-  - dotnet restore
-
 configuration: Release
 platform: Any CPU
 
-test_script:
-	- dotnet test --configuration %CONFIGURATION% --no-build
-
-# nuget:
-#  account_feed: true
+nuget:
+  account_feed: true
 
 artifacts:
 - path: '**\*.nupkg'
