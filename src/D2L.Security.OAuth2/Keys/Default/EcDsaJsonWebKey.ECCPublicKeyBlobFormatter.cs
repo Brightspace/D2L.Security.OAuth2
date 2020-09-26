@@ -58,10 +58,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					return size;
 				};
 
-				Buffer.BlockCopy( BitConverter.GetBytes( ( int )magic ), 0, blob, offset, increaseOffset( sizeof( int ) ) );
-				Buffer.BlockCopy( BitConverter.GetBytes( x.Length ), 0, blob, offset, increaseOffset( sizeof( int ) ) );
-				Buffer.BlockCopy( x, 0, blob, offset, increaseOffset( x.Length ) );
-				Buffer.BlockCopy( y, 0, blob, offset, increaseOffset( y.Length ) );
+				Buffer.BlockCopy( src: BitConverter.GetBytes( ( int )magic ), srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( sizeof( int ) ) );
+				Buffer.BlockCopy( src: BitConverter.GetBytes( x.Length ), srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( sizeof( int ) ) );
+				Buffer.BlockCopy( src: x, srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( x.Length ) );
+				Buffer.BlockCopy( src: y, srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( y.Length ) );
 
 				return blob;
 			}
@@ -85,10 +85,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				}
 
 				byte[] xBytes = new byte[ byteLength ];
-				Buffer.BlockCopy( blob, increaseOffset( xBytes.Length ), xBytes, 0, xBytes.Length );
+				Buffer.BlockCopy( src: blob, srcOffset: increaseOffset( xBytes.Length ), dst: xBytes, dstOffset: 0, count: xBytes.Length );
 
 				byte[] yBytes = new byte[ byteLength ];
-				Buffer.BlockCopy( blob, increaseOffset( yBytes.Length ), yBytes, 0, yBytes.Length );
+				Buffer.BlockCopy( src: blob, srcOffset: increaseOffset( yBytes.Length ), dst: yBytes, dstOffset: 0, count: yBytes.Length );
 
 				switch( magic ) {
 					case KeyBlobMagicNumber.ECDSA_PUBLIC_P256: {
