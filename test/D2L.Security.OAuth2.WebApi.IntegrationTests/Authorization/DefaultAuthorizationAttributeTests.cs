@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			// Not the most fantastic test because its only asserting on a very
 			// overloaded status code but ok.
 			await TestUtilities.RunBasicAuthTest( "/authorization/unspecifiedscope", HttpStatusCode.InternalServerError )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
@@ -19,14 +19,14 @@ namespace D2L.Security.OAuth2.Authorization {
 			// Not the most fantastic test because its only asserting on a very
 			// overloaded status code but ok.
 			await TestUtilities.RunBasicAuthTest( "/authorization/unspecifiedprincipaltype", HttpStatusCode.InternalServerError )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 
 		[Test]
 		public async Task Basic_NoAuthentication_403() {
 			await TestUtilities.RunBasicAuthTest( "/authorization/basic", HttpStatusCode.Unauthorized )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[TestCase( 0, "", HttpStatusCode.Unauthorized )]
@@ -42,10 +42,10 @@ namespace D2L.Security.OAuth2.Authorization {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				userId: userId == 0 ? ( long? )null : userId,
 				scope: scope
-			).SafeAsync();
+			).ConfigureAwait( false );
 
 			await TestUtilities.RunBasicAuthTest( "/authorization/basic", jwt, expectedStatusCode )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[TestCase( "" )]
@@ -54,16 +54,16 @@ namespace D2L.Security.OAuth2.Authorization {
 		public async Task NoScope_NoMatterWhatScope_204( string scope ) {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				scope: scope
-			).SafeAsync();
+			).ConfigureAwait( false );
 
 			await TestUtilities.RunBasicAuthTest( "/authorization/noscope", jwt, HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		public async Task Anonymous_NoToken_204() {
 			await TestUtilities.RunBasicAuthTest( "/authorization/anonymous", HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[TestCase( "" )]
@@ -73,10 +73,10 @@ namespace D2L.Security.OAuth2.Authorization {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				userId: 12312,
 				scope: scope
-			).SafeAsync();
+			).ConfigureAwait( false );
 
 			await TestUtilities.RunBasicAuthTest( "/authorization/anonymous", jwt, HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[TestCase( "" )]
@@ -85,10 +85,10 @@ namespace D2L.Security.OAuth2.Authorization {
 		public async Task Anonymous_Service_204( string scope ) {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				scope: scope
-			).SafeAsync();
+			).ConfigureAwait( false );
 
 			await TestUtilities.RunBasicAuthTest( "/authorization/anonymous", jwt, HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 	}
 }

@@ -35,12 +35,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			if( NeedFreshPrivateKey( privateKey ) ) {
 				// This Semaphore is used instead of lock(foo){}
 				// because await cannot be used within a lock
-				await m_privateKeyLock.WaitAsync().SafeAsync();
+				await m_privateKeyLock.WaitAsync().ConfigureAwait( false );
 				try {
 					privateKey = m_privateKey;
 
 					if( NeedFreshPrivateKey( privateKey ) ) {
-						m_privateKey = ( await m_inner.GetSigningCredentialsAsync().SafeAsync() ).Ref();
+						m_privateKey = ( await m_inner.GetSigningCredentialsAsync().ConfigureAwait( false ) ).Ref();
 
 						if( privateKey != null ) {
 							privateKey.Dispose();

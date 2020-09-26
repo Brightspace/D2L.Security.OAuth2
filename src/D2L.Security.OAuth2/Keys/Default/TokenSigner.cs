@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			JwtSecurityToken jwt;
 			using( D2LSecurityToken securityToken = await m_privateKeyProvider
 				.GetSigningCredentialsAsync()
-				.SafeAsync()
+				.ConfigureAwait( false )
 			) {
 				jwt = new JwtSecurityToken(
 					issuer: token.Issuer,

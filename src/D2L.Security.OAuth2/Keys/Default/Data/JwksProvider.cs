@@ -24,9 +24,9 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwksAsync() {
 			try {
-				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).SafeAsync() ) {
+				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).ConfigureAwait( false ) ) {
 					response.EnsureSuccessStatusCode();
-					string jsonResponse = await response.Content.ReadAsStringAsync().SafeAsync();
+					string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 					var jwks = new JsonWebKeySet( jsonResponse, m_jwksEndpoint );
 					return jwks;
 				}
@@ -40,11 +40,11 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( string keyId ) {
 			var url = GetJwkEndpoint( m_jwkEndpoint, keyId );
 			if( url == null ) {
-				return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
+				return await ( this as IJwksProvider ).RequestJwksAsync().ConfigureAwait( false );
 			}
 
 			try {
-				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
+				using( var res = await m_httpClient.GetAsync( url ).ConfigureAwait( false ) ) {
 					// This is temporary while we try to fully deprecate the
 					// JWKS route. 404 might mean the key doesn't exist (which
 					// will make the call to jwks likely return 200 but still
@@ -56,14 +56,14 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 					// so in practice this should only happen when it's
 					// actually important, if it ever happens.
 					if( res.StatusCode != HttpStatusCode.OK ) {
-						return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
+						return await ( this as IJwksProvider ).RequestJwksAsync().ConfigureAwait( false );
 					}
 
 					res.EnsureSuccessStatusCode();
 
 					string json = await res.Content
 						.ReadAsStringAsync()
-						.SafeAsync();
+						.ConfigureAwait( false );
 
 					JsonWebKey jwk = JsonWebKey.FromJson( json );
 					return new JsonWebKeySet( jwk, url );

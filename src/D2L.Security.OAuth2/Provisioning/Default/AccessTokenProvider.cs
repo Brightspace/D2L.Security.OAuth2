@@ -40,7 +40,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			DateTime now = DateTime.UtcNow;
 
-			if( !claims.TryGetClaim( Constants.Claims.ISSUER, out string issuer ) ) {
+			string issuer = claims.FirstOrDefault( c => c.Type == Constants.Claims.ISSUER )?.Value;
+			if( issuer == null ) {
 				throw new InvalidOperationException( "missing issuer claim" );
 			}
 
@@ -57,11 +58,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			string assertion = await m_tokenSigner
 				.SignAsync( unsignedToken )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			return await m_client
 				.ProvisionAccessTokenAsync( assertion, scopes )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 	}
 }

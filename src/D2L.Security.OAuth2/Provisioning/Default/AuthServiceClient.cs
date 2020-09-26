@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Services;
 using D2L.Services.Core.Exceptions;
 using Newtonsoft.Json;
 
@@ -71,7 +70,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			HttpResponseMessage response = null;
 			try {
 				try {
-					response = await MakeRequest( requestBody ).SafeAsync();
+					response = await MakeRequest( requestBody ).ConfigureAwait( false );
 				} catch( TaskCanceledException exception ) {
 					throw new AuthServiceException(
 						errorType: ServiceErrorType.Timeout,
@@ -89,7 +88,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				string json = null;
 				if( response.Content != null ) {
 					try {
-						json = await response.Content.ReadAsStringAsync().SafeAsync();
+						json = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 					} catch( Exception exception ) {
 						throw new AuthServiceException(
 							errorType: ServiceErrorType.ClientError,
@@ -139,7 +138,9 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 					);
 				}
 			} finally {
-				response.SafeDispose();
+				if( response != null ) {
+					response.Dispose();
+				}
 			}
 		}
 

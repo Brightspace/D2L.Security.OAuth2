@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await publicKeyProvider
 					.RequestJwksAsync()
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				Assert.IsNotNull( jwks );
 				Assert.IsTrue( jwks.TryGetKey( GOOD_JWK_ID, out JsonWebKey jwk ) );
@@ -90,7 +90,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 				var e = Assert.Throws<PublicKeyLookupFailureException>( () =>
 					publicKeyProvider
 						.RequestJwksAsync()
-						.SafeWait()
+						.ConfigureAwait( false ).GetAwaiter().GetResult()
 					);
 
 				StringAssert.Contains( "<body>", e.Message );
@@ -110,7 +110,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 				Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
 					JsonWebKeySet jwks = await publicKeyProvider
 						.RequestJwksAsync()
-						.SafeAsync();
+						.ConfigureAwait( false );
 				} );
 			}
 		}
@@ -128,7 +128,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 				Assert.ThrowsAsync<PublicKeyLookupFailureException>( async () => {
 					JsonWebKeySet jwks = await publicKeyProvider
 					.RequestJwksAsync()
-					.SafeAsync();
+					.ConfigureAwait( false );
 				} );
 			}
 		}
@@ -145,7 +145,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( GOOD_JWK_ID )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
@@ -168,7 +168,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( GOOD_JWK_ID )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
@@ -191,7 +191,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( GOOD_JWK_ID_STRING )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
@@ -214,7 +214,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( "NJVBRjY5MDlCMUIwNzU4RTA2QzZFMDQ4QzQ2MDAyQjVDNjk1RTM2Qg" )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
@@ -236,7 +236,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( GOOD_JWK_ID )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
@@ -259,7 +259,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( GOOD_JWK_ID_STRING )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
@@ -282,7 +282,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( GOOD_JWK_ID )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );
@@ -305,7 +305,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 				JsonWebKeySet jwks = await jwksProvider
 					.RequestJwkAsync( GOOD_JWK_ID_STRING )
-					.SafeAsync();
+					.ConfigureAwait( false );
 				Assert.IsNotNull( jwks );
 
 				//jwksServer.AssertWasCalled( x => x.Get( GOOD_JWK_PATH ) );

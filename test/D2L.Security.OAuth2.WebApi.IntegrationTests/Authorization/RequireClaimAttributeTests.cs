@@ -11,18 +11,18 @@ namespace D2L.Security.OAuth2.Authorization {
 		public async Task NoToken_Unauthorized() {
 			await TestUtilities
 				.RunBasicAuthTest( RequireClaimAttributeTestsController.ROUTE, HttpStatusCode.Unauthorized )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		public async Task ServiceToken_Forbidden() {
 			string jwt = await TestUtilities
 				.GetAccessTokenValidForAMinute( userId: null )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			string body = await TestUtilities
 				.RunBasicAuthTest( RequireClaimAttributeTestsController.ROUTE, jwt, HttpStatusCode.Forbidden )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			StringAssert.Contains( Constants.Claims.USER_ID, body );
 		}
@@ -31,11 +31,11 @@ namespace D2L.Security.OAuth2.Authorization {
 		public async Task UserToken_OK() {
 			string jwt = await TestUtilities
 				.GetAccessTokenValidForAMinute( userId: 123 )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			await TestUtilities
 				.RunBasicAuthTest( RequireClaimAttributeTestsController.ROUTE, jwt, HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 	}
 }

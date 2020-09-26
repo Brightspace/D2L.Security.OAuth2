@@ -26,7 +26,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKeySet jwks = await m_jwksProvider
 				.RequestJwkAsync( id )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			CacheJwks( m_cache, m_jwksProvider.Namespace, jwks );
 

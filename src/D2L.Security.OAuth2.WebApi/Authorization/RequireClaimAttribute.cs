@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Controllers;
 using D2L.Security.OAuth2.Principal;
-using D2L.Services;
 
 namespace D2L.Security.OAuth2.Authorization {
 	[AttributeUsage( AttributeTargets.All, AllowMultiple = false )]
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Authorization {
 			bool hasClaim = principal
 				.AccessToken
 				.Claims
-				.HasClaim( m_claimType );
+				.Any( c => c.Type == m_claimType );
 
 			return hasClaim;
 		}

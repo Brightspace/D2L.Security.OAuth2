@@ -62,7 +62,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			D2LSecurityToken signingToken = await m_publicKeyProvider
 				.GetByIdAsync( keyId )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			var validationParameters = new TokenValidationParameters() {
 				ValidateAudience = false,
