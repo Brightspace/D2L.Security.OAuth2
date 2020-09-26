@@ -11,7 +11,7 @@
 		<PackageReference Include="D2L.Services.Core.Extensions" Version="2.0.3.46" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.OwinSelfHost" Version="5.2.3" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
-		<PackageReference Include="Moq" Version="4.2.1409.1722" />
+		<PackageReference Include="Moq" Version="4.14.5" />
 		<PackageReference Include="NUnit" Version="3.12.0" />
 		<PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
 		<PackageReference Include="SimpleLogInterface" Version="1.0.2.0" />
