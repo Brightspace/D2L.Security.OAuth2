@@ -38,7 +38,6 @@ namespace D2L.Security.OAuth2.Validation {
 
 		[Test]
 		public async Task ExpiredJwt() {
-			IdentityModelEventSource.ShowPII = true;
 			await RunTest(
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddSeconds( -301 ),
