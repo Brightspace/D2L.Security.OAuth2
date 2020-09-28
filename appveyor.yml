@@ -25,3 +25,4 @@ artifacts:
 branches:
   only:
     - master
+    - /v\d*\.\d*\.\d*.\d*/
