@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Threading;
 using D2L.Services;
 using NUnit.Framework;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	[TestFixture]
@@ -102,7 +103,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				ValidateIssuer = false,
 				ValidateLifetime = false,
 				RequireSignedTokens = true,
-				IssuerSigningToken = securityToken
+				IssuerSigningKey = securityToken
 			};
 			validationTokenHandler.ValidateToken(
 				signedToken,

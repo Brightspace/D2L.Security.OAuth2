@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using D2L.Services;
 
@@ -92,7 +92,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				validTo: ExpiresAt ?? DateTimeOffset.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
 					var cng = BuildEcDsaCng();
-					var key = new EcDsaSecurityKey( cng );
+					var key = new ECDsaSecurityKey( cng );
 					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, cng );
 				}
 			);
