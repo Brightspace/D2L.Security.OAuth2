@@ -12,10 +12,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="D2L.CodeStyle.Analyzers" Version="0.130.0">
+		<PackageReference Include="D2L.CodeStyle.Analyzers" Version="0.140.0">
 			<PrivateAssets>All</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="D2L.CodeStyle.Annotations" Version="0.23.0" />
+		<PackageReference Include="D2L.CodeStyle.Annotations" Version="0.25.0" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.3" />
 		<PackageReference Include="SimpleLogInterface" Version="1.0.2.0" />
 	</ItemGroup>

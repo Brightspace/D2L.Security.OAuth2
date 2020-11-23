@@ -12,10 +12,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="D2L.CodeStyle.Analyzers" Version="0.130.0">
+		<PackageReference Include="D2L.CodeStyle.Analyzers" Version="0.140.0">
 			<PrivateAssets>All</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="D2L.CodeStyle.Annotations" Version="0.23.0" />
+		<PackageReference Include="D2L.CodeStyle.Annotations" Version="0.25.0" />
 		<PackageReference Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
 		<PackageReference Include="Newtonsoft.Json" Version="6.0.6" />
 		<PackageReference Include="System.Collections.Immutable" Version="1.5.0" />

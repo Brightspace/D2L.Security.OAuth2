@@ -1,9 +1,12 @@
 ﻿using System;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.IdentityModel.Tokens;
+using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Keys.Default {
+
 	internal partial class EcDsaJsonWebKey {
+
+		[Immutable]
 		private sealed class ECCPublicKeyBlobFormatter {
 
 			internal static readonly ECCPublicKeyBlobFormatter Instance = new ECCPublicKeyBlobFormatter();
@@ -45,10 +48,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				}
 
 				byte[] x = Base64UrlEncoder.DecodeBytes( jwk.m_x );
-				x = FillBytes( x, ( int )keySize );
+				x = FillBytes( x, (int)keySize );
 
 				byte[] y = Base64UrlEncoder.DecodeBytes( jwk.m_y );
-				y = FillBytes( y, ( int )keySize );
+				y = FillBytes( y, (int)keySize );
 
 				// Finally, lay out the structure itself
 				byte[] blob = new byte[ 2 * sizeof( int ) + x.Length + y.Length ];
@@ -59,7 +62,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					return size;
 				};
 
-				Buffer.BlockCopy( src: BitConverter.GetBytes( ( int )magic ), srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( sizeof( int ) ) );
+				Buffer.BlockCopy( src: BitConverter.GetBytes( (int)magic ), srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( sizeof( int ) ) );
 				Buffer.BlockCopy( src: BitConverter.GetBytes( x.Length ), srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( sizeof( int ) ) );
 				Buffer.BlockCopy( src: x, srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( x.Length ) );
 				Buffer.BlockCopy( src: y, srcOffset: 0, dst: blob, dstOffset: offset, count: increaseOffset( y.Length ) );
@@ -78,8 +81,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					offset += size;
 					return oldOffset;
 				};
-				KeyBlobMagicNumber magic = ( KeyBlobMagicNumber )BitConverter.ToUInt32( blob, increaseOffset( sizeof( uint ) ) );
-				int byteLength = ( int )BitConverter.ToUInt32( blob, increaseOffset( sizeof( uint ) ) );
+				KeyBlobMagicNumber magic = (KeyBlobMagicNumber)BitConverter.ToUInt32( blob, increaseOffset( sizeof( uint ) ) );
+				int byteLength = (int)BitConverter.ToUInt32( blob, increaseOffset( sizeof( uint ) ) );
 
 				if( ( blob.Length - offset ) != byteLength * 2 ) {
 					throw new Exception( "expected equal length curve parameters to remain" );
