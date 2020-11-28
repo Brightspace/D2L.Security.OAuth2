@@ -12,14 +12,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="D2L.CodeStyle.Analyzers" Version="0.140.0">
+		<PackageReference Include="D2L.CodeStyle.Analyzers" Version="0.142.0">
 			<PrivateAssets>All</PrivateAssets>
 		</PackageReference>
-		<PackageReference Include="D2L.CodeStyle.Annotations" Version="0.25.0" />
+		<PackageReference Include="D2L.CodeStyle.Annotations" Version="0.26.0" />
 		<PackageReference Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
 		<PackageReference Include="Newtonsoft.Json" Version="6.0.6" />
 		<PackageReference Include="System.Collections.Immutable" Version="5.0.0" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
 	</ItemGroup>
 
 	<ItemGroup>
