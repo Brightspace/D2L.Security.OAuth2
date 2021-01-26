@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using D2L.Security.OAuth2.Keys.Default;
-using Newtonsoft.Json;
+
+#if NET5_0
+using JsonException = System.Text.Json.JsonException;
+#else
+using JsonException = Newtonsoft.Json.JsonReaderException;
+#endif
 
 namespace D2L.Security.OAuth2.Keys {
 	/// <summary>
@@ -57,8 +62,8 @@ namespace D2L.Security.OAuth2.Keys {
 		public static JsonWebKey FromJson( string json ) {
 			Dictionary<string, object> data;
 			try {
-				data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
-			} catch( JsonReaderException e ) {
+				data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
+			} catch ( JsonException e ) {
 				throw new JsonWebKeyParseException( "error deserializing JSON web key string", e );
 			}
 

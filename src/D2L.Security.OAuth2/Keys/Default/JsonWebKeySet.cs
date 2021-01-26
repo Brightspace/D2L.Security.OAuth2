@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using D2L.Security.OAuth2.Utilities;
-using Newtonsoft.Json;
+
+#if NET5_0
+using JsonException = System.Text.Json.JsonException;
+#else
+using JsonException = Newtonsoft.Json.JsonReaderException;
+#endif
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class JsonWebKeySet {
@@ -12,7 +17,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			Source = src ?? throw new ArgumentNullException( nameof( src ) );
 
 			try {
-				var data = JsonConvert.DeserializeObject<Dictionary<string, List<object>>>( json );
+				var data = JsonSerializer.Deserialize<Dictionary<string, List<object>>>( json );
 
 				if( !data.ContainsKey( "keys" ) ) {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
@@ -22,14 +27,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
 				foreach( object keyObject in keyObjects ) {
-					string keyJson = JsonConvert.SerializeObject( keyObject );
+					string keyJson = JsonSerializer.Serialize( keyObject );
 					JsonWebKey key = JsonWebKey.FromJson( keyJson );
 					builder.Add( key );
 				}
 				m_keys = builder.ToImmutable();
 			} catch( InvalidOperationException e ) {
 				throw new JsonWebKeyParseException( "error parsing jwks", e );
-			} catch( JsonReaderException e ) {
+			} catch( JsonException e ) {
 				throw new JsonWebKeyParseException( "Couldn't deserialize jwks from: " + json, e );
 			}
 

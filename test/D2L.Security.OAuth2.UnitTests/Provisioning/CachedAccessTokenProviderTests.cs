@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Provisioning.Default;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Services;
-using Microsoft.IdentityModel.Tokens;
 using Moq;
 using NUnit.Framework;
 
