@@ -17,7 +17,6 @@ before_build:
 
 build_script:
   - dotnet build --configuration %CONFIGURATION%
-  -dot
 
 test_script:
   - dotnet test --configuration %CONFIGURATION% --framework %TARGET_FRAMEWORK% --no-build --logger AppVeyor --test-adapter-path .
