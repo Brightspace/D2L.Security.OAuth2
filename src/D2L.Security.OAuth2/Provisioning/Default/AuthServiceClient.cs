@@ -194,7 +194,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			internal void Validate() {
 				if ( Title == null ) {
-					throw new Exception( "Missing property: title" );
+					throw new Exception( "Missing property: error" );
 				}
 
 				if ( Detail == null ) {
