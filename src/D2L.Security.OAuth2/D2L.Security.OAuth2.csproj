@@ -39,14 +39,4 @@
 		<Reference Include="System.Web" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net50'">
-		<Compile Remove="**/*.net4x.cs" />
-		<None Include="**/*.net4x.cs" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
-		<Compile Remove="**/*.net50.cs" />
-		<None Include="**/*.net50.cs" />
-	</ItemGroup>
-
 </Project>

@@ -2,7 +2,7 @@
 	<Sdk Name="Microsoft.Build.CentralPackageVersions" />
 
 	<PropertyGroup>
-		<TargetFrameworks>net472</TargetFrameworks>
+		<TargetFrameworks>net472;net50</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2.TestFramework</Title>
@@ -14,7 +14,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="HttpMock" />
-		<PackageReference Include="Newtonsoft.Json" />
+
+		<!-- In .NET Framework use Newtonsoft.Json.
+		     Otherwise, use System.Text.Json. -->
+		<PackageReference Include="Newtonsoft.Json" Condition="'$(TargetFramework)' != 'net50'" />
 	</ItemGroup>
 
 	<ItemGroup>

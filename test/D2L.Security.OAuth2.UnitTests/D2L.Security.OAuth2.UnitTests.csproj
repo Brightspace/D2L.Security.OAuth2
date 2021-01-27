@@ -2,7 +2,7 @@
 	<Sdk Name="Microsoft.Build.CentralPackageVersions" />
 
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFrameworks>net48;net50</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2.UnitTests</Title>
@@ -13,10 +13,10 @@
 		<PackageReference Include="FluentAssertions" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="Moq" />
-		<PackageReference Include="Newtonsoft.Json" />
 		<PackageReference Include="NUnit" />
 		<PackageReference Include="NUnit3TestAdapter" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
 
 	<ItemGroup>
