@@ -4,9 +4,6 @@ image: Visual Studio 2019
 version: '{build}-{branch}'
 environment:
   ASSEMBLY_VERSION: 10.3.0
-  matrix:
-    - TARGET_FRAMEWORK: net472
-    - TARGET_FRAMEWORK: net50
 
 configuration: Release
 platform: Any CPU
@@ -19,7 +16,7 @@ build_script:
   - dotnet build --configuration %CONFIGURATION% --
 
 test_script:
-  - dotnet test --configuration %CONFIGURATION% --framework %TARGET_FRAMEWORK% --no-build --logger AppVeyor --test-adapter-path .
+  - dotnet test --configuration %CONFIGURATION% --no-build --logger AppVeyor --test-adapter-path .
 
 artifacts:
 - path: '**\*.nupkg'
