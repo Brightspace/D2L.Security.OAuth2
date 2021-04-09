@@ -12,20 +12,13 @@
 		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
 		<PackageReference Include="HttpMock" />
-
-		<!-- In .NET Framework use Newtonsoft.Json.
-		     Otherwise, use System.Text.Json. -->
-		<PackageReference Include="Newtonsoft.Json" Condition="'$(TargetFramework)' != 'net50'" />
+		<PackageReference Include="Newtonsoft.Json" />
+		<Reference Include="System.Net.Http" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj" />
 	</ItemGroup>
-
-	<ItemGroup>
-		<Reference Include="System.Net.Http" />
-	</ItemGroup>
-
 </Project>
