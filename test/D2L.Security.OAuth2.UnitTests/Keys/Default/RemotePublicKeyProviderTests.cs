@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Keys.Default.Data;
 using D2L.Security.OAuth2.TestUtilities;
-using D2L.Services;
 using Moq;
 using NUnit.Framework;
 
@@ -77,7 +75,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			var otherKeyId = Guid.NewGuid().ToString();
 			var jwks = new JsonWebKeySet(
-				new JavaScriptSerializer().Serialize(
+				JsonSerializer.Serialize(
 					new {
 						keys = new object[] {
 							D2LSecurityTokenUtility
@@ -134,7 +132,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			var otherKeyId = Guid.NewGuid().ToString();
 			var jwks = new JsonWebKeySet(
-				new JavaScriptSerializer().Serialize(
+				JsonSerializer.Serialize(
 					new {
 						keys = new[] {
 							D2LSecurityTokenUtility

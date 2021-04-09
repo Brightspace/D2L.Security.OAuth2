@@ -1,0 +1,11 @@
+<Project>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net50'">
+		<Compile Remove="$(MSBuildProjectDirectory)/**/*.net4x.cs" />
+		<None Include="$(MSBuildProjectDirectory)/**/*.net4x.cs" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
+		<Compile Remove="$(MSBuildProjectDirectory)/**/*.net50.cs" />
+		<None Include="$(MSBuildProjectDirectory)/**/*.net50.cs" />
+	</ItemGroup>
+</Project>

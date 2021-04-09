@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using D2L.Security.OAuth2.Principal;
@@ -54,8 +55,11 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			IRequestAuthenticator authenticator = new RequestAuthenticator( tokenValidator );
 
-			var httpRequestMessage = new HttpRequestMessage()
-				.WithAuthHeader( request_authorizationHeader );
+			var httpRequestMessage = new HttpRequestMessage();
+			httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(
+				"Bearer",
+				request_authorizationHeader
+			);
 
 			ID2LPrincipal principal = null;
 			Exception exception = null;
@@ -75,9 +79,12 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			exception = null;
 
-			HttpRequest httpRequest = RequestBuilder
-				.Create()
-				.WithAuthHeader( request_authorizationHeader );
+			var httpRequest = new HttpRequestMessage();
+
+			httpRequest.Headers.Authorization = new AuthenticationHeaderValue(
+				"Bearer",
+				request_authorizationHeader
+			);
 
 			try {
 				principal = await authenticator.AuthenticateAsync(

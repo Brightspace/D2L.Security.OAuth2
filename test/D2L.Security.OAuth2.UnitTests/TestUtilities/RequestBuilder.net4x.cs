@@ -1,30 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Specialized;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 using D2L.Security.OAuth2.Validation.Request;
 
 namespace D2L.Security.OAuth2.TestUtilities {
 	internal static class RequestBuilder {
-		#region HttpRequestMessage
-
-		internal static HttpRequestMessage WithAuthHeader( this HttpRequestMessage httpRequestMessage, string authHeaderValue ) {
-			return httpRequestMessage.WithAuthHeader( RequestValidationConstants.BearerTokens.SCHEME, authHeaderValue );
-		}
-
-		internal static HttpRequestMessage WithAuthHeader( this HttpRequestMessage httpRequestMessage, string scheme, string authHeaderValue ) {
-			var authHeaderVal = new AuthenticationHeaderValue( scheme, authHeaderValue );
-			httpRequestMessage.Headers.Authorization = authHeaderVal;
-			return httpRequestMessage;
-		}
-
-		#endregion
-
-		#region HttpRequest
-
 		internal static HttpRequest Create() {
 			return new HttpRequest( null, "http://d2l.com", null );
 		}
@@ -54,7 +36,5 @@ namespace D2L.Security.OAuth2.TestUtilities {
 			headerCollectionType.InvokeMember( "BaseAdd", flags, null, headers, new object[] { headerName, item } );
 			headerCollectionType.InvokeMember( "MakeReadOnly", flags, null, headers, null );
 		}
-
-		#endregion
 	}
 }

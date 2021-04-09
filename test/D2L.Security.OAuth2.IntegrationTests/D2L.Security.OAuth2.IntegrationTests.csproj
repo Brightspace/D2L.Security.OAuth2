@@ -2,7 +2,7 @@
 	<Sdk Name="Microsoft.Build.CentralPackageVersions" />
 
 	<PropertyGroup>
-		<TargetFramework>net48</TargetFramework>
+		<TargetFrameworks>net472;net50</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2.IntegrationTests</Title>
@@ -10,20 +10,20 @@
 
 	<ItemGroup>
 		<PackageReference Include="D2L.Services.Core.Exceptions" />
-		<PackageReference Include="HttpMock" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="NUnit" />
 		<PackageReference Include="NUnit3TestAdapter" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj" />
-		<ProjectReference Include="..\..\src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj" />
+	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
+		<PackageReference Include="HttpMock" />
+		<Reference Include="System.Net.Http" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Reference Include="System.Net.Http" />
+		<ProjectReference Include="..\..\src\D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj" />
+		<ProjectReference Include="..\..\src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj" />
 	</ItemGroup>
 
 </Project>
