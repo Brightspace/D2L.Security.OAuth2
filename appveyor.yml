@@ -6,9 +6,7 @@ environment:
   ASSEMBLY_VERSION: 10.3.0
   matrix:
     - TARGET_FRAMEWORK: net472
-      SLN: D2L.Security.OAuth2.sln
     - TARGET_FRAMEWORK: net50
-      SLN: D2L.Security.OAuth2.net50.sln
 
 configuration: Release
 platform: Any CPU
@@ -18,10 +16,10 @@ before_build:
   - nuget install Appveyor.TestLogger -Version 2.0.0
 
 build_script:
-  - dotnet build %SLN% --configuration %CONFIGURATION% --framework %TARGET_FRAMEWORK% --
+  - dotnet build --configuration %CONFIGURATION% --
 
 test_script:
-  - dotnet test %SLN% --configuration %CONFIGURATION% --framework %TARGET_FRAMEWORK% --no-build --logger AppVeyor --test-adapter-path .
+  - dotnet test --configuration %CONFIGURATION% --framework %TARGET_FRAMEWORK% --no-build --logger AppVeyor --test-adapter-path .
 
 artifacts:
 - path: '**\*.nupkg'
