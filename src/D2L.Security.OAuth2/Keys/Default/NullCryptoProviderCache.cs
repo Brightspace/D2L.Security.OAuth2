@@ -20,8 +20,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			=> throw new InvalidOperationException();
 		public override bool TryRemove( SignatureProvider signatureProvider )
 			=> throw new InvalidOperationException();
-		protected override string GetCacheKey( SignatureProvider signatureProvider ) =>
-			throw new InvalidOperationException();
+		protected override string GetCacheKey( SignatureProvider signatureProvider )
+			=> throw new InvalidOperationException();
 		protected override string GetCacheKey( SecurityKey securityKey, string algorithm, string typeofProvider )
 			=> throw new InvalidOperationException();
 	}
