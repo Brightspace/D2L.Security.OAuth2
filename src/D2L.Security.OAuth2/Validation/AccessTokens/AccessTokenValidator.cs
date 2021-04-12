@@ -70,7 +70,9 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				ValidateIssuer = false,
 				RequireSignedTokens = true,
 				IssuerSigningKey = signingKey,
-				CryptoProviderFactory = new D2LCryptoProviderFactory()
+				CryptoProviderFactory = new D2LCryptoProviderFactory {
+					CacheSignatureProviders = false
+				}
 			};
 
 			IAccessToken accessToken;

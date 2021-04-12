@@ -46,7 +46,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				this,
 				GetSignatureAlgorithm()
 			) {
-				CryptoProviderFactory = new D2LCryptoProviderFactory()
+				CryptoProviderFactory = new D2LCryptoProviderFactory {
+					CacheSignatureProviders = false
+				}
 			};
 
 			return signingCredentials;
