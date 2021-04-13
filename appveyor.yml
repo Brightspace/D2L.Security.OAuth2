@@ -1,9 +1,9 @@
-
+﻿
 image: Visual Studio 2019
 
 version: '{build}-{branch}'
 environment:
-  ASSEMBLY_VERSION: 11.0.1
+  ASSEMBLY_VERSION: 11.1.0
 
 configuration: Release
 platform: Any CPU
