@@ -9,7 +9,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		) {
 			string bearerToken = request.GetBearerTokenValue();
 
-			return AuthenticateHelper( bearerToken );
+			return AuthenticateAsync( bearerToken );
 		}
 	}
 }
