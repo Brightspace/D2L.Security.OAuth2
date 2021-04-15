@@ -19,10 +19,10 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		) {
 			string bearerToken = request.GetBearerTokenValue();
 
-			return AuthenticateHelper( bearerToken );
+			return AuthenticateAsync( bearerToken );
 		}
 
-		private async Task<ID2LPrincipal> AuthenticateHelper(
+		public async Task<ID2LPrincipal> AuthenticateAsync(
 			string bearerToken
 		) {
 			if( string.IsNullOrEmpty( bearerToken ) ) {
