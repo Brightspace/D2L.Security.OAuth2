@@ -6,7 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Services.Core.Exceptions;
-using Newtonsoft.Json;
+
+#if NET5_0
+using JsonPropertyName = System.Text.Json.Serialization.JsonPropertyNameAttribute;
+#else
+using JsonPropertyName = Newtonsoft.Json.JsonPropertyAttribute;
+#endif
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
@@ -106,7 +111,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 						errorMessage = response.ReasonPhrase;
 					} else {
 						try {
-							var errorInfo = JsonConvert.DeserializeObject<ErrorResponse>( json );
+							var errorInfo = JsonSerializer.Deserialize<ErrorResponse>( json );
+							errorInfo.Validate();
 							errorMessage = string.Concat( errorInfo.Title, ": ", errorInfo.Detail );
 						} catch( Exception ) {
 							errorMessage = string.Concat( response.ReasonPhrase, ": ", json );
@@ -128,7 +134,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				}
 
 				try {
-					var grant = JsonConvert.DeserializeObject<GrantResponse>( json );
+					var grant = JsonSerializer.Deserialize<GrantResponse>( json );
+					grant.Validate();
 					return new AccessToken( grant.Token );
 				} catch( Exception exception ) {
 					throw new AuthServiceException(
@@ -168,16 +175,32 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		private sealed class GrantResponse {
-			[JsonProperty( PropertyName = "access_token", Required = Required.Always )]
+			[JsonPropertyName( "access_token" )]
 			public string Token { get; set; }
+
+			internal void Validate() {
+				if ( Token == null ) {
+					throw new Exception( "Missing property: access_token" );
+				}
+			}
 		}
 
 		private sealed class ErrorResponse {
-			[JsonProperty( PropertyName = "error", Required = Required.Always )]
+			[JsonPropertyName( "error" )]
 			public string Title { get; set; }
 
-			[JsonProperty( PropertyName = "error_description", Required = Required.Always )]
+			[JsonPropertyName( "error_description" )]
 			public string Detail { get; set; }
+
+			internal void Validate() {
+				if ( Title == null ) {
+					throw new Exception( "Missing property: error" );
+				}
+
+				if ( Detail == null ) {
+					throw new Exception( "Missing property: error_description" );
+				}
+			}
 		}
 	}
 }

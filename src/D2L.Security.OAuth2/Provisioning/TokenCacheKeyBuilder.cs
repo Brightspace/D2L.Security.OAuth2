@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using D2L.Security.OAuth2.Scopes;
-using Newtonsoft.Json;
 
 namespace D2L.Security.OAuth2.Provisioning {
 	internal static class TokenCacheKeyBuilder {
@@ -26,7 +25,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 
 			// All the claims and scopes must be used in the key to ensure that two
 			// tokens with different claims or scopes never map to the same key
-			return JsonConvert.SerializeObject( keyObject );
+			return JsonSerializer.Serialize( keyObject );
 		}
 	}
 }

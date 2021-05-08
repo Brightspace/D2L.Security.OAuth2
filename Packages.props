@@ -1,21 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
     	<PackageReference Update="BenchmarkDotNet" Version="[0.12.1]" />
 		<PackageReference Update="D2L.CodeStyle.Analyzers" Version="[0.142.0]" />
-		<PackageReference Update="D2L.CodeStyle.Annotations" Version="[0.26.0]" />
+		<PackageReference Update="D2L.CodeStyle.Annotations" Version="[0.28.0]" />
 		<PackageReference Update="D2L.Services.Core.Exceptions" Version="[2.0.1.15]" />
 		<PackageReference Update="HttpMock" Version="[2.3.1]" />
 		<PackageReference Update="FluentAssertions" Version="[5.10.3]" />
-		<PackageReference Update="Microsoft.AspNet.WebApi.Core" Version="[5.2.3]" />
-		<PackageReference Update="Microsoft.AspNet.WebApi.OwinSelfHost" Version="[5.2.3]" />
-		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="[16.8.0]" />
-		<PackageReference Update="Moq" Version="[4.15.2]" />
+		<PackageReference Update="Microsoft.AspNet.WebApi.Core" Version="[5.2.7]" />
+		<PackageReference Update="Microsoft.AspNet.WebApi.OwinSelfHost" Version="[5.2.7]" />
+		<PackageReference Update="Microsoft.Extensions.Caching.Memory" Version="[5.0.0]" />
+		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="[16.9.4]" />
+		<PackageReference Update="Moq" Version="[4.16.1]" />
 		<PackageReference Update="Newtonsoft.Json" Version="[7.0.1]" />
-		<PackageReference Update="NUnit" Version="[3.12.0]" />
+		<PackageReference Update="NUnit" Version="[3.13.2]" />
 		<PackageReference Update="NUnit3TestAdapter" Version="[3.17.0]" />
-		<PackageReference Update="SimpleLogInterface" Version="[1.0.2.0]" />
+		<PackageReference Update="SimpleLogInterface" Version="[3.0.1]" />
 		<PackageReference Update="System.Collections.Immutable" Version="[5.0.0]" />
-		<PackageReference Update="System.IdentityModel.Tokens.Jwt" Version="[6.8.0]" />
+		<PackageReference Update="System.IdentityModel.Tokens.Jwt" Version="[6.11.0]" />
+		<PackageReference Update="System.Text.Json" Version="[5.0.2]" />
 	</ItemGroup>
 </Project>

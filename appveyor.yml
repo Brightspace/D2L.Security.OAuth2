@@ -1,9 +1,9 @@
-
+﻿
 image: Visual Studio 2019
 
 version: '{build}-{branch}'
 environment:
-  ASSEMBLY_VERSION: 10.2.0
+  ASSEMBLY_VERSION: 11.2.0
 
 configuration: Release
 platform: Any CPU
@@ -13,7 +13,7 @@ before_build:
   - nuget install Appveyor.TestLogger -Version 2.0.0
 
 build_script:
-  - dotnet build --configuration %CONFIGURATION%
+  - dotnet build --configuration %CONFIGURATION% --
 
 test_script:
   - dotnet test --configuration %CONFIGURATION% --no-build --logger AppVeyor --test-adapter-path .

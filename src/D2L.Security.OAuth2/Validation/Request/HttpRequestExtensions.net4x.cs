@@ -1,6 +1,4 @@
-#if !DNXCORE50
-
-using System.Web;
+﻿using System.Web;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	internal static class HttpRequestExtensions {
@@ -21,5 +19,3 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		}
 	}
 }
-
-#endif

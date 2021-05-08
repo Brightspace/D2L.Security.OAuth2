@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-	<Sdk Name="Microsoft.Build.CentralPackageVersions" Version="2.0.1" />
+	<Sdk Name="Microsoft.Build.CentralPackageVersions" />
 
 	<PropertyGroup>
-		<TargetFrameworks>net472;net48</TargetFrameworks>
+		<TargetFrameworks>net472;net50</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2</Title>
@@ -16,17 +16,26 @@
 		<PackageReference Include="D2L.CodeStyle.Analyzers">
 			<PrivateAssets>All</PrivateAssets>
 		</PackageReference>
+
 		<PackageReference Include="D2L.CodeStyle.Annotations" />
 		<PackageReference Include="D2L.Services.Core.Exceptions" />
-		<PackageReference Include="Newtonsoft.Json" />
 		<PackageReference Include="System.Collections.Immutable" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 	</ItemGroup>
 
-	<ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net50'">
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
+		<!-- We use Microsoft.Extensions.Caching.Memory in .NET 5+ -->
+		<Reference Include="System.Runtime.Caching" />
+
+		<!-- We use System.Text.Json in .NET 5+ -->
+		<PackageReference Include="Newtonsoft.Json" />
+
 		<Reference Include="System.IdentityModel" />
 		<Reference Include="System.Net.Http" />
-		<Reference Include="System.Runtime.Caching" />
 		<Reference Include="System.Web" />
 	</ItemGroup>
 

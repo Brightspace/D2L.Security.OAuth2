@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using D2L.Security.OAuth2.TestUtilities;
 using NUnit.Framework;
 
@@ -11,8 +12,12 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		[Test]
 		public void GetBearerTokenValue_Success() {
 			string expected = "somebearertokenvalue";
-			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
-				.WithAuthHeader( expected );
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+
+			httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(
+				"Bearer",
+				expected
+			);
 			Assert.AreEqual( expected, httpRequestMessage.GetBearerTokenValue() );
 		}
 
@@ -30,8 +35,11 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 		[Test]
 		public void GetBearerTokenValue_WrongScheme_ExpectNull() {
-			HttpRequestMessage httpRequestMessage = new HttpRequestMessage()
-				.WithAuthHeader( "invalidscheme", "somevalue" );
+			HttpRequestMessage httpRequestMessage = new HttpRequestMessage();
+			httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(
+				"invalidscheme",
+				"somevalue"
+			);
 			Assert.IsNull( httpRequestMessage.GetBearerTokenValue() );
 		}
 	}

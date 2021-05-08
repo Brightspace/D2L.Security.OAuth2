@@ -1,8 +1,6 @@
 ﻿using System;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
-using D2L.Services;
-using Microsoft.IdentityModel.Tokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 
