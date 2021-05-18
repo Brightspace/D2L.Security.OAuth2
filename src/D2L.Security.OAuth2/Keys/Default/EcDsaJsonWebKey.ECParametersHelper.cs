@@ -28,9 +28,15 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				}
 
 				string curve = parameters.Curve.Oid.FriendlyName switch {
+					"ECDSA_P256" => "P-256",
 					"nistP256" => "P-256",
+
+					"ECDSA_P384" => "P-384",
 					"nistP384" => "P-384",
+
+					"ECDSA_P521" => "P-521",
 					"nistP521" => "P-521",
+
 					_ => throw new Exception( $"Unknown curve: { parameters.Curve.Oid.FriendlyName }" ),
 				};
 
