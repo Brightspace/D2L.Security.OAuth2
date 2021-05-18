@@ -62,19 +62,19 @@ namespace D2L.Security.OAuth2.Keys {
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
-			CngAlgorithm algorithm;
+			ECCurve curveInternal;
 			switch( curve ) {
 				case Curve.P521: {
-						algorithm = CngAlgorithm.ECDsaP521;
+					curveInternal = ECCurve.NamedCurves.nistP256;
 						break;
 					}
 				case Curve.P384: {
-						algorithm = CngAlgorithm.ECDsaP384;
+					curveInternal = ECCurve.NamedCurves.nistP384;
 						break;
 					}
 				case Curve.P256:
 				default: {
-						algorithm = CngAlgorithm.ECDsaP256;
+					curveInternal = ECCurve.NamedCurves.nistP521;
 						break;
 					}
 			}
@@ -85,7 +85,7 @@ namespace D2L.Security.OAuth2.Keys {
 					publicKeyDataProvider,
 					keyLifetime,
 					keyRotationPeriod,
-					algorithm
+					curveInternal
 				);
 
 			var tokenSigner = new TokenSigner( privateKeyProvider );

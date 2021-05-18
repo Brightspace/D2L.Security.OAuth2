@@ -78,7 +78,7 @@ namespace D2L.Security.OAuth2.Keys {
 					DateTimeProvider.Instance,
 					TimeSpan.FromHours( 1 )
 				),
-				CngAlgorithm.ECDsaP256
+				ECCurve.NamedCurves.nistP256
 			);
 
 			JsonWebKey expectedKey;

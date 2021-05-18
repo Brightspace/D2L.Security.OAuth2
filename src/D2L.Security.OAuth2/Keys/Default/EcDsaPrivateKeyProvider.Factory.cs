@@ -11,7 +11,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				IPublicKeyDataProvider publicKeyDataProvider,
 				TimeSpan keyLifetime,
 				TimeSpan keyRotationPeriod,
-				CngAlgorithm algorithm,
+				ECCurve curve,
 				IDateTimeProvider dateTimeProvider = null
 			) {
 				if( keyLifetime < keyRotationPeriod ) {
@@ -27,7 +27,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 				IPrivateKeyProvider privateKeyProvider = new EcDsaPrivateKeyProvider(
 					d2lSecurityTokenFactory,
-					algorithm
+					curve
 				);
 
 				privateKeyProvider = new SavingPrivateKeyProvider(

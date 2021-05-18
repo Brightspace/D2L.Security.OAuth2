@@ -37,17 +37,17 @@ namespace D2L.Security.OAuth2.TestFramework {
 				case KeyType.ECDSA_P256:
 				case KeyType.ECDSA_P384:
 				case KeyType.ECDSA_P521: {
-						CngAlgorithm curve;
+						ECCurve curve;
 						switch( keyType ) {
 							case KeyType.ECDSA_P521:
-								curve = CngAlgorithm.ECDsaP521;
+								curve = ECCurve.NamedCurves.nistP256;
 								break;
 							case KeyType.ECDSA_P384:
-								curve = CngAlgorithm.ECDsaP384;
+								curve = ECCurve.NamedCurves.nistP384;
 								break;
 							case KeyType.ECDSA_P256:
 							default:
-								curve = CngAlgorithm.ECDsaP256;
+								curve = ECCurve.NamedCurves.nistP521;
 								break;
 						}
 
