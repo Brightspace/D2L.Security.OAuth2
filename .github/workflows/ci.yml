@@ -11,4 +11,4 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-dotnet
-      - run: dotnet test -c Release .
+      - run: dotnet test -c Release --framework net50 .
