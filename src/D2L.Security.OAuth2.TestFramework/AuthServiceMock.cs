@@ -40,14 +40,14 @@ namespace D2L.Security.OAuth2.TestFramework {
 						ECCurve curve;
 						switch( keyType ) {
 							case KeyType.ECDSA_P521:
-								curve = ECCurve.NamedCurves.nistP256;
+								curve = ECCurve.NamedCurves.nistP521;
 								break;
 							case KeyType.ECDSA_P384:
 								curve = ECCurve.NamedCurves.nistP384;
 								break;
 							case KeyType.ECDSA_P256:
 							default:
-								curve = ECCurve.NamedCurves.nistP521;
+								curve = ECCurve.NamedCurves.nistP256;
 								break;
 						}
 
