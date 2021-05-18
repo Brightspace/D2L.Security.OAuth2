@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
-using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 
 namespace D2L.Security.OAuth2.TestFramework {
@@ -93,10 +92,10 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 				m_server
 					.When( HttpMethod.Get, $"http://localhost/jwk/{ key.Id }" )
-					.Respond( "application/json", JsonConvert.SerializeObject( dto ) );
+					.Respond( "application/json", JsonSerializer.Serialize( dto ) );
 			}
 
-			string jwksJson = JsonConvert.SerializeObject( new {
+			string jwksJson = JsonSerializer.Serialize( new {
 				keys = keyDtos
 			} );
 
