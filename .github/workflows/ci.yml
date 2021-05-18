@@ -1,0 +1,14 @@
+name: Build and test
+on:
+  pull_request:
+  push:
+    branches: master
+jobs:
+  test:
+    name: Build and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-dotnet
+      - run: dotnet test -c Release .
