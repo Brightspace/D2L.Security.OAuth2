@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
-using D2L.Security.OAuth2.TestFrameworks;
-using D2L.Services;
-using HttpMock;
 using Newtonsoft.Json;
+using RichardSzalay.MockHttp;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	public sealed class AuthServiceMock : IDisposable {
-		private readonly IHttpServer m_server;
-		private readonly string m_host;
+		private readonly MockHttpMessageHandler m_server;
 
 		private readonly ISanePublicKeyDataProvider m_publicKeyDataProvider;
 		private readonly IPrivateKeyProvider m_privateKeyProvider;
@@ -27,7 +25,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		};
 
 		public AuthServiceMock( KeyType keyType = KeyType.RSA ) {
-			m_server = HttpMockFactory.Create( out m_host );
+			m_server = new MockHttpMessageHandler();
 
 #pragma warning disable 618
 			m_publicKeyDataProvider = PublicKeyDataProviderFactory.CreateInternal( new InMemoryPublicKeyDataProvider() );
@@ -94,9 +92,8 @@ namespace D2L.Security.OAuth2.TestFramework {
 				keyDtos.Add( dto );
 
 				m_server
-					.Stub( r => r.Get( $"jwk/{ key.Id }" ) )
-					.Return( JsonConvert.SerializeObject( dto ) )
-					.OK();
+					.When( HttpMethod.Get, $"http://localhost/jwk/{ key.Id }" )
+					.Respond( "application/json", JsonConvert.SerializeObject( dto ) );
 			}
 
 			string jwksJson = JsonConvert.SerializeObject( new {
@@ -104,12 +101,12 @@ namespace D2L.Security.OAuth2.TestFramework {
 			} );
 
 			m_server
-				.Stub( r => r.Get( "/.well-known/jwks" ) )
-				.Return( jwksJson )
-				.OK();
+				.When( HttpMethod.Get, $"http://localhost/.well-known/jwks" )
+				.Respond( "application/json", jwksJson );
 		}
 
-		public Uri Host { get { return new Uri( m_host ); } }
+		public Uri Host { get { return new Uri( "http://localhost" ); } }
+		public HttpMessageHandler MockHandler => m_server;
 
 		public async Task<string> SignTokenBackdoor( UnsignedToken token ) {
 			return await m_tokenSigner

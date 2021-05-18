@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.TestFramework;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
@@ -21,7 +20,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			public void TestFixtureSetUp() {
 				m_authService = new AuthServiceMock();
 				m_accessTokenValidator = AccessTokenValidatorFactory.CreateRemoteValidator(
-					new HttpClient(),
+					new HttpClient( m_authService.MockHandler ),
 					new Uri( m_authService.Host, ".well-known/jwks" )
 				);
 

@@ -4,24 +4,18 @@ using System.Linq;
 using System.Net.Http;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
-using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.AccessTokens;
-using D2L.Services;
-using HttpMock;
 using Newtonsoft.Json;
+using RichardSzalay.MockHttp;
 
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 	internal abstract class FullStackValidationBenchmark : IBenchmark {
 
-		private HttpClient m_httpClient = new HttpClient();
-		private IHttpServer m_httpServer = null;
+		private HttpClient m_httpClient;
 
 		void IDisposable.Dispose() {
 			m_httpClient.Dispose();
 			m_httpClient = null;
-
-			m_httpServer.Dispose();
-			m_httpServer = null;
 		}
 
 		Action IBenchmark.GetRunner() {
@@ -41,9 +35,10 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 		protected abstract ITokenSigner GetTokenSigner( IPublicKeyDataProvider p );
 
 		private void SetUp( out Uri host, out string token, out string id ) {
-			m_httpServer = HttpMockFactory.Create( out string hostStr );
+			var mockHandler = new MockHttpMessageHandler();
+			m_httpClient = new HttpClient( mockHandler );
 
-			host = new Uri( hostStr + "/.well-known/jwks" );
+			host = new Uri( "http://localhost/.well-known/jwks" );
 
 #pragma warning disable 618
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
@@ -71,10 +66,9 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 			id = jwk.Id;
 
-			m_httpServer
-				.Stub( r => r.Get( "/.well-known/jwks" ) )
-				.Return( JsonConvert.SerializeObject( new { keys = new object[] { jwk.ToJwkDto() } } ) )
-				.OK();
+			mockHandler
+				.When( "http://localhost/.well-known/jwks" )
+				.Respond( "application/json", JsonConvert.SerializeObject( new { keys = new object[] { jwk.ToJwkDto() } } ) );
 		}
 	}
 }

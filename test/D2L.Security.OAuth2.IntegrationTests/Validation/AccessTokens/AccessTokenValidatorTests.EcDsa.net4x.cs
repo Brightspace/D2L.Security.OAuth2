@@ -5,10 +5,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.TestFramework;
-using D2L.Security.OAuth2.TestFrameworks;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Services;
 using NUnit.Framework;
+using RichardSzalay.MockHttp;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	internal sealed partial class AccessTokenValidatorTests {
@@ -21,7 +20,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			public void TestFixtureSetUp() {
 				m_authService = new AuthServiceMock( AuthServiceMock.KeyType.ECDSA_P256 );
 				m_accessTokenValidator = AccessTokenValidatorFactory.CreateRemoteValidator(
-					new HttpClient(),
+					new HttpClient( m_authService.MockHandler ),
 					new Uri( m_authService.Host, ".well-known/jwks" )
 				);
 
@@ -110,18 +109,17 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			[Test, TestCaseSource( "WebCrypto_TestCases" )]
 			public void ValidateAsync_GoodSignature_Succeeds_WebCrypto( string jwk, string token ) {
-				var mockServer = HttpMockFactory.Create( out string host );
+				var mockHandler = new MockHttpMessageHandler();
 
-				mockServer
-					.Stub( r => r.Get( "/.well-known/jwks" ) )
-					.Return( @"{""keys"":[" + jwk + "]}" )
-					.OK();
+				mockHandler
+					.When( "http://localhost/.well-known/jwks" )
+					.Respond( "application/json", @"{""keys"":[" + jwk + "]}" );
 
 				// We expect these to be expired because they are static
 				// The rest of the validation should have otherwise proceeded swimmingly
 				Assert.Throws<ExpiredTokenException>( () =>
 					AccessTokenValidatorFactory
-						.CreateRemoteValidator( new HttpClient(), new Uri( host + "/.well-known/jwks" ) )
+						.CreateRemoteValidator( new HttpClient( mockHandler ), new Uri( "http://localhost/.well-known/jwks" ) )
 						.ValidateAsync( token )
 						.ConfigureAwait( false ).GetAwaiter().GetResult()
 				);
