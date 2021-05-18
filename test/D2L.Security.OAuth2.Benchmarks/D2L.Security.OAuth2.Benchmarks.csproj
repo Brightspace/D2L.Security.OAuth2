@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" />
-    <PackageReference Include="HttpMock" />
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 

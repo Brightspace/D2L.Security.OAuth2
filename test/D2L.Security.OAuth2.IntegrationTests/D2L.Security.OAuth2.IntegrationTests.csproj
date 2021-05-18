@@ -17,7 +17,6 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
-		<PackageReference Include="HttpMock" />
 		<Reference Include="System.Net.Http" />
 	</ItemGroup>
 

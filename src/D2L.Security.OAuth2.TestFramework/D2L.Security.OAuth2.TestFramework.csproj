@@ -12,8 +12,11 @@
 		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="RichardSzalay.MockHttp" />
+	</ItemGroup>
+
 	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
-		<PackageReference Include="HttpMock" />
 		<PackageReference Include="Newtonsoft.Json" />
 		<Reference Include="System.Net.Http" />
 	</ItemGroup>
