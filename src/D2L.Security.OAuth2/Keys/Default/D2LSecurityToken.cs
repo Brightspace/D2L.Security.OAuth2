@@ -55,16 +55,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		private string GetSignatureAlgorithm() {
 			switch( GetKey() ) {
 				case ECDsaSecurityKey ecDsaSecurityKey:
-					CngAlgorithm algorithm = ( ecDsaSecurityKey.ECDsa as ECDsaCng ).Key.Algorithm;
-					if( algorithm == CngAlgorithm.ECDsaP256 ) {
-						return SecurityAlgorithms.EcdsaSha256;
-					} else if( algorithm == CngAlgorithm.ECDsaP384 ) {
-						return SecurityAlgorithms.EcdsaSha384;
-					} else if( algorithm == CngAlgorithm.ECDsaP521 ) {
-						return SecurityAlgorithms.EcdsaSha512;
-					}
-
-					throw new NotSupportedException();
+					return ecDsaSecurityKey.KeySize switch {
+						256 => SecurityAlgorithms.EcdsaSha256,
+						384 => SecurityAlgorithms.EcdsaSha384,
+						521 => SecurityAlgorithms.EcdsaSha512,
+						_ => throw new NotSupportedException(),
+					};
 
 				case RsaSecurityKey rsaSecurityKey:
 					return SecurityAlgorithms.RsaSha256;
@@ -77,10 +73,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public JsonWebKey ToJsonWebKey() {
 			switch( GetKey() ) {
 				case ECDsaSecurityKey eCDsaSecurityKey:
-					var ecDsa = eCDsaSecurityKey.ECDsa as ECDsaCng;
-					byte[] publicBlob = ecDsa.Key.Export( CngKeyBlobFormat.EccPublicBlob );
-
-					return new EcDsaJsonWebKey( Id, ValidTo, publicBlob );
+					ECParameters parameters = eCDsaSecurityKey.ECDsa.ExportParameters( includePrivateParameters: false );
+					return new EcDsaJsonWebKey( Id, ValidTo, parameters );
 
 				case RsaSecurityKey rsaSecurityKey:
 					var csp = rsaSecurityKey.Rsa;
