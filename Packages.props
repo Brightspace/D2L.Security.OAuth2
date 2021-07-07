@@ -11,7 +11,7 @@
 		<PackageReference Update="Microsoft.Extensions.Caching.Memory" Version="[5.0.0]" />
 		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="[16.10.0]" />
 		<PackageReference Update="Moq" Version="[4.16.1]" />
-		<PackageReference Update="Newtonsoft.Json" Version="[6.0.6]" />
+		<PackageReference Update="Newtonsoft.Json" Version="[6.0.8]" />
 		<PackageReference Update="NUnit" Version="[3.13.2]" />
 		<PackageReference Update="NUnit3TestAdapter" Version="[4.0.0]" />
 		<PackageReference Update="RichardSzalay.MockHttp" Version="[6.0.0]" />
