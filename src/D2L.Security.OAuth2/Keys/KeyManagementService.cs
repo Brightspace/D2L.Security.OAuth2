@@ -132,13 +132,9 @@ namespace D2L.Security.OAuth2.Keys {
 
 			var best = ChooseKey( keys, now ).Ref();
 
-			var loser = Interlocked.CompareExchange(
-				ref m_current,
-				best,
-				comparand: current
-			);
+			var prev = Interlocked.Exchange( ref m_current, best );
 
-			loser?.Dispose();
+			prev?.Dispose();
 		}
 
 		private D2LSecurityToken ChooseKey(
