@@ -162,9 +162,9 @@ namespace D2L.Security.OAuth2.Keys {
 					// When comparing two keys that are not past their respective
 					// NotBefore points, prefer the oldest one.
 					candidate = key;
-				} else if ( candidate.NotBefore <= now && key.NotBefore <= now && candidate.ExpiresAt < key.ExpiresAt ) {
+				} else if ( candidate.NotBefore <= now && key.NotBefore <= now && candidate.CreatedAt < key.CreatedAt ) {
 					// If we have two keys past their NotBefore date, pick the
-					// one that expires the latest.
+					// one that was created most recently.
 					candidate = key;
 				}
 			}
@@ -192,12 +192,8 @@ namespace D2L.Security.OAuth2.Keys {
 			);
 		}
 
-		private readonly object m_disposeLock = new();
-
 		public void Dispose() {
-			lock( m_disposeLock ) {
-				m_current?.Dispose();
-			}
+			m_current?.Dispose();
 		}
 	}
 }
