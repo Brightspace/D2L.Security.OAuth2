@@ -57,11 +57,17 @@ namespace D2L.Security.OAuth2.Keys {
 
 			current = Volatile.Read( ref m_current );
 
+			if( current == null || now > current.ValidTo ) {
+				// If the key is expired or doesn't exist, retry quickly.
+				return TimeSpan.FromSeconds( 10 );
+			}
+
 			var expectedNextRotation = current.ValidTo - m_config.KeyRotationBuffer;
 
-			if( now > expectedNextRotation ) {
-				// If that's in the past, use a short retry window.
-				return TimeSpan.FromSeconds( 10 );
+			if( now > current.ValidTo - m_config.KeyRotationBuffer ) {
+				// If we would have expected a new key by now, retry again in a
+				// bit. This code branch supports configuration changes mostly.
+				return TimeSpan.FromMinutes( 1 );
 			} else {
 				// Otherwise use that but with a little buffer for key
 				// generation time/imprecisely scheduled cron jobs.
@@ -78,7 +84,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 			foreach( var key in keys ) {
 				if( now < key.ExpiresAt - m_config.KeyRotationBuffer ) {
-					// This key is fine, do nothing.
+					// Found a suitable key, so we don't need to generate a new one.
 					return;
 				}
 			}
@@ -128,9 +134,15 @@ namespace D2L.Security.OAuth2.Keys {
 		) {
 			var keys = await m_privateKeys.GetAllAsync(
 				validUntilAtLeast: now
-			).ConfigureAwait( continueOnCapturedContext: false );
+			).ConfigureAwait( false );
 
 			var best = ChooseKey( keys, now ).Ref();
+
+			if( best == null ) {
+				// If we didn't find anything in the database, continue with
+				// the one we have (if any)
+				return;
+			}
 
 			var prev = Interlocked.Exchange( ref m_current, best );
 
@@ -167,6 +179,10 @@ namespace D2L.Security.OAuth2.Keys {
 					// one that was created most recently.
 					candidate = key;
 				}
+			}
+
+			if( candidate == null ) {
+				return null;
 			}
 
 			Func<Tuple<AsymmetricSecurityKey, IDisposable>> keyFactory = candidate.Kind switch {
