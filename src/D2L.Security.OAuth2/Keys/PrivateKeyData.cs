@@ -58,5 +58,14 @@ namespace D2L.Security.OAuth2.Keys {
 		/// Once a key is expired nothing signed by it will validate.
 		/// </summary>
 		public DateTimeOffset ExpiresAt { get; }
+
+		public bool WouldPreferToRotate( DateTimeOffset now, TimeSpan rotationBuffer )
+			=> now >= ExpiresAt - rotationBuffer;
+
+		public bool IsPastNotBefore( DateTimeOffset now )
+			=> now >= NotBefore;
+
+		public bool IsExpired( DateTimeOffset now )
+			=> now >= ExpiresAt;
 	}
 }

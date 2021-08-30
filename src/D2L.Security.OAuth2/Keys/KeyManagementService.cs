@@ -36,42 +36,46 @@ namespace D2L.Security.OAuth2.Keys {
 			if ( current == null || current.ValidTo <= now ) {
 				// Slow path: RefreshKeyAsync() wasn't called on boot and/or it
 				// isn't being called in a background job.
-				await RefreshKeyAsync( current, now )
+				await RefreshKeyAsync( now )
 					.ConfigureAwait( false );
 
 				current = Volatile.Read( ref m_current );
+			}
+
+			if( current == null ) {
+				return null;
 			}
 
 			return current.Ref();
 		}
 
 		async Task<TimeSpan> IKeyManagementService.RefreshKeyAsync() {
-			var current = Volatile.Read( ref m_current );
-
 			var now = m_clock.UtcNow;
 
-			await RefreshKeyAsync(
-				current,
-				now
-			).ConfigureAwait( false );
+			await RefreshKeyAsync( now )
+				.ConfigureAwait( false );
 
-			current = Volatile.Read( ref m_current );
+			var current = Volatile.Read( ref m_current );
 
 			if( current == null || now > current.ValidTo ) {
 				// If the key is expired or doesn't exist, retry quickly.
 				return TimeSpan.FromSeconds( 10 );
 			}
 
-			var expectedNextRotation = current.ValidTo - m_config.KeyRotationBuffer;
+			// A new key will get generated some time before the current key
+			// expires, but will only become usable some time after that.
+			var expectedTimeOfNewUsableKey = current.ValidTo
+				- m_config.KeyRotationBuffer
+				+ m_config.KeyTimeUntilUse;
 
-			if( now > current.ValidTo - m_config.KeyRotationBuffer ) {
+			if( now > expectedTimeOfNewUsableKey ) {
 				// If we would have expected a new key by now, retry again in a
 				// bit. This code branch supports configuration changes mostly.
 				return TimeSpan.FromMinutes( 1 );
 			} else {
 				// Otherwise use that but with a little buffer for key
 				// generation time/imprecisely scheduled cron jobs.
-				return expectedNextRotation.AddMinutes( 1 ) - now;
+				return expectedTimeOfNewUsableKey.AddMinutes( 1 ) - now;
 			}
 		}
 
@@ -83,7 +87,7 @@ namespace D2L.Security.OAuth2.Keys {
 			).ConfigureAwait( false );
 
 			foreach( var key in keys ) {
-				if( now < key.ExpiresAt - m_config.KeyRotationBuffer ) {
+				if( !key.WouldPreferToRotate( now, m_config.KeyRotationBuffer ) ) {
 					// Found a suitable key, so we don't need to generate a new one.
 					return;
 				}
@@ -128,15 +132,12 @@ namespace D2L.Security.OAuth2.Keys {
 			).ConfigureAwait( false );
 		}
 
-		private async Task RefreshKeyAsync(
-			D2LSecurityToken current,
-			DateTimeOffset now
-		) {
+		private async Task RefreshKeyAsync( DateTimeOffset now ) {
 			var keys = await m_privateKeys.GetAllAsync(
 				validUntilAtLeast: now
 			).ConfigureAwait( false );
 
-			var best = ChooseKey( keys, now ).Ref();
+			var best = ChooseKey( keys, now )?.Ref();
 
 			if( best == null ) {
 				// If we didn't find anything in the database, continue with
@@ -161,20 +162,30 @@ namespace D2L.Security.OAuth2.Keys {
 					continue;
 				}
 
+				// The data provider should filter expired keys, but we don't
+				// rely on that just in case.
+				if( key.IsExpired( now ) ) {
+					continue;
+				}
+
 				// Use any non-expired key if it's the only one
 				if( candidate == null ) {
 					candidate = key;
 					continue;
 				}
 
-				if( candidate.NotBefore > now && key.NotBefore <= now ) {
-					// If we can switch to a key past its NotBefore, do that.
+				var candidateIsPastNotBefore = candidate.IsPastNotBefore( now );
+				var keyIsPastNotBefore = key.IsPastNotBefore( now );
+
+				if( !candidateIsPastNotBefore && keyIsPastNotBefore ) {
+					// Prefer keys past their "NotBefore" date because they are
+					// guarunteed to not be excluded from caches.
 					candidate = key;
-				} else if( candidate.NotBefore > now && candidate.CreatedAt > key.CreatedAt ) {
-					// When comparing two keys that are not past their respective
-					// NotBefore points, prefer the oldest one.
+				} else if( !candidateIsPastNotBefore && key.CreatedAt < candidate.CreatedAt ) {
+					// When comparing two keys that are not past their NotBefore
+					// points, prefer the oldest one (same cache rationale.)
 					candidate = key;
-				} else if ( candidate.NotBefore <= now && key.NotBefore <= now && candidate.CreatedAt < key.CreatedAt ) {
+				} else if( candidateIsPastNotBefore && keyIsPastNotBefore && candidate.CreatedAt < key.CreatedAt ) {
 					// If we have two keys past their NotBefore date, pick the
 					// one that was created most recently.
 					candidate = key;
