@@ -120,13 +120,11 @@ namespace D2L.Security.OAuth2.UnitTests.Keys.Default {
 		}
 
 		[Test]
-		public async Task GetSigningCredentialsAsync_TwoActiveKeys_PrefersNewest() {
+		public async Task GetSigningCredentialsAsync_OnBoot_TwoActiveKeys_PrefersNewest() {
 			var oldActive = CreateActiveKey();
 			var newActive = CreateNewActiveKey();
 
 			UsePrivateKeys( oldActive, newActive );
-
-			await m_kms.RefreshKeyAsync();
 
 			using var creds = await m_pkp.GetSigningCredentialsAsync();
 
