@@ -214,7 +214,7 @@ namespace D2L.Security.OAuth2.UnitTests.Keys.Default {
 
 			UsePrivateKeys( key );
 
-			await m_kms.RefreshKeyAsync();
+			await m_kms.GenerateNewKeyIfNeededAsync();
 
 			// If it were to generate a new key it would have to save it which
 			// would trigger our strict mocks.
