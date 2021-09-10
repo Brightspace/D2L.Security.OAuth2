@@ -96,9 +96,10 @@ namespace D2L.Security.OAuth2.Keys {
 			var keyId = Guid.NewGuid();
 			var keyIdStr = keyId.ToString();
 
-			using var csp = new RSACryptoServiceProvider {
+			using var csp = new RSACryptoServiceProvider( Constants.GENERATED_RSA_KEY_SIZE ) {
 				PersistKeyInCsp = false
 			};
+
 
 			var pub = csp.ExportParameters(
 				includePrivateParameters: false
