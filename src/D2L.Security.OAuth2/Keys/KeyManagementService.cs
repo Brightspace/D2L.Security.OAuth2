@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Keys {
-	internal sealed class KeyManagementService : IKeyManagementService, IPrivateKeyProvider, IDisposable {
+	public sealed class KeyManagementService : IKeyManagementService, IPrivateKeyProvider, IDisposable {
 		private readonly IPublicKeyDataProvider m_publicKeys;
 		private readonly IPrivateKeyDataProvider m_privateKeys;
 		private readonly IDateTimeProvider m_clock;
@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 		private D2LSecurityToken m_current = null;
 
-		public KeyManagementService(
+		internal KeyManagementService(
 			IPublicKeyDataProvider publicKeys,
 			IPrivateKeyDataProvider privateKeys,
 			IDateTimeProvider clock,
@@ -26,6 +26,22 @@ namespace D2L.Security.OAuth2.Keys {
 			m_privateKeys = privateKeys;
 			m_clock = clock;
 			m_config = config;
+		}
+
+		// Constructor for use outside of this library.
+		// We are hiding our mockable clock interface for now, but we could
+		// re-evaluate that in the future.
+		public KeyManagementService(
+			IPublicKeyDataProvider publicKeys,
+			IPrivateKeyDataProvider privateKeys,
+			OAuth2Configuration config = null
+		) : this(
+			publicKeys,
+			privateKeys,
+			new DateTimeProvider(),
+			config ?? new OAuth2Configuration()
+		) {
+			config.CheckSanity();
 		}
 
 		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
