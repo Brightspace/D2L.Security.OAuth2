@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Validation.Exceptions;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal sealed class TokenSigner : ITokenSigner {
+	public sealed class TokenSigner : ITokenSigner {
 
 		private readonly IPrivateKeyProvider m_privateKeyProvider;
 
 		public TokenSigner(
+			IKeyManagementService keyManagementService
+		) : this( (IPrivateKeyProvider)keyManagementService ) {}
+
+		internal TokenSigner(
 			IPrivateKeyProvider privateKeyProvider
 		) {
 			m_privateKeyProvider = privateKeyProvider;
