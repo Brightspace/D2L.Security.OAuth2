@@ -71,7 +71,7 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new JsonWebKeyParseException( "missing 'use' parameter in JSON web key" );
 			}
 
-			if( data[ "use" ].ToString() != "sig" ) {
+			if( data[ "use" ] != null && data[ "use" ].ToString() != "sig" ) {
 				string msg = String.Format( "invalid 'use' value in JSON web key: {0}", data[ "use" ] );
 				throw new JsonWebKeyParseException( msg );
 			}
