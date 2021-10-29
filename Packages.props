@@ -5,7 +5,7 @@
 		<PackageReference Update="D2L.CodeStyle.Analyzers" Version="[0.142.0]" />
 		<PackageReference Update="D2L.CodeStyle.Annotations" Version="[0.28.0]" />
 		<PackageReference Update="D2L.Services.Core.Exceptions" Version="[2.0.1.15]" />
-		<PackageReference Update="FluentAssertions" Version="[6.1.0]" />
+		<PackageReference Update="FluentAssertions" Version="[6.2.0]" />
 		<PackageReference Update="Microsoft.AspNet.WebApi.Core" Version="[5.2.7]" />
 		<PackageReference Update="Microsoft.AspNet.WebApi.OwinSelfHost" Version="[5.2.7]" />
 		<PackageReference Update="Microsoft.Extensions.Caching.Memory" Version="[5.0.0]" />
