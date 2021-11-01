@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 	<ItemGroup>
     	<PackageReference Update="BenchmarkDotNet" Version="[0.13.1]" />
-		<PackageReference Update="D2L.CodeStyle.Analyzers" Version="[0.142.0]" />
+		<PackageReference Update="D2L.CodeStyle.Analyzers" Version="[0.167.0]" />
 		<PackageReference Update="D2L.CodeStyle.Annotations" Version="[0.28.0]" />
 		<PackageReference Update="D2L.Services.Core.Exceptions" Version="[2.0.1.15]" />
 		<PackageReference Update="FluentAssertions" Version="[6.2.0]" />
