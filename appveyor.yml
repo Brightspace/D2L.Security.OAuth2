@@ -3,7 +3,7 @@ image: Visual Studio 2019
 
 version: '{build}-{branch}'
 environment:
-  ASSEMBLY_VERSION: 11.9.1
+  ASSEMBLY_VERSION: 11.9.2
 
 configuration: Release
 platform: Any CPU
