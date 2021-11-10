@@ -5,8 +5,8 @@
 		<PackageVersion  Include="D2L.CodeStyle.Annotations" Version="0.28.0" />
 		<PackageVersion  Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
 		<PackageVersion  Include="FluentAssertions" Version="6.2.0" />
-		<PackageVersion  Include="Microsoft.AspNet.WebApi.Core" Version="[5.2.7]" />
-		<PackageVersion  Include="Microsoft.AspNet.WebApi.OwinSelfHost" Version="[5.2.7]" />
+		<PackageVersion  Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+		<PackageVersion  Include="Microsoft.AspNet.WebApi.OwinSelfHost" Version="5.2.7" />
 		<PackageVersion  Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
 		<PackageVersion  Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
 		<PackageVersion  Include="Moq" Version="4.16.1" />
