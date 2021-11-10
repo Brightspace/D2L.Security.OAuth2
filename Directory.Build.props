@@ -23,5 +23,6 @@
 
 	<PropertyGroup>
 		<LangVersion>9.0</LangVersion>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 </Project>
