@@ -15,8 +15,12 @@ namespace D2L.Security.OAuth2.Principal {
 		private readonly long? m_userId;
 		private readonly long? m_actualUserId;
 
+		[Mutability.Audited("Jacob Parker", "2022-01-18", "Thread-safe deferred initialization; doesn't capture any externally owned/visible state")]
 		private readonly Lazy<Guid> m_tenantId;
+
 		private readonly PrincipalType m_principalType;
+		
+		[Mutability.Audited("Jacob Parker", "2022-01-18", "Thread-safe deferred initialization; doesn't capture any externally owned/visible state")]
 		private readonly Lazy<IEnumerable<Scope>> m_scopes;
 
 		public D2LPrincipal( IAccessToken accessToken ) {
