@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using D2L.CodeStyle.Annotations;
 using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Principal {
