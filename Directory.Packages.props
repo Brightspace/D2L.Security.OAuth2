@@ -9,7 +9,7 @@
 		<PackageVersion  Include="Microsoft.AspNet.WebApi.OwinSelfHost" Version="5.2.7" />
 		<PackageVersion  Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
 		<PackageVersion  Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-		<PackageVersion  Include="Moq" Version="4.16.1" />
+		<PackageVersion  Include="Moq" Version="4.17.1" />
 		<PackageVersion  Include="Newtonsoft.Json" Version="[6.0.8,7)" />
 		<PackageVersion  Include="NUnit" Version="3.13.2" />
 		<PackageVersion  Include="NUnit3TestAdapter" Version="4.2.1" />
