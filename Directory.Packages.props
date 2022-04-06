@@ -1,6 +1,6 @@
 ﻿<Project>
 	<ItemGroup>
-    	<PackageVersion  Include="BenchmarkDotNet" Version="0.13.1" />
+		<PackageVersion  Include="BenchmarkDotNet" Version="0.13.1" />
 		<PackageVersion  Include="D2L.CodeStyle.Analyzers" Version="0.188.0" />
 		<PackageVersion  Include="D2L.CodeStyle.Annotations" Version="0.31.0" />
 		<PackageVersion  Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
@@ -17,6 +17,7 @@
 		<PackageVersion  Include="SimpleLogInterface" Version="3.0.1" />
 		<PackageVersion  Include="System.Collections.Immutable" Version="6.0.0" />
 		<PackageVersion  Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
+		<PackageVersion  Include="System.Net.Http" Version="4.3.4" />
 		<PackageVersion  Include="System.Text.Json" Version="6.0.2" />
 	</ItemGroup>
 </Project>
