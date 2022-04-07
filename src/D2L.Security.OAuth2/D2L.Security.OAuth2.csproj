@@ -32,7 +32,6 @@
 		<!-- We use System.Text.Json in .NET 5+ -->
 		<PackageReference Include="Newtonsoft.Json" />
 
-		<Reference Include="System.IdentityModel" />
 		<Reference Include="System.Net.Http" />
 		<Reference Include="System.Web" />
 	</ItemGroup>
