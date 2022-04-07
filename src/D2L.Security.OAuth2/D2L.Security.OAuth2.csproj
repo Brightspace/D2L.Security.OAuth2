@@ -19,7 +19,6 @@
 		<PackageReference Include="D2L.Services.Core.Exceptions" />
 		<PackageReference Include="System.Collections.Immutable" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
-		<PackageReference Include="System.Net.Http" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net50'">
@@ -33,6 +32,7 @@
 		<!-- We use System.Text.Json in .NET 5+ -->
 		<PackageReference Include="Newtonsoft.Json" />
 
+		<Reference Include="System.Net.Http" />
 		<Reference Include="System.Web" />
 	</ItemGroup>
 
