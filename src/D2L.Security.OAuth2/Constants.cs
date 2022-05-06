@@ -25,6 +25,15 @@ namespace D2L.Security.OAuth2 {
 		public const string ASSERTION_AUDIENCE = "https://api.brightspace.com/auth/token";
 
 		/// <summary>
+		/// LTI integrations have often made the assumption that this is
+		/// the correct value for the "aud" claim during the JWT_BEARER grant
+		/// flow by analogy to other vendors. Although that isn't correct,
+		/// there isn't a risk to supporting this and will make us easier
+		/// to integrate with.
+		/// </summary>
+		public const string PROD_TOKEN_ENDPOINT_AUD = "https://auth.brightspace.com/core/connect/token";
+
+		/// <summary>
 		/// The lifetime of assertion JWTs created during the JWT_BEARER grant
 		/// flow
 		/// </summary>
