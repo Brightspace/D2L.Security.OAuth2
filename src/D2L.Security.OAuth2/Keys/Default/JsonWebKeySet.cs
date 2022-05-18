@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using D2L.Security.OAuth2.Utilities;
 
-#if NET5_0
+#if NET6_0
 using JsonException = System.Text.Json.JsonException;
 #else
 using JsonException = Newtonsoft.Json.JsonReaderException;

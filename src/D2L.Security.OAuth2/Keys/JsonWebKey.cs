@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using D2L.Security.OAuth2.Keys.Default;
 
-#if NET5_0
+#if NET6_0
 using JsonException = System.Text.Json.JsonException;
 #else
 using JsonException = Newtonsoft.Json.JsonReaderException;
