@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;net50</TargetFrameworks>
+		<TargetFrameworks>net472;net60</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2.TestFramework</Title>
@@ -14,7 +14,7 @@
 		<PackageReference Include="RichardSzalay.MockHttp" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
+	<ItemGroup Condition="'$(TargetFramework)' != 'net60'">
 		<PackageReference Include="Newtonsoft.Json" />
 		<Reference Include="System.Net.Http" />
 	</ItemGroup>

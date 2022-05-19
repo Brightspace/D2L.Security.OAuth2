@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Services.Core.Exceptions;
 
-#if NET5_0
+#if NET6_0
 using JsonPropertyNameAttribute = System.Text.Json.Serialization.JsonPropertyNameAttribute;
 #else
 using JsonPropertyNameAttribute = Newtonsoft.Json.JsonPropertyAttribute;

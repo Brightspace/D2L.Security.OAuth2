@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;net50</TargetFrameworks>
+		<TargetFrameworks>net472;net60</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2</Title>
@@ -21,11 +21,11 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net50'">
+	<ItemGroup Condition="'$(TargetFramework)' == 'net60'">
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
+	<ItemGroup Condition="'$(TargetFramework)' != 'net60'">
 		<!-- We use Microsoft.Extensions.Caching.Memory in .NET 5+ -->
 		<Reference Include="System.Runtime.Caching" />
 

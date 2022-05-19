@@ -1,6 +1,6 @@
 ﻿namespace D2L.Security.OAuth2 {
 	internal static class JsonSerializer {
-#if NET5_0
+#if NET6_0
 		public static string Serialize<T>( T item ) =>
 			System.Text.Json.JsonSerializer.Serialize( item );
 

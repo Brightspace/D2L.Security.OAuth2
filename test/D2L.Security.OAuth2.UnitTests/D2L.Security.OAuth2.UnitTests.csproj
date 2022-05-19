@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net472;net50</TargetFrameworks>
+		<TargetFrameworks>net472;net60</TargetFrameworks>
 		<OutputType>Library</OutputType>
 
 		<Title>D2L.Security.OAuth2.UnitTests</Title>
@@ -22,7 +22,7 @@
 		<ProjectReference Include="..\..\src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' != 'net50'">
+	<ItemGroup Condition="'$(TargetFramework)' != 'net60'">
 		<Reference Include="System.Net.Http" />
 		<Reference Include="System.Web" />
 		<Reference Include="System.Web.Extensions" />
