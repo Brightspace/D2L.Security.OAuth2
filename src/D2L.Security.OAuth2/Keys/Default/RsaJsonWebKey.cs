@@ -30,44 +30,16 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <param name="expiresAt">When the key expires</param>
-		/// <param name="modulus">The RSA modulus</param>
-		/// <param name="exponent">The RSA exponent</param>
-		private RsaJsonWebKey(
-			string id,
-			DateTimeOffset? expiresAt,
-			byte[] modulus,
-			byte[] exponent
-		) : base( id, expiresAt ) {
-			m_parameters.Modulus = modulus;
-			m_parameters.Exponent = exponent;
-		}
-
-		/// <summary>
-		/// Tries to parse parameters into a new <see cref="RsaJsonWebKey"/> instance
-		/// </summary>
-		/// <param name="id">The key id (kid)</param>
-		/// <param name="expiresAt">When the key expires</param>
 		/// <param name="n">The RSA modulus</param>
 		/// <param name="e">The RSA exponent</param>
-		/// <param name="rsaJsonWebKey">The parsed <see cref="RsaJsonWebKey"/> instance</param>
-		/// <returns>true if the key was successfully parsed, or false if the decoded RSA modulus starts with a 0 byte</returns>
-		public static bool TryParse(
+		public RsaJsonWebKey(
 			string id,
 			DateTimeOffset? expiresAt,
 			string n,
-			string e,
-			out RsaJsonWebKey rsaJsonWebKey
-		) {
-			var modulus = Base64UrlEncoder.DecodeBytes( n );
-			var exponent = Base64UrlEncoder.DecodeBytes( e );
-
-			if( modulus.Length > 0 && modulus[0] == 0 ) {
-				rsaJsonWebKey = default;
-				return false;
-			}
-
-			rsaJsonWebKey = new RsaJsonWebKey( id, expiresAt, modulus, exponent );
-			return true;
+			string e
+		) : base( id, expiresAt ) {
+			m_parameters.Modulus = Base64UrlEncoder.DecodeBytes( n );
+			m_parameters.Exponent = Base64UrlEncoder.DecodeBytes( e );
 		}
 
 		/// <summary>

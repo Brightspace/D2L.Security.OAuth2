@@ -62,15 +62,6 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		[Test]
-		public void FromJson_Modulus0PrefixThrows() {
-			string id = Guid.NewGuid().ToString();
-			string example =
-				@"{""kid"":""" + id + @""",""kty"":""RSA"",""use"":""sig"",""n"":""AKYl5hffy9FDuCuQD8x6ojmJfyrVVwID5VR4VKKT87WlvyUYdpPTA3rqSANXABfUv6-akQVnANUGj9J5RmpcN45v30h77VGGIcFIRfV-iNfVUZr_wV_TXtm7nbeXWnyPQ2zbNi7atF_8nzNXVC_Nb2kdK8-42GkOWxdgkUB1QnCIVpIpPOTxuXNciv_wLPONlqqIAaVvPs7BKAerOdxTaQxt-_x7GQAJ4AE5k2NQLeDu4wuqfnNClTw39uaC1TDlkLm8lYAhPRZbFcaax1qrF3p5ZxxJoWXxGxQf-SgeoY9sle-44by0bJTb8in5RQbOgBgonMzQ85qFx9hldxQFSxU"",""e"":""AQAB""}";
-
-			Assert.Throws<JsonWebKeyParseException>( () => JsonWebKey.FromJson( example ) );
-		}
-
-		[Test]
 		public async Task FromJson_GeneratedKeyRoundTrips() {
 			IPrivateKeyProvider privateKeyProvider = new RsaPrivateKeyProvider(
 				new D2LSecurityTokenFactory(

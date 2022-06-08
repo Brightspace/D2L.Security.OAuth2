@@ -104,17 +104,12 @@ namespace D2L.Security.OAuth2.Keys {
 						throw new JsonWebKeyParseException( "RSA JSON web key has private key material" );
 					}
 
-					if( !RsaJsonWebKey.TryParse(
+					return new RsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
-						n: data["n"].ToString(),
-						e: data["e"].ToString(),
-						rsaJsonWebKey: out RsaJsonWebKey rsaJsonWebKey
-					) ) {
-						throw new JsonWebKeyParseException( "decoded 'n' parameter starts with 0 byte in RSA JSON web key" );
-					}
-
-					return rsaJsonWebKey;
+						n: data[ "n" ].ToString(),
+						e: data[ "e" ].ToString()
+					);
 
 				case "EC":
 					if( !data.ContainsKey( "crv" ) ) {
