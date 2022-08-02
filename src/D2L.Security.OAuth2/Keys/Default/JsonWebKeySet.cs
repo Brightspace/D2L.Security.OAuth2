@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using D2L.Security.OAuth2.Utilities;
 
 #if NET6_0
@@ -23,9 +24,17 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
 				}
 
+				#if NET6_0
+				System.Text.Json.JsonElement keysElement = ( System.Text.Json.JsonElement )data["keys"];
+				if ( keysElement.ValueKind is not System.Text.Json.JsonValueKind.Array ) {
+					throw new JsonWebKeyParseException("invalid json web key set: keys not an array");
+				}
+				List<System.Text.Json.JsonElement> keyObjects = keysElement.EnumerateArray().ToList();
+				#else
 				if ( data["keys"] is not IEnumerable<object> keyObjects ) {
 					throw new JsonWebKeyParseException( "invalid json web key set: keys not an array" );
 				}
+				#endif
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
 				foreach( object keyObject in keyObjects ) {
