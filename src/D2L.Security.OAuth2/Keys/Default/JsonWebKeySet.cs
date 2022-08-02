@@ -17,13 +17,15 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			Source = src ?? throw new ArgumentNullException( nameof( src ) );
 
 			try {
-				var data = JsonSerializer.Deserialize<Dictionary<string, List<object>>>( json );
+				var data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
 
 				if( !data.ContainsKey( "keys" ) ) {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
 				}
 
-				List<object> keyObjects = data["keys"];
+				if ( data["keys"] is not IEnumerable<object> keyObjects ) {
+					throw new JsonWebKeyParseException( "invalid json web key set: keys not an array" );
+				}
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
 				foreach( object keyObject in keyObjects ) {
