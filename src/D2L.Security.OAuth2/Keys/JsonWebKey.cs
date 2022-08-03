@@ -67,7 +67,7 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new JsonWebKeyParseException( "error deserializing JSON web key string", e );
 			}
 
-			if( data.ContainsKey( "use" ) && data[ "use" ].ToString() != "sig" ) {
+			if( data.ContainsKey( "use" ) && data[ "use" ] != null && data[ "use" ].ToString() != "sig" ) {
 				string msg = String.Format( "invalid 'use' value in JSON web key: {0}", data[ "use" ] );
 				throw new JsonWebKeyParseException( msg );
 			}
@@ -140,13 +140,13 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		private static bool HasRsaPrivateKeyMaterial( IReadOnlyDictionary<string, object> data ) {
-			return data.ContainsKey( "d" )
-				|| data.ContainsKey( "p" )
-				|| data.ContainsKey( "q" )
-				|| data.ContainsKey( "dp" )
-				|| data.ContainsKey( "dq" )
-				|| data.ContainsKey( "qi" )
-				|| data.ContainsKey( "oth" );
+			return ( data.ContainsKey( "d" ) && data[ "d" ] != null )
+				|| ( data.ContainsKey( "p" ) && data[ "p" ] != null )
+				|| ( data.ContainsKey( "q" ) && data[ "q" ] != null )
+				|| ( data.ContainsKey( "dp" ) && data[ "dp" ] != null )
+				|| ( data.ContainsKey( "dq" ) && data[ "dq" ] != null )
+				|| ( data.ContainsKey( "qi" ) && data[ "qi" ] != null )
+				|| ( data.ContainsKey( "oth" ) && data[ "oth" ] != null );
 		}
 	}
 
