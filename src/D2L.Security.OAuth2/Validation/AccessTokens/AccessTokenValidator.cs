@@ -61,9 +61,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
 
-			D2LSecurityToken signingKey = await m_publicKeyProvider
+			using D2LSecurityToken signingKey = ( await m_publicKeyProvider
 				.GetByIdAsync( keyId )
-				.ConfigureAwait( false );
+				.ConfigureAwait( false )
+			).Ref();
 
 			var validationParameters = new TokenValidationParameters() {
 				ValidateAudience = false,
