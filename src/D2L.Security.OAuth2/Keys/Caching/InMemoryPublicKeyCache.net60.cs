@@ -24,12 +24,15 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 		}
 
 		void IInMemoryPublicKeyCache.Set( string srcNamespace, D2LSecurityToken key ) {
+			MemoryCacheEntryOptions options = new MemoryCacheEntryOptions {
+				AbsoluteExpiration = key.ValidTo,
+			};
+			options.RegisterPostEvictionCallback( EvictionCallback );
+
 			m_cache.Set(
 				key: BuildCacheKey( srcNamespace, key.KeyId ),
-				value: key,
-				new MemoryCacheEntryOptions {
-					AbsoluteExpiration = key.ValidTo
-				}
+				value: key.Ref(),
+				options: options
 			);
 		}
 
@@ -44,6 +47,14 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 			}
 
 			return key as D2LSecurityToken;
+		}
+
+		private static void EvictionCallback( object key, object value, EvictionReason reason, object state ) {
+			if( value is not D2LSecurityToken securityKey ) {
+				return;
+			}
+
+			securityKey.Dispose();
 		}
 	}
 }
