@@ -68,6 +68,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public async Task ItShouldRetrieveJwksAndCacheKeysWhenKeyIsNotInCache( string keyId ) {
 			var seq = new MockSequence();
 
+			// Check for key in cache before fetching
 			m_keyCache
 				.InSequence( seq )
 				.Setup( x => x.Get( SRC_NAMESPACE, keyId ) )
@@ -96,10 +97,19 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Setup( x => x.RequestJwkAsync( keyId ) )
 				.ReturnsAsync( jwks );
 
+			// Check for key in cache before caching
+			m_keyCache
+				.InSequence( seq )
+				.Setup( x => x.Get( SRC_NAMESPACE, keyId ) )
+				.Returns<D2LSecurityToken>( null );
 			m_keyCache
 				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == keyId ) ) );
+
+			// Check for other key in cache, exists so doesn't re-cache it
 			m_keyCache
-				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == otherKeyId ) ) );
+				.InSequence( seq )
+				.Setup( x => x.Get( SRC_NAMESPACE, otherKeyId ) )
+				.Returns( D2LSecurityTokenUtility.CreateActiveToken( otherKeyId ) );
 
 			var cachedKey = new D2LSecurityToken(
 				keyId,
@@ -107,6 +117,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
 				() => null as Tuple<AsymmetricSecurityKey, IDisposable>
 			);
+
+			// Pulls the key out of cache afterward
 			m_keyCache
 				.InSequence( seq )
 				.Setup( x => x.Get( SRC_NAMESPACE, keyId ) )
@@ -125,6 +137,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public async Task ItShouldRetrieveJwksAndIgnoreInvalidKeysWithoutErroring( string keyId ) {
 			var seq = new MockSequence();
 
+			// Check for key in cache before fetching
 			m_keyCache
 				.InSequence( seq )
 				.Setup( x => x.Get( SRC_NAMESPACE, keyId ) )
@@ -153,8 +166,19 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Setup( x => x.RequestJwkAsync( keyId ) )
 				.ReturnsAsync( jwks );
 
+			// Check for key in cache before caching
+			m_keyCache
+				.InSequence( seq )
+				.Setup( x => x.Get( SRC_NAMESPACE, keyId ) )
+				.Returns<D2LSecurityToken>( null );
 			m_keyCache
 				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.KeyId == keyId ) ) );
+
+			// Check for other key in cache before attempting to cache
+			m_keyCache
+				.InSequence( seq )
+				.Setup( x => x.Get( SRC_NAMESPACE, otherKeyId ) )
+				.Returns<D2LSecurityToken>( null );
 
 			var cachedKey = new D2LSecurityToken(
 				keyId,
@@ -162,6 +186,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				DateTime.UtcNow + TimeSpan.FromHours( 1 ),
 				() => null as Tuple<AsymmetricSecurityKey, IDisposable>
 			);
+
+			// Pulls the key out of cache afterward
 			m_keyCache
 				.InSequence( seq )
 				.Setup( x => x.Get( SRC_NAMESPACE, keyId ) )
