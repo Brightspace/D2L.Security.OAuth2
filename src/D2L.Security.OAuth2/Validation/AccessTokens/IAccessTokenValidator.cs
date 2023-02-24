@@ -8,6 +8,11 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	public interface IAccessTokenValidator {
 
 		/// <summary>
+		/// Perform steps to potentially make future validations faster.
+		/// </summary>
+		Task PrefetchAsync();
+
+		/// <summary>
 		/// Validates an access token
 		/// </summary>
 		/// <param name="accessToken">The raw token to validate</param>
@@ -16,5 +21,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		Task<IAccessToken> ValidateAsync(
 			string accessToken
 		);
+
 	}
 }

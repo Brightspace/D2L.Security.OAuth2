@@ -15,5 +15,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <returns>The <see cref="D2LSecurityToken"/> or null if the key doesn't exist or has expired</returns>
 		Task<D2LSecurityToken> GetByIdAsync( string id );
 
+		/// <summary>
+		/// Perform steps to potentially make future key fetches faster.
+		/// </summary>
+		Task PrefetchAsync();
+
 	}
 }
