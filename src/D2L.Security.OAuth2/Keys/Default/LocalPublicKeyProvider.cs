@@ -31,7 +31,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					continue;
 				}
 
-				m_cache.Set( PUBLIC_KEY_SOURCE, jwk.ToSecurityToken() );
+				D2LSecurityToken token;
+				try {
+					token = jwk.ToSecurityToken();
+				} catch {
+					continue;
+				}
+
+				m_cache.Set( PUBLIC_KEY_SOURCE, token );
 			}
 		}
 
