@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Validation.Exceptions;
@@ -18,6 +19,27 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		) {
 			m_publicKeyDataProvider = publicKeyDataProvider ?? throw new ArgumentNullException( nameof( publicKeyDataProvider ) );
 			m_cache = cache ?? throw new ArgumentNullException( nameof( cache ) );
+		}
+
+		async Task IPublicKeyProvider.PrefetchAsync() {
+			IEnumerable<JsonWebKey> jwks = await m_publicKeyDataProvider
+				.GetAllAsync()
+				.ConfigureAwait( false );
+
+			foreach( JsonWebKey jwk in jwks ) {
+				if( m_cache.Get( PUBLIC_KEY_SOURCE, jwk.Id ) is not null ) {
+					continue;
+				}
+
+				D2LSecurityToken token;
+				try {
+					token = jwk.ToSecurityToken();
+				} catch {
+					continue;
+				}
+
+				m_cache.Set( PUBLIC_KEY_SOURCE, token );
+			}
 		}
 
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( string id ) {

@@ -33,6 +33,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_publicKeyProvider = publicKeyProvider;
 		}
 
+		Task IAccessTokenValidator.PrefetchAsync() => m_publicKeyProvider.PrefetchAsync();
+
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {

@@ -38,6 +38,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			throw new PublicKeyNotFoundException( id, jwks.Source.AbsoluteUri );
 		}
 
+		async Task IPublicKeyProvider.PrefetchAsync() {
+			JsonWebKeySet jwks = await m_jwksProvider
+				.RequestJwksAsync()
+				.ConfigureAwait( false );
+
+			CacheJwks( m_cache, m_jwksProvider.Namespace, jwks );
+		}
+
 		private static void CacheJwks( IInMemoryPublicKeyCache cache, string srcNamespace, JsonWebKeySet jwks ) {
 			foreach( var jwk in jwks ) {
 				if( cache.Get( srcNamespace, jwk.Id ) is not null ) {

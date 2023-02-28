@@ -202,5 +202,57 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			Assert.AreEqual( cachedKey, result );
 		}
+
+		[Test]
+		public async Task PrefetchAsync_ShouldRetrieveJwksAndCacheAllKeysIgnoringErrors() {
+			using D2LSecurityToken someKey = D2LSecurityTokenUtility
+				.CreateActiveToken();
+
+			using D2LSecurityToken expiredKey = D2LSecurityTokenUtility
+				.CreateTokenWithTimeRemaining( remaining: TimeSpan.FromSeconds( -1 ) );
+
+			using D2LSecurityToken alreadyCachedKey = D2LSecurityTokenUtility
+				.CreateActiveToken();
+
+			using D2LSecurityToken stringIdKey = D2LSecurityTokenUtility
+				.CreateActiveToken( id: "definitelynotauuid" );
+
+			m_jwksProvider
+				.Setup( x => x.RequestJwksAsync() )
+				.ReturnsAsync( new JsonWebKeySet( JsonSerializer.Serialize( new {
+					keys = new[] {
+						someKey.ToJsonWebKey().ToJwkDto(),
+						expiredKey.ToJsonWebKey().ToJwkDto(),
+						alreadyCachedKey.ToJsonWebKey().ToJwkDto(),
+						stringIdKey.ToJsonWebKey().ToJwkDto(),
+					}
+				} ), new Uri( "http://localhost/dummy" ) ) );
+
+			// Not in cache, so will cache the fetched key
+			m_keyCache
+				.Setup( x => x.Get( SRC_NAMESPACE, someKey.Id ) )
+				.Returns<D2LSecurityToken>( null );
+			m_keyCache
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.Id == someKey.Id ) ) );
+
+			// Not in cache, but is expired, so won't cache the fetched key
+			m_keyCache
+				.Setup( x => x.Get( SRC_NAMESPACE, expiredKey.Id ) )
+				.Returns<D2LSecurityToken>( null );
+
+			// Already in cache, so won't cache the fetched key
+			m_keyCache
+				.Setup( x => x.Get( SRC_NAMESPACE, alreadyCachedKey.Id ) )
+				.Returns( alreadyCachedKey );
+
+			// Not in cache, so will cache the fetched key
+			m_keyCache
+				.Setup( x => x.Get( SRC_NAMESPACE, stringIdKey.Id ) )
+				.Returns<D2LSecurityToken>( null );
+			m_keyCache
+				.Setup( x => x.Set( SRC_NAMESPACE, It.Is<D2LSecurityToken>( k => k.Id == stringIdKey.Id ) ) );
+
+			await m_publicKeyProvider.PrefetchAsync();
+		}
 	}
 }
