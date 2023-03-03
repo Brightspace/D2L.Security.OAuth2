@@ -26,7 +26,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 	)]
 	internal sealed class AuthServiceClient : IAuthServiceClient {
 
-		private const string TOKEN_PATH = "/connect/token";
+		private const string TOKEN_PATH = "connect/token";
 
 		private const string SERIALIZATION_ERROR_MESSAGE_PREFIX =
 			"An error occurred while parsing the response from the Auth Service. ";
@@ -60,7 +60,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 
 			m_client = httpClient;
-			m_tokenProvisioningEndpoint = new Uri( authEndpoint + TOKEN_PATH );
+			m_tokenProvisioningEndpoint = authEndpoint.RelativePathAsNonLeaf( TOKEN_PATH );
 		}
 
 		/// <summary>

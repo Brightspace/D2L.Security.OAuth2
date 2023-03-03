@@ -86,20 +86,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		private static Uri GetJwkEndpoint( Uri authEndpoint, string keyId ) {
 			if( authEndpoint == null ) { return null; }
 
-			string authRoot = MakeSureThereIsATrailingSlash( authEndpoint );
-
-			authRoot += HttpUtility.UrlEncode( keyId );
-
-			return new Uri( authRoot );
-		}
-
-		private static string MakeSureThereIsATrailingSlash( Uri uri ) {
-			string root = uri.ToString();
-			if( root[root.Length - 1] == '/' ) {
-				return root;
-			}
-
-			return root + '/';
+			return authEndpoint.RelativePathAsNonLeaf( HttpUtility.UrlEncode( keyId ) );
 		}
 	}
 }
