@@ -16,12 +16,12 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		}
 
 		[GenerateSync]
-		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
+		async Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
 			HttpRequestMessage request
 		) {
 			string bearerToken = request.GetBearerTokenValue();
 
-			return AuthenticateAsync( bearerToken );
+			return await AuthenticateAsync( bearerToken ).ConfigureAwait(false);
 		}
 
 		[GenerateSync]
