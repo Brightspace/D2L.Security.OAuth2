@@ -94,7 +94,15 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			var key = new JsonWebKeyStub( id.ToString() );
 			await m_publicKeyDataProvider.SaveAsync( id, key ).ConfigureAwait( false );
 
-			Assert.Throws<InvalidOperationException>( () => m_publicKeyDataProvider.SaveAsync( id, key ).Wait() );
+			try {
+				m_publicKeyDataProvider.SaveAsync(id, key).Wait();
+			}
+			catch (AggregateException ae) {
+				Assert.AreEqual(
+					typeof(InvalidOperationException), ae.InnerException.GetType(),
+					"There was no InvalidOperationException."
+				);
+			}
 		}
 
 		[Test]
