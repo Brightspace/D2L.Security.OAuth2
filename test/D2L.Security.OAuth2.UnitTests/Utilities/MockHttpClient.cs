@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Utilities {
 		/// The body of the response that the HttpClient should generate
 		/// </param>
 		/// <returns></returns>
-		public static HttpClient Create(
+		public static D2LHttpClient Create(
 			HttpStatusCode responseStatus,
 			string responseContent = null
 		) {
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Utilities {
 				response.Content = new StringContent( responseContent );
 			}
 
-			return new HttpClient(
+			return new D2LHttpClient(
 				new MockResponseHandler( () => response )
 			);
 		}
@@ -46,10 +46,10 @@ namespace D2L.Security.OAuth2.Utilities {
 		/// The exception the HttpClient should throw
 		/// </param>
 		/// <returns></returns>
-		public static HttpClient Create(
+		public static D2LHttpClient Create(
 			Exception throwsException
 		) {
-			return new HttpClient(
+			return new D2LHttpClient(
 				new MockResponseHandler( () => { throw throwsException; } )
 			);
 		}

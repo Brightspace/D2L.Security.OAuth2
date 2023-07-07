@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 using Moq;
 using Moq.Protected;
@@ -102,7 +103,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 		}
 
-		private static HttpClient CreateMockedHttpClient(
+		private static D2LHttpClient CreateMockedHttpClient(
 			Action<string> requestBodyReceiver,
 			HttpStatusCode responseStatus = HttpStatusCode.OK,
 			string responseContent = TestData.ValidHttpResponseBody
@@ -125,11 +126,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				} );
 			;
 
-			var httpClient = new HttpClient( messageHandler.Object, true );
+			var httpClient = new D2LHttpClient( messageHandler.Object, true );
 			return httpClient;
 		}
 
-		private static IAuthServiceClient CreateClient( HttpClient httpClient ) {
+		private static IAuthServiceClient CreateClient( D2LHttpClient httpClient ) {
 			var client = new AuthServiceClient(
 				httpClient: httpClient,
 				authEndpoint: new Uri( "http://foo.d2l" )

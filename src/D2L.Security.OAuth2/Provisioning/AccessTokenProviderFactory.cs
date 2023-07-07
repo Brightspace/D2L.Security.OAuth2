@@ -2,6 +2,7 @@
 using System.Net.Http;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Provisioning.Default;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Provisioning {
 
@@ -16,7 +17,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		/// <returns>A new <see cref="IAccessTokenProvider"/></returns>
 		public static IAccessTokenProvider Create(
 			ITokenSigner tokenSigner,
-			HttpClient httpClient,
+			D2LHttpClient httpClient,
 			Uri authEndpoint,
 			TimeSpan tokenRefreshGracePeriod
 		) {

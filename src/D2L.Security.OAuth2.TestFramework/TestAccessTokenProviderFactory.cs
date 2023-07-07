@@ -7,6 +7,7 @@ using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Provisioning.Default;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	public static class TestAccessTokenProviderFactory {
@@ -19,7 +20,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		/// <param name="httpClient">The httpClient that makes the request to the auth server</param>
 		/// <param name="tokenProvisioningEndpoint">The auth server</param>
 		/// <returns>An IAccessTokenProvider with test credentials</returns>
-		public static IAccessTokenProvider Create( HttpClient httpClient, String tokenProvisioningEndpoint ) {
+		public static IAccessTokenProvider Create( D2LHttpClient httpClient, String tokenProvisioningEndpoint ) {
 			return Create( httpClient, tokenProvisioningEndpoint, TestKeyId, TestStaticKeyProvider.TestRSAParameters );
 		}
 
@@ -31,7 +32,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		/// <param name="keyId">The id of the security token</param>
 		/// <param name="rsaParameters">The public and private key for the supplied key id</param>
 		/// <returns>An IAccessTokenProvider with the supplied test credentials</returns>
-		public static IAccessTokenProvider Create( HttpClient httpClient, String tokenProvisioningEndpoint, string keyId, RSAParameters rsaParameters ) {
+		public static IAccessTokenProvider Create( D2LHttpClient httpClient, String tokenProvisioningEndpoint, string keyId, RSAParameters rsaParameters ) {
 #pragma warning disable 618
 			IPrivateKeyProvider privateKeyProvider = new StaticPrivateKeyProvider( keyId, rsaParameters );
 #pragma warning restore 618

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using D2L.CodeStyle.Annotations;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +15,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 	public sealed class InMemoryPublicKeyDataProvider : IPublicKeyDataProvider {
 		private readonly ConcurrentDictionary<Guid, JsonWebKey> m_keys = new ConcurrentDictionary<Guid, JsonWebKey>();
 
+		[GenerateSync]
 		Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
 			if( !m_keys.TryGetValue( id, out JsonWebKey key ) ) {
 				return Task.FromResult<JsonWebKey>( null );
@@ -21,6 +23,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			return Task.FromResult( key );
 		}
 
+		[GenerateSync]
 		Task<IEnumerable<JsonWebKey>> IPublicKeyDataProvider.GetAllAsync() {
 			IEnumerable<JsonWebKey> result =
 				new ReadOnlyCollection<JsonWebKey>( m_keys.Values.ToList() );
@@ -28,16 +31,18 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			return Task.FromResult( result );
 		}
 
-		Task IPublicKeyDataProvider.SaveAsync( Guid id, JsonWebKey key ) {
+		[GenerateSync]
+		async Task IPublicKeyDataProvider.SaveAsync( Guid id, JsonWebKey key ) {
 			if( !m_keys.TryAdd( id, key ) ) {
 				throw new InvalidOperationException( "Attempted to add a key twice" );
 			}
-			return Task.CompletedTask;
+			await Task.CompletedTask.ConfigureAwait(false);
 		}
 
-		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
+		[GenerateSync]
+		async Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
 			m_keys.TryRemove( id, out JsonWebKey removedKey );
-			return Task.CompletedTask;
+			await Task.CompletedTask.ConfigureAwait(false);
 		}
 	}
 }

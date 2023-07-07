@@ -122,7 +122,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		private async Task RunTest_ExpectServiceException(
-			HttpClient mockClient,
+			D2LHttpClient mockClient,
 			ServiceErrorType expectedErrorType,
 			string expectedMessage = null
 		) {
@@ -141,14 +141,14 @@ namespace D2L.Security.OAuth2.Provisioning {
 		}
 
 		private async Task RunTest_ExpectSuccess(
-			HttpClient mockClient,
+			D2LHttpClient mockClient,
 			string expectedToken
 		) {
 			IAccessToken token = await RunTestHelper( mockClient );
 			Assert.AreEqual( expectedToken, token.Token );
 		}
 
-		private async Task<IAccessToken> RunTestHelper( HttpClient mockClient ) {
+		private async Task<IAccessToken> RunTestHelper( D2LHttpClient mockClient ) {
 			IAuthServiceClient client = new AuthServiceClient(
 				httpClient: mockClient,
 				authEndpoint: new Uri( TEST_URI )

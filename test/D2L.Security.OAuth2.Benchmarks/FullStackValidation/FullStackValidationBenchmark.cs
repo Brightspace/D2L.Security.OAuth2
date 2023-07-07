@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
@@ -11,7 +12,7 @@ using RichardSzalay.MockHttp;
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 	internal abstract class FullStackValidationBenchmark : IBenchmark {
 
-		private HttpClient m_httpClient;
+		private D2LHttpClient m_httpClient;
 
 		void IDisposable.Dispose() {
 			m_httpClient.Dispose();
@@ -36,7 +37,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 		private void SetUp( out Uri host, out string token, out string id ) {
 			var mockHandler = new MockHttpMessageHandler();
-			m_httpClient = new HttpClient( mockHandler );
+			m_httpClient = new D2LHttpClient( mockHandler );
 
 			host = new Uri( "http://localhost/.well-known/jwks" );
 

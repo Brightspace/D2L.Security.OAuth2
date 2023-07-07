@@ -7,6 +7,7 @@ using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Provisioning.Default;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Utilities;
 using Moq;
 using NUnit.Framework;
 
@@ -29,7 +30,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessTokenProvider accessTokenProvider =
 				AccessTokenProviderFactory.Create(
 					tokenSigner: m_keyManagerMock.Object,
-					httpClient: new HttpClient(),
+					httpClient: new D2LHttpClient(),
 					authEndpoint: new Uri( "http://foo.d2l" ),
 					tokenRefreshGracePeriod: TimeSpan.FromMinutes( 2 )
 				);
@@ -50,7 +51,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessTokenProvider accessTokenProvider =
 				AccessTokenProviderFactory.Create(
 					tokenSigner: m_keyManagerMock.Object,
-					httpClient: new HttpClient(),
+					httpClient: new D2LHttpClient(),
 					authEndpoint: new Uri( "http://foo.d2l" ),
 					tokenRefreshGracePeriod: TimeSpan.FromMinutes( 2 )
 				);

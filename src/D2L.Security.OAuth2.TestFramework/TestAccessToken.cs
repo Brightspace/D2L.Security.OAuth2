@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
 
@@ -31,7 +32,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 			claims.Add( new Claim( Constants.Claims.ISSUER, DEFAULT_ISSUER ) );
 
-			using( var httpClient = new HttpClient() ) {
+			using( var httpClient = new D2LHttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, tokenProvisioningEndpoint );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( claims, scopes ).ConfigureAwait( false );
 				return token.Token;

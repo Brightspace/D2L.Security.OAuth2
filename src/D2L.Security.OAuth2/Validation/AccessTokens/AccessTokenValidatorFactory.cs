@@ -4,6 +4,7 @@ using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Default.Data;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
@@ -37,7 +38,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		/// <param name="jwkEndpoint">The full URI of the remote JWK path</param>
 		/// <returns>A new <see cref="IAccessTokenValidator"/></returns>
 		public static IAccessTokenValidator CreateRemoteValidator(
-			HttpClient httpClient,
+			D2LHttpClient httpClient,
 			Uri jwksEndpoint,
 			Uri jwkEndpoint = null
 		) {

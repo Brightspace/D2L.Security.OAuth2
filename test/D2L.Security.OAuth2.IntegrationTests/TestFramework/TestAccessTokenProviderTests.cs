@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using NUnit.Framework;
 using IAccessToken = D2L.Security.OAuth2.Provisioning.IAccessToken;
@@ -22,7 +23,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 		[Test]
 		public async Task TestAccessTokenProvider_TokenIsValid() {
-			using( var httpClient = new HttpClient() ) {
+			using( var httpClient = new D2LHttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).ConfigureAwait( false );
 
@@ -33,7 +34,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 		[Test]
 		public async Task TestAccessTokenProvider_SuppliedRSAParameters_TokenIsValid() {
-			using( var httpClient = new HttpClient() ) {
+			using( var httpClient = new D2LHttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestStaticKeyProvider.TestKeyId, TestStaticKeyProvider.TestRSAParameters );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).ConfigureAwait( false );
 
@@ -46,7 +47,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		public void TestAccessTokenProvider_InvalidRSAParameters_TokenIsInvalid() {
 			var randomRsaParameters = new RSACryptoServiceProvider( OAuth2.Keys.Constants.GENERATED_RSA_KEY_SIZE ) { PersistKeyInCsp = false }.ExportParameters( true );
 
-			using( var httpClient = new HttpClient() ) {
+			using( var httpClient = new D2LHttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, Guid.NewGuid().ToString(), randomRsaParameters );
 				Assert.ThrowsAsync<AuthServiceException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).ConfigureAwait( false ) );
 			}
