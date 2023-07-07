@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Principal;
 
 namespace D2L.Security.OAuth2.Validation.Request {
@@ -9,6 +10,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// </summary>
 		/// <param name="request">The web request object</param>
 		/// <returns>An <see cref="ID2LPrincipal"/> for an authenticated user.</returns>
+		[GenerateSync]
 		Task<ID2LPrincipal> AuthenticateAsync(
 			HttpRequestMessage request
 		);
@@ -18,6 +20,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		/// </summary>
 		/// <param name="bearerToken">The bearer token.</param>
 		/// <returns>An <see cref="ID2LPrincipal"/> for an authenticated user.</returns>
+		[GenerateSync]
 		Task<ID2LPrincipal> AuthenticateAsync(
 			string bearerToken
 		);

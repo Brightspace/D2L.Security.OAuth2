@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
+using D2L.CodeStyle.Annotations;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;
 #endif
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
-	internal sealed class AccessTokenValidator : IAccessTokenValidator {
+	internal sealed partial class AccessTokenValidator : IAccessTokenValidator {
 		internal static readonly ImmutableHashSet<string> ALLOWED_SIGNATURE_ALGORITHMS = ImmutableHashSet.Create(
 			SecurityAlgorithms.RsaSha256,
 			SecurityAlgorithms.EcdsaSha256,
@@ -33,8 +34,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_publicKeyProvider = publicKeyProvider;
 		}
 
+		[GenerateSync]
 		Task IAccessTokenValidator.PrefetchAsync() => m_publicKeyProvider.PrefetchAsync();
 
+		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {

@@ -1,19 +1,22 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using D2L.CodeStyle.Annotations;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
-	internal sealed class JwksProvider : IJwksProvider {
-		private readonly HttpClient m_httpClient;
+	internal sealed partial class JwksProvider : IJwksProvider {
+		private readonly D2LHttpClient m_httpClient;
 		private readonly Uri m_jwksEndpoint;
 		private readonly Uri m_jwkEndpoint;
 
 		public JwksProvider(
-			HttpClient httpClient,
+			D2LHttpClient httpClient,
 			Uri jwksEndpoint,
 			Uri jwkEndpoint
 		) {
@@ -22,11 +25,15 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			m_jwkEndpoint = jwkEndpoint;
 		}
 
+		[GenerateSync]
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwksAsync() {
 			try {
 				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).ConfigureAwait( false ) ) {
 					response.EnsureSuccessStatusCode();
-					string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
+					var reader = new StreamReader(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
+					string jsonResponse = await reader
+						.ReadToEndAsync()
+						.ConfigureAwait(false);
 					var jwks = new JsonWebKeySet( jsonResponse, m_jwksEndpoint );
 					return jwks;
 				}
@@ -37,6 +44,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			}
 		}
 
+		[GenerateSync]
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( string keyId ) {
 			var url = GetJwkEndpoint( m_jwkEndpoint, keyId );
 			if( url == null ) {
@@ -61,9 +69,10 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 					res.EnsureSuccessStatusCode();
 
-					string json = await res.Content
-						.ReadAsStringAsync()
-						.ConfigureAwait( false );
+					var reader = new StreamReader(await res.Content.ReadAsStreamAsync().ConfigureAwait(false));
+					string json = await reader
+						.ReadToEndAsync()
+						.ConfigureAwait(false);
 
 					JsonWebKey jwk = JsonWebKey.FromJson( json );
 					return new JsonWebKeySet( jwk, url );

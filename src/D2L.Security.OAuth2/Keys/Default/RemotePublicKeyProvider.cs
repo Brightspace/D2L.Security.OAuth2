@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Keys.Default.Data;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal sealed class RemotePublicKeyProvider : IPublicKeyProvider {
+	internal sealed partial class RemotePublicKeyProvider : IPublicKeyProvider {
 		private readonly IJwksProvider m_jwksProvider;
 		private readonly IInMemoryPublicKeyCache m_cache;
 
@@ -18,6 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_cache = cache;
 		}
 
+		[GenerateSync]
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( string id ) {
 			D2LSecurityToken result = m_cache.Get( m_jwksProvider.Namespace, id );
 			if( result != null ) {
@@ -38,6 +40,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			throw new PublicKeyNotFoundException( id, jwks.Source.AbsoluteUri );
 		}
 
+		[GenerateSync]
 		async Task IPublicKeyProvider.PrefetchAsync() {
 			JsonWebKeySet jwks = await m_jwksProvider
 				.RequestJwksAsync()
