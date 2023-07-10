@@ -11,12 +11,12 @@ using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
 	internal sealed partial class JwksProvider : IJwksProvider {
-		private readonly D2LHttpClient m_httpClient;
+		private readonly ID2LHttpClient m_httpClient;
 		private readonly Uri m_jwksEndpoint;
 		private readonly Uri m_jwkEndpoint;
 
 		public JwksProvider(
-			D2LHttpClient httpClient,
+			ID2LHttpClient httpClient,
 			Uri jwksEndpoint,
 			Uri jwkEndpoint
 		) {

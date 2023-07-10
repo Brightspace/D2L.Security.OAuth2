@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Utilities
 {
-	public class D2LHttpClient : ID2LHttpClient, IDisposable
+	public class D2LHttpClient : ID2LHttpClient
 	{
 		/// <summary>
 		/// This class implements sync versions of HTTPClient methods.

@@ -12,7 +12,7 @@ using RichardSzalay.MockHttp;
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 	internal abstract class FullStackValidationBenchmark : IBenchmark {
 
-		private D2LHttpClient m_httpClient;
+		private ID2LHttpClient m_httpClient;
 
 		void IDisposable.Dispose() {
 			m_httpClient.Dispose();

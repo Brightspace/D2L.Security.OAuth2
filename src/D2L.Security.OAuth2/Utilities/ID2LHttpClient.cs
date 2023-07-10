@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Utilities
 {
-	internal interface ID2LHttpClient
+	public interface ID2LHttpClient : IDisposable
 	{
 		/// <summary>
 		/// This interface was created to allow the sync generator in D2L.CodeStyle to strip the async suffix from HttpClient calls

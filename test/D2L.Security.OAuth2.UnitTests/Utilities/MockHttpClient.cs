@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Utilities {
 		/// The body of the response that the HttpClient should generate
 		/// </param>
 		/// <returns></returns>
-		public static D2LHttpClient Create(
+		public static ID2LHttpClient Create(
 			HttpStatusCode responseStatus,
 			string responseContent = null
 		) {
@@ -46,7 +46,7 @@ namespace D2L.Security.OAuth2.Utilities {
 		/// The exception the HttpClient should throw
 		/// </param>
 		/// <returns></returns>
-		public static D2LHttpClient Create(
+		public static ID2LHttpClient Create(
 			Exception throwsException
 		) {
 			return new D2LHttpClient(

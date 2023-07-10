@@ -17,7 +17,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		/// <returns>A new <see cref="IAccessTokenProvider"/></returns>
 		public static IAccessTokenProvider Create(
 			ITokenSigner tokenSigner,
-			D2LHttpClient httpClient,
+			ID2LHttpClient httpClient,
 			Uri authEndpoint,
 			TimeSpan tokenRefreshGracePeriod
 		) {

@@ -103,7 +103,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 		}
 
-		private static D2LHttpClient CreateMockedHttpClient(
+		private static ID2LHttpClient CreateMockedHttpClient(
 			Action<string> requestBodyReceiver,
 			HttpStatusCode responseStatus = HttpStatusCode.OK,
 			string responseContent = TestData.ValidHttpResponseBody
@@ -130,7 +130,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			return httpClient;
 		}
 
-		private static IAuthServiceClient CreateClient( D2LHttpClient httpClient ) {
+		private static IAuthServiceClient CreateClient( ID2LHttpClient httpClient ) {
 			var client = new AuthServiceClient(
 				httpClient: httpClient,
 				authEndpoint: new Uri( "http://foo.d2l" )

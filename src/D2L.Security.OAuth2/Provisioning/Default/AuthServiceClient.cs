@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			SERIALIZATION_ERROR_MESSAGE_PREFIX +
 			"The Auth Service responded with: ";
 
-		private readonly D2LHttpClient m_client;
+		private readonly ID2LHttpClient m_client;
 		private readonly Uri m_tokenProvisioningEndpoint;
 
 		/// <summary>
@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		/// <param name="httpClient">An http client used to communicate with the auth service.</param>
 		/// <param name="authEndpoint">The token provisioning endpoint on the auth service</param>
 		public AuthServiceClient(
-			D2LHttpClient httpClient,
+			ID2LHttpClient httpClient,
 			Uri authEndpoint
 		) {
 			if( httpClient == null ) {
