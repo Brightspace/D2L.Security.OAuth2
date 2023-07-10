@@ -49,17 +49,17 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.GetAllAsync()
 				.ConfigureAwait( false );
 
-			keys = await Task
-				.WhenAll(
-					keys.Select( key => KeyExpirationHelper( key ) ).ToArray()
-				)
-				.ConfigureAwait( false );
+			var result = new List<JsonWebKey>();
 
-			keys = keys
-				.Where( key => key != null )
-				.ToArray();
+			foreach( var key in keys ) {
+				bool expired = await KeyExpiryHelperAsync( key ).ConfigureAwait( false );
 
-			return keys;
+				if( !expired ) {
+					result.Add( key );
+				}
+			}
+
+			return result;
 		}
 
 		Task IPublicKeyDataProvider.SaveAsync( Guid id, JsonWebKey key ) {
@@ -70,9 +70,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return m_inner.DeleteAsync( id );
 		}
 
-		private async Task<JsonWebKey> KeyExpirationHelper( JsonWebKey key ) {
+		private async Task<bool> KeyExpiryHelperAsync( JsonWebKey key ) {
 			if( key == null ) {
-				return null;
+				return true;
 			}
 
 			if( key.ExpiresAt == null ) {
@@ -85,10 +85,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				await ( this as IPublicKeyDataProvider )
 					.DeleteAsync( new Guid( key.Id ) )
 					.ConfigureAwait( false );
-				return null;
+
+				return true;
 			}
 
-			return key;
+			return false;
 		}
 	}
 }
