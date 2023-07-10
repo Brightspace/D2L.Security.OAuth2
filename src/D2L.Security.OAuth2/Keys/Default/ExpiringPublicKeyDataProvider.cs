@@ -51,7 +51,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			var deletes = new List<Task>();
 
-			var result = new List<JsonWebKey );
+			var result = new List<JsonWebKey>();
 
 			foreach( var key in keys ) {
 				var keyIsExpired = await KeyIsExpiredAsync( key ).ConfigureAwait( false );
