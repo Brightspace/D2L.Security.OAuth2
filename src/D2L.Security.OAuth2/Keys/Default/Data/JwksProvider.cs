@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			try {
 				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).ConfigureAwait( false ) ) {
 					response.EnsureSuccessStatusCode();
-					var reader = new StreamReader(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
+					using var reader = new StreamReader(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
 					string jsonResponse = await reader
 						.ReadToEndAsync()
 						.ConfigureAwait(false);
@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 					res.EnsureSuccessStatusCode();
 
-					var reader = new StreamReader(await res.Content.ReadAsStreamAsync().ConfigureAwait(false));
+					using var reader = new StreamReader(await res.Content.ReadAsStreamAsync().ConfigureAwait(false));
 					string json = await reader
 						.ReadToEndAsync()
 						.ConfigureAwait(false);
