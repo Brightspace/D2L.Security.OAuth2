@@ -30,10 +30,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			try {
 				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).ConfigureAwait( false ) ) {
 					response.EnsureSuccessStatusCode();
-					using var reader = new StreamReader(await response.Content.ReadAsStreamAsync().ConfigureAwait(false));
-					string jsonResponse = await reader
-						.ReadToEndAsync()
-						.ConfigureAwait(false);
+					string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 					var jwks = new JsonWebKeySet( jsonResponse, m_jwksEndpoint );
 					return jwks;
 				}
@@ -69,10 +66,9 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 
 					res.EnsureSuccessStatusCode();
 
-					using var reader = new StreamReader(await res.Content.ReadAsStreamAsync().ConfigureAwait(false));
-					string json = await reader
-						.ReadToEndAsync()
-						.ConfigureAwait(false);
+					string json = await res.Content
+						.ReadAsStringAsync()
+						.ConfigureAwait( false );
 
 					JsonWebKey jwk = JsonWebKey.FromJson( json );
 					return new JsonWebKeySet( jwk, url );
