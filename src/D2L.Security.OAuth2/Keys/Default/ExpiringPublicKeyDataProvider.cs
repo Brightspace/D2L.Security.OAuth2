@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal sealed partial class ExpiringPublicKeyDataProvider : ISanePublicKeyDataProvider {
+	internal sealed class ExpiringPublicKeyDataProvider : ISanePublicKeyDataProvider {
 		private readonly IPublicKeyDataProvider m_inner;
 		private readonly IDateTimeProvider m_dateTimeProvider;
 
@@ -19,7 +18,6 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_dateTimeProvider = dateTimeProvider ?? throw new ArgumentException( nameof( dateTimeProvider ) );
 		}
 
-		[GenerateSync]
 		async Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
 			// We are intentionally fetching *all* public keys from the database
 			// here. This allows us to clean up all expired public keys even if
@@ -46,39 +44,35 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return key;
 		}
 
-		[GenerateSync]
 		async Task<IEnumerable<JsonWebKey>> IPublicKeyDataProvider.GetAllAsync() {
 			IEnumerable<JsonWebKey> keys = await m_inner
 				.GetAllAsync()
 				.ConfigureAwait( false );
 
-			keys = await Task
-				.WhenAll(
-					keys.Select( key => KeyExpirationHelper( key ) ).ToArray()
-				)
-				.ConfigureAwait( false );
+			var result = new List<JsonWebKey>();
 
-			keys = keys
-				.Where( key => key != null )
-				.ToArray();
+			foreach( var key in keys ) {
+				bool expired = await KeyExpiryHelperAsync( key ).ConfigureAwait( false );
 
-			return keys;
+				if( !expired ) {
+					result.Add( key );
+				}
+			}
+
+			return result;
 		}
 
-		[GenerateSync]
 		Task IPublicKeyDataProvider.SaveAsync( Guid id, JsonWebKey key ) {
 			return m_inner.SaveAsync( id, key );
 		}
 
-		[GenerateSync]
 		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
 			return m_inner.DeleteAsync( id );
 		}
 
-		[GenerateSync]
-		private async Task<JsonWebKey> KeyExpirationHelper( JsonWebKey key ) {
+		private async Task<bool> KeyExpiryHelperAsync( JsonWebKey key ) {
 			if( key == null ) {
-				return null;
+				return true;
 			}
 
 			if( key.ExpiresAt == null ) {
@@ -91,10 +85,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				await ( this as IPublicKeyDataProvider )
 					.DeleteAsync( new Guid( key.Id ) )
 					.ConfigureAwait( false );
-				return null;
+
+				return true;
 			}
 
-			return key;
+			return false;
 		}
 	}
 }
