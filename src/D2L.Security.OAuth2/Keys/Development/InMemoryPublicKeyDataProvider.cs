@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			if( !m_keys.TryGetValue( id, out JsonWebKey key ) ) {
 				return Task.FromResult<JsonWebKey>( null );
 			}
-			return Task.FromResult(key);
+			return Task.FromResult( key );
 		}
 
 		[GenerateSync]
@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			IEnumerable<JsonWebKey> result =
 				new ReadOnlyCollection<JsonWebKey>( m_keys.Values.ToList() );
 
-			return Task.FromResult(result);
+			return Task.FromResult( result );
 		}
 
 		[GenerateSync]
