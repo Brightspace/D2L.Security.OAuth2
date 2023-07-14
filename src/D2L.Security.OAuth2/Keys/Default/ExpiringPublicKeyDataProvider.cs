@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal sealed class ExpiringPublicKeyDataProvider : ISanePublicKeyDataProvider {
+	internal sealed partial class ExpiringPublicKeyDataProvider : ISanePublicKeyDataProvider {
 		private readonly IPublicKeyDataProvider m_inner;
 		private readonly IDateTimeProvider m_dateTimeProvider;
 
@@ -18,6 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_dateTimeProvider = dateTimeProvider ?? throw new ArgumentException( nameof( dateTimeProvider ) );
 		}
 
+		[GenerateSync]
 		async Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
 			// We are intentionally fetching *all* public keys from the database
 			// here. This allows us to clean up all expired public keys even if
@@ -44,6 +46,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return key;
 		}
 
+		[GenerateSync]
 		async Task<IEnumerable<JsonWebKey>> IPublicKeyDataProvider.GetAllAsync() {
 			IEnumerable<JsonWebKey> keys = await m_inner
 				.GetAllAsync()
@@ -62,14 +65,17 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			return result;
 		}
 
+		[GenerateSync]
 		Task IPublicKeyDataProvider.SaveAsync( Guid id, JsonWebKey key ) {
 			return m_inner.SaveAsync( id, key );
 		}
 
+		[GenerateSync]
 		Task IPublicKeyDataProvider.DeleteAsync( Guid id ) {
 			return m_inner.DeleteAsync( id );
 		}
 
+		[GenerateSync]
 		private async Task<bool> KeyExpiryHelperAsync( JsonWebKey key ) {
 			if( key == null ) {
 				return true;
