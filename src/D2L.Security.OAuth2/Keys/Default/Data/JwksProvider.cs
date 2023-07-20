@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			try {
 				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).ConfigureAwait( false ) ) {
 					response.EnsureSuccessStatusCode();
-					string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+					string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 					var jwks = new JsonWebKeySet( jsonResponse, m_jwksEndpoint );
 					return jwks;
 				}
