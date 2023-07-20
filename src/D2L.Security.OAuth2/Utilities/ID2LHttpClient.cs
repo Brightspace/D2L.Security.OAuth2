@@ -44,7 +44,5 @@ namespace D2L.Security.OAuth2.Utilities
 		public HttpResponseMessage Send(HttpRequestMessage request, HttpCompletionOption completionOption);
 
 		public HttpResponseMessage Send(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationToken cancellationToken);
-
-		public void Dispose();
 	}
 }
