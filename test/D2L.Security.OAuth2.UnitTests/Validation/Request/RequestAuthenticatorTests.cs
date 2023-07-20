@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.TestUtilities;
 using D2L.Security.OAuth2.TestUtilities.Mocks;
@@ -13,19 +14,21 @@ using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.Request {
 	[TestFixture]
-	public class RequestAuthenticatorTests {
+	public partial class RequestAuthenticatorTests {
 		private const string ACCESS_TOKEN = "some token";
 
 		[Test]
-		public async Task TokenInHeader_SuccessCase() {
-			await RunTest(
+		[GenerateSync]
+		public async Task TokenInHeader_SuccessCaseAsync() {
+			await RunTestAsync(
 				request_authorizationHeader: ACCESS_TOKEN
 			).ConfigureAwait( false );
 		}
 
 		[Test]
-		public async Task NoToken() {
-			await RunTest(
+		[GenerateSync]
+		public async Task NoTokenAsync() {
+			await RunTestAsync(
 				request_authorizationHeader: string.Empty,
 				expectedExceptionType: null,
 				expected_principalType: PrincipalType.Anonymous
@@ -34,13 +37,14 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 		[Test]
 		public async Task TokenExpired() {
-			await RunTest(
+			await RunTestAsync(
 				request_authorizationHeader: ACCESS_TOKEN,
 				expectedExceptionType: typeof( ExpiredTokenException )
 			).ConfigureAwait( false );
 		}
 
-		private async Task RunTest(
+		[GenerateSync]
+		private async Task RunTestAsync(
 			string request_authorizationHeader,
 			Type expectedExceptionType = null,
 			PrincipalType? expected_principalType = null
