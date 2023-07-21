@@ -1,10 +1,10 @@
-﻿using D2L.CodeStyle.Annotations;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Keys.Development {
 

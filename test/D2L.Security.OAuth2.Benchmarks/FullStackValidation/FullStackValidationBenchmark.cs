@@ -13,7 +13,6 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 	internal abstract class FullStackValidationBenchmark : IBenchmark {
 
 		private HttpClient m_httpClient;
-		private D2LHttpClient m_D2LHttpClient;
 
 		void IDisposable.Dispose() {
 			m_httpClient.Dispose();

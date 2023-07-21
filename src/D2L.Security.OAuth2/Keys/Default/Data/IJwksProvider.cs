@@ -1,5 +1,5 @@
-﻿using D2L.CodeStyle.Annotations;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
 	internal partial interface IJwksProvider {

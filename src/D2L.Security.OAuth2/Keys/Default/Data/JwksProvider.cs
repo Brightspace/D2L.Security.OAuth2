@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using System.Web;
 using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
 	internal sealed partial class JwksProvider : IJwksProvider {
