@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using NUnit.Framework;
 

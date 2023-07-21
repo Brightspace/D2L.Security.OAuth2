@@ -2,7 +2,6 @@
 using System.Net.Http;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Provisioning.Default;
-using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Provisioning {
 

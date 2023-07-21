@@ -7,7 +7,6 @@ using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Provisioning;
 using D2L.Security.OAuth2.Provisioning.Default;
-using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	public static class TestAccessTokenProviderFactory {
