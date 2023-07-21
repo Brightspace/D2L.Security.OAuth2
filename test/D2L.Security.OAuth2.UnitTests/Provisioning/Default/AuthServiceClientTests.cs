@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 using Moq;
 using Moq.Protected;

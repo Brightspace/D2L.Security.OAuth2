@@ -7,7 +7,6 @@ using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Provisioning.Default;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Security.OAuth2.Utilities;
 using Moq;
 using NUnit.Framework;
 

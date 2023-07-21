@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.TestFramework;
-using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using NUnit.Framework;
 
