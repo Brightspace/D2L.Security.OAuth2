@@ -28,19 +28,13 @@ namespace D2L.Security.OAuth2.Utilities {
 		public HttpResponseMessage Get( string requestUri, CancellationToken cancellationToken );
 
 		public Task<HttpResponseMessage> SendAsync( HttpRequestMessage request );
-
 		public Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken );
-
 		public Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, HttpCompletionOption completionOption );
-
 		public Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, HttpCompletionOption completionOption, CancellationToken cancellationToken );
 
 		public HttpResponseMessage Send( HttpRequestMessage request );
-
 		public HttpResponseMessage Send( HttpRequestMessage request, CancellationToken cancellationToken );
-
 		public HttpResponseMessage Send( HttpRequestMessage request, HttpCompletionOption completionOption );
-
 		public HttpResponseMessage Send( HttpRequestMessage request, HttpCompletionOption completionOption, CancellationToken cancellationToken );
 	}
 }
