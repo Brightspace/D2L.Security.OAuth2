@@ -8,7 +8,6 @@ using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 using D2L.CodeStyle.Annotations;
-using System.Diagnostics;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;
