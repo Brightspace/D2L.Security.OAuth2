@@ -18,7 +18,6 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		private const string ACCESS_TOKEN = "some token";
 
 		[Test]
-		[GenerateSync]
 		public async Task TokenInHeader_SuccessCaseAsync() {
 			await RunTestAsync(
 				request_authorizationHeader: ACCESS_TOKEN
