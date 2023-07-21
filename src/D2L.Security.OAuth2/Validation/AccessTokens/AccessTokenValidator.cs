@@ -97,7 +97,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new ValidationException( "Unknown validation exception", e );
 			}
 
-			return null;
+			return accessToken;
 		}
 	}
 }
