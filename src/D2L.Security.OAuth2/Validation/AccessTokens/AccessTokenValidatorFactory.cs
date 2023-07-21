@@ -38,7 +38,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		/// <param name="jwkEndpoint">The full URI of the remote JWK path</param>
 		/// <returns>A new <see cref="IAccessTokenValidator"/></returns>
 		public static IAccessTokenValidator CreateRemoteValidator(
-			ID2LHttpClient httpClient,
+			HttpClient httpClient,
 			Uri jwksEndpoint,
 			Uri jwkEndpoint = null
 		) {

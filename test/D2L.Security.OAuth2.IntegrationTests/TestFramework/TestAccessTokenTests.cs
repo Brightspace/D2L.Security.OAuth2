@@ -18,7 +18,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		public async Task TestGetToken_WithTenantID_IsValid() {
 			string token = await TestAccessToken.GetToken( DEV_AUTH_URL, Guid.NewGuid().ToString() ).ConfigureAwait( false );
 
-			using( var httpClient = new D2LHttpClient() ) {
+			using( var httpClient = new HttpClient() ) {
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token ).ConfigureAwait( false ) );
 			}
@@ -28,7 +28,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		public async Task TestGetToken_WithTenantAndUserIdAndXsrf_IsValid() {
 			string token = await TestAccessToken.GetToken( DEV_AUTH_URL, Guid.NewGuid().ToString(), "user", "xsrf" ).ConfigureAwait( false );
 
-			using( var httpClient = new D2LHttpClient() ) {
+			using( var httpClient = new HttpClient() ) {
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token ).ConfigureAwait( false ) );
 			}
@@ -41,7 +41,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 			Scope[] scopes = { new Scope( "group", "resource", "permission" ) };
 			string token = await TestAccessToken.GetToken( DEV_AUTH_URL, claims, scopes ).ConfigureAwait( false );
 
-			using( var httpClient = new D2LHttpClient() ) {
+			using( var httpClient = new HttpClient() ) {
 				IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator( httpClient, new Uri( DEV_AUTH_URL ), new Uri( DEV_AUTH_JWK_URL ) );
 				Assert.DoesNotThrowAsync( async () => await validator.ValidateAsync( token ).ConfigureAwait( false ) );
 			}

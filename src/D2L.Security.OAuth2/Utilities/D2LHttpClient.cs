@@ -9,17 +9,11 @@ namespace D2L.Security.OAuth2.Utilities {
 	/// TODO: Replace the sync methods which are currently using Task.Run(async verison); task.Wait();
 	/// With (probably) HttpWebRequest
 	/// </summary>
-	public class D2LHttpClient : ID2LHttpClient {
+	internal sealed class D2LHttpClient : ID2LHttpClient {
 		private readonly HttpClient m_httpClient;
 
-		public D2LHttpClient() {
-			m_httpClient = new HttpClient();
-		}
-		public D2LHttpClient( HttpMessageHandler handler ) {
-			m_httpClient = new HttpClient( handler );
-		}
-		public D2LHttpClient( HttpMessageHandler handler, bool disposeHandler ) {
-			m_httpClient = new HttpClient( handler, disposeHandler );
+		public D2LHttpClient( HttpClient httpClient ) {
+			m_httpClient = httpClient;
 		}
 
 		public Task<HttpResponseMessage> GetAsync( string requestUri, HttpCompletionOption completionOption, CancellationToken cancellationToken )

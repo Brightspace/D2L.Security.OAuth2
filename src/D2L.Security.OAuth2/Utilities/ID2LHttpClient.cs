@@ -8,7 +8,7 @@ namespace D2L.Security.OAuth2.Utilities {
 	/// This interface was created to allow the sync generator in D2L.CodeStyle to strip the async suffix from HttpClient calls
 	/// when it tries to convert async code to sync code.
 	/// </summary>
-	public interface ID2LHttpClient : IDisposable {
+	internal interface ID2LHttpClient : IDisposable {
 		public Task<HttpResponseMessage> GetAsync( string requestUri, HttpCompletionOption completionOption, CancellationToken cancellationToken );
 		public Task<HttpResponseMessage> GetAsync( Uri requestUri, CancellationToken cancellationToken );
 		public Task<HttpResponseMessage> GetAsync( Uri requestUri, HttpCompletionOption completionOption, CancellationToken cancellationToken );

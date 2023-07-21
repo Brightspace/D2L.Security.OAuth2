@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			public void TestFixtureSetUp() {
 				m_authService = new AuthServiceMock();
 				m_accessTokenValidator = AccessTokenValidatorFactory.CreateRemoteValidator(
-					new D2LHttpClient( m_authService.MockHandler ),
+					new HttpClient( m_authService.MockHandler ),
 					new Uri( m_authService.Host, ".well-known/jwks" )
 				);
 

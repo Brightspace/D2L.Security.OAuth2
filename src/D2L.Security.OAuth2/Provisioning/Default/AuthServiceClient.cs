@@ -49,7 +49,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		/// <param name="httpClient">An http client used to communicate with the auth service.</param>
 		/// <param name="authEndpoint">The token provisioning endpoint on the auth service</param>
 		public AuthServiceClient(
-			ID2LHttpClient httpClient,
+			HttpClient httpClient,
 			Uri authEndpoint
 		) {
 			if( httpClient == null ) {
@@ -60,7 +60,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				throw new ArgumentNullException( "authEndpoint" );
 			}
 
-			m_client = httpClient;
+			m_client = new D2LHttpClient( httpClient );
 			m_tokenProvisioningEndpoint = authEndpoint.RelativePathAsNonLeaf( TOKEN_PATH );
 		}
 

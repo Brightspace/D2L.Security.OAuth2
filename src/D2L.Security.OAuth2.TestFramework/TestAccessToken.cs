@@ -32,7 +32,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 			claims.Add( new Claim( Constants.Claims.ISSUER, DEFAULT_ISSUER ) );
 
-			using( var httpClient = new D2LHttpClient() ) {
+			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, tokenProvisioningEndpoint );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( claims, scopes ).ConfigureAwait( false );
 				return token.Token;

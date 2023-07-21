@@ -16,11 +16,11 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		private readonly Uri m_jwkEndpoint;
 
 		public JwksProvider(
-			ID2LHttpClient httpClient,
+			HttpClient httpClient,
 			Uri jwksEndpoint,
 			Uri jwkEndpoint
 		) {
-			m_httpClient = httpClient;
+			m_httpClient = new D2LHttpClient( httpClient );
 			m_jwksEndpoint = jwksEndpoint;
 			m_jwkEndpoint = jwkEndpoint;
 		}

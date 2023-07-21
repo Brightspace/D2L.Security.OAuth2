@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			public void TestFixtureSetUp() {
 				m_authService = new AuthServiceMock( AuthServiceMock.KeyType.ECDSA_P256 );
 				m_accessTokenValidator = AccessTokenValidatorFactory.CreateRemoteValidator(
-					new D2LHttpClient( m_authService.MockHandler ),
+					new HttpClient( m_authService.MockHandler ),
 					new Uri( m_authService.Host, ".well-known/jwks" )
 				);
 
@@ -120,7 +120,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				// The rest of the validation should have otherwise proceeded swimmingly
 				Assert.Throws<ExpiredTokenException>( () =>
 					AccessTokenValidatorFactory
-						.CreateRemoteValidator( new D2LHttpClient( mockHandler ), new Uri( "http://localhost/.well-known/jwks" ) )
+						.CreateRemoteValidator( new HttpClient( mockHandler ), new Uri( "http://localhost/.well-known/jwks" ) )
 						.ValidateAsync( token )
 						.ConfigureAwait( false ).GetAwaiter().GetResult()
 				);

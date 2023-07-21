@@ -30,7 +30,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessTokenProvider accessTokenProvider =
 				AccessTokenProviderFactory.Create(
 					tokenSigner: m_keyManagerMock.Object,
-					httpClient: new D2LHttpClient(),
+					httpClient: new HttpClient(),
 					authEndpoint: new Uri( "http://foo.d2l" ),
 					tokenRefreshGracePeriod: TimeSpan.FromMinutes( 2 )
 				);
@@ -51,7 +51,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessTokenProvider accessTokenProvider =
 				AccessTokenProviderFactory.Create(
 					tokenSigner: m_keyManagerMock.Object,
-					httpClient: new D2LHttpClient(),
+					httpClient: new HttpClient(),
 					authEndpoint: new Uri( "http://foo.d2l" ),
 					tokenRefreshGracePeriod: TimeSpan.FromMinutes( 2 )
 				);

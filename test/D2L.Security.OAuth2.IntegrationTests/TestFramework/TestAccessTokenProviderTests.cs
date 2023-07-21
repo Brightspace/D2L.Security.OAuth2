@@ -23,7 +23,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 		[Test]
 		public async Task TestAccessTokenProvider_TokenIsValid() {
-			using( var httpClient = new D2LHttpClient() ) {
+			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).ConfigureAwait( false );
 
@@ -34,7 +34,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 
 		[Test]
 		public async Task TestAccessTokenProvider_SuppliedRSAParameters_TokenIsValid() {
-			using( var httpClient = new D2LHttpClient() ) {
+			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, TestStaticKeyProvider.TestKeyId, TestStaticKeyProvider.TestRSAParameters );
 				IAccessToken token = await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).ConfigureAwait( false );
 
@@ -47,7 +47,7 @@ namespace D2L.Security.OAuth2.TestFramework {
 		public void TestAccessTokenProvider_InvalidRSAParameters_TokenIsInvalid() {
 			var randomRsaParameters = new RSACryptoServiceProvider( OAuth2.Keys.Constants.GENERATED_RSA_KEY_SIZE ) { PersistKeyInCsp = false }.ExportParameters( true );
 
-			using( var httpClient = new D2LHttpClient() ) {
+			using( var httpClient = new HttpClient() ) {
 				IAccessTokenProvider provider = TestAccessTokenProviderFactory.Create( httpClient, DEV_AUTH_URL, Guid.NewGuid().ToString(), randomRsaParameters );
 				Assert.ThrowsAsync<AuthServiceException>( async () => await provider.ProvisionAccessTokenAsync( testClaimSet, testScopes ).ConfigureAwait( false ) );
 			}
