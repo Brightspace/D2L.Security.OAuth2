@@ -17,6 +17,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 	public partial class RequestAuthenticatorTests {
 		private const string ACCESS_TOKEN = "some token";
 
+		[GenerateSync]
 		[Test]
 		public async Task TokenInHeader_SuccessCaseAsync() {
 			await RunTestAsync(
@@ -24,8 +25,8 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			).ConfigureAwait( false );
 		}
 
-		[Test]
 		[GenerateSync]
+		[Test]
 		public async Task NoTokenAsync() {
 			await RunTestAsync(
 				request_authorizationHeader: string.Empty,
@@ -50,7 +51,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		) {
 			IAccessToken token = AccessTokenMock.Create().Object;
 
-			IAccessTokenValidator tokenValidator = AccessTokenValidatorMock.Create(
+			IAccessTokenValidator tokenValidator = AccessTokenValidatorMock.CreateAsync(
 				accessToken: ACCESS_TOKEN,
 				accessTokenAfterValidation: token,
 				expectedExceptionType: expectedExceptionType

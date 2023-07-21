@@ -38,10 +38,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		[GenerateSync]
 		Task IAccessTokenValidator.PrefetchAsync() => m_publicKeyProvider.PrefetchAsync();
 
+		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
-			throw null;
 			var tokenHandler = m_tokenHandler.Value;
 
 			if( !tokenHandler.CanReadToken( token ) ) {
@@ -98,75 +98,6 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			}
 
 			return null;
-		}
-
-		[Blocking]
-		IAccessToken IAccessTokenValidator.Validate(
-			string token
-		)
-		{
-			var tokenHandler = m_tokenHandler.Value;
-
-			if (!tokenHandler.CanReadToken(token))
-			{
-				throw new ValidationException("Couldn't parse token");
-			}
-
-			var unvalidatedToken = (JwtSecurityToken)tokenHandler.ReadToken(
-				token
-			);
-
-			if (!ALLOWED_SIGNATURE_ALGORITHMS.Contains(unvalidatedToken.SignatureAlgorithm))
-			{
-				string message = string.Format(
-					"Signature algorithm '{0}' is not supported.  Permitted algorithms are '{1}'", unvalidatedToken.SignatureAlgorithm, string.Join(",", ALLOWED_SIGNATURE_ALGORITHMS)
-				);
-				throw new InvalidTokenException(message);
-			}
-
-			if (!unvalidatedToken.Header.ContainsKey("kid"))
-			{
-				throw new InvalidTokenException("KeyId not found in token");
-			}
-
-			string keyId = unvalidatedToken.Header["kid"].ToString();
-
-			using D2LSecurityToken signingKey = (m_publicKeyProvider
-				.GetById(keyId)
-			).Ref();
-
-			var validationParameters = new TokenValidationParameters()
-			{
-				ValidateAudience = false,
-				ValidateIssuer = false,
-				RequireSignedTokens = true,
-				IssuerSigningKey = signingKey,
-				CryptoProviderFactory = new D2LCryptoProviderFactory()
-			};
-
-			IAccessToken accessToken;
-
-			try
-			{
-				tokenHandler.ValidateToken(
-					token, validationParameters, out SecurityToken securityToken
-				);
-				accessToken = new AccessToken((JwtSecurityToken)securityToken);
-			}
-			catch (SecurityTokenExpiredException e)
-			{
-				throw new ExpiredTokenException(e);
-			}
-			catch (SecurityTokenNotYetValidException e)
-			{
-				throw new ValidationException("Token is from the future (nbf)", e);
-			}
-			catch (Exception e)
-			{
-				throw new ValidationException("Unknown validation exception", e);
-			}
-
-			return accessToken;
 		}
 	}
 }
