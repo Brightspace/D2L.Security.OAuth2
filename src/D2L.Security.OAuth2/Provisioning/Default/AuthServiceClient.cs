@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Scopes;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Services.Core.Exceptions;
 
 #if NET6_0
@@ -39,7 +40,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			SERIALIZATION_ERROR_MESSAGE_PREFIX +
 			"The Auth Service responded with: ";
 
-		private readonly HttpClient m_client;
+		private readonly ID2LHttpClient m_client;
 		private readonly Uri m_tokenProvisioningEndpoint;
 
 		/// <summary>
@@ -59,7 +60,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				throw new ArgumentNullException( "authEndpoint" );
 			}
 
-			m_client = httpClient;
+			m_client = new D2LHttpClient( httpClient );
 			m_tokenProvisioningEndpoint = authEndpoint.RelativePathAsNonLeaf( TOKEN_PATH );
 		}
 

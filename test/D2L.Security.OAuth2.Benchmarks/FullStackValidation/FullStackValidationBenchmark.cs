@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 using Newtonsoft.Json;
 using RichardSzalay.MockHttp;

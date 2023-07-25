@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal sealed class LocalPublicKeyProvider : IPublicKeyProvider {
+	internal sealed partial class LocalPublicKeyProvider : IPublicKeyProvider {
 
 		private const string PUBLIC_KEY_SOURCE = "Local DB";
 
@@ -21,6 +22,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_cache = cache ?? throw new ArgumentNullException( nameof( cache ) );
 		}
 
+		[GenerateSync]
 		async Task IPublicKeyProvider.PrefetchAsync() {
 			IEnumerable<JsonWebKey> jwks = await m_publicKeyDataProvider
 				.GetAllAsync()
@@ -42,6 +44,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 		}
 
+		[GenerateSync]
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( string id ) {
 			D2LSecurityToken result = m_cache.Get( PUBLIC_KEY_SOURCE, id );
 			if( result != null ) {

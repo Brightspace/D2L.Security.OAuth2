@@ -24,5 +24,6 @@
 	<PropertyGroup>
 		<LangVersion>11.0</LangVersion>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+		<WarningsAsErrors>CS8785</WarningsAsErrors>
 	</PropertyGroup>
 </Project>

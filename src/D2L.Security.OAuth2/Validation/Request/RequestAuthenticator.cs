@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 
@@ -14,6 +15,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			m_accessTokenValidator = accessTokenValidator;
 		}
 
+		[GenerateSync]
 		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
 			HttpRequestMessage request
 		) {
@@ -22,6 +24,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			return AuthenticateAsync( bearerToken );
 		}
 
+		[GenerateSync]
 		public async Task<ID2LPrincipal> AuthenticateAsync(
 			string bearerToken
 		) {
