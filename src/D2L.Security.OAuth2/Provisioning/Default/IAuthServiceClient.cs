@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
@@ -8,7 +9,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 	/// Calls the Auth Service to provision access tokens
 	/// </summary>
 	/// <remarks>This type is disposable</remarks>
-	internal interface IAuthServiceClient {
+	internal partial interface IAuthServiceClient {
 
 		/// <summary>
 		/// Provisions an access token from the auth service
@@ -20,6 +21,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		/// The auth service could not be reached, or it did not respond with
 		/// a status code indicating success.
 		/// </exception>
+		[GenerateSync]
 		Task<IAccessToken> ProvisionAccessTokenAsync(
 			string assertion,
 			IEnumerable<Scope> scopes

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services.Core.Exceptions;
@@ -25,7 +26,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		"D2L0096:Aliasing attribute class names not supported",
 		Justification = "Newtonsoft.Json.JsonPropertyAttribute is aliased to match System.Text.Json.Serialization.JsonPropertyNameAttribute to reduce duplication below."
 	)]
-	internal sealed class AuthServiceClient : IAuthServiceClient {
+	internal sealed partial class AuthServiceClient : IAuthServiceClient {
 
 		private const string TOKEN_PATH = "connect/token";
 
@@ -74,6 +75,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		/// The auth service could not be reached, or it did not respond with
 		/// a status code indicating success.
 		/// </exception>
+		[GenerateSync]
 		async Task<IAccessToken> IAuthServiceClient.ProvisionAccessTokenAsync(
 			string assertion,
 			IEnumerable<Scope> scopes
@@ -82,7 +84,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			HttpResponseMessage response = null;
 			try {
 				try {
-					response = await MakeRequest( requestBody ).ConfigureAwait( false );
+					response = await MakeRequestAsync( requestBody ).ConfigureAwait( false );
 				} catch( TaskCanceledException exception ) {
 					throw new AuthServiceException(
 						errorType: ServiceErrorType.Timeout,
@@ -158,7 +160,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 		}
 
-		private Task<HttpResponseMessage> MakeRequest( string body ) {
+		[GenerateSync]
+		private Task<HttpResponseMessage> MakeRequestAsync( string body ) {
 			var request = new HttpRequestMessage( HttpMethod.Post, m_tokenProvisioningEndpoint );
 			request.Content = new StringContent( body, Encoding.UTF8, "application/x-www-form-urlencoded" );
 

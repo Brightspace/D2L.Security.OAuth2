@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Validation.Exceptions;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	public sealed class TokenSigner : ITokenSigner {
+	public sealed partial class TokenSigner : ITokenSigner {
 
 		private readonly IPrivateKeyProvider m_privateKeyProvider;
 
@@ -19,6 +20,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_privateKeyProvider = privateKeyProvider;
 		}
 
+		[GenerateSync]
 		async Task<string> ITokenSigner.SignAsync( UnsignedToken token ) {
 			JwtSecurityToken jwt;
 			using( D2LSecurityToken securityToken = await m_privateKeyProvider

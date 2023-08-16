@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Keys {
-	public interface IKeyManagementService {
+	public partial interface IKeyManagementService {
 		/// <summary>
 		/// Generates a new key (storing it's public and private keys) if the
 		/// existing ones are getting near their expiry.
@@ -19,6 +20,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <returns>
 		/// The amount of time to wait before calling this again.
 		/// </returns>
+		[GenerateSync]
 		Task<TimeSpan> RefreshKeyAsync();
 	}
 }
