@@ -1,7 +1,7 @@
-﻿<Project>
+<Project>
 	<ItemGroup>
     	<PackageVersion  Include="BenchmarkDotNet" Version="0.13.1" />
-		<PackageVersion  Include="D2L.CodeStyle.Analyzers" Version="0.196.0" />
+		<PackageVersion  Include="D2L.CodeStyle.Analyzers" Version="0.203.0" />
 		<PackageVersion  Include="D2L.CodeStyle.Annotations" Version="0.31.0" />
 		<PackageVersion  Include="D2L.Services.Core.Exceptions" Version="2.0.1.15" />
 		<PackageVersion  Include="FluentAssertions" Version="6.6.0" />
