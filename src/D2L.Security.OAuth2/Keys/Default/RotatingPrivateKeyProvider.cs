@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
-	internal sealed class RotatingPrivateKeyProvider : IPrivateKeyProvider {
+	internal sealed partial class RotatingPrivateKeyProvider : IPrivateKeyProvider {
 
 		private readonly IPrivateKeyProvider m_inner;
 		private readonly IDateTimeProvider m_dateTimeProvider;
@@ -25,6 +26,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_keyRotationPeriod = keyRotationPeriod;
 		}
 
+		[GenerateSync]
 		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 
 			// Hold a local reference so that we know we are talking about the same key

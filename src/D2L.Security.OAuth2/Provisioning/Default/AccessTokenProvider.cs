@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Services;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
-	internal sealed class AccessTokenProvider : INonCachingAccessTokenProvider {
+	internal sealed partial class AccessTokenProvider : INonCachingAccessTokenProvider {
 
 		private readonly IAuthServiceClient m_client;
 		private readonly ITokenSigner m_tokenSigner;
@@ -22,6 +23,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			m_client = authServiceClient;
 		}
 
+		[GenerateSync]
 		Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
 			ClaimSet claimSet,
 			IEnumerable<Scope> scopes
@@ -30,6 +32,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			return @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes );
 		}
 
+		[GenerateSync]
 		async Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claimSet,
 			IEnumerable<Scope> scopes

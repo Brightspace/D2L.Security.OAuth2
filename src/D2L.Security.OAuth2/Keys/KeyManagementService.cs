@@ -1,4 +1,5 @@
-﻿using D2L.Security.OAuth2.Keys.Default;
+﻿using D2L.CodeStyle.Annotations;
+using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Utilities;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -8,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Keys {
-	public sealed class KeyManagementService : IKeyManagementService, IPrivateKeyProvider, IDisposable {
+	public sealed partial class KeyManagementService : IKeyManagementService, IPrivateKeyProvider, IDisposable {
 		private readonly IPublicKeyDataProvider m_publicKeys;
 		private readonly IPrivateKeyDataProvider m_privateKeys;
 		private readonly IDateTimeProvider m_clock;
@@ -44,6 +45,7 @@ namespace D2L.Security.OAuth2.Keys {
 			config.CheckSanity();
 		}
 
+		[GenerateSync]
 		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			var current = Volatile.Read( ref m_current );
 
@@ -65,6 +67,7 @@ namespace D2L.Security.OAuth2.Keys {
 			return current.Ref();
 		}
 
+		[GenerateSync]
 		async Task<TimeSpan> IKeyManagementService.RefreshKeyAsync() {
 			var now = m_clock.UtcNow;
 
@@ -149,6 +152,7 @@ namespace D2L.Security.OAuth2.Keys {
 			).ConfigureAwait( false );
 		}
 
+		[GenerateSync]
 		private async Task RefreshKeyAsync( DateTimeOffset now ) {
 			var keys = await m_privateKeys.GetAllAsync(
 				validUntilAtLeast: now

@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Keys.Development {
 
@@ -10,7 +11,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 	/// A private key provider with a fixed key for testing purposes
 	/// </summary>
 	[Obsolete( "Only use this in tests and for prototyping." )]
-	internal sealed class StaticPrivateKeyProvider : IPrivateKeyProvider {
+	internal sealed partial class StaticPrivateKeyProvider : IPrivateKeyProvider {
 		private readonly string m_keyId;
 		private readonly RSAParameters m_rsaParameters;
 
@@ -22,6 +23,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			m_rsaParameters = rsaParameters;
 		}
 
+		[GenerateSync]
 		public Task<D2LSecurityToken> GetSigningCredentialsAsync() {
 			var creds = new D2LSecurityToken(
 				id: m_keyId,

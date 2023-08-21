@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
 
@@ -10,7 +11,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 	/// Provisions access tokens from the auth service
 	/// </summary>
 	/// <remarks>This type is disposable</remarks>
-	public interface IAccessTokenProvider {
+	public partial interface IAccessTokenProvider {
 
 		/// <summary>
 		/// Provisions an access token containing the provided claims and scopes.
@@ -21,6 +22,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		/// check for token expiration or grace period because the 
 		/// <see cref="IAccessTokenProvider"/> will handle it internally.</param>
 		/// <returns>An access token containing an expiry and the provided claims and scopes.</returns>
+		[GenerateSync]
 		Task<IAccessToken> ProvisionAccessTokenAsync(
 			ClaimSet claimSet,
 			IEnumerable<Scope> scopes,
@@ -36,6 +38,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 		/// check for token expiration or grace period because the 
 		/// <see cref="IAccessTokenProvider"/> will handle it internally.</param>
 		/// <returns>An access token containing an expiry and the provided claims and scopes.</returns>
+		[GenerateSync]		
 		Task<IAccessToken> ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claims,
 			IEnumerable<Scope> scopes,

@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Caching {
-	internal sealed class NullCache : ICache {
+	internal sealed partial class NullCache : ICache {
 
 		private static readonly CacheResponse NULL_RESPONSE = new CacheResponse( success: false, value: null );
 
-		Task<CacheResponse> ICache.GetAsync( string key ) => Task.FromResult( NULL_RESPONSE );
+		[GenerateSync]
+		Task<CacheResponse> ICache.GetAsync( string key ) {
+			return Task.FromResult( NULL_RESPONSE );
+		}
 
-		Task ICache.SetAsync( string key, string value, TimeSpan expiry ) => Task.CompletedTask;
+		[GenerateSync]
+		Task ICache.SetAsync( string key, string value, TimeSpan expiry ) {
+			return Task.CompletedTask;
+		}
 
-		Task ICache.RemoveAsync( string key ) => Task.CompletedTask;
+		[GenerateSync]
+		Task ICache.RemoveAsync( string key ) {
+			return Task.CompletedTask;
+		}
 	}
 }

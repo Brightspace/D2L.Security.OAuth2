@@ -8,13 +8,14 @@ using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Services;
+using D2L.CodeStyle.Annotations;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;
 #endif
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
-	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {
+	internal sealed partial class CachedAccessTokenProvider : IAccessTokenProvider {
 		private readonly INonCachingAccessTokenProvider m_accessTokenProvider;
 		private readonly Uri m_authEndpoint;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
@@ -32,6 +33,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			m_tokenHandler = new JwtSecurityTokenHandler();
 		}
 
+		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			ClaimSet claimSet,
 			IEnumerable<Scope> scopes,
@@ -41,6 +43,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).ConfigureAwait( false );
 		}
 
+		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claims,
 			IEnumerable<Scope> scopes,
