@@ -1,4 +1,5 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -35,6 +36,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					expires: token.ExpiresAt,
 					signingCredentials: securityToken.GetSigningCredentials()
 				);
+
+				jwt.Payload.Add(OAuth2.Constants.Claims.ISSUED_AT, ((DateTimeOffset)token.IssuedAt).ToUnixTimeSeconds());
 
 				var claims = token.Claims;
 				foreach( var claim in claims ) {

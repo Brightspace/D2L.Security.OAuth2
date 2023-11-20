@@ -57,7 +57,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				audience: Constants.ASSERTION_AUDIENCE,
 				claims: filteredClaims,
 				notBefore: now,
-				expiresAt: now + Constants.ASSERTION_TOKEN_LIFETIME );
+				expiresAt: now + Constants.ASSERTION_TOKEN_LIFETIME,
+				issuedAt: now );
 
 			string assertion = await m_tokenSigner
 				.SignAsync( unsignedToken )

@@ -61,7 +61,8 @@ namespace D2L.Security.OAuth2 {
 					audience: Constants.ACCESS_TOKEN_AUDIENCE,
 					claims: claims,
 					notBefore: issuedAtTime.Value,
-					expiresAt: issuedAtTime.Value + TimeSpan.FromMinutes( 1 )
+					expiresAt: issuedAtTime.Value + TimeSpan.FromMinutes( 1 ),
+					issuedAt: issuedAtTime.Value
 				)
 			).ConfigureAwait( false );
 		}

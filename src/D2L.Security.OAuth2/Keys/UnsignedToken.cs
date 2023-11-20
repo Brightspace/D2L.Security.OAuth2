@@ -12,6 +12,7 @@ namespace D2L.Security.OAuth2.Keys {
 		private readonly IReadOnlyDictionary<string, object> m_claims;
 		private readonly DateTime m_notBefore;
 		private readonly DateTime m_expiresAt;
+		private readonly DateTime m_issuedAt;
 
 		/// <summary>
 		/// Constructs a new <see cref="UnsignedToken"/> instance
@@ -26,13 +27,15 @@ namespace D2L.Security.OAuth2.Keys {
 			string audience,
 			IReadOnlyDictionary<string, object> claims,
 			DateTime notBefore,
-			DateTime expiresAt
+			DateTime expiresAt,
+			DateTime issuedAt
 		) {
 			m_issuer = issuer;
 			m_audience = audience;
 			m_claims = claims;
 			m_notBefore = notBefore;
 			m_expiresAt = expiresAt;
+			m_issuedAt = issuedAt;
 		}
 
 		/// <summary>
@@ -69,5 +72,14 @@ namespace D2L.Security.OAuth2.Keys {
 		public DateTime ExpiresAt {
 			get { return m_expiresAt; }
 		}
+
+		/// <summary>
+		/// When the token was issued; this is the 'iat' claim
+		/// </summary>
+		public DateTime IssuedAt
+		{
+			get { return m_issuedAt; }
+		}
+
 	}
 }

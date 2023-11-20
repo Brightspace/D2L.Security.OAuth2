@@ -52,7 +52,8 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 					"some audience",
 					new Dictionary<string, object>(),
 					DateTime.Now,
-					DateTime.Now + TimeSpan.FromDays( 1 )
+					DateTime.Now + TimeSpan.FromDays( 1 ),
+					DateTime.Now
 				) )
 				.ConfigureAwait( false )
 				.GetAwaiter()

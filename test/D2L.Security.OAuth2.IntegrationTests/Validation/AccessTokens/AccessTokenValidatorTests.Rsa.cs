@@ -43,7 +43,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 						"fake audience",
 						new Dictionary<string, object> { { "sub", SUBJECT } },
 						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
-						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
+						DateTime.UtcNow + TimeSpan.FromHours( 1 ),
+						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ) ) )
 					.ConfigureAwait( false );
 
 				IAccessToken accessToken = await m_accessTokenValidator
@@ -63,7 +64,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 						"fake audience",
 						new Dictionary<string, object>(),
 						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
-						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
+						DateTime.UtcNow + TimeSpan.FromHours( 1 ),
+						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ) ) )
 					.ConfigureAwait( false );
 
 				token += "abcd";

@@ -11,8 +11,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
     internal sealed class TokenSignerTests {
         private static readonly string TestKeyId = TestStaticKeyProvider.TestKeyId;
 
-        private const string SignedToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhN2MwN2E4LTQyYzgtNGM1Ny05YWYyLWNjZTEwYzI3MTAzMyIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE1NDYzMDA4MDAsImV4cCI6MTU0NjMwNDQzMCwiaXNzIjoiaXNzdWVyIiwiYXVkIjoiYXVkaWVuY2UiLCJzY29wZXMiOiJhOmI6YyBhOmI6ZCIsInRlbmFudGlkIjoiMzI1Y2I0NmItNDg4ZC00MDYxLWFhMmMtZWVmNWExMmI2YjdjIn0.HB_hkyPQE2jfhTaRf64qqWjo6HkJcZILYGnjccsXTrjJpHTrxPlu7gmmolTXIBTplKlB08O2Q-Q9NHtDg5XtCTsm_PNjy6G8OJlu1NEMMQUS-V7phNVpOGxIMQamj_5jI8uz1Xx2nzj333mE9tJXvuba8GWeTbPlYKLd7kI83wGAYVNAUxV6ZkaoYu5Uvj3NRByAeXtDhXdhdk6UPeHECfaei3OE6NlGwuJIB-pts3V4JDq0xOIUCt84lFy27aiQyILXoKrwPdkboFxXRthtLw6aIl_Ce8fSCjAxDmMNkV6pW0FCCl_nWrVooTeXEcDkCr5c7NRRyAOHky-n5WDISQ";
-        private const string SignedComplexToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhN2MwN2E4LTQyYzgtNGM1Ny05YWYyLWNjZTEwYzI3MTAzMyIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE1NDYzMDA4MDAsImV4cCI6MTU0NjMwNDQzMCwiaXNzIjoiaXNzdWVyIiwiYXVkIjoiYXVkaWVuY2UiLCJodHRwczovL3NlcnZpY2UuY29tL2NsYWltL3ZlcnNpb24iOiIxLjAuMCIsImh0dHBzOi8vc2VydmljZS5jb20vY2xhaW0vcm9sZXMiOlsiaHR0cHM6Ly9zZXJ2aWNlLmNvbS9yb2xlcyNhZG1pbmlzdHJhdG9yIiwiaHR0cHM6Ly9zZXJ2aWNlLmNvbS9yb2xlcyN1c2VyIl0sImh0dHBzOi8vc2VydmljZS5jb20vY2xhaW0vY29udGV4dCI6eyJpZCI6ImMxZDg4N2YwLWExYTMtNGJjYS1hZTI1LWMzNzVlZGNjMTMxYSIsInR5cGUiOlsiaHR0cHM6Ly9zZXJ2aWNlLmNvbS90eXBlcyN0eXBlIl19fQ.eMvY5Srt0I-tQ-4gWi5EXmZ897IVymLSywUd6DI6QYcD4zCVoNMus7VbwcJm8P3Sb6-JUHS7ZMBuaA3E0xG4xmPtrnCUkEETfKgjQmmHGHwx0ZoBnsjYhTRUk_imf5DMPWIUS8S01QYz1pbFhxsKQGX2h-dTpkPa_PH2vCd-5TlKKGrOCkV4c60RpkQuj1UVcxpHpCecPGT-ulIA7loK2mCSov5lk_hvnmvFTH-F0eOf-CI9ebDvfWCSnKGlsBp6TAo9PIDDtH4GiwLrW6ZsSGMXGE5uWLFDGtZq-OETV6EMEOA-N4MJJ_34tJ0SPVSJ_8ApyP8_HBzGb9ED8PQBOQ";
+        private const string SignedToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhN2MwN2E4LTQyYzgtNGM1Ny05YWYyLWNjZTEwYzI3MTAzMyIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE1NDYzMDA4MDAsImV4cCI6MTU0NjMwNDQzMCwiaXNzIjoiaXNzdWVyIiwiYXVkIjoiYXVkaWVuY2UiLCJpYXQiOjE1NDYzMDA4MDAsInNjb3BlcyI6ImE6YjpjIGE6YjpkIiwidGVuYW50aWQiOiIzMjVjYjQ2Yi00ODhkLTQwNjEtYWEyYy1lZWY1YTEyYjZiN2MifQ.eqH5TlV5TN4w4b9RoIUBaeTlpkyQ15z2MAXRdh7smn90ZN0wxHtThxqUGfdLsFWqbn5e1hVS69-wQcDBBwl5m0p1AgCS1LSHd9rT4Eh6lM9_A_NoLamF5LGBZqm_SoE4DaLLUgwYc2YbOFs577AU34WmgE6oZaG_j6JMzxAs8lgyhpj-iFME2mSJTpUK4H1RgQ03my0zpUvuKFFS2NJfPF2Vs_aXh0L1PKV6MYoNMJHZmEyLSpj36R8zIPyFGkbrxztqmTsg08yKjHiZgp9FBx_sDm-nwAMlpSIn4_xpfK4U50mLkIsejvr86gSqVcgHht8Au5FYY8Y4x2MDs8jAJg";
+        private const string SignedComplexToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6ImZhN2MwN2E4LTQyYzgtNGM1Ny05YWYyLWNjZTEwYzI3MTAzMyIsInR5cCI6IkpXVCJ9.eyJuYmYiOjE1NDYzMDA4MDAsImV4cCI6MTU0NjMwNDQzMCwiaXNzIjoiaXNzdWVyIiwiYXVkIjoiYXVkaWVuY2UiLCJpYXQiOjE1NDYzMDA4MDAsImh0dHBzOi8vc2VydmljZS5jb20vY2xhaW0vdmVyc2lvbiI6IjEuMC4wIiwiaHR0cHM6Ly9zZXJ2aWNlLmNvbS9jbGFpbS9yb2xlcyI6WyJodHRwczovL3NlcnZpY2UuY29tL3JvbGVzI2FkbWluaXN0cmF0b3IiLCJodHRwczovL3NlcnZpY2UuY29tL3JvbGVzI3VzZXIiXSwiaHR0cHM6Ly9zZXJ2aWNlLmNvbS9jbGFpbS9jb250ZXh0Ijp7ImlkIjoiYzFkODg3ZjAtYTFhMy00YmNhLWFlMjUtYzM3NWVkY2MxMzFhIiwidHlwZSI6WyJodHRwczovL3NlcnZpY2UuY29tL3R5cGVzI3R5cGUiXX19.FjG7jBeAZQGjdxkTIjoGjbtf-Jz89Tje7TWSdy401NDI5ns7c6MORrpNHqCIUs6PO4zbHnmf1SBVAC2ALJWEJ4K5KH4WlZxm9VYyUQ7xrhWQurGp7szK9pUmJqvb0mTB9fOg-BMjICknfHxXnkXIR9tYL8MEbK3jaz1wDWF4V6qlTY-TcHt4mDbK5PG4e1K-ZgSG1Jgci_avtYh6gv9BqGqYB0wyu5OKwRTXrtjv5roDqNFO9G_aPUzmzI_9IgwLqJ3XahSbwgHLr49yW6kL0N01rWHvi1Clb3fP7Jl9ec-ANJkKPFXea4ZsdmZrlBdHv3G94JkaDf9aWaSUxNWZSQ";
 
         private IPrivateKeyProvider m_privateKeyProvider;
         private ITokenSigner m_tokenSigner;
@@ -36,8 +36,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					{ "scopes", "a:b:c a:b:d" },
 					{ "tenantid", "325cb46b-488d-4061-aa2c-eef5a12b6b7c" }
                 },
-                notBefore: new DateTime( 2019, 1, 1, 0, 0, 0, DateTimeKind.Utc ),
-                expiresAt: new DateTime( 2019, 1, 1, 1, 0, 30, DateTimeKind.Utc )
+                notBefore: new DateTime( 2019, 1, 1, 0, 0, 0,  DateTimeKind.Utc ),
+                expiresAt: new DateTime( 2019, 1, 1, 1, 0, 30, DateTimeKind.Utc ),
+                issuedAt:  new DateTime( 2019, 1, 1, 0, 0, 0,  DateTimeKind.Utc )
             );
 
             var signed = await m_tokenSigner.SignAsync( token );
@@ -62,8 +63,9 @@ namespace D2L.Security.OAuth2.Keys.Default {
                 issuer: "issuer",
                 audience: "audience",
                 claims: claims,
-                notBefore: new DateTime( 2019, 1, 1, 0, 0, 0, DateTimeKind.Utc ),
-                expiresAt: new DateTime( 2019, 1, 1, 1, 0, 30, DateTimeKind.Utc )
+                notBefore: new DateTime( 2019, 1, 1, 0, 0, 0,  DateTimeKind.Utc ),
+                expiresAt: new DateTime( 2019, 1, 1, 1, 0, 30, DateTimeKind.Utc ),
+                issuedAt:  new DateTime( 2019, 1, 1, 0, 0, 0,  DateTimeKind.Utc )
             );
 
             var signed = await m_tokenSigner.SignAsync( token );
