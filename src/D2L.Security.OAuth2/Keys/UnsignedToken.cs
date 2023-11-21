@@ -76,8 +76,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// When the token was issued; this is the 'iat' claim
 		/// </summary>
-		public DateTime IssuedAt
-		{
+		public DateTime IssuedAt {
 			get { return m_issuedAt; }
 		}
 
