@@ -37,7 +37,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					signingCredentials: securityToken.GetSigningCredentials()
 				);
 
-				jwt.Payload.Add(OAuth2.Constants.Claims.ISSUED_AT, ((DateTimeOffset)token.IssuedAt).ToUnixTimeSeconds());
+				DateTimeOffset issuedAtOffset = token.IssuedAt;
+				jwt.Payload.Add( OAuth2.Constants.Claims.ISSUED_AT, issuedAtOffset.ToUnixTimeSeconds() );
 
 				var claims = token.Claims;
 				foreach( var claim in claims ) {
