@@ -4,8 +4,8 @@ on:
   pull_request:
   push:
     branches: master
-  tags:
-    - v*
+    tags:
+      - v*
 
 env:
   VERSION_PREFIX: 12.3.2
