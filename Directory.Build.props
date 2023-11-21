@@ -1,4 +1,6 @@
 ﻿<Project>
+	<Import Project="VersionInfo.props" />
+
 	<PropertyGroup>
 		<Authors>D2L</Authors>
 		<Company>D2L Corporation</Company>
@@ -7,18 +9,6 @@
 
 		<Product>D2L.Security.OAuth2</Product>
 		<PackageProjectUrl>https://github.com/Brightspace/D2L.Security.OAuth2</PackageProjectUrl>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(APPVEYOR)' == 'true'">
-		<AssemblyVersion>$(ASSEMBLY_VERSION)</AssemblyVersion>
-		<FileVersion>$(ASSEMBLY_VERSION).$(APPVEYOR_BUILD_NUMBER)</FileVersion>
-		<VersionPrefix>$(ASSEMBLY_VERSION).$(APPVEYOR_BUILD_NUMBER)</VersionPrefix>
-		<VersionSuffix Condition="'$(APPVEYOR_REPO_TAG)' == 'false' And '$(APPVEYOR_PULL_REQUEST_NUMBER)' == ''">rc</VersionSuffix>
-		<VersionSuffix Condition="'$(APPVEYOR_PULL_REQUEST_NUMBER)' != ''">alpha</VersionSuffix>
-	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(APPVEYOR)' != 'true'">
-		<Version>0.0.0-localdev</Version>
 	</PropertyGroup>
 
 	<PropertyGroup>
