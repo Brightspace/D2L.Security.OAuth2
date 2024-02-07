@@ -51,7 +51,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 			var now = m_clock.UtcNow;
 
-			if ( current == null || current.ValidTo <= now ) {
+			if ( current == null || ExpectedTimeOfNewUsableKey( current ) < now ) {
 				// Slow path: RefreshKeyAsync() wasn't called on boot and/or it
 				// isn't being called in a background job.
 				await RefreshKeyAsync( now )
@@ -67,6 +67,13 @@ namespace D2L.Security.OAuth2.Keys {
 			return current.Ref();
 		}
 
+		private DateTimeOffset ExpectedTimeOfNewUsableKey( D2LSecurityToken current )
+			// A new key will get generated some time before the current key
+			// expires, but will only become usable some time after that.
+			=> current.ValidTo
+				- m_config.KeyRotationBuffer
+				+ m_config.KeyTimeUntilUse;
+
 		[GenerateSync]
 		async Task<TimeSpan> IKeyManagementService.RefreshKeyAsync() {
 			var now = m_clock.UtcNow;
@@ -81,11 +88,7 @@ namespace D2L.Security.OAuth2.Keys {
 				return TimeSpan.FromSeconds( 10 );
 			}
 
-			// A new key will get generated some time before the current key
-			// expires, but will only become usable some time after that.
-			var expectedTimeOfNewUsableKey = current.ValidTo
-				- m_config.KeyRotationBuffer
-				+ m_config.KeyTimeUntilUse;
+			var expectedTimeOfNewUsableKey = ExpectedTimeOfNewUsableKey( current );
 
 			if( now > expectedTimeOfNewUsableKey ) {
 				// If we would have expected a new key by now, retry again in a
