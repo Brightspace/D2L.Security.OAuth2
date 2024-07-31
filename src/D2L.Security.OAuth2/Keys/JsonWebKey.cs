@@ -70,10 +70,10 @@ namespace D2L.Security.OAuth2.Keys {
 			return result;
 		}
 
-		public static bool TryParseJsonSigningKey(
+		public static bool TryParseJsonWebKey(
 			string json,
 			[NotNullWhen( true )]
-			out JsonWebKey? key,
+			out JsonWebKey? result,
 			[NotNullWhen( false )]
 			out string? error,
 			out Exception? exception,
