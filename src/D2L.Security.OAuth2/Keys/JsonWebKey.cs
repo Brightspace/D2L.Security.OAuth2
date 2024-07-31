@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using D2L.Security.OAuth2.Keys.Default;
 
 #if NET6_0
