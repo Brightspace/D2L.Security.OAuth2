@@ -20,10 +20,22 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 				List<object> keyObjects = data["keys"];
 
-				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
+				var builder = ImmutableArray.CreateBuilder<JsonWebKey>(
+					initialCapacity; keyObjects.Count
+				);
+
 				foreach( object keyObject in keyObjects ) {
 					string keyJson = JsonConvert.SerializeObject( keyObject );
-					JsonWebKey key = JsonWebKey.FromJson( keyJson );
+
+					if( !JsonWebKey.TryParseJsonWebKey( keyJson, out var key, out var error, out var exception, out var useEncKey ) ) {
+						if( useEncKey ) {
+							// Just filter out keys meant for encryption
+							continue;
+						} else {
+							throw new JsonWebKeyParseException( error, exception );
+						}
+					}
+
 					builder.Add( key );
 				}
 				m_keys = builder.ToImmutable();
