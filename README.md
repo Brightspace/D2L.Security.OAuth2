@@ -11,11 +11,6 @@ The libraries in this repository are published in lock-step. It is recommended t
 
 Core functionality for request validation and token provisioning.
 
-### D2L.Security.OAuth2.WebApi
-[![NuGet](https://img.shields.io/nuget/v/D2L.Security.OAuth2.WebApi.svg?maxAge=7200)](https://www.nuget.org/packages/D2L.Security.OAuth2.WebApi/)
-
-WebAPI integration in the form of filters/attributes/etc.
-
 ### D2L.Security.OAuth2.TestFramework
 [![NuGet](https://img.shields.io/nuget/v/D2L.Security.OAuth2.TestFramework.svg?maxAge=7200)](https://www.nuget.org/packages/D2L.Security.OAuth2.TestFramework/)
 
