@@ -56,7 +56,6 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <returns>A JWK DTO</returns>
 		public abstract object ToJwkDto();
 
-
 		/// <summary>
 		/// Deserialize a JWK
 		/// </summary>
