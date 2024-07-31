@@ -63,7 +63,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <param name="json">The json JWK</param>
 		/// <returns>A <see cref="JsonWebKey"/></returns>
 		public static JsonWebKey FromJson( string json ) {
-			if( !TryParseJsonSigningKey( json, out var result, out var error, out var e, out _ ) ) {
+			if( !TryParseJsonWebKey( json, out var result, out var error, out var e, out _ ) ) {
 				throw new JsonWebKeyParseException( error, e );
 			}
 
