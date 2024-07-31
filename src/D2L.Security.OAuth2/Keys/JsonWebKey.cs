@@ -90,14 +90,6 @@ namespace D2L.Security.OAuth2.Keys {
 				return false;
 			}
 
-			if( !data.ContainsKey( "use" ) ) {
-				result = null;
-				error = "missing 'use' parameter in JSON web key";
-				exception = null;
-				useEncKey = false;
-				return false;
-			}
-
 			if( data.ContainsKey( "use" ) && data[ "use" ] != null && data[ "use" ].ToString() != "sig" ) {
 				result = null;
 				error = "invalid 'use' value in JSON web key: " + data[ "use" ];
