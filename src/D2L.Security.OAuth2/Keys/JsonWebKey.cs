@@ -76,7 +76,6 @@ namespace D2L.Security.OAuth2.Keys {
 			out JsonWebKey? key,
 			[NotNullWhen( false )]
 			out string? error,
-			[NullWhen( true )]
 			out Exception? exception,
 			out bool useEncKey
 		) {
@@ -247,6 +246,6 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// Constructs a new <see cref="JsonWebKeyParseException"/>
 		/// </summary>
-		public JsonWebKeyParseException( string msg, Exception inner ) : base( msg, inner ) { }
+		public JsonWebKeyParseException( string msg, Exception? inner ) : base( msg, inner ) { }
 	}
 }
