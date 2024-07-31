@@ -21,7 +21,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				List<object> keyObjects = data["keys"];
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>(
-					initialCapacity; keyObjects.Count
+					initialCapacity: keyObjects.Count
 				);
 
 				foreach( object keyObject in keyObjects ) {
