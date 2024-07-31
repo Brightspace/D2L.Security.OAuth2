@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Services;
+using D2L.CodeStyle.Annotations;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;
 #endif
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
-	internal sealed class CachedAccessTokenProvider : IAccessTokenProvider {
+	internal sealed partial class CachedAccessTokenProvider : IAccessTokenProvider {
 		private readonly INonCachingAccessTokenProvider m_accessTokenProvider;
 		private readonly Uri m_authEndpoint;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
@@ -31,15 +33,17 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			m_tokenHandler = new JwtSecurityTokenHandler();
 		}
 
+		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			ClaimSet claimSet,
 			IEnumerable<Scope> scopes,
 			ICache cache
 		) {
 			var @this = this as IAccessTokenProvider;
-			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).SafeAsync();
+			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).ConfigureAwait( false );
 		}
 
+		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claims,
 			IEnumerable<Scope> scopes,
@@ -54,7 +58,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			string cacheKey = TokenCacheKeyBuilder.BuildKey( m_authEndpoint, claims, scopes );
 
-			CacheResponse cacheResponse = await cache.GetAsync( cacheKey ).SafeAsync();
+			CacheResponse cacheResponse = await cache.GetAsync( cacheKey ).ConfigureAwait( false );
 
 			if( cacheResponse.Success ) {
 				SecurityToken securityToken = m_tokenHandler.ReadToken( cacheResponse.Value );
@@ -64,11 +68,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			}
 
 			IAccessToken token =
-				await m_accessTokenProvider.ProvisionAccessTokenAsync( claims, scopes ).SafeAsync();
+				await m_accessTokenProvider.ProvisionAccessTokenAsync( claims, scopes ).ConfigureAwait( false );
 
 			DateTime validTo = m_tokenHandler.ReadToken( token.Token ).ValidTo;
 
-			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.UtcNow ).SafeAsync();
+			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.UtcNow ).ConfigureAwait( false );
 			return token;
 		}
 	}

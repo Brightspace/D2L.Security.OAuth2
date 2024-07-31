@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	[TestFixture]
 	internal sealed class ExpiringPublicKeyDataProviderTests {
 
-		private static readonly DateTime NOW = new DateTime( 2 );
+		private static readonly DateTimeOffset NOW = DateTimeOffset.FromUnixTimeSeconds( 2 );
 
 		private Mock<IPublicKeyDataProvider> m_mockPublicKeyDataProvider;
 		private IPublicKeyDataProvider m_publicKeyDataProvider;
@@ -40,11 +40,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[Test]
 		public async Task GetByIdAsync_EmptyDb_ReturnsNull() {
 			var id = Guid.NewGuid();
-			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( null );
+			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( value: null );
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( id )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNull( result );
 		}
@@ -56,11 +56,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 
 			var id = Guid.NewGuid();
-			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( null );
+			m_mockPublicKeyDataProvider.Setup( kp => kp.GetByIdAsync( id ) ).ReturnsAsync( value: null );
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( id )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNull( result );
 		}
@@ -72,7 +72,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( key.Id ) )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( result );
 			Assert.AreEqual( key.Id, result.Id );
@@ -82,11 +82,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public async Task GetByIdAsync_ExpiredKey_DeletesAndReturnsNull() {
 			JsonWebKey key = new JsonWebKeyStub( Guid.NewGuid().ToString(), NOW - TimeSpan.FromTicks( 1 ) );
 			AddKeyToDb( key );
-			m_mockPublicKeyDataProvider.Setup( kp => kp.DeleteAsync( new Guid( key.Id ) ) ).Returns( Task.Delay( 0 ) );
+			m_mockPublicKeyDataProvider.Setup( kp => kp.DeleteAsync( new Guid( key.Id ) ) ).Returns( Task.CompletedTask );
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( key.Id ) )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			m_mockPublicKeyDataProvider.Verify( kp => kp.DeleteAsync( new Guid( key.Id ) ), Times.Once() );
 
@@ -101,11 +101,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			AddKeyToDb( expiredKey );
 			m_mockPublicKeyDataProvider
 				.Setup( pkdb => pkdb.DeleteAsync( new Guid( expiredKey.Id ) ) )
-				.Returns( Task.Delay( 0 ) );
+				.Returns( Task.CompletedTask );
 
 			JsonWebKey result = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( freshKey.Id ) )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsNotNull( result );
 			Assert.AreEqual( freshKey.Id, result.Id );
@@ -121,7 +121,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			IEnumerable<JsonWebKey> result = await m_publicKeyDataProvider
 				.GetAllAsync()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			Assert.IsEmpty( result );
 		}
@@ -147,12 +147,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				var kid = id; // copy the GUID to appease the compiler
 				m_mockPublicKeyDataProvider
 					.Setup( kp => kp.DeleteAsync( new Guid( kid ) ) )
-					.Returns( Task.Delay( 0 ) );
+					.Returns( Task.CompletedTask );
 			}
 
 			IEnumerable<JsonWebKey> result = await m_publicKeyDataProvider
 				.GetAllAsync()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			IEnumerable<string> ids = result.Select( k => k.Id );
 

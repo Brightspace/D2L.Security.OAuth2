@@ -3,12 +3,13 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using D2L.CodeStyle.Annotations;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default.Data {
-	internal sealed class JwksProvider : IJwksProvider {
-		private readonly HttpClient m_httpClient;
+	internal sealed partial class JwksProvider : IJwksProvider {
+		private readonly ID2LHttpClient m_httpClient;
 		private readonly Uri m_jwksEndpoint;
 		private readonly Uri m_jwkEndpoint;
 
@@ -17,16 +18,17 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			Uri jwksEndpoint,
 			Uri jwkEndpoint
 		) {
-			m_httpClient = httpClient;
+			m_httpClient = new D2LHttpClient( httpClient );
 			m_jwksEndpoint = jwksEndpoint;
 			m_jwkEndpoint = jwkEndpoint;
 		}
 
+		[GenerateSync]
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwksAsync() {
 			try {
-				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).SafeAsync() ) {
+				using( HttpResponseMessage response = await m_httpClient.GetAsync( m_jwksEndpoint ).ConfigureAwait( false ) ) {
 					response.EnsureSuccessStatusCode();
-					string jsonResponse = await response.Content.ReadAsStringAsync().SafeAsync();
+					string jsonResponse = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 					var jwks = new JsonWebKeySet( jsonResponse, m_jwksEndpoint );
 					return jwks;
 				}
@@ -37,14 +39,15 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			}
 		}
 
+		[GenerateSync]
 		async Task<JsonWebKeySet> IJwksProvider.RequestJwkAsync( string keyId ) {
 			var url = GetJwkEndpoint( m_jwkEndpoint, keyId );
 			if( url == null ) {
-				return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
+				return await ( this as IJwksProvider ).RequestJwksAsync().ConfigureAwait( false );
 			}
 
 			try {
-				using( var res = await m_httpClient.GetAsync( url ).SafeAsync() ) {
+				using( var res = await m_httpClient.GetAsync( url ).ConfigureAwait( false ) ) {
 					// This is temporary while we try to fully deprecate the
 					// JWKS route. 404 might mean the key doesn't exist (which
 					// will make the call to jwks likely return 200 but still
@@ -56,14 +59,14 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 					// so in practice this should only happen when it's
 					// actually important, if it ever happens.
 					if( res.StatusCode != HttpStatusCode.OK ) {
-						return await ( this as IJwksProvider ).RequestJwksAsync().SafeAsync();
+						return await ( this as IJwksProvider ).RequestJwksAsync().ConfigureAwait( false );
 					}
 
 					res.EnsureSuccessStatusCode();
 
 					string json = await res.Content
 						.ReadAsStringAsync()
-						.SafeAsync();
+						.ConfigureAwait( false );
 
 					JsonWebKey jwk = JsonWebKey.FromJson( json );
 					return new JsonWebKeySet( jwk, url );
@@ -86,20 +89,7 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 		private static Uri GetJwkEndpoint( Uri authEndpoint, string keyId ) {
 			if( authEndpoint == null ) { return null; }
 
-			string authRoot = MakeSureThereIsATrailingSlash( authEndpoint );
-
-			authRoot += HttpUtility.UrlEncode( keyId );
-
-			return new Uri( authRoot );
-		}
-
-		private static string MakeSureThereIsATrailingSlash( Uri uri ) {
-			string root = uri.ToString();
-			if( root[root.Length - 1] == '/' ) {
-				return root;
-			}
-
-			return root + '/';
+			return authEndpoint.RelativePathAsNonLeaf( HttpUtility.UrlEncode( keyId ) );
 		}
 	}
 }

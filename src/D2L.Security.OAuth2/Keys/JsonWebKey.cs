@@ -3,7 +3,12 @@
 using System;
 using System.Collections.Generic;
 using D2L.Security.OAuth2.Keys.Default;
-using Newtonsoft.Json;
+
+#if NET6_0
+using JsonException = System.Text.Json.JsonException;
+#else
+using JsonException = Newtonsoft.Json.JsonReaderException;
+#endif
 
 namespace D2L.Security.OAuth2.Keys {
 	/// <summary>
@@ -17,7 +22,7 @@ namespace D2L.Security.OAuth2.Keys {
 		public const string KEY_ID = "kid";
 
 		private readonly string m_id;
-		private readonly DateTime? m_expiresAt;
+		private readonly DateTimeOffset? m_expiresAt;
 
 		internal abstract D2LSecurityToken ToSecurityToken();
 
@@ -26,7 +31,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <param name="expiresAt">When the key expires</param>
-		protected JsonWebKey( string id, DateTime? expiresAt ) {
+		protected JsonWebKey( string id, DateTimeOffset? expiresAt ) {
 			m_id = id;
 			m_expiresAt = expiresAt;
 		}
@@ -41,7 +46,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// When the key expires
 		/// </summary>
-		public virtual DateTime? ExpiresAt {
+		public virtual DateTimeOffset? ExpiresAt {
 			get { return m_expiresAt; }
 		}
 
@@ -77,8 +82,8 @@ namespace D2L.Security.OAuth2.Keys {
 		) {
 			Dictionary<string, object> data;
 			try {
-				data = JsonConvert.DeserializeObject<Dictionary<string, object>>( json );
-			} catch( JsonReaderException e ) {
+				data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
+			} catch ( JsonException e ) {
 				result = null;
 				error = "error deserializing JSON web key string";
 				exception = e;
@@ -94,11 +99,11 @@ namespace D2L.Security.OAuth2.Keys {
 				return false;
 			}
 
-			if( data[ "use" ].ToString() != "sig" ) {
+			if( data.ContainsKey( "use" ) && data[ "use" ] != null && data[ "use" ].ToString() != "sig" ) {
 				result = null;
 				error = "invalid 'use' value in JSON web key: " + data[ "use" ];
 				exception = null;
-				useEncKey = true;
+				useEncKey = data[ "use" ].ToString() == "enc";
 				return false;
 			}
 
@@ -119,7 +124,7 @@ namespace D2L.Security.OAuth2.Keys {
 			}
 
 			string id = data[ "kid" ].ToString();
-			DateTime? expiresAt = null;
+			DateTimeOffset? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
 				if( !long.TryParse( data[ "exp" ].ToString(), out long ts ) ) {
 					result = null;
@@ -128,7 +133,7 @@ namespace D2L.Security.OAuth2.Keys {
 					useEncKey = false;
 					return false;
 				}
-				expiresAt = DateTimeHelpers.FromUnixTime( ts );
+				expiresAt = DateTimeOffset.FromUnixTimeSeconds( ts );
 			}
 
 			switch( data[ "kty" ].ToString() ) {
@@ -219,13 +224,13 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		private static bool HasRsaPrivateKeyMaterial( IReadOnlyDictionary<string, object> data ) {
-			return data.ContainsKey( "d" )
-				|| data.ContainsKey( "p" )
-				|| data.ContainsKey( "q" )
-				|| data.ContainsKey( "dp" )
-				|| data.ContainsKey( "dq" )
-				|| data.ContainsKey( "qi" )
-				|| data.ContainsKey( "oth" );
+			return ( data.ContainsKey( "d" ) && data[ "d" ] != null )
+				|| ( data.ContainsKey( "p" ) && data[ "p" ] != null )
+				|| ( data.ContainsKey( "q" ) && data[ "q" ] != null )
+				|| ( data.ContainsKey( "dp" ) && data[ "dp" ] != null )
+				|| ( data.ContainsKey( "dq" ) && data[ "dq" ] != null )
+				|| ( data.ContainsKey( "qi" ) && data[ "qi" ] != null )
+				|| ( data.ContainsKey( "oth" ) && data[ "oth" ] != null );
 		}
 	}
 

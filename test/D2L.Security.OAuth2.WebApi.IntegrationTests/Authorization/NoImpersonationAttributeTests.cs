@@ -10,33 +10,33 @@ namespace D2L.Security.OAuth2.Authorization {
 		public async Task ServiceToken_OK() {
 			string jwt = await TestUtilities
 				.GetAccessTokenValidForAMinute()
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			await TestUtilities
 				.RunBasicAuthTest( "/authorization/imp", jwt, HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		public async Task UserToken_OK() {
 			string jwt = await TestUtilities
 				.GetAccessTokenValidForAMinute( userId: 1234 )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			await TestUtilities
 				.RunBasicAuthTest( "/authorization/imp", jwt, HttpStatusCode.NoContent )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[Test]
 		public async Task ImpersonationToken_Forbidden() {
 			string jwt = await TestUtilities
 				.GetAccessTokenValidForAMinute( userId: 1234, actualUserId: 1235 )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			await TestUtilities
 				.RunBasicAuthTest( "/authorization/imp", jwt, HttpStatusCode.Forbidden )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 	}
 }

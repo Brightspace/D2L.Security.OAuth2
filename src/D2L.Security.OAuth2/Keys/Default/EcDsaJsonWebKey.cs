@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using D2L.Services;
 
@@ -10,6 +10,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 	/// </summary>
 	internal sealed partial class EcDsaJsonWebKey : JsonWebKey {
 
+		private readonly ECParameters m_parameters;
 		private readonly string m_curve;
 		private readonly string m_x;
 		private readonly string m_y;
@@ -19,13 +20,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// </summary>
 		/// <param name="id">The key id (kid)</param>
 		/// <param name="expiresAt">When the key expires</param>
-		/// <param name="publicBlob">Blob in <see cref="CngKeyBlobFormat.EccPublicBlob"/> format</param>
+		/// <param name="parameters">Curve point definition</param>
 		public EcDsaJsonWebKey(
 			string id,
-			DateTime? expiresAt,
-			byte[] publicBlob
+			DateTimeOffset? expiresAt,
+			ECParameters parameters
 		) : base( id, expiresAt ) {
-			ECCPublicKeyBlobFormatter.Instance.ParsePublicBlob( publicBlob, out m_curve, out m_x, out m_y );
+			m_parameters = parameters;
+			(m_curve, m_x, m_y) = ECParametersHelper.ToJose( parameters );
 		}
 
 		/// <summary>
@@ -38,11 +40,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		/// <param name="y">The y position of the point on the curve</param>
 		public EcDsaJsonWebKey(
 			string id,
-			DateTime? expiresAt,
+			DateTimeOffset? expiresAt,
 			string curve,
 			string x,
 			string y
 		) : base( id, expiresAt ) {
+			m_parameters = ECParametersHelper.FromJose( curve, x, y );
 			m_curve = curve;
 			m_x = x;
 			m_y = y;
@@ -61,7 +64,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					crv = m_curve,
 					x = m_x,
 					y = m_y,
-					exp = ( long )ExpiresAt.Value.TimeSinceUnixEpoch().TotalSeconds
+					exp = ExpiresAt.Value.ToUnixTimeSeconds()
 				};
 			}
 
@@ -75,25 +78,16 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			};
 		}
 
-		private ECDsaCng BuildEcDsaCng() {
-			byte[] publicBlob = ECCPublicKeyBlobFormatter.Instance.BuildECCPublicBlob( this );
-			using( var cng = CngKey.Import( publicBlob, CngKeyBlobFormat.EccPublicBlob ) ) {
-				// ECDsaCng copies the CngKey, hence the using
-				var ecDsa = new ECDsaCng( cng );
-				return ecDsa;
-			}
-		}
-
 		internal override D2LSecurityToken ToSecurityToken() {
 
 			var token = new D2LSecurityToken(
 				id: Id,
-				validFrom: DateTime.UtcNow,
-				validTo: ExpiresAt ?? DateTime.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
+				validFrom: DateTimeOffset.UtcNow,
+				validTo: ExpiresAt ?? DateTimeOffset.UtcNow + Constants.REMOTE_KEY_MAX_LIFETIME,
 				keyFactory: () => {
-					var cng = BuildEcDsaCng();
-					var key = new EcDsaSecurityKey( cng );
-					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, cng );
+					var ecdsa = ECDsa.Create( m_parameters );
+					var key = new ECDsaSecurityKey( ecdsa );
+					return new Tuple<AsymmetricSecurityKey, IDisposable>( key, ecdsa );
 				}
 			);
 

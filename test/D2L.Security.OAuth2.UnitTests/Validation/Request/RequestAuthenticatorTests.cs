@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 using D2L.Security.OAuth2.Principal;
@@ -19,7 +20,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		public async Task TokenInHeader_SuccessCase() {
 			await RunTest(
 				request_authorizationHeader: ACCESS_TOKEN
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -28,7 +29,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 				request_authorizationHeader: string.Empty,
 				expectedExceptionType: null,
 				expected_principalType: PrincipalType.Anonymous
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -36,7 +37,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			await RunTest(
 				request_authorizationHeader: ACCESS_TOKEN,
 				expectedExceptionType: typeof( ExpiredTokenException )
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		private async Task RunTest(
@@ -54,15 +55,18 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			IRequestAuthenticator authenticator = new RequestAuthenticator( tokenValidator );
 
-			var httpRequestMessage = new HttpRequestMessage()
-				.WithAuthHeader( request_authorizationHeader );
+			var httpRequestMessage = new HttpRequestMessage();
+			httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue(
+				"Bearer",
+				request_authorizationHeader
+			);
 
 			ID2LPrincipal principal = null;
 			Exception exception = null;
 			try {
 				principal = await authenticator.AuthenticateAsync(
 					httpRequestMessage
-					).SafeAsync();
+					).ConfigureAwait( false );
 			} catch( Exception e ) {
 				exception = e;
 			}
@@ -75,14 +79,17 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			exception = null;
 
-			HttpRequest httpRequest = RequestBuilder
-				.Create()
-				.WithAuthHeader( request_authorizationHeader );
+			var httpRequest = new HttpRequestMessage();
+
+			httpRequest.Headers.Authorization = new AuthenticationHeaderValue(
+				"Bearer",
+				request_authorizationHeader
+			);
 
 			try {
 				principal = await authenticator.AuthenticateAsync(
 					httpRequest
-				).SafeAsync();
+				).ConfigureAwait( false );
 			} catch( Exception e ) {
 				exception = e;
 			}

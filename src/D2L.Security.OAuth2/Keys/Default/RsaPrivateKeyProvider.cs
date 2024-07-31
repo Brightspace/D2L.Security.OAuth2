@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed partial class RsaPrivateKeyProvider : IPrivateKeyProvider {
@@ -14,6 +15,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_d2lSecurityTokenFactory = d2lSecurityTokenFactory;
 		}
 
+		[GenerateSync]
 		Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			RSAParameters privateKey;
 			using( var csp = new RSACryptoServiceProvider( Constants.GENERATED_RSA_KEY_SIZE ) { PersistKeyInCsp = false } ) {

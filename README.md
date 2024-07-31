@@ -1,8 +1,6 @@
 # D2L.Security.OAuth2
 
-[![Build status](https://ci.appveyor.com/api/projects/status/id5byt9yitcek417/branch/master?svg=true)](https://ci.appveyor.com/project/Brightspace/d2l-security-oauth2/branch/master)
-
-.NET libraries for integrating with Brightspace OAuth 2.0. These libraries implement D2L-specific functionality (like validating access tokens, manipulating scope, etc.) and the `jwt-bearer` grant. Most third-party users should use a cross-platform OAuth 2.0 library of their choosing (see the "Client Libraries" section on [this page](https://oauth.net/code/) for examples.) 
+.NET libraries for integrating with Brightspace OAuth 2.0. These libraries implement D2L-specific functionality (like validating access tokens, manipulating scope, etc.) and the `jwt-bearer` grant. Most third-party users should use a cross-platform OAuth 2.0 library of their choosing (see the "Client Libraries" section on [this page](https://oauth.net/code/) for examples.)
 
 ## Libraries
 

@@ -1,0 +1,19 @@
+﻿<Project>
+	<Import Project="VersionInfo.props" />
+
+	<PropertyGroup>
+		<Authors>D2L</Authors>
+		<Company>D2L Corporation</Company>
+		<Copyright>Copyright © D2L Corporation 2020</Copyright>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+
+		<Product>D2L.Security.OAuth2</Product>
+		<PackageProjectUrl>https://github.com/Brightspace/D2L.Security.OAuth2</PackageProjectUrl>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<LangVersion>11.0</LangVersion>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+		<WarningsAsErrors>CS8785</WarningsAsErrors>
+	</PropertyGroup>
+</Project>

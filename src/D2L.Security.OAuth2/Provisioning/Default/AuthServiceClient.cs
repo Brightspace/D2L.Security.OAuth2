@@ -1,22 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Services;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Services.Core.Exceptions;
-using Newtonsoft.Json;
+
+#if NET6_0
+using JsonPropertyNameAttribute = System.Text.Json.Serialization.JsonPropertyNameAttribute;
+#else
+using JsonPropertyNameAttribute = Newtonsoft.Json.JsonPropertyAttribute;
+#endif
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
 	/// <summary>
 	/// Calls the Auth Service to provision access tokens
 	/// </summary>
-	internal sealed class AuthServiceClient : IAuthServiceClient {
+	[SuppressMessage(
+		"Correctness",
+		"D2L0096:Aliasing attribute class names not supported",
+		Justification = "Newtonsoft.Json.JsonPropertyAttribute is aliased to match System.Text.Json.Serialization.JsonPropertyNameAttribute to reduce duplication below."
+	)]
+	internal sealed partial class AuthServiceClient : IAuthServiceClient {
 
-		private const string TOKEN_PATH = "/connect/token";
+		private const string TOKEN_PATH = "connect/token";
 
 		private const string SERIALIZATION_ERROR_MESSAGE_PREFIX =
 			"An error occurred while parsing the response from the Auth Service. ";
@@ -29,7 +41,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			SERIALIZATION_ERROR_MESSAGE_PREFIX +
 			"The Auth Service responded with: ";
 
-		private readonly HttpClient m_client;
+		private readonly ID2LHttpClient m_client;
 		private readonly Uri m_tokenProvisioningEndpoint;
 
 		/// <summary>
@@ -49,8 +61,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				throw new ArgumentNullException( "authEndpoint" );
 			}
 
-			m_client = httpClient;
-			m_tokenProvisioningEndpoint = new Uri( authEndpoint + TOKEN_PATH );
+			m_client = new D2LHttpClient( httpClient );
+			m_tokenProvisioningEndpoint = authEndpoint.RelativePathAsNonLeaf( TOKEN_PATH );
 		}
 
 		/// <summary>
@@ -63,6 +75,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		/// The auth service could not be reached, or it did not respond with
 		/// a status code indicating success.
 		/// </exception>
+		[GenerateSync]
 		async Task<IAccessToken> IAuthServiceClient.ProvisionAccessTokenAsync(
 			string assertion,
 			IEnumerable<Scope> scopes
@@ -71,7 +84,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			HttpResponseMessage response = null;
 			try {
 				try {
-					response = await MakeRequest( requestBody ).SafeAsync();
+					response = await MakeRequestAsync( requestBody ).ConfigureAwait( false );
 				} catch( TaskCanceledException exception ) {
 					throw new AuthServiceException(
 						errorType: ServiceErrorType.Timeout,
@@ -89,7 +102,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				string json = null;
 				if( response.Content != null ) {
 					try {
-						json = await response.Content.ReadAsStringAsync().SafeAsync();
+						json = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
 					} catch( Exception exception ) {
 						throw new AuthServiceException(
 							errorType: ServiceErrorType.ClientError,
@@ -107,7 +120,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 						errorMessage = response.ReasonPhrase;
 					} else {
 						try {
-							var errorInfo = JsonConvert.DeserializeObject<ErrorResponse>( json );
+							var errorInfo = JsonSerializer.Deserialize<ErrorResponse>( json );
+							errorInfo.Validate();
 							errorMessage = string.Concat( errorInfo.Title, ": ", errorInfo.Detail );
 						} catch( Exception ) {
 							errorMessage = string.Concat( response.ReasonPhrase, ": ", json );
@@ -129,7 +143,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				}
 
 				try {
-					var grant = JsonConvert.DeserializeObject<GrantResponse>( json );
+					var grant = JsonSerializer.Deserialize<GrantResponse>( json );
+					grant.Validate();
 					return new AccessToken( grant.Token );
 				} catch( Exception exception ) {
 					throw new AuthServiceException(
@@ -139,11 +154,14 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 					);
 				}
 			} finally {
-				response.SafeDispose();
+				if( response != null ) {
+					response.Dispose();
+				}
 			}
 		}
 
-		private Task<HttpResponseMessage> MakeRequest( string body ) {
+		[GenerateSync]
+		private Task<HttpResponseMessage> MakeRequestAsync( string body ) {
 			var request = new HttpRequestMessage( HttpMethod.Post, m_tokenProvisioningEndpoint );
 			request.Content = new StringContent( body, Encoding.UTF8, "application/x-www-form-urlencoded" );
 
@@ -167,16 +185,32 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		private sealed class GrantResponse {
-			[JsonProperty( PropertyName = "access_token", Required = Required.Always )]
+			[JsonPropertyName( "access_token" )]
 			public string Token { get; set; }
+
+			internal void Validate() {
+				if ( Token == null ) {
+					throw new Exception( "Missing property: access_token" );
+				}
+			}
 		}
 
 		private sealed class ErrorResponse {
-			[JsonProperty( PropertyName = "error", Required = Required.Always )]
+			[JsonPropertyName( "error" )]
 			public string Title { get; set; }
 
-			[JsonProperty( PropertyName = "error_description", Required = Required.Always )]
+			[JsonPropertyName( "error_description" )]
 			public string Detail { get; set; }
+
+			internal void Validate() {
+				if ( Title == null ) {
+					throw new Exception( "Missing property: error" );
+				}
+
+				if ( Detail == null ) {
+					throw new Exception( "Missing property: error_description" );
+				}
+			}
 		}
 	}
 }

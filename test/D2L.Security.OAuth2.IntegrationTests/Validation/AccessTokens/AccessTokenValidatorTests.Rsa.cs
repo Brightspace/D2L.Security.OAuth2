@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.TestFramework;
 using D2L.Security.OAuth2.Validation.Exceptions;
-using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			public void TestFixtureSetUp() {
 				m_authService = new AuthServiceMock();
 				m_accessTokenValidator = AccessTokenValidatorFactory.CreateRemoteValidator(
-					new HttpClient(),
+					new HttpClient( m_authService.MockHandler ),
 					new Uri( m_authService.Host, ".well-known/jwks" )
 				);
 
@@ -29,7 +29,9 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			[OneTimeTearDown]
 			public void TestFixtureTearDown() {
-				m_authService.SafeDispose();
+				if( m_authService != null ) {
+					m_authService.Dispose();
+				}
 			}
 
 			[Test]
@@ -42,18 +44,15 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 						new Dictionary<string, object> { { "sub", SUBJECT } },
 						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
 						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				IAccessToken accessToken = await m_accessTokenValidator
 					.ValidateAsync( token )
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				Assert.IsNotNull( accessToken );
-				accessToken.Claims.TryGetClaim( "sub", out string subject );
-				accessToken.Claims.TryGetClaim( "fakeclaim", out string fakeclaim );
-
-				Assert.AreEqual( SUBJECT, subject );
-				Assert.IsNull( fakeclaim );
+				Assert.AreEqual( SUBJECT, accessToken.Claims.Single( c => c.Type == "sub" ).Value );
+				Assert.IsFalse( accessToken.Claims.Any( c => c.Type == "fakeclaim" ) );
 			}
 
 			[Test]
@@ -65,14 +64,14 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 						new Dictionary<string, object>(),
 						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
 						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				token += "abcd";
 
 				Assert.Throws<ValidationException>( () => {
 					var response = m_accessTokenValidator
 						.ValidateAsync( token )
-						.SafeAsync()
+						.ConfigureAwait( false )
 						.GetAwaiter()
 						.GetResult();
 				} );
@@ -86,7 +85,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				var e = Assert.Throws<PublicKeyNotFoundException>( () => {
 					var response = m_accessTokenValidator
 						.ValidateAsync( jwtWithBadKeyId )
-						.SafeWait();
+						.ConfigureAwait( false ).GetAwaiter().GetResult();
 				} );
 
 				StringAssert.Contains( "00000000-0000-0000-0000-000000000000", e.Message );

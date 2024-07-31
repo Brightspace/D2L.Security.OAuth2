@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				var assertion = "123";
 				var result = await client
 					.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() )
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				var parameters = requestBody
 					.Split( '&' )
@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 					.ProvisionAccessTokenAsync( assertion, new Scope[] {
 						new Scope( "foo", "bar", "baz" )
 					} )
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				var parameters = requestBody
 					.Split( '&' )
@@ -76,7 +76,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 						new Scope( "foo", "bar", "baz" ),
 						new Scope( "quux", "mrr", "rawr" )
 					} )
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				var parameters = requestBody
 					.Split( '&' )
@@ -96,7 +96,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				var assertion = "123";
 				var result = await client
 					.ProvisionAccessTokenAsync( assertion, Enumerable.Empty<Scope>() )
-					.SafeAsync();
+					.ConfigureAwait( false );
 
 				Assert.AreEqual( "mrrrrrr", result.Token );
 			}

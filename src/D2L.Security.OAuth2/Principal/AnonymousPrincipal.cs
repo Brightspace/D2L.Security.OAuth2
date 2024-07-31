@@ -4,8 +4,10 @@ using System.Linq;
 using System.Security.Claims;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Validation.AccessTokens;
+using static D2L.CodeStyle.Annotations.Objects;
 
 namespace D2L.Security.OAuth2.Principal {
+	[Immutable]
 	internal sealed class AnonymousPrincipal : ID2LPrincipal {
 
 		private static readonly IAccessToken ANONYMOUS_ACCESS_TOKEN = new AnonymousAccessToken();
@@ -34,6 +36,7 @@ namespace D2L.Security.OAuth2.Principal {
 			get { return ANONYMOUS_ACCESS_TOKEN; }
 		}
 
+		[Immutable]
 		private class AnonymousAccessToken : IAccessToken {
 
 			string IAccessToken.Id {

@@ -1,5 +1,6 @@
 ﻿using System;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.TestUtilities;
@@ -9,6 +10,7 @@ using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 using Moq;
 using NUnit.Framework;
+using Microsoft.IdentityModel.Logging;
 
 namespace D2L.Security.OAuth2.Validation {
 	[TestFixture]
@@ -21,7 +23,7 @@ namespace D2L.Security.OAuth2.Validation {
 			IAccessTokenValidator accessTokenValidator = new AccessTokenValidator( publicKeyProvider );
 
 			Assert.Throws<ValidationException>( () =>
-				accessTokenValidator.ValidateAsync( "garbage" ).SafeAsync().GetAwaiter().GetResult()
+				accessTokenValidator.ValidateAsync( "garbage" ).ConfigureAwait( false ).GetAwaiter().GetResult()
 			);
 		}
 
@@ -31,7 +33,7 @@ namespace D2L.Security.OAuth2.Validation {
 				signJwt: false,
 				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 ),
 				expectedExceptionType: typeof( InvalidTokenException )
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -40,7 +42,7 @@ namespace D2L.Security.OAuth2.Validation {
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddSeconds( -301 ),
 				expectedExceptionType: typeof( ExpiredTokenException )
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -49,7 +51,7 @@ namespace D2L.Security.OAuth2.Validation {
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddMonths( -2 ),
 				expectedExceptionType: typeof( ExpiredTokenException )
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -58,7 +60,7 @@ namespace D2L.Security.OAuth2.Validation {
 			await RunTest(
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddSeconds( -295 )
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		[Test]
@@ -66,7 +68,7 @@ namespace D2L.Security.OAuth2.Validation {
 			await RunTest(
 				signJwt: true,
 				jwtExpiry: DateTime.UtcNow.AddSeconds( 10 )
-			).SafeAsync();
+			).ConfigureAwait( false );
 		}
 
 		private async Task RunTest(
@@ -105,7 +107,7 @@ namespace D2L.Security.OAuth2.Validation {
 			try {
 				accessToken = await tokenValidator.ValidateAsync(
 					accessToken: serializedJwt
-				).SafeAsync();
+				).ConfigureAwait( false );
 			} catch( Exception e ) {
 				exception = e;
 			}

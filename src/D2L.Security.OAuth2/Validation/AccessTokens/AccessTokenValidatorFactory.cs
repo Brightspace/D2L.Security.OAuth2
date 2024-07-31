@@ -4,6 +4,7 @@ using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Default.Data;
+using D2L.Security.OAuth2.Utilities;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
 

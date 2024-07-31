@@ -19,7 +19,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 
 		[Test]
 		public async Task GetById_NoKeys_ReturnsNull() {
-			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid() ).SafeAsync();
+			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid() ).ConfigureAwait( false );
 
 			Assert.IsNull( key );
 		}
@@ -28,9 +28,9 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		public async Task GetById_IncorrectId_ReturnsKey() {
 			var id = Guid.NewGuid();
 			var dummyKey = new JsonWebKeyStub( id.ToString() );
-			await m_publicKeyDataProvider.SaveAsync( id, dummyKey ).SafeAsync();
+			await m_publicKeyDataProvider.SaveAsync( id, dummyKey ).ConfigureAwait( false );
 
-			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid() ).SafeAsync();
+			var key = await m_publicKeyDataProvider.GetByIdAsync( Guid.NewGuid() ).ConfigureAwait( false );
 
 			Assert.IsNull( key );
 		}
@@ -39,9 +39,9 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		public async Task GetById_CorrectId_ReturnsKey() {
 			var expectedId = Guid.NewGuid();
 			var expectedKey = new JsonWebKeyStub( expectedId.ToString() );
-			await m_publicKeyDataProvider.SaveAsync( expectedId, expectedKey ).SafeAsync();
+			await m_publicKeyDataProvider.SaveAsync( expectedId, expectedKey ).ConfigureAwait( false );
 
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).SafeAsync();
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).ConfigureAwait( false );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
 			Assert.AreEqual( expectedKey.ExpiresAt, actualKey.ExpiresAt );
@@ -51,11 +51,11 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		public async Task GetById_CorrectIdWithOthers_ReturnsKey() {
 			var expectedId = Guid.NewGuid();
 			var expectedKey = new JsonWebKeyStub( expectedId.ToString() );
-			await m_publicKeyDataProvider.SaveAsync( expectedId, expectedKey ).SafeAsync();
+			await m_publicKeyDataProvider.SaveAsync( expectedId, expectedKey ).ConfigureAwait( false );
 			var dummyKey = new JsonWebKeyStub( Guid.NewGuid().ToString() );
-			await m_publicKeyDataProvider.SaveAsync( new Guid( dummyKey.Id ), dummyKey ).SafeAsync();
+			await m_publicKeyDataProvider.SaveAsync( new Guid( dummyKey.Id ), dummyKey ).ConfigureAwait( false );
 
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).SafeAsync();
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).ConfigureAwait( false );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
 			Assert.AreEqual( expectedKey.ExpiresAt, actualKey.ExpiresAt );
@@ -63,7 +63,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 
 		[Test]
 		public async Task GetAll_NoKeys_Empty() {
-			var keys = await m_publicKeyDataProvider.GetAllAsync().SafeAsync();
+			var keys = await m_publicKeyDataProvider.GetAllAsync().ConfigureAwait( false );
 
 			Assert.IsEmpty( keys );
 		}
@@ -78,10 +78,10 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			};
 
 			foreach( var key in expected ) {
-				await m_publicKeyDataProvider.SaveAsync( new Guid( key.Id ), key ).SafeAsync();
+				await m_publicKeyDataProvider.SaveAsync( new Guid( key.Id ), key ).ConfigureAwait( false );
 			}
 
-			var actual = await m_publicKeyDataProvider.GetAllAsync().SafeAsync();
+			var actual = await m_publicKeyDataProvider.GetAllAsync().ConfigureAwait( false );
 
 			CollectionAssert.AreEquivalent(
 				expected.Select( k => k.Id ),
@@ -92,7 +92,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		public async Task SaveAsync_DoubleSave_ThrowsException() {
 			var id = Guid.NewGuid();
 			var key = new JsonWebKeyStub( id.ToString() );
-			await m_publicKeyDataProvider.SaveAsync( id, key ).SafeAsync();
+			await m_publicKeyDataProvider.SaveAsync( id, key ).ConfigureAwait( false );
 
 			Assert.Throws<InvalidOperationException>( () => m_publicKeyDataProvider.SaveAsync( id, key ).Wait() );
 		}
@@ -106,9 +106,9 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		public async Task DeleteAsync_DoesntDeleteOtherKey() {
 			var expectedId = Guid.NewGuid();
 			var expectedKey = new JsonWebKeyStub( expectedId.ToString() );
-			await m_publicKeyDataProvider.SaveAsync( expectedId, expectedKey ).SafeAsync();
+			await m_publicKeyDataProvider.SaveAsync( expectedId, expectedKey ).ConfigureAwait( false );
 			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( Guid.NewGuid() ).Wait() );
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).SafeAsync();
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).ConfigureAwait( false );
 
 			Assert.IsNotNull( actualKey );
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
@@ -119,7 +119,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			var expectedId = Guid.NewGuid();
 			var expectedKey = new JsonWebKeyStub( expectedId.ToString() );
 			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( expectedId ).Wait() );
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).SafeAsync();
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).ConfigureAwait( false );
 
 			Assert.IsNull( actualKey );
 		}
@@ -130,7 +130,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 			var expectedKey = new JsonWebKeyStub( expectedId.ToString() );
 			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( expectedId ).Wait() );
 			Assert.DoesNotThrow( () => m_publicKeyDataProvider.DeleteAsync( expectedId ).Wait() );
-			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).SafeAsync();
+			var actualKey = await m_publicKeyDataProvider.GetByIdAsync( expectedId ).ConfigureAwait( false );
 
 			Assert.IsNull( actualKey );
 		}

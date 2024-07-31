@@ -1,16 +1,11 @@
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
-
-#if !DNXCORE50
-using System.Web;
-#endif
-
-using D2L.Services;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Principal;
 using D2L.Security.OAuth2.Validation.AccessTokens;
 
 namespace D2L.Security.OAuth2.Validation.Request {
-	internal sealed class RequestAuthenticator : IRequestAuthenticator {
+	internal sealed partial class RequestAuthenticator : IRequestAuthenticator {
 
 		private static readonly ID2LPrincipal ANONYMOUS_PRINCIPAL = new AnonymousPrincipal();
 
@@ -20,25 +15,17 @@ namespace D2L.Security.OAuth2.Validation.Request {
 			m_accessTokenValidator = accessTokenValidator;
 		}
 
+		[GenerateSync]
 		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
 			HttpRequestMessage request
 		) {
 			string bearerToken = request.GetBearerTokenValue();
 
-			return AuthenticateHelper( bearerToken );
+			return AuthenticateAsync( bearerToken );
 		}
 
-#if !DNXCORE50
-		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
-			HttpRequest request
-		) {
-			string bearerToken = request.GetBearerTokenValue();
-
-			return AuthenticateHelper( bearerToken );
-		}
-#endif
-
-		private async Task<ID2LPrincipal> AuthenticateHelper(
+		[GenerateSync]
+		public async Task<ID2LPrincipal> AuthenticateAsync(
 			string bearerToken
 		) {
 			if( string.IsNullOrEmpty( bearerToken ) ) {
@@ -47,7 +34,7 @@ namespace D2L.Security.OAuth2.Validation.Request {
 
 			IAccessToken accessToken = await m_accessTokenValidator
 				.ValidateAsync( bearerToken )
-				.SafeAsync();
+				.ConfigureAwait( false );
 
 			ID2LPrincipal principal = new D2LPrincipal( accessToken );
 

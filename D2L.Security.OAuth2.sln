@@ -1,28 +1,35 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2", "src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj", "{676FB8C0-D021-475E-941B-03BE21769294}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2", "src\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj", "{676FB8C0-D021-475E-941B-03BE21769294}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi", "src\D2L.Security.OAuth2.WebApi\D2L.Security.OAuth2.WebApi.csproj", "{C9140879-73E6-4767-B12B-17581793E419}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.WebApi", "src\D2L.Security.OAuth2.WebApi\D2L.Security.OAuth2.WebApi.csproj", "{C9140879-73E6-4767-B12B-17581793E419}"
 	ProjectSection(ProjectDependencies) = postProject
 		{676FB8C0-D021-475E-941B-03BE21769294} = {676FB8C0-D021-475E-941B-03BE21769294}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.TestFramework", "src\D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj", "{F10655CB-E66D-4DF7-8991-10C26C8FAF18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.TestFramework", "src\D2L.Security.OAuth2.TestFramework\D2L.Security.OAuth2.TestFramework.csproj", "{F10655CB-E66D-4DF7-8991-10C26C8FAF18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{731C8174-3528-40CD-AE98-F21CB7763FD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.UnitTests", "test\D2L.Security.OAuth2.UnitTests\D2L.Security.OAuth2.UnitTests.csproj", "{95CE1314-E961-4C64-B410-43903BD3A04C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.UnitTests", "test\D2L.Security.OAuth2.UnitTests\D2L.Security.OAuth2.UnitTests.csproj", "{95CE1314-E961-4C64-B410-43903BD3A04C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.IntegrationTests", "test\D2L.Security.OAuth2.IntegrationTests\D2L.Security.OAuth2.IntegrationTests.csproj", "{F5667A7E-955D-4402-86C4-8DFB65768AE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.IntegrationTests", "test\D2L.Security.OAuth2.IntegrationTests\D2L.Security.OAuth2.IntegrationTests.csproj", "{F5667A7E-955D-4402-86C4-8DFB65768AE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi.UnitTests", "test\D2L.Security.OAuth2.WebApi.UnitTests\D2L.Security.OAuth2.WebApi.UnitTests.csproj", "{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.WebApi.UnitTests", "test\D2L.Security.OAuth2.WebApi.UnitTests\D2L.Security.OAuth2.WebApi.UnitTests.csproj", "{EC9FFA3D-76C9-495F-AE35-7EE1BEE5BC54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.WebApi.IntegrationTests", "test\D2L.Security.OAuth2.WebApi.IntegrationTests\D2L.Security.OAuth2.WebApi.IntegrationTests.csproj", "{AAEEDF67-9ACD-4316-8570-77BABFC7F235}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.WebApi.IntegrationTests", "test\D2L.Security.OAuth2.WebApi.IntegrationTests\D2L.Security.OAuth2.WebApi.IntegrationTests.csproj", "{AAEEDF67-9ACD-4316-8570-77BABFC7F235}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "D2L.Security.OAuth2.Benchmarks", "test\D2L.Security.OAuth2.Benchmarks\D2L.Security.OAuth2.Benchmarks.csproj", "{32C50F4A-03AE-4C99-9108-3AD518729410}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.Benchmarks", "test\D2L.Security.OAuth2.Benchmarks\D2L.Security.OAuth2.Benchmarks.csproj", "{32C50F4A-03AE-4C99-9108-3AD518729410}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A39E5923-3238-4E59-9E65-45EB5BA2ED19}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Build.props = Directory.Build.props
+		Packages.props = Packages.props
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

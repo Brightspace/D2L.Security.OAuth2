@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using D2L.Services;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Authorization {
@@ -11,7 +10,7 @@ namespace D2L.Security.OAuth2.Authorization {
 		[Test]
 		public async Task Default_NoAuthentication_403() {
 			await TestUtilities.RunBasicAuthTest( "/allowfrom/default", HttpStatusCode.Unauthorized )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 
 		[TestCase( "default", 0, "wrong:scope:ok", HttpStatusCode.Unauthorized, TestName = "default, a service with the wrong scope fails" )]
@@ -30,10 +29,10 @@ namespace D2L.Security.OAuth2.Authorization {
 			string jwt = await TestUtilities.GetAccessTokenValidForAMinute(
 				userId: userId == 0 ? ( long? )null : userId,
 				scope: scope
-			).SafeAsync();
+			).ConfigureAwait( false );
 
 			await TestUtilities.RunBasicAuthTest( "/allowfrom/" + route, jwt, expectedStatusCode )
-				.SafeAsync();
+				.ConfigureAwait( false );
 		}
 	}
 }

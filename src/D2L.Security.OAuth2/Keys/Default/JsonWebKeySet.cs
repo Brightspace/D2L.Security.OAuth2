@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using D2L.Security.OAuth2.Utilities;
-using Newtonsoft.Json;
+
+#if NET6_0
+using JsonException = System.Text.Json.JsonException;
+#else
+using JsonException = Newtonsoft.Json.JsonReaderException;
+#endif
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class JsonWebKeySet {
@@ -12,20 +18,30 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			Source = src ?? throw new ArgumentNullException( nameof( src ) );
 
 			try {
-				var data = JsonConvert.DeserializeObject<Dictionary<string, List<object>>>( json );
+				var data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
 
 				if( !data.ContainsKey( "keys" ) ) {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
 				}
 
-				List<object> keyObjects = data["keys"];
+				#if NET6_0
+				System.Text.Json.JsonElement keysElement = ( System.Text.Json.JsonElement )data["keys"];
+				if ( keysElement.ValueKind is not System.Text.Json.JsonValueKind.Array ) {
+					throw new JsonWebKeyParseException("invalid json web key set: keys not an array");
+				}
+				List<System.Text.Json.JsonElement> keyObjects = keysElement.EnumerateArray().ToList();
+				#else
+				if ( data["keys"] is not IEnumerable<object> keyObjects ) {
+					throw new JsonWebKeyParseException( "invalid json web key set: keys not an array" );
+				}
+				#endif
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>(
 					initialCapacity: keyObjects.Count
 				);
 
 				foreach( object keyObject in keyObjects ) {
-					string keyJson = JsonConvert.SerializeObject( keyObject );
+					string keyJson = JsonSerializer.Serialize( keyObject );
 
 					if( !JsonWebKey.TryParseJsonWebKey( keyJson, out var key, out var error, out var exception, out var useEncKey ) ) {
 						if( useEncKey ) {
@@ -41,7 +57,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				m_keys = builder.ToImmutable();
 			} catch( InvalidOperationException e ) {
 				throw new JsonWebKeyParseException( "error parsing jwks", e );
-			} catch( JsonReaderException e ) {
+			} catch( JsonException e ) {
 				throw new JsonWebKeyParseException( "Couldn't deserialize jwks from: " + json, e );
 			}
 

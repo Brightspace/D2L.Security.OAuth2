@@ -26,7 +26,9 @@ namespace D2L.Security.OAuth2 {
 
 		[OneTimeTearDown]
 		public void AfterAllTests() {
-			m_disposeHandle.SafeDispose();
+			if( m_disposeHandle != null ) {
+				m_disposeHandle.Dispose();
+			}
 		}
 
 		public static HttpClient GetHttpClient() {

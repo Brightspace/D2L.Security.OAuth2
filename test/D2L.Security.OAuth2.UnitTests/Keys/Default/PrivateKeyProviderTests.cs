@@ -22,10 +22,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[SetUp]
 		public void SetUp() {
 			m_mockPublicKeyDataProvider = new Mock<ISanePublicKeyDataProvider>( MockBehavior.Strict );
-			m_mockPublicKeyDataProvider.Setup( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ) ).Returns( Task.Delay( 0 ) );
+			m_mockPublicKeyDataProvider.Setup( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ) ).Returns( Task.CompletedTask );
 
 			m_mockDateTimeProvider = new Mock<IDateTimeProvider>();
-			m_mockDateTimeProvider.Setup( dp => dp.UtcNow ).Returns( () => DateTime.UtcNow );
+			m_mockDateTimeProvider.Setup( dp => dp.UtcNow ).Returns( () => DateTimeOffset.UtcNow );
 
 			m_privateKeyProvider = RsaPrivateKeyProvider.Factory.Create(
 				m_mockPublicKeyDataProvider.Object,
@@ -37,7 +37,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[Test]
 		public async Task GetSigningCredentialsAsync_FirstCall_CreatesAndReturnsKey() {
-			D2LSecurityToken key = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityToken key = await m_privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Once() );
 
@@ -49,13 +49,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[TestCase( ( KEY_LIFETIME_SECONDS - ROTATION_PERIOD_SECONDS ) / 2 )]
 		[TestCase( KEY_LIFETIME_SECONDS - ROTATION_PERIOD_SECONDS - 1 )]
 		public async Task GetSigningCredentialsAsync_SecondCallShortlyAfter_ReturnsSameKey( long offsetSeconds ) {
-			DateTime now = DateTime.UtcNow;
+			DateTimeOffset now = DateTimeOffset.UtcNow;
 
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now );
-			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now + TimeSpan.FromSeconds( offsetSeconds ) );
-			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Once() );
 
@@ -69,16 +69,16 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[TestCase( ROTATION_PERIOD_SECONDS )]
 		[TestCase( ROTATION_PERIOD_SECONDS + 1 )]
 		public async Task GetSigningCredentialsAsync_KeyDuringOrAfterRotationPeriod_ReturnsNewKey( long offsetSeconds ) {
-			DateTime now = DateTime.UtcNow;
+			DateTimeOffset now = DateTimeOffset.UtcNow;
 
 			m_mockDateTimeProvider.Setup( dtp => dtp.UtcNow ).Returns( now );
-			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityToken key1 = await m_privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 
 			m_mockDateTimeProvider
 				.Setup( dtp => dtp.UtcNow )
 				.Returns( now + KEY_LIFETIME - ROTATION_PERIOD + TimeSpan.FromSeconds( offsetSeconds ) );
 
-			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().SafeAsync();
+			D2LSecurityToken key2 = await m_privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Exactly( 2 ) );
 
@@ -96,7 +96,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				.Select( _ => Task.Run( () => m_privateKeyProvider.GetSigningCredentialsAsync() ) )
 				.ToList();
 
-			IEnumerable<D2LSecurityToken> keys = await Task.WhenAll( tasks ).SafeAsync();
+			IEnumerable<D2LSecurityToken> keys = await Task.WhenAll( tasks ).ConfigureAwait( false );
 
 			m_mockPublicKeyDataProvider.Verify( pkdp => pkdp.SaveAsync( It.IsAny<Guid>(), It.IsAny<JsonWebKey>() ), Times.Once() );
 			var ids = keys.Select( k => k.KeyId ).ToList();

@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
+using D2L.CodeStyle.Annotations;
 
 #if DNXCORE50
 using System.IdentityModel.Tokens.Jwt;
 #endif
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
-	internal sealed class AccessTokenValidator : IAccessTokenValidator {
+	internal sealed partial class AccessTokenValidator : IAccessTokenValidator {
 		internal static readonly ImmutableHashSet<string> ALLOWED_SIGNATURE_ALGORITHMS = ImmutableHashSet.Create(
-			"RS256",
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha256Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha384Signature,
-			EcDsaSecurityKey.SupportedSecurityAlgorithms.ECDsaSha512Signature
+			SecurityAlgorithms.RsaSha256,
+			SecurityAlgorithms.EcdsaSha256,
+			SecurityAlgorithms.EcdsaSha384,
+			SecurityAlgorithms.EcdsaSha512
 		);
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
@@ -32,6 +34,10 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_publicKeyProvider = publicKeyProvider;
 		}
 
+		[GenerateSync]
+		Task IAccessTokenValidator.PrefetchAsync() => m_publicKeyProvider.PrefetchAsync();
+
+		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
@@ -60,15 +66,17 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 
 			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
 
-			D2LSecurityToken signingToken = await m_publicKeyProvider
+			using D2LSecurityToken signingKey = ( await m_publicKeyProvider
 				.GetByIdAsync( keyId )
-				.SafeAsync();
+				.ConfigureAwait( false )
+			).Ref();
 
 			var validationParameters = new TokenValidationParameters() {
 				ValidateAudience = false,
 				ValidateIssuer = false,
 				RequireSignedTokens = true,
-				IssuerSigningToken = signingToken
+				IssuerSigningKey = signingKey,
+				CryptoProviderFactory = new D2LCryptoProviderFactory()
 			};
 
 			IAccessToken accessToken;

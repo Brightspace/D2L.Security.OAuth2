@@ -4,33 +4,42 @@ using System.Linq;
 using System.Net.Http;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
-using D2L.Security.OAuth2.TestFrameworks;
+using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.AccessTokens;
-using D2L.Services;
 using Newtonsoft.Json;
+using RichardSzalay.MockHttp;
 
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 	internal abstract class FullStackValidationBenchmark : IBenchmark {
+
+		private HttpClient m_httpClient;
+
+		void IDisposable.Dispose() {
+			m_httpClient.Dispose();
+			m_httpClient = null;
+		}
+
 		Action IBenchmark.GetRunner() {
 			SetUp( out Uri host, out string token, out string id );
 
 			IAccessTokenValidator validator = AccessTokenValidatorFactory.CreateRemoteValidator(
-				new HttpClient(),
+				m_httpClient,
 				host,
 				null
 			);
 
 			return delegate {
-				validator.ValidateAsync( token ).SafeAsync().GetAwaiter().GetResult();
+				validator.ValidateAsync( token ).ConfigureAwait( false ).GetAwaiter().GetResult();
 			};
 		}
 
 		protected abstract ITokenSigner GetTokenSigner( IPublicKeyDataProvider p );
 
 		private void SetUp( out Uri host, out string token, out string id ) {
-			var server = HttpMockFactory.Create( out string hostStr );
+			var mockHandler = new MockHttpMessageHandler();
+			m_httpClient = new HttpClient( mockHandler );
 
-			host = new Uri( hostStr + "/.well-known/jwks" );
+			host = new Uri( "http://localhost/.well-known/jwks" );
 
 #pragma warning disable 618
 			IPublicKeyDataProvider publicKeyDataProvider = new InMemoryPublicKeyDataProvider();
@@ -45,23 +54,22 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 					DateTime.Now,
 					DateTime.Now + TimeSpan.FromDays( 1 )
 				) )
-				.SafeAsync()
+				.ConfigureAwait( false )
 				.GetAwaiter()
 				.GetResult();
 
 			var jwk = publicKeyDataProvider
 				.GetAllAsync()
-				.SafeAsync()
+				.ConfigureAwait( false )
 				.GetAwaiter()
 				.GetResult()
 				.First();
 
 			id = jwk.Id;
 
-			server
-				.Stub( r => r.Get( "/.well-known/jwks" ) )
-				.Return( JsonConvert.SerializeObject( new { keys = new object[] { jwk.ToJwkDto() } } ) )
-				.OK();
+			mockHandler
+				.When( "http://localhost/.well-known/jwks" )
+				.Respond( "application/json", JsonConvert.SerializeObject( new { keys = new object[] { jwk.ToJwkDto() } } ) );
 		}
 	}
 }

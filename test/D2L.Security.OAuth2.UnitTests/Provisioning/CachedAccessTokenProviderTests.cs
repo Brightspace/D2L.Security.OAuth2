@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Provisioning.Default;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Services;
 using Moq;
 using NUnit.Framework;
 
@@ -50,12 +49,12 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( false, null ) ) );
 			m_serviceTokenCacheMock.Setup( x => x.SetAsync( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>() ) )
-				.Returns( Task.FromResult( 0 ) );
+				.Returns( Task.CompletedTask );
 
 			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).SafeAsync();
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
 			Assert.AreEqual( accessToken.Token, token.Token );
 		}
 
@@ -68,7 +67,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).SafeAsync();
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -80,7 +79,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken( tokenExpiryInSeconds: 60 ) ) ) );
 			m_serviceTokenCacheMock.Setup( x => x.SetAsync( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>() ) )
-				.Returns( Task.FromResult( 0 ) );
+				.Returns( Task.CompletedTask );
 
 			m_accessTokenProviderMock.Setup( x => x.ProvisionAccessTokenAsync( m_claims, m_scopes ) )
 				.Returns( Task.FromResult( accessToken ) );
@@ -89,7 +88,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( gracePeriodThatIsBiggerThanTimeToExpiry );
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).SafeAsync();
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -103,7 +102,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 
 			Claim userClaim = new Claim( Constants.Claims.USER_ID, "user" );
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( new[] { userClaim }, m_scopes, m_userTokenCacheMock.Object ).SafeAsync();
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( new[] { userClaim }, m_scopes, m_userTokenCacheMock.Object ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -116,7 +115,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).SafeAsync();
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -132,7 +131,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 
 			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( claimSet, Enumerable.Empty<Scope>(), m_serviceTokenCacheMock.Object ).SafeAsync();
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( claimSet, Enumerable.Empty<Scope>(), m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -150,7 +149,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			) {
 
 			string userClaim = specifyUserClaim ? ",\"sub\": \"169\"" : string.Empty;
-			long expiry = ( long )DateTime.UtcNow.AddSeconds( tokenExpiryInSeconds ).TimeSinceUnixEpoch().TotalSeconds;
+			long expiry = DateTimeOffset.UtcNow.AddSeconds( tokenExpiryInSeconds ).ToUnixTimeSeconds();
 
 			const string part1 = "{\"alg\": \"RS256\",\"typ\": \"JWT\"}";
 			string part2 = string.Format( "{{\"exp\": \"{0}\"{1}}}", expiry, userClaim );
