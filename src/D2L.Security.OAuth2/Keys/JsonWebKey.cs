@@ -1,5 +1,8 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using D2L.Security.OAuth2.Keys.Default;
 
 #if NET6_0
@@ -60,32 +63,66 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <param name="json">The json JWK</param>
 		/// <returns>A <see cref="JsonWebKey"/></returns>
 		public static JsonWebKey FromJson( string json ) {
+			if( !TryParseJsonWebKey( json, out var result, out var error, out var e, out _ ) ) {
+				throw new JsonWebKeyParseException( error, e );
+			}
+
+			return result;
+		}
+
+		public static bool TryParseJsonWebKey(
+			string json,
+			[NotNullWhen( true )]
+			out JsonWebKey? result,
+			[NotNullWhen( false )]
+			out string? error,
+			out Exception? exception,
+			out bool useEncKey
+		) {
 			Dictionary<string, object> data;
 			try {
 				data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
 			} catch ( JsonException e ) {
-				throw new JsonWebKeyParseException( "error deserializing JSON web key string", e );
+				result = null;
+				error = "error deserializing JSON web key string";
+				exception = e;
+				useEncKey = false;
+				return false;
 			}
 
 			if( data.ContainsKey( "use" ) && data[ "use" ] != null && data[ "use" ].ToString() != "sig" ) {
-				string msg = String.Format( "invalid 'use' value in JSON web key: {0}", data[ "use" ] );
-				throw new JsonWebKeyParseException( msg );
+				result = null;
+				error = "invalid 'use' value in JSON web key: " + data[ "use" ];
+				exception = null;
+				useEncKey = data[ "use" ].ToString() == "enc";
+				return false;
 			}
 
 			if( !data.ContainsKey( "kty" ) ) {
-				throw new JsonWebKeyParseException( "missing 'kty' parameter in JSON web key" );
+				result = null;
+				error = "missing 'kty' parameter in JSON web key";
+				exception = null;
+				useEncKey = false;
+				return false;
 			}
 
 			if( !data.ContainsKey( "kid" ) ) {
-				throw new JsonWebKeyParseException( "missing 'kid' parameter in JSON web key" );
+				result = null;
+				error = "missing 'kid' parameter in JSON web key";
+				exception = null;
+				useEncKey = false;
+				return false;
 			}
 
 			string id = data[ "kid" ].ToString();
 			DateTimeOffset? expiresAt = null;
 			if( data.ContainsKey( "exp" ) ) {
 				if( !long.TryParse( data[ "exp" ].ToString(), out long ts ) ) {
-					string msg = String.Format( "invalid 'exp' value in JSON web key: {0}", data[ "exp" ] );
-					throw new JsonWebKeyParseException( msg );
+					result = null;
+					error = "invalid 'exp' value in JSON web key: " + data[ "exp" ];
+					exception = null;
+					useEncKey = false;
+					return false;
 				}
 				expiresAt = DateTimeOffset.FromUnixTimeSeconds( ts );
 			}
@@ -93,38 +130,68 @@ namespace D2L.Security.OAuth2.Keys {
 			switch( data[ "kty" ].ToString() ) {
 				case "RSA":
 					if( !data.ContainsKey( "n" ) ) {
-						throw new JsonWebKeyParseException( "missing 'n' parameter in RSA JSON web key" );
+						result = null;
+						error = "missing 'n' parameter in RSA JSON web key";
+						exception = null;
+						useEncKey = false;
+						return false;
 					}
 
 					if( !data.ContainsKey( "e" ) ) {
-						throw new JsonWebKeyParseException( "missing 'e' parameter in RSA JSON web key" );
+						result = null;
+						error = "missing 'e' parameter in RSA JSON web key";
+						exception = null;
+						useEncKey = false;
+						return false;
 					}
 
 					if( HasRsaPrivateKeyMaterial( data ) ) {
-						throw new JsonWebKeyParseException( "RSA JSON web key has private key material" );
+						result = null;
+						error = "RSA JSON web key has private key material";
+						exception = null;
+						useEncKey = false;
+						return false;
 					}
 
-					return new RsaJsonWebKey(
+					result = new RsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
 						n: data[ "n" ].ToString(),
 						e: data[ "e" ].ToString()
 					);
 
+					error = null;
+					exception = null;
+					useEncKey = false;
+
+					return true;
+
 				case "EC":
 					if( !data.ContainsKey( "crv" ) ) {
-						throw new JsonWebKeyParseException( "missing 'crv' parameter in EC JSON web key" );
+						result = null;
+						error = "missing 'crv' parameter in EC JSON web key";
+						exception = null;
+						useEncKey = false;
+						return false;
 					}
 
 					if( !data.ContainsKey( "x" ) ) {
-						throw new JsonWebKeyParseException( "missing 'x' parameter in EC JSON web key" );
+						result = null;
+						error = "missing 'x' parameter in EC JSON web key";
+						exception = null;
+						useEncKey = false;
+						return false;
 					}
 
 					if( !data.ContainsKey( "y" ) ) {
-						throw new JsonWebKeyParseException( "missing 'y' parameter in EC JSON web key" );
+						result = null;
+						error = "missing 'y' parameter in EC JSON web key";
+						exception = null;
+						useEncKey = false;
+						return false;
 					}
 
-					return new EcDsaJsonWebKey(
+					result = new EcDsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
 						curve: data[ "crv" ].ToString(),
@@ -132,9 +199,17 @@ namespace D2L.Security.OAuth2.Keys {
 						y: data[ "y" ].ToString()
 					);
 
+					error = null;
+					exception = null;
+					useEncKey = false;
+					return true;
+
 				default:
-					string msg = String.Format( "'{0}' is not a supported JSON eb key type", data[ "kty" ] );
-					throw new JsonWebKeyParseException( msg );
+					result = null;
+					error = $"'{data["kty"]}' is not a supported JSON web key type";
+					exception = null;
+					useEncKey = false;
+					return false;
 
 			}
 		}
@@ -163,6 +238,6 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <summary>
 		/// Constructs a new <see cref="JsonWebKeyParseException"/>
 		/// </summary>
-		public JsonWebKeyParseException( string msg, Exception inner ) : base( msg, inner ) { }
+		public JsonWebKeyParseException( string msg, Exception? inner ) : base( msg, inner ) { }
 	}
 }

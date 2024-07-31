@@ -37,9 +37,19 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				#endif
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
+
 				foreach( object keyObject in keyObjects ) {
 					string keyJson = JsonSerializer.Serialize( keyObject );
-					JsonWebKey key = JsonWebKey.FromJson( keyJson );
+
+					if( !JsonWebKey.TryParseJsonWebKey( keyJson, out var key, out var error, out var exception, out var useEncKey ) ) {
+						if( useEncKey ) {
+							// Just filter out keys meant for encryption
+							continue;
+						} else {
+							throw new JsonWebKeyParseException( error, exception );
+						}
+					}
+
 					builder.Add( key );
 				}
 				m_keys = builder.ToImmutable();
