@@ -17,8 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
-		Packages.props = Packages.props
+		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "D2L.Security.OAuth2.Benchmarks", "test\D2L.Security.OAuth2.Benchmarks\D2L.Security.OAuth2.Benchmarks.csproj", "{E24E112F-AA04-4685-AE76-3127074719EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,22 @@ Global
 		{F5667A7E-955D-4402-86C4-8DFB65768AE1}.Release|ARM.ActiveCfg = Release|Any CPU
 		{F5667A7E-955D-4402-86C4-8DFB65768AE1}.Release|x64.ActiveCfg = Release|Any CPU
 		{F5667A7E-955D-4402-86C4-8DFB65768AE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|ARM.Build.0 = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Debug|x86.Build.0 = Debug|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|ARM.ActiveCfg = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|ARM.Build.0 = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|x64.Build.0 = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{E24E112F-AA04-4685-AE76-3127074719EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +103,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{95CE1314-E961-4C64-B410-43903BD3A04C} = {731C8174-3528-40CD-AE98-F21CB7763FD1}
 		{F5667A7E-955D-4402-86C4-8DFB65768AE1} = {731C8174-3528-40CD-AE98-F21CB7763FD1}
+		{E24E112F-AA04-4685-AE76-3127074719EF} = {731C8174-3528-40CD-AE98-F21CB7763FD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A4A66B7-7E4C-482A-9625-4A3B21090BAD}
