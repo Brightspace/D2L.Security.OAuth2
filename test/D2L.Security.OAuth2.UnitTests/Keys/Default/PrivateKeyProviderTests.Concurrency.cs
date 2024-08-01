@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Threading;
 using D2L.Services;
 using NUnit.Framework;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	[TestFixture]
@@ -82,13 +82,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		private static string Sign( D2LSecurityToken securityToken ) {
-			JwtSecurityToken jwt = new JwtSecurityToken(
-					issuer: TEST_ISSUER,
-					signingCredentials: securityToken.GetSigningCredentials()
-					);
+			SecurityTokenDescriptor jwt = new() {
+					Issuer = TEST_ISSUER,
+					SigningCredentials = securityToken.GetSigningCredentials()
+					};
 
-			JwtSecurityTokenHandler jwtHandler = new JwtSecurityTokenHandler();
-			string signedToken = jwtHandler.WriteToken( jwt );
+			JsonWebTokenHandler jwtHandler = new();
+			string signedToken = jwtHandler.CreateToken( jwt );
 
 			return signedToken;
 		}
@@ -97,7 +97,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			D2LSecurityToken securityToken,
 			string signedToken
 		) {
-			JwtSecurityTokenHandler validationTokenHandler = new JwtSecurityTokenHandler();
+			JsonWebTokenHandler validationTokenHandler = new();
 			TokenValidationParameters validationParameters = new TokenValidationParameters() {
 				ValidateAudience = false,
 				ValidateIssuer = false,
@@ -105,13 +105,15 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				RequireSignedTokens = true,
 				IssuerSigningKey = securityToken
 			};
-			validationTokenHandler.ValidateToken(
+			TokenValidationResult validationResult = validationTokenHandler.ValidateToken(
 				signedToken,
-				validationParameters,
-				out SecurityToken validatedToken
+				validationParameters
 				);
+			if( !validationResult.IsValid ) {
+				throw validationResult.Exception;
+			}
 
-			JwtSecurityToken validatedJwt = validatedToken as JwtSecurityToken;
+			JsonWebToken validatedJwt = validationResult.SecurityToken as JsonWebToken;
 			Assert.AreEqual( TEST_ISSUER, validatedJwt.Issuer );
 		}
 	}

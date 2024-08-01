@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -10,16 +10,12 @@ using D2L.Security.OAuth2.Scopes;
 using D2L.Services;
 using D2L.CodeStyle.Annotations;
 
-#if DNXCORE50
-using System.IdentityModel.Tokens.Jwt;
-#endif
-
 namespace D2L.Security.OAuth2.Provisioning.Default {
 	internal sealed partial class CachedAccessTokenProvider : IAccessTokenProvider {
 		private readonly INonCachingAccessTokenProvider m_accessTokenProvider;
 		private readonly Uri m_authEndpoint;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
-		private readonly JwtSecurityTokenHandler m_tokenHandler;
+		private readonly JsonWebTokenHandler m_tokenHandler = new();
 
 		public CachedAccessTokenProvider(
 			INonCachingAccessTokenProvider accessTokenProvider,
@@ -29,8 +25,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			m_accessTokenProvider = accessTokenProvider;
 			m_authEndpoint = authEndpoint;
 			m_tokenRefreshGracePeriod = tokenRefreshGracePeriod;
-
-			m_tokenHandler = new JwtSecurityTokenHandler();
 		}
 
 		[GenerateSync]

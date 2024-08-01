@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		private IPublicKeyDataProvider m_publicKeyDataProvider;
 		private ITokenSigner m_tokenSigner;
 		private INonCachingAccessTokenProvider m_accessTokenProvider;
-		private JwtSecurityToken m_actualAssertion;
+		private JsonWebToken m_actualAssertion;
 
 		[SetUp]
 		public void SetUp() {
@@ -33,8 +33,8 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			clientMock
 				.Setup( x => x.ProvisionAccessTokenAsync( It.IsAny<string>(), It.IsAny<IEnumerable<Scope>>() ) )
 				.Callback<string, IEnumerable<Scope>>( ( assertion, _ ) => {
-					var tokenHandler = new JwtSecurityTokenHandler();
-					m_actualAssertion = ( JwtSecurityToken )tokenHandler.ReadToken( assertion );
+					var tokenHandler = new JsonWebTokenHandler();
+					m_actualAssertion = ( JsonWebToken )tokenHandler.ReadToken( assertion );
 				} )
 				.ReturnsAsync( value: null );
 
@@ -63,7 +63,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			var publicKeys = ( await m_publicKeyDataProvider.GetAllAsync().ConfigureAwait( false ) ).ToList();
 
 			string expectedKeyId = publicKeys.First().Id.ToString();
-			string actualKeyId = m_actualAssertion.Header.Kid;
+			string actualKeyId = m_actualAssertion.GetHeaderValue<string>( "kid" );
 
 			Assert.AreEqual( 1, publicKeys.Count );
 			Assert.AreEqual( expectedKeyId, actualKeyId );
@@ -90,7 +90,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			AssertClaimEquals( m_actualAssertion, Constants.Claims.USER_ID, TestData.USER );
 		}
 
-		private void AssertClaimEquals( JwtSecurityToken token, string name, string value ) {
+		private void AssertClaimEquals( JsonWebToken token, string name, string value ) {
 			Claim claim = token.Claims.FirstOrDefault( c => c.Type == name );
 			Assert.IsNotNull( claim );
 			Assert.AreEqual( value, claim.Value );

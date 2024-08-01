@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Immutable;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Threading;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Validation.Exceptions;
 using D2L.Services;
 using D2L.CodeStyle.Annotations;
 
-#if DNXCORE50
-using System.IdentityModel.Tokens.Jwt;
-#endif
-
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
+	internal static class JsonWebTokenHandlerExtensions {
+
+		public static TokenValidationResult ValidateToken(
+			this JsonWebTokenHandler @this,
+			SecurityToken token,
+			TokenValidationParameters validationParameters
+		) => @this.ValidateTokenAsync( token, validationParameters ).ConfigureAwait( false ).GetAwaiter().GetResult();
+
+	}
+
 	internal sealed partial class AccessTokenValidator : IAccessTokenValidator {
 		internal static readonly ImmutableHashSet<string> ALLOWED_SIGNATURE_ALGORITHMS = ImmutableHashSet.Create(
 			SecurityAlgorithms.RsaSha256,
@@ -23,10 +28,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		);
 
 		private readonly IPublicKeyProvider m_publicKeyProvider;
-		private readonly ThreadLocal<JwtSecurityTokenHandler> m_tokenHandler = new ThreadLocal<JwtSecurityTokenHandler>(
-			valueFactory: () => new JwtSecurityTokenHandler(),
-			trackAllValues: false
-		);
+		private readonly JsonWebTokenHandler m_tokenHandler = new();
 
 		public AccessTokenValidator(
 			IPublicKeyProvider publicKeyProvider
@@ -41,30 +43,26 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
-			var tokenHandler = m_tokenHandler.Value;
-
-			if( !tokenHandler.CanReadToken( token ) ) {
+			if( !m_tokenHandler.CanReadToken( token ) ) {
 				throw new ValidationException( "Couldn't parse token" );
 			}
 
-			var unvalidatedToken = ( JwtSecurityToken )tokenHandler.ReadToken(
+			var unvalidatedToken = ( JsonWebToken )m_tokenHandler.ReadToken(
 				token
 			);
 
-			if( !ALLOWED_SIGNATURE_ALGORITHMS.Contains( unvalidatedToken.SignatureAlgorithm ) ) {
+			if( !ALLOWED_SIGNATURE_ALGORITHMS.Contains( unvalidatedToken.Alg ) ) {
 				string message = string.Format(
 					"Signature algorithm '{0}' is not supported.  Permitted algorithms are '{1}'",
-					unvalidatedToken.SignatureAlgorithm,
+					unvalidatedToken.Alg,
 					string.Join( ",", ALLOWED_SIGNATURE_ALGORITHMS )
 				);
 				throw new InvalidTokenException( message );
 			}
 
-			if( !unvalidatedToken.Header.ContainsKey( "kid" ) ) {
+			if( !unvalidatedToken.TryGetHeaderValue( "kid", out string keyId ) ) {
 				throw new InvalidTokenException( "KeyId not found in token" );
 			}
-
-			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
 
 			using D2LSecurityToken signingKey = ( await m_publicKeyProvider
 				.GetByIdAsync( keyId )
@@ -82,12 +80,14 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			IAccessToken accessToken;
 
 			try {
-				tokenHandler.ValidateToken(
-					token,
-					validationParameters,
-					out SecurityToken securityToken
-				);
-				accessToken = new AccessToken( ( JwtSecurityToken )securityToken );
+				TokenValidationResult validationResult = await m_tokenHandler.ValidateTokenAsync(
+					unvalidatedToken,
+					validationParameters
+				).ConfigureAwait( false );
+				if( !validationResult.IsValid ) {
+					throw validationResult.Exception;
+				}
+				accessToken = new AccessToken( (JsonWebToken)validationResult.SecurityToken );
 			} catch( SecurityTokenExpiredException e ) {
 				throw new ExpiredTokenException( e );
 			} catch( SecurityTokenNotYetValidException e ) {
