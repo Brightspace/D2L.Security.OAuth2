@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.TestUtilities;
@@ -83,14 +83,14 @@ namespace D2L.Security.OAuth2.Validation {
 				signingCredentials = signingToken.GetSigningCredentials();
 			}
 
-			var jwtToken = new JwtSecurityToken(
-				issuer: "someissuer",
-				signingCredentials: signingCredentials,
-				expires: jwtExpiry
-			);
+			SecurityTokenDescriptor jwtToken = new() {
+				Issuer = "someissuer",
+				SigningCredentials = signingCredentials,
+				Expires = jwtExpiry
+			};
 
-			var tokenHandler = new JwtSecurityTokenHandler();
-			string serializedJwt = tokenHandler.WriteToken( jwtToken );
+			JsonWebTokenHandler tokenHandler = new() { SetDefaultTimesOnTokenCreation = false };
+			string serializedJwt = tokenHandler.CreateToken( jwtToken );
 
 			IPublicKeyProvider publicKeyProvider = PublicKeyProviderMock.Create(
 				m_jwksEndpoint,
