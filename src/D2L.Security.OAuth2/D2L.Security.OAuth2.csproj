@@ -10,6 +10,10 @@
 		<IncludeSymbols>true</IncludeSymbols>
 	</PropertyGroup>
 
+  <ItemGroup>
+    <CompilerVisibleProperty Include="SuppressSyncGenerator" />
+  </ItemGroup>
+
 	<ItemGroup>
 		<PackageReference Include="D2L.CodeStyle.Analyzers">
 			<PrivateAssets>All</PrivateAssets>
@@ -24,6 +28,10 @@
 	<ItemGroup Condition="'$(TargetFramework)' == 'net60'">
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
 	</ItemGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net60'">
+		<SuppressSyncGenerator>true</SuppressSyncGenerator>
+	</PropertyGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' != 'net60'">
 		<!-- We use Microsoft.Extensions.Caching.Memory in .NET 5+ -->
