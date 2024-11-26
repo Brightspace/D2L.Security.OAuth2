@@ -22,7 +22,7 @@
 		<PackageReference Include="D2L.CodeStyle.Annotations" />
 		<PackageReference Include="D2L.Services.Core.Exceptions" />
 		<PackageReference Include="System.Collections.Immutable" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net60'">

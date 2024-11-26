@@ -13,7 +13,7 @@
 		<PackageReference Include="Moq" />
 		<PackageReference Include="NUnit" />
 		<PackageReference Include="NUnit3TestAdapter" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
+		<PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" />
 		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
 
