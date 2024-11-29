@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Services;
 using D2L.CodeStyle.Annotations;
 
 #if DNXCORE50
@@ -31,16 +30,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			m_tokenRefreshGracePeriod = tokenRefreshGracePeriod;
 
 			m_tokenHandler = new JwtSecurityTokenHandler();
-		}
-
-		[GenerateSync]
-		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
-			ClaimSet claimSet,
-			IEnumerable<Scope> scopes,
-			ICache cache
-		) {
-			var @this = this as IAccessTokenProvider;
-			return await @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes, cache ).ConfigureAwait( false );
 		}
 
 		[GenerateSync]

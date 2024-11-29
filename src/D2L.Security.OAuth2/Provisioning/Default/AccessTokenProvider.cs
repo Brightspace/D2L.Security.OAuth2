@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Scopes;
-using D2L.Services;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
@@ -21,15 +20,6 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		) {
 			m_tokenSigner = tokenSigner;
 			m_client = authServiceClient;
-		}
-
-		[GenerateSync]
-		Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
-			ClaimSet claimSet,
-			IEnumerable<Scope> scopes
-		) {
-			var @this = this as INonCachingAccessTokenProvider;
-			return @this.ProvisionAccessTokenAsync( claimSet.ToClaims(), scopes );
 		}
 
 		[GenerateSync]

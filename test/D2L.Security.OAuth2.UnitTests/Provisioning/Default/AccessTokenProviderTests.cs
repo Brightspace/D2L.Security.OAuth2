@@ -75,11 +75,11 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 		[Test]
 		public async Task ProvisionAccessTokenAsync_LegacyClaimSetOverload_DoesRightThing() {
-			var claimSet = new ClaimSet(
-				issuer: TestData.ISSUER,
-				tenantId: TestData.TENANT_ID,
-				user: TestData.USER
-			);
+			var claimSet = new[] {
+				new Claim( Constants.Claims.ISSUER, TestData.ISSUER ),
+				new Claim( Constants.Claims.TENANT_ID, TestData.TENANT_ID.ToString() ),
+				new Claim(Constants.Claims.USER_ID, TestData.USER )
+			};
 
 			await m_accessTokenProvider
 				.ProvisionAccessTokenAsync( claimSet, new Scope[] { } )

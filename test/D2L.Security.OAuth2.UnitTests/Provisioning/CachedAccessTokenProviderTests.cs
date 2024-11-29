@@ -127,7 +127,9 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( key ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken() ) ) );
 
-			ClaimSet claimSet = new ClaimSet( "TheIssuer" );
+			var claimSet = new[] {
+				new Claim( Constants.Claims.ISSUER, "TheIssuer" )
+			};
 
 			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
 			IAccessToken token =

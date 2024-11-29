@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Provisioning;
@@ -15,7 +16,12 @@ namespace D2L.Security.OAuth2.TestFramework {
 		private const string DEV_AUTH_JWKS_URL = "https://dev-auth.brightspace.com/core/.well-known/jwks";
 		private const string DEV_AUTH_JWK_URL = "https://dev-auth.brightspace.com/core/jwk/";
 
-		private readonly ClaimSet testClaimSet = new ClaimSet( "ExpandoClient", Guid.NewGuid() );
+		private readonly Claim[] testClaimSet = new[] {
+			new Claim( Constants.Claims.ISSUER, "ExpandoClient" ),
+			new Claim( Constants.Claims.TENANT_ID, Guid.NewGuid().ToString() )
+		};
+
+
 		private readonly Scope[] testScopes = {
 			new Scope( "*", "*", "*" )
 		};
