@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Security.Cryptography;
 using System.Threading;
+using D2L.Security.OAuth2.Caching;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
@@ -38,9 +39,9 @@ namespace D2L.Security.OAuth2.TestFramework {
 			Uri authEndpoint = new Uri( tokenProvisioningEndpoint );
 			ITokenSigner tokenSigner = new TokenSigner( privateKeyProvider );
 			IAuthServiceClient authServiceClient = new AuthServiceClient( httpClient, authEndpoint );
-			INonCachingAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( tokenSigner, authServiceClient );
+			IAccessTokenProvider noCacheTokenProvider = new AccessTokenProvider( tokenSigner, authServiceClient );
 
-			return new CachedAccessTokenProvider( noCacheTokenProvider, authEndpoint, Timeout.InfiniteTimeSpan );
+			return new CachedAccessTokenProvider( new NullCache(), noCacheTokenProvider, authEndpoint, Timeout.InfiniteTimeSpan );
 		}
 
 	}

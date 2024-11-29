@@ -15,17 +15,20 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 	internal sealed partial class CachedAccessTokenProvider : IAccessTokenProvider {
-		private readonly INonCachingAccessTokenProvider m_accessTokenProvider;
+		private readonly ICache m_cache;
+		private readonly IAccessTokenProvider m_inner;
 		private readonly Uri m_authEndpoint;
 		private readonly TimeSpan m_tokenRefreshGracePeriod;
 		private readonly JwtSecurityTokenHandler m_tokenHandler;
 
 		public CachedAccessTokenProvider(
-			INonCachingAccessTokenProvider accessTokenProvider,
+			ICache cache,
+			IAccessTokenProvider inner,
 			Uri authEndpoint,
 			TimeSpan tokenRefreshGracePeriod
 		) {
-			m_accessTokenProvider = accessTokenProvider;
+			m_cache = cache;
+			m_inner = inner;
 			m_authEndpoint = authEndpoint;
 			m_tokenRefreshGracePeriod = tokenRefreshGracePeriod;
 
@@ -35,19 +38,15 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		[GenerateSync]
 		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claims,
-			IEnumerable<Scope> scopes,
-			ICache cache
+			IEnumerable<Scope> scopes
 		) {
-			if( cache == null ) {
-				cache = new NullCache();
-			}
-
 			claims = claims.ToList();
 			scopes = scopes.ToList();
 
 			string cacheKey = TokenCacheKeyBuilder.BuildKey( m_authEndpoint, claims, scopes );
 
-			CacheResponse cacheResponse = await cache.GetAsync( cacheKey ).ConfigureAwait( false );
+			CacheResponse cacheResponse = await m_cache.GetAsync( cacheKey )
+				.ConfigureAwait( false );
 
 			if( cacheResponse.Success ) {
 				SecurityToken securityToken = m_tokenHandler.ReadToken( cacheResponse.Value );
@@ -56,12 +55,19 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 				}
 			}
 
-			IAccessToken token =
-				await m_accessTokenProvider.ProvisionAccessTokenAsync( claims, scopes ).ConfigureAwait( false );
+			IAccessToken token = await m_inner.ProvisionAccessTokenAsync(
+				claims,
+				scopes
+			).ConfigureAwait( false );
 
 			DateTime validTo = m_tokenHandler.ReadToken( token.Token ).ValidTo;
 
-			await cache.SetAsync( cacheKey, token.Token, validTo - DateTime.UtcNow ).ConfigureAwait( false );
+			await m_cache.SetAsync(
+				cacheKey,
+				token.Token,
+				expiry: validTo - DateTime.UtcNow
+			).ConfigureAwait( false );
+
 			return token;
 		}
 	}

@@ -9,7 +9,7 @@ using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
-	internal sealed partial class AccessTokenProvider : INonCachingAccessTokenProvider {
+	internal sealed partial class AccessTokenProvider : IAccessTokenProvider {
 
 		private readonly IAuthServiceClient m_client;
 		private readonly ITokenSigner m_tokenSigner;
@@ -23,7 +23,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 		}
 
 		[GenerateSync]
-		async Task<IAccessToken> INonCachingAccessTokenProvider.ProvisionAccessTokenAsync(
+		async Task<IAccessToken> IAccessTokenProvider.ProvisionAccessTokenAsync(
 			IEnumerable<Claim> claimSet,
 			IEnumerable<Scope> scopes
 		) {

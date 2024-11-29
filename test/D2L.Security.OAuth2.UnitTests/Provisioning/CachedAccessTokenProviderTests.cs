@@ -19,13 +19,13 @@ namespace D2L.Security.OAuth2.Provisioning {
 		private readonly Claim[] m_claims = { new Claim( "abc", "123" ), new Claim( "xyz", "789" ) };
 		private readonly Scope[] m_scopes = { new Scope( "a", "b", "c" ), new Scope( "7", "8", "9" ) };
 
-		private Mock<INonCachingAccessTokenProvider> m_accessTokenProviderMock;
+		private Mock<IAccessTokenProvider> m_accessTokenProviderMock;
 		private Mock<ICache> m_userTokenCacheMock;
 		private Mock<ICache> m_serviceTokenCacheMock;
 
 		[SetUp]
 		public void Setup() {
-			m_accessTokenProviderMock = new Mock<INonCachingAccessTokenProvider>( MockBehavior.Strict );
+			m_accessTokenProviderMock = new Mock<IAccessTokenProvider>( MockBehavior.Strict );
 			m_serviceTokenCacheMock = new Mock<ICache>( MockBehavior.Strict );
 			m_userTokenCacheMock = new Mock<ICache>( MockBehavior.Strict );
 		}
@@ -51,10 +51,10 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.SetAsync( It.IsAny<string>(), It.IsAny<string>(), It.IsAny<TimeSpan>() ) )
 				.Returns( Task.CompletedTask );
 
-			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
+			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( m_serviceTokenCacheMock.Object );
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes ).ConfigureAwait( false );
 			Assert.AreEqual( accessToken.Token, token.Token );
 		}
 
@@ -64,10 +64,10 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken() ) ) );
 
-			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
+			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( m_serviceTokenCacheMock.Object );
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -85,10 +85,10 @@ namespace D2L.Security.OAuth2.Provisioning {
 				.Returns( Task.FromResult( accessToken ) );
 
 			const int gracePeriodThatIsBiggerThanTimeToExpiry = TOKEN_EXPIRY_IN_SECONDS + 60;
-			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( gracePeriodThatIsBiggerThanTimeToExpiry );
+			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( m_serviceTokenCacheMock.Object, gracePeriodThatIsBiggerThanTimeToExpiry );
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -98,11 +98,11 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_userTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken( specifyUserClaim: true ) ) ) );
 
-			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
+			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( m_userTokenCacheMock.Object );
 
 			Claim userClaim = new Claim( Constants.Claims.USER_ID, "user" );
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( new[] { userClaim }, m_scopes, m_userTokenCacheMock.Object ).ConfigureAwait( false );
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( new[] { userClaim }, m_scopes ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -112,10 +112,10 @@ namespace D2L.Security.OAuth2.Provisioning {
 			m_serviceTokenCacheMock.Setup( x => x.GetAsync( It.IsAny<string>() ) )
 				.Returns( Task.FromResult( new CacheResponse( true, BuildTestToken( specifyUserClaim: false ) ) ) );
 
-			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
+			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( m_serviceTokenCacheMock.Object );
 
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes, m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( m_claims, m_scopes ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
@@ -131,14 +131,15 @@ namespace D2L.Security.OAuth2.Provisioning {
 				new Claim( Constants.Claims.ISSUER, "TheIssuer" )
 			};
 
-			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider();
+			IAccessTokenProvider cachedAccessTokenProvider = GetCachedAccessTokenProvider( m_serviceTokenCacheMock.Object );
 			IAccessToken token =
-				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( claimSet, Enumerable.Empty<Scope>(), m_serviceTokenCacheMock.Object ).ConfigureAwait( false );
+				await cachedAccessTokenProvider.ProvisionAccessTokenAsync( claimSet, Enumerable.Empty<Scope>() ).ConfigureAwait( false );
 			Assert.NotNull( token );
 		}
 
-		private IAccessTokenProvider GetCachedAccessTokenProvider( int tokenRefreshGracePeriod = 120 ) {
+		private IAccessTokenProvider GetCachedAccessTokenProvider( ICache cache, int tokenRefreshGracePeriod = 120 ) {
 			return new CachedAccessTokenProvider(
+				cache,
 				m_accessTokenProviderMock.Object,
 				new Uri( "https://example.com" ),
 				TimeSpan.FromSeconds( tokenRefreshGracePeriod )
