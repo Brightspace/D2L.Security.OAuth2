@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 		private IPublicKeyDataProvider m_publicKeyDataProvider;
 		private ITokenSigner m_tokenSigner;
-		private INonCachingAccessTokenProvider m_accessTokenProvider;
+		private IAccessTokenProvider m_accessTokenProvider;
 		private JwtSecurityToken m_actualAssertion;
 
 		[SetUp]
