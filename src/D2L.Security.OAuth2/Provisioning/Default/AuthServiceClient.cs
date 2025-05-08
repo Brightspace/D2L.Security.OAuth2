@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Scopes;
