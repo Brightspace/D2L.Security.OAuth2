@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text.Json;
 using D2L.Security.OAuth2.Utilities;
-
-#if NET6_0
-using JsonException = System.Text.Json.JsonException;
-#else
-using JsonException = Newtonsoft.Json.JsonReaderException;
-#endif
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed class JsonWebKeySet {
@@ -24,17 +19,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
 				}
 
-				#if NET6_0
-				System.Text.Json.JsonElement keysElement = ( System.Text.Json.JsonElement )data["keys"];
-				if ( keysElement.ValueKind is not System.Text.Json.JsonValueKind.Array ) {
+				JsonElement keysElement = ( System.Text.Json.JsonElement )data["keys"];
+				if ( keysElement.ValueKind is not JsonValueKind.Array ) {
 					throw new JsonWebKeyParseException("invalid json web key set: keys not an array");
 				}
-				List<System.Text.Json.JsonElement> keyObjects = keysElement.EnumerateArray().ToList();
-				#else
-				if ( data["keys"] is not IEnumerable<object> keyObjects ) {
-					throw new JsonWebKeyParseException( "invalid json web key set: keys not an array" );
-				}
-				#endif
+				List<JsonElement> keyObjects = keysElement.EnumerateArray().ToList();
 
 				var builder = ImmutableArray.CreateBuilder<JsonWebKey>();
 
