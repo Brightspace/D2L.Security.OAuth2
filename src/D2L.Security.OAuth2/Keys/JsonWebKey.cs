@@ -3,13 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using D2L.Security.OAuth2.Keys.Default;
 
-#if NET6_0
-using JsonException = System.Text.Json.JsonException;
-#else
-using JsonException = Newtonsoft.Json.JsonReaderException;
-#endif
 
 namespace D2L.Security.OAuth2.Keys {
 	/// <summary>

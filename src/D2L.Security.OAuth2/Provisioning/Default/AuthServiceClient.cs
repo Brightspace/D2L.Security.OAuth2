@@ -4,28 +4,19 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Scopes;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services.Core.Exceptions;
 
-#if NET6_0
-using JsonPropertyNameAttribute = System.Text.Json.Serialization.JsonPropertyNameAttribute;
-#else
-using JsonPropertyNameAttribute = Newtonsoft.Json.JsonPropertyAttribute;
-#endif
-
 namespace D2L.Security.OAuth2.Provisioning.Default {
 
 	/// <summary>
 	/// Calls the Auth Service to provision access tokens
 	/// </summary>
-	[SuppressMessage(
-		"Correctness",
-		"D2L0096:Aliasing attribute class names not supported",
-		Justification = "Newtonsoft.Json.JsonPropertyAttribute is aliased to match System.Text.Json.Serialization.JsonPropertyNameAttribute to reduce duplication below."
-	)]
 	internal sealed partial class AuthServiceClient : IAuthServiceClient {
 
 		private const string TOKEN_PATH = "connect/token";

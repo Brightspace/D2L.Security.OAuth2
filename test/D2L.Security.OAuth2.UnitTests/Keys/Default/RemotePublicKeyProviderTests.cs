@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Caching;
 using D2L.Security.OAuth2.Keys.Default.Data;
