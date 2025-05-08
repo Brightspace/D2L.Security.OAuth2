@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Development;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Security.OAuth2.Validation.AccessTokens;
-using Newtonsoft.Json;
 using RichardSzalay.MockHttp;
 
 namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 			mockHandler
 				.When( "http://localhost/.well-known/jwks" )
-				.Respond( "application/json", JsonConvert.SerializeObject( new { keys = new object[] { jwk.ToJwkDto() } } ) );
+				.Respond( "application/json", JsonSerializer.Serialize( new { keys = new object[] { jwk.ToJwkDto() } } ) );
 		}
 	}
 }

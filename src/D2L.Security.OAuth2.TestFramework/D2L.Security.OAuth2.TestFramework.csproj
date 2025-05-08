@@ -15,7 +15,6 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' != 'net60'">
-		<PackageReference Include="Newtonsoft.Json" />
 		<Reference Include="System.Net.Http" />
 	</ItemGroup>
 

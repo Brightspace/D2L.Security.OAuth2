@@ -8,7 +8,7 @@ on:
       - v*
 
 env:
-  VERSION_PREFIX: 14.1.0
+  VERSION_PREFIX: 14.2.0
 
 jobs:
 
