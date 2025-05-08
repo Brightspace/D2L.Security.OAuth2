@@ -19,6 +19,8 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-dotnet
+        with:
+          dotnet-version: '6.0.x'
 
       - name: Unit tests
         run: dotnet test -c Release --framework net60 test/D2L.Security.OAuth2.UnitTests/D2L.Security.OAuth2.UnitTests.csproj
