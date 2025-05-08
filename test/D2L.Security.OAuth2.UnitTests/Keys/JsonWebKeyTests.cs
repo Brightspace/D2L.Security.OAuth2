@@ -84,10 +84,10 @@ namespace D2L.Security.OAuth2.Keys {
 			D2LSecurityToken token = await privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 			JsonWebKey expectedKey = token.ToJsonWebKey();
 
-			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
+			string expectedJson = JsonSerializer.Serialize( expectedKey.ToJwkDto() );
 
 			JsonWebKey actualKey = JsonWebKey.FromJson( expectedJson );
-			string actualJson = JsonConvert.SerializeObject( actualKey.ToJwkDto() );
+			string actualJson = JsonSerializer.Serialize( actualKey.ToJwkDto() );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
 			Assert.AreEqual( expectedKey.ExpiresAt.Value.ToUnixTimeSeconds(), actualKey.ExpiresAt.Value.ToUnixTimeSeconds() );
@@ -109,10 +109,10 @@ namespace D2L.Security.OAuth2.Keys {
 				expectedKey = token.ToJsonWebKey();
 			}
 
-			string expectedJson = JsonConvert.SerializeObject( expectedKey.ToJwkDto() );
+			string expectedJson = JsonSerializer.Serialize( expectedKey.ToJwkDto() );
 
 			JsonWebKey actualKey = JsonWebKey.FromJson( expectedJson );
-			string actualJson = JsonConvert.SerializeObject( actualKey.ToJwkDto() );
+			string actualJson = JsonSerializer.Serialize( actualKey.ToJwkDto() );
 
 			Assert.AreEqual( expectedKey.Id, actualKey.Id );
 			Assert.AreEqual( expectedKey.ExpiresAt.Value.ToUnixTimeSeconds(), actualKey.ExpiresAt.Value.ToUnixTimeSeconds() );

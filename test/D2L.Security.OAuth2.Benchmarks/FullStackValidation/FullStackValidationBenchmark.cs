@@ -69,7 +69,7 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 			mockHandler
 				.When( "http://localhost/.well-known/jwks" )
-				.Respond( "application/json", JsonConvert.SerializeObject( new { keys = new object[] { jwk.ToJwkDto() } } ) );
+				.Respond( "application/json", JsonSerializer.Serialize( new { keys = new object[] { jwk.ToJwkDto() } } ) );
 		}
 	}
 }
