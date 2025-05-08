@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text.Json;
 using System.Threading.Tasks;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Utilities;
 using D2L.Services;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace D2L.Security.OAuth2.Keys {
