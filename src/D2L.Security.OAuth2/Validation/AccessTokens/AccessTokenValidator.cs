@@ -93,10 +93,11 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			} catch( SecurityTokenNotYetValidException e ) {
 				throw new ValidationException( "Token is from the future (nbf)", e );
 			} catch( Exception e ) {
-				throw new ValidationException( "Unknown validation exception", e );
+				throw new ValidationException( $"Unknown validation exception {e.GetType().FullName}: {e.Message}", e );
 			}
 
 			return accessToken;
 		}
 	}
 }
+
