@@ -100,4 +100,3 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		}
 	}
 }
-
