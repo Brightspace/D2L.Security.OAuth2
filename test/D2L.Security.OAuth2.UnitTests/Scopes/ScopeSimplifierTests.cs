@@ -26,7 +26,7 @@ internal sealed class ScopeSimplifierTests {
 	public void Test( string input, string expected ) {
 		Assert.That(
 			expected,
-			Is.EqualTo( string.Join( " ", ScopeSimplifier.Simplify( Scope.Parse( input ) ) ) )
+			Is.EqualTo( string.Join( " ", ScopeSimplifier.Simplify( input.Split( ',' ).Select( Scope.Parse ) ) ) )
 		);
 	}
 }
