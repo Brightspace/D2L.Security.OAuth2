@@ -37,7 +37,7 @@ jobs:
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
       - uses: Brightspace/third-party-actions@actions/setup-dotnet
-       with:
+        with:
           dotnet-version: |
             6.0.x
             7.0.x
