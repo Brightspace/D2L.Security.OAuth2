@@ -27,6 +27,7 @@
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net60'">
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
+		<PackageReference Include="System.Text.Json" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net60'">
