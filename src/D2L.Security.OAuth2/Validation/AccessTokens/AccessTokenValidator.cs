@@ -92,6 +92,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new ExpiredTokenException( e );
 			} catch( SecurityTokenNotYetValidException e ) {
 				throw new ValidationException( "Token is from the future (nbf)", e );
+			} catch( SecurityTokenInvalidSignatureException e ) {
+				throw new ValidationException( "Invalid signature", e );
 			} catch( Exception e ) {
 				throw new ValidationException( "Unknown validation exception", e );
 			}
