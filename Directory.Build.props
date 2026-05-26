@@ -12,7 +12,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<LangVersion>11.0</LangVersion>
+		<LangVersion>14.0</LangVersion>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 		<WarningsAsErrors>CS8785</WarningsAsErrors>
 	</PropertyGroup>
