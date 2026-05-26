@@ -1,11 +1,11 @@
 <Project>
-	<ItemGroup Condition="'$(TargetFramework)' == 'net60'">
+	<ItemGroup Condition="'$(TargetFramework)' != 'net472'">
 		<Compile Remove="$(MSBuildProjectDirectory)/**/*.net4x.cs" />
 		<None Include="$(MSBuildProjectDirectory)/**/*.net4x.cs" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' != 'net60'">
-		<Compile Remove="$(MSBuildProjectDirectory)/**/*.net60.cs" />
-		<None Include="$(MSBuildProjectDirectory)/**/*.net60.cs" />
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<Compile Remove="$(MSBuildProjectDirectory)/**/*.net5plus.cs" />
+		<None Include="$(MSBuildProjectDirectory)/**/*.net5plus.cs" />
 	</ItemGroup>
 </Project>
