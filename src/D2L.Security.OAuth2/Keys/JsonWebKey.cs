@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography;
 using System.Text.Json;
 using D2L.Security.OAuth2.Keys.Default;
 
@@ -86,15 +87,15 @@ namespace D2L.Security.OAuth2.Keys {
 				return false;
 			}
 
-			if( data.ContainsKey( "use" ) && data[ "use" ] != null && data[ "use" ].ToString() != "sig" ) {
+			if( data.TryGetValue( "use", out var use ) && use != null && use.ToString() != "sig" ) {
 				result = null;
 				error = "invalid 'use' value in JSON web key: " + data[ "use" ];
 				exception = null;
-				useEncKey = data[ "use" ].ToString() == "enc";
+				useEncKey = use.ToString() == "enc";
 				return false;
 			}
 
-			if( !data.ContainsKey( "kty" ) ) {
+			if( !data.TryGetValue( "kty", out var kty ) ) {
 				result = null;
 				error = "missing 'kty' parameter in JSON web key";
 				exception = null;
@@ -102,7 +103,7 @@ namespace D2L.Security.OAuth2.Keys {
 				return false;
 			}
 
-			if( !data.ContainsKey( "kid" ) ) {
+			if( !data.TryGetValue( "kid", out var kid ) ) {
 				result = null;
 				error = "missing 'kid' parameter in JSON web key";
 				exception = null;
@@ -110,12 +111,12 @@ namespace D2L.Security.OAuth2.Keys {
 				return false;
 			}
 
-			string id = data[ "kid" ].ToString();
+			string id = kid.ToString();
 			DateTimeOffset? expiresAt = null;
-			if( data.ContainsKey( "exp" ) ) {
-				if( !long.TryParse( data[ "exp" ].ToString(), out long ts ) ) {
+			if( data.TryGetValue( "exp", out var exp ) ) {
+				if( !long.TryParse( exp.ToString(), out long ts ) ) {
 					result = null;
-					error = "invalid 'exp' value in JSON web key: " + data[ "exp" ];
+					error = "invalid 'exp' value in JSON web key: " + exp;
 					exception = null;
 					useEncKey = false;
 					return false;
@@ -123,9 +124,9 @@ namespace D2L.Security.OAuth2.Keys {
 				expiresAt = DateTimeOffset.FromUnixTimeSeconds( ts );
 			}
 
-			switch( data[ "kty" ].ToString() ) {
+			switch( kty.ToString() ) {
 				case "RSA":
-					if( !data.ContainsKey( "n" ) ) {
+					if( !data.TryGetValue( "n", out var keyN ) ) {
 						result = null;
 						error = "missing 'n' parameter in RSA JSON web key";
 						exception = null;
@@ -133,7 +134,7 @@ namespace D2L.Security.OAuth2.Keys {
 						return false;
 					}
 
-					if( !data.ContainsKey( "e" ) ) {
+					if( !data.TryGetValue( "e", out var keyE ) ) {
 						result = null;
 						error = "missing 'e' parameter in RSA JSON web key";
 						exception = null;
@@ -152,8 +153,8 @@ namespace D2L.Security.OAuth2.Keys {
 					result = new RsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
-						n: data[ "n" ].ToString(),
-						e: data[ "e" ].ToString()
+						n: keyN.ToString(),
+						e: keyE.ToString()
 					);
 
 					error = null;
@@ -163,7 +164,7 @@ namespace D2L.Security.OAuth2.Keys {
 					return true;
 
 				case "EC":
-					if( !data.ContainsKey( "crv" ) ) {
+					if( !data.TryGetValue( "crv", out var keyCrv ) ) {
 						result = null;
 						error = "missing 'crv' parameter in EC JSON web key";
 						exception = null;
@@ -171,7 +172,7 @@ namespace D2L.Security.OAuth2.Keys {
 						return false;
 					}
 
-					if( !data.ContainsKey( "x" ) ) {
+					if( !data.TryGetValue( "x", out var keyX ) ) {
 						result = null;
 						error = "missing 'x' parameter in EC JSON web key";
 						exception = null;
@@ -179,7 +180,7 @@ namespace D2L.Security.OAuth2.Keys {
 						return false;
 					}
 
-					if( !data.ContainsKey( "y" ) ) {
+					if( !data.TryGetValue( "y", out var keyY ) ) {
 						result = null;
 						error = "missing 'y' parameter in EC JSON web key";
 						exception = null;
@@ -190,9 +191,9 @@ namespace D2L.Security.OAuth2.Keys {
 					result = new EcDsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
-						curve: data[ "crv" ].ToString(),
-						x: data[ "x" ].ToString(),
-						y: data[ "y" ].ToString()
+						curve: keyCrv.ToString(),
+						x: keyX.ToString(),
+						y: keyY.ToString()
 					);
 
 					error = null;
@@ -202,7 +203,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 				default:
 					result = null;
-					error = $"'{data["kty"]}' is not a supported JSON web key type";
+					error = $"'{kty}' is not a supported JSON web key type";
 					exception = null;
 					useEncKey = false;
 					return false;
@@ -211,13 +212,13 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		private static bool HasRsaPrivateKeyMaterial( IReadOnlyDictionary<string, object> data ) {
-			return ( data.ContainsKey( "d" ) && data[ "d" ] != null )
-				|| ( data.ContainsKey( "p" ) && data[ "p" ] != null )
-				|| ( data.ContainsKey( "q" ) && data[ "q" ] != null )
-				|| ( data.ContainsKey( "dp" ) && data[ "dp" ] != null )
-				|| ( data.ContainsKey( "dq" ) && data[ "dq" ] != null )
-				|| ( data.ContainsKey( "qi" ) && data[ "qi" ] != null )
-				|| ( data.ContainsKey( "oth" ) && data[ "oth" ] != null );
+			return ( data.TryGetValue( "d", out var d ) && d != null )
+				|| ( data.TryGetValue( "p", out var p ) && p != null )
+				|| ( data.TryGetValue( "q", out var q ) && q != null )
+				|| ( data.TryGetValue( "dp", out var dp ) && dp != null )
+				|| ( data.TryGetValue( "dq", out var dq ) &&  dq != null )
+				|| ( data.TryGetValue( "qi", out var qi ) && qi != null )
+				|| ( data.TryGetValue( "oth", out var oth ) && oth != null );
 		}
 	}
 
