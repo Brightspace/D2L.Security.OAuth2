@@ -37,7 +37,7 @@ namespace D2L.Security.OAuth2.Provisioning {
 			}
 
 
-			if( cache != null ) {
+			if( cache == null ) {
 				return inner;
 			}
 
