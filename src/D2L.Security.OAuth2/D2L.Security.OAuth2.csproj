@@ -29,7 +29,7 @@
 		<PackageReference Include="Microsoft.Extensions.Caching.Memory" />
 	</ItemGroup>
 
-	<PropertyGroup Condition="'$(TargetFramework)' != 'net72'">
+	<PropertyGroup Condition="'$(TargetFramework)' != 'net472'">
 		<SuppressSyncGenerator>true</SuppressSyncGenerator>
 	</PropertyGroup>
 
