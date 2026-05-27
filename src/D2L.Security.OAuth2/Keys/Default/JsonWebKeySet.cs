@@ -15,11 +15,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			try {
 				var data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
 
-				if( !data.ContainsKey( "keys" ) ) {
+				if( !data.TryGetValue( "keys", out var keys ) ) {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
 				}
 
-				JsonElement keysElement = ( System.Text.Json.JsonElement )data["keys"];
+				JsonElement keysElement = ( System.Text.Json.JsonElement )keys;
 				if ( keysElement.ValueKind is not JsonValueKind.Array ) {
 					throw new JsonWebKeyParseException("invalid json web key set: keys not an array");
 				}

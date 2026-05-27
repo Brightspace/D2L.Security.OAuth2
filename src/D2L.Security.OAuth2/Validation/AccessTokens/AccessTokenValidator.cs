@@ -60,11 +60,11 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new InvalidTokenException( message );
 			}
 
-			if( !unvalidatedToken.Header.ContainsKey( "kid" ) ) {
+			if( !unvalidatedToken.Header.TryGetValue( "kid", out var kid ) ) {
 				throw new InvalidTokenException( "KeyId not found in token" );
 			}
 
-			string keyId = unvalidatedToken.Header[ "kid" ].ToString();
+			string keyId = kid.ToString();
 
 			using D2LSecurityToken signingKey = ( await m_publicKeyProvider
 				.GetByIdAsync( keyId )
