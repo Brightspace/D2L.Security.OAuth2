@@ -19,14 +19,14 @@ namespace D2L.Security.OAuth2.Validation.Request {
 		Task<ID2LPrincipal> IRequestAuthenticator.AuthenticateAsync(
 			HttpRequestMessage request
 		) {
-			string bearerToken = request.GetBearerTokenValue();
+			var bearerToken = request.GetBearerTokenValue();
 
 			return AuthenticateAsync( bearerToken );
 		}
 
 		[GenerateSync]
 		public async Task<ID2LPrincipal> AuthenticateAsync(
-			string bearerToken
+			string? bearerToken
 		) {
 			if( string.IsNullOrEmpty( bearerToken ) ) {
 				return ANONYMOUS_PRINCIPAL;

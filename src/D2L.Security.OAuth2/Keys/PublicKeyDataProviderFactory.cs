@@ -27,7 +27,7 @@ namespace D2L.Security.OAuth2.Keys {
 				throw new ArgumentNullException( "publicKeyDataProvider" );
 			}
 
-			ISanePublicKeyDataProvider saneProvider = publicKeyDataProvider as ISanePublicKeyDataProvider;
+			var saneProvider = publicKeyDataProvider as ISanePublicKeyDataProvider;
 			if( saneProvider == null ) {
 				saneProvider = new ExpiringPublicKeyDataProvider( publicKeyDataProvider, DateTimeProvider.Instance );
 			}

@@ -41,7 +41,8 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		async Task<IAccessToken> IAccessTokenValidator.ValidateAsync(
 			string token
 		) {
-			var tokenHandler = m_tokenHandler.Value;
+			// ! because m_tokenHandler has a value factory
+			var tokenHandler = m_tokenHandler.Value!;
 
 			if( !tokenHandler.CanReadToken( token ) ) {
 				throw new ValidationException( "Couldn't parse token" );
@@ -64,7 +65,9 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				throw new InvalidTokenException( "KeyId not found in token" );
 			}
 
-			string keyId = kid.ToString();
+			// !: object.ToString() returns string? in the general case but
+			// we assume that claim values are sane types
+			var keyId = kid.ToString()!;
 
 			using D2LSecurityToken signingKey = ( await m_publicKeyProvider
 				.GetByIdAsync( keyId )

@@ -12,7 +12,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				TimeSpan keyLifetime,
 				TimeSpan keyRotationPeriod,
 				ECCurve curve,
-				IDateTimeProvider dateTimeProvider = null
+				IDateTimeProvider? dateTimeProvider = null
 			) {
 				if( keyLifetime < keyRotationPeriod ) {
 					throw new ArgumentException( "Private key lifetime must exceed the rotation period", "keyLifetime" );

@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Utilities;
-using D2L.Services;
 
 namespace D2L.Security.OAuth2.Keys.Default {
 	internal sealed partial class RotatingPrivateKeyProvider : IPrivateKeyProvider {
@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private readonly SemaphoreSlim m_privateKeyLock = new SemaphoreSlim( initialCount: 1 );
 
-		private D2LSecurityToken m_privateKey;
+		private D2LSecurityToken? m_privateKey;
 
 		public RotatingPrivateKeyProvider(
 			IPrivateKeyProvider inner,
@@ -27,12 +27,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[GenerateSync]
-		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+		async Task<D2LSecurityToken?> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 
 			// Hold a local reference so that we know we are talking about the same key
 			// after even if another thread changed m_privateKey (race condition when we
 			// are using a key very close to the rotation time.)
-			D2LSecurityToken privateKey = m_privateKey;
+			var privateKey = m_privateKey;
 
 			if( NeedFreshPrivateKey( privateKey ) ) {
 				// This Semaphore is used instead of lock(foo){}
@@ -42,7 +42,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					privateKey = m_privateKey;
 
 					if( NeedFreshPrivateKey( privateKey ) ) {
-						m_privateKey = ( await m_inner.GetSigningCredentialsAsync().ConfigureAwait( false ) ).Ref();
+						m_privateKey = ( await m_inner.GetSigningCredentialsAsync().ConfigureAwait( false ) )?.Ref();
 
 						if( privateKey != null ) {
 							privateKey.Dispose();
@@ -56,10 +56,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				}
 			}
 
-			return privateKey.Ref();
+			return privateKey?.Ref();
 		}
 
-		private bool NeedFreshPrivateKey( D2LSecurityToken key ) {
+		private bool NeedFreshPrivateKey( [NotNullWhen( false )] D2LSecurityToken? key ) {
 			return key == null || m_dateTimeProvider.UtcNow >= key.ValidTo - m_keyRotationPeriod;
 		}
 	}

@@ -23,7 +23,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		[GenerateSync]
 		async Task<string> ITokenSigner.SignAsync( UnsignedToken token ) {
 			JwtSecurityToken jwt;
-			using( D2LSecurityToken securityToken = await m_privateKeyProvider
+			using( var securityToken = await m_privateKeyProvider
 				.GetSigningCredentialsAsync()
 				.ConfigureAwait( false )
 			) {
@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					claims: Enumerable.Empty<Claim>(),
 					notBefore: token.NotBefore,
 					expires: token.ExpiresAt,
-					signingCredentials: securityToken.GetSigningCredentials()
+					signingCredentials: securityToken?.GetSigningCredentials()
 				);
 
 				var claims = token.Claims;

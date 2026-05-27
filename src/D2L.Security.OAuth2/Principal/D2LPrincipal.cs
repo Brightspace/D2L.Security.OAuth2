@@ -54,7 +54,8 @@ namespace D2L.Security.OAuth2.Principal {
 			get {
 				AssertPrincipalTypeForClaim( PrincipalType.User, Constants.Claims.USER_ID );
 
-				return m_userId.Value;
+				// Bad API: NullReferenceException is expected
+				return m_userId!.Value;
 			}
 		}
 
@@ -62,7 +63,8 @@ namespace D2L.Security.OAuth2.Principal {
 			get {
 				AssertPrincipalTypeForClaim( PrincipalType.User, Constants.Claims.ACTUAL_USER_ID );
 
-				return m_actualUserId.Value;
+				// Bad API: NullReferenceException is expected
+				return m_actualUserId!.Value;
 			}
 		}
 
@@ -83,7 +85,7 @@ namespace D2L.Security.OAuth2.Principal {
 		}
 
 		private Guid GetTenantId() {
-			string strTenantId = m_accessToken.GetTenantId();
+			var strTenantId = m_accessToken.GetTenantId();
 
 			if( !Guid.TryParse( strTenantId, out Guid tenantId ) ) {
 				string message = string.Format( "TenantId '{0}' is not a valid Guid", strTenantId );

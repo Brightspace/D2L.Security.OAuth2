@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 		}
 
 		[GenerateSync]
-		public Task<D2LSecurityToken> GetSigningCredentialsAsync() {
+		public Task<D2LSecurityToken?> GetSigningCredentialsAsync() {
 			var creds = new D2LSecurityToken(
 				id: m_keyId,
 				validFrom: DateTime.UtcNow - TimeSpan.FromDays( 1 ),
@@ -37,7 +37,7 @@ namespace D2L.Security.OAuth2.Keys.Development {
 				} )
 				.Ref();
 
-			return Task.FromResult( creds );
+			return Task.FromResult<D2LSecurityToken?>( creds );
 		}
 	}
 }

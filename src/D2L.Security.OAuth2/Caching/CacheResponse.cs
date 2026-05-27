@@ -13,7 +13,7 @@ namespace D2L.Security.OAuth2.Caching {
 		/// </summary>
 		/// <param name="success">Indicates if the value was successfully retrieved</param>
 		/// <param name="value">The value that was retrieved</param>
-		public CacheResponse( bool success, string value ) {
+		public CacheResponse( bool success, string? value ) {
 			Success = success;
 			Value = value;
 		}
@@ -26,6 +26,6 @@ namespace D2L.Security.OAuth2.Caching {
 		/// <summary>
 		/// The value that was retrieved
 		/// </summary>
-		public string Value { get; }
+		public string? Value { get; }
 	}
 }

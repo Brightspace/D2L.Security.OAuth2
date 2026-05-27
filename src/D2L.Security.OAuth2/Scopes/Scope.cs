@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using static D2L.CodeStyle.Annotations.Objects;
 
@@ -85,7 +86,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		/// Compares two <see cref="Scope"/> objects for equality.
 		/// </summary>
 		/// <returns>True if they contain the same scopes in the same order, otherwise false</returns>
-		public override bool Equals( object obj ) {
+		public override bool Equals( object? obj ) {
 			if( ReferenceEquals( this, obj ) ) {
 				return true;
 			}
@@ -123,7 +124,7 @@ namespace D2L.Security.OAuth2.Scopes {
 		/// *:*:*                       => Full access to all resources in all groups
 		/// *:*:read                    => Read only for all resources in all groups
 		/// </example>
-		public static bool TryParse( string scopePattern, out Scope scope ) {
+		public static bool TryParse( string scopePattern, [NotNullWhen( true )] out Scope? scope ) {
 			try {
 				scope = Parse( scopePattern );
 				return true;

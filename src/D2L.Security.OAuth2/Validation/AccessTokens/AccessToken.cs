@@ -22,7 +22,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			m_this = this;
 		}
 
-		string IAccessToken.Id {
+		string? IAccessToken.Id {
 			get { return m_this.GetClaimValue( Constants.Claims.TOKEN_ID ); }
 		}
 

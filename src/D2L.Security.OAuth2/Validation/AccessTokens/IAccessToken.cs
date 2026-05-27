@@ -14,7 +14,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		/// <summary>
 		/// The JWT ID (JTI)
 		/// </summary>
-		string Id { get; }
+		string? Id { get; }
 
 		/// <summary>
 		/// The raw, signed access token. Treat it like a password (for example, do not log).

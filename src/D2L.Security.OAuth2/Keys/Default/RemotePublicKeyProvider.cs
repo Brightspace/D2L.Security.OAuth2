@@ -21,12 +21,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[GenerateSync]
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( string id ) {
-			D2LSecurityToken result = m_cache.Get( m_jwksProvider.Namespace, id );
+			var result = m_cache.Get( m_jwksProvider.Namespace, id );
 			if( result != null ) {
 				return result;
 			}
 
-			JsonWebKeySet jwks = await m_jwksProvider
+			var jwks = await m_jwksProvider
 				.RequestJwkAsync( id )
 				.ConfigureAwait( false );
 

@@ -20,7 +20,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[GenerateSync]
-		async Task<JsonWebKey> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
+		async Task<JsonWebKey?> IPublicKeyDataProvider.GetByIdAsync( Guid id ) {
 			// We are intentionally fetching *all* public keys from the database
 			// here. This allows us to clean up all expired public keys even if
 			// GetAllAsync() is never explicitly called (e.g. when we switch from
@@ -41,7 +41,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			// how GetAllAsync is implemented at the moment, but still.
 			keys = keys.ToList();
 
-			JsonWebKey key = keys.SingleOrDefault( jwk => new Guid( jwk.Id ) == id );
+			var key = keys.SingleOrDefault( jwk => new Guid( jwk.Id ) == id );
 
 			return key;
 		}

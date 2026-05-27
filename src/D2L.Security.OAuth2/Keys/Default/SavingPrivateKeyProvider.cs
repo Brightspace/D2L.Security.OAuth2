@@ -17,12 +17,14 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[GenerateSync]
-		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
-			D2LSecurityToken result = await m_inner.GetSigningCredentialsAsync().ConfigureAwait( false );
+		async Task<D2LSecurityToken?> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+			var result = await m_inner.GetSigningCredentialsAsync().ConfigureAwait( false );
 
-			JsonWebKey jwk = result.ToJsonWebKey();
 
-			await m_publicKeyDataProvider.SaveAsync( new Guid( jwk.Id ), jwk ).ConfigureAwait( false );
+			if( result != null) {
+				var jwk = result.ToJsonWebKey();
+				await m_publicKeyDataProvider.SaveAsync( new Guid( jwk.Id ), jwk ).ConfigureAwait( false );
+			}
 
 			return result;
 		}
