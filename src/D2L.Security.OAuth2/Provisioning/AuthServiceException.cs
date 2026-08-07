@@ -16,15 +16,15 @@ namespace D2L.Security.OAuth2.Provisioning {
 		internal AuthServiceException(
 			ServiceErrorType errorType,
 			HttpStatusCode proposedStatusCode,
-			string message = null,
-			Exception innerException = null,
+			string? message = null,
+			Exception? innerException = null,
 			HttpStatusCode serviceStatusCode = default( HttpStatusCode )
 		) : base( errorType, proposedStatusCode, message, innerException, serviceStatusCode ) { }
 
 		internal AuthServiceException(
 			ServiceErrorType errorType,
-			string message = null,
-			Exception innerException = null,
+			string? message = null,
+			Exception? innerException = null,
 			HttpStatusCode serviceStatusCode = default( HttpStatusCode )
 		) : base( errorType, message, innerException, serviceStatusCode ) { }
 

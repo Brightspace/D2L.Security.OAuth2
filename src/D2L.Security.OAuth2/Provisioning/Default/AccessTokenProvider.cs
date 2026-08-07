@@ -33,7 +33,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			DateTime now = DateTime.UtcNow;
 
-			string issuer = claims.FirstOrDefault( c => c.Type == Constants.Claims.ISSUER )?.Value;
+			var issuer = claims.FirstOrDefault( c => c.Type == Constants.Claims.ISSUER )?.Value;
 			if( issuer == null ) {
 				throw new InvalidOperationException( "missing issuer claim" );
 			}

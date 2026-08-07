@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using D2L.Security.OAuth2.Scopes;
 
 namespace D2L.Security.OAuth2.Validation.AccessTokens {
@@ -10,29 +9,29 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 	public static class AccessTokenExtensions {
 		/// <param name="token">An access token</param>
 		/// <returns>The access token id. Returns null if one was not found.</returns>
-		internal static string GetAccessTokenId( this IAccessToken token ) {
+		internal static string? GetAccessTokenId( this IAccessToken token ) {
 			return token.GetClaimValue( Constants.Claims.TOKEN_ID );
 		}
 
 		/// <param name="token">An access token</param>
 		/// <returns>The tenant id. Returns null if one was not found.</returns>
-		public static string GetTenantId( this IAccessToken token ) {
+		public static string? GetTenantId( this IAccessToken token ) {
 			return token.GetClaimValue( Constants.Claims.TENANT_ID );
 		}
 
 		/// <param name="token">An access token</param>
 		/// <returns>The scopes</returns>
 		public static IEnumerable<Scope> GetScopes( this IAccessToken token ) {
-			string scopes = token.GetClaimValue( Constants.Claims.SCOPE );
+			var scopes = token.GetClaimValue( Constants.Claims.SCOPE );
 
 			if( string.IsNullOrEmpty( scopes ) ) {
 				return new Scope[] { };
 			}
 
-			Scope[] scopesArray = scopes
+			Scope?[] scopesArray = scopes
 				.Split( ' ' )
 				.Select( scopeString => {
-					if( Scope.TryParse( scopeString, out Scope scope ) ) {
+					if( Scope.TryParse( scopeString, out var scope ) ) {
 						return scope;
 					}
 
@@ -40,7 +39,9 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 				} )
 				.Where( x => x != null )
 				.ToArray();
-			return scopesArray;
+
+			// We filtered out the nulls 
+			return scopesArray!;
 		}
 
 		/// <param name="token">An access token</param>
@@ -58,16 +59,16 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		}
 
 		private static bool TryGetLongClaim( this IAccessToken token, string claim, out long val ) {
-			string str = token.GetClaimValue( claim );
+			var str = token.GetClaimValue( claim );
 			return long.TryParse( str, out val );
 		}
 
 		/// <param name="token">An access token</param>
 		/// <param name="claimName">The name of the claim whose value is returned</param>
 		/// <returns>The claim value</returns>
-		internal static string GetClaimValue( this IAccessToken token, string claimName ) {
-			string claimValue = null;
-			Claim claim = token.Claims.FirstOrDefault( x => x.Type == claimName );
+		internal static string? GetClaimValue( this IAccessToken token, string claimName ) {
+			string? claimValue = null;
+			var claim = token.Claims.FirstOrDefault( x => x.Type == claimName );
 			if( claim != null ) {
 				claimValue = claim.Value;
 			}

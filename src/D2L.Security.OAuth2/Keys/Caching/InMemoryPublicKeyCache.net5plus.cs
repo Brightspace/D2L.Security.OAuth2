@@ -36,7 +36,7 @@ namespace D2L.Security.OAuth2.Keys.Caching {
 			);
 		}
 
-		D2LSecurityToken IInMemoryPublicKeyCache.Get( string srcNamespace, string keyId ) {
+		D2LSecurityToken? IInMemoryPublicKeyCache.Get( string srcNamespace, string keyId ) {
 			var found = m_cache.TryGetValue(
 				BuildCacheKey( srcNamespace, keyId ),
 				out var key

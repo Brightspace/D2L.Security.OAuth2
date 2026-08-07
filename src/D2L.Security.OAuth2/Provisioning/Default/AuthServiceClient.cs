@@ -72,7 +72,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			IEnumerable<Scope> scopes
 		) {
 			string requestBody = BuildFormContents( assertion, scopes );
-			HttpResponseMessage response = null;
+			HttpResponseMessage? response = null;
 			try {
 				try {
 					response = await MakeRequestAsync( requestBody ).ConfigureAwait( false );
@@ -90,7 +90,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 					);
 				}
 
-				string json = null;
+				string? json = null;
 				if( response.Content != null ) {
 					try {
 						json = await response.Content.ReadAsStringAsync().ConfigureAwait( false );
@@ -108,12 +108,16 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 					string errorMessage;
 
 					if( string.IsNullOrWhiteSpace( json ) ) {
-						errorMessage = response.ReasonPhrase;
+						errorMessage = response.ReasonPhrase ?? "unknown";
 					} else {
 						try {
 							var errorInfo = JsonSerializer.Deserialize<ErrorResponse>( json );
-							errorInfo.Validate();
-							errorMessage = string.Concat( errorInfo.Title, ": ", errorInfo.Detail );
+
+							if( errorInfo == null) {
+								errorMessage = "unknown error";
+							} else {
+								errorMessage = string.Concat( errorInfo.Title, ": ", errorInfo.Detail );
+							}
 						} catch( Exception ) {
 							errorMessage = string.Concat( response.ReasonPhrase, ": ", json );
 						}
@@ -135,7 +139,14 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 				try {
 					var grant = JsonSerializer.Deserialize<GrantResponse>( json );
-					grant.Validate();
+
+					if( grant == null) {
+						throw new AuthServiceException(
+							ServiceErrorType.ClientError,
+							message: "Couldn't deserialize response JSON"
+						);
+					}
+
 					return new AccessToken( grant.Token );
 				} catch( Exception exception ) {
 					throw new AuthServiceException(
@@ -175,33 +186,20 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 			return result;
 		}
 
-		private sealed class GrantResponse {
-			[JsonPropertyName( "access_token" )]
-			public string Token { get; set; }
+		private sealed record class GrantResponse(
+			[property: JsonPropertyName( "access_token" )]
+			[property: JsonRequired]
+			string Token
+		);
 
-			internal void Validate() {
-				if ( Token == null ) {
-					throw new Exception( "Missing property: access_token" );
-				}
-			}
-		}
+		private sealed record class ErrorResponse(
+			[property: JsonPropertyName( "error" )]
+			[property: JsonRequired]
+			string Title,
 
-		private sealed class ErrorResponse {
-			[JsonPropertyName( "error" )]
-			public string Title { get; set; }
-
-			[JsonPropertyName( "error_description" )]
-			public string Detail { get; set; }
-
-			internal void Validate() {
-				if ( Title == null ) {
-					throw new Exception( "Missing property: error" );
-				}
-
-				if ( Detail == null ) {
-					throw new Exception( "Missing property: error_description" );
-				}
-			}
-		}
+			[property: JsonPropertyName( "error_description" )]
+			[property: JsonRequired]
+			string Detail
+		);
 	}
 }

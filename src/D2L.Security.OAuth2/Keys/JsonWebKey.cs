@@ -1,9 +1,6 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Security.Cryptography;
 using System.Text.Json;
 using D2L.Security.OAuth2.Keys.Default;
 
@@ -76,9 +73,17 @@ namespace D2L.Security.OAuth2.Keys {
 			out Exception? exception,
 			out bool useEncKey
 		) {
-			Dictionary<string, object> data;
+			Dictionary<string, object>? data;
 			try {
 				data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
+
+				if( data == null ) {
+					result = null;
+					error = "error deserializing JSON web key string";
+					exception = null;
+					useEncKey = false;
+					return false;
+				}
 			} catch ( JsonException e ) {
 				result = null;
 				error = "error deserializing JSON web key string";
@@ -89,7 +94,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 			if( data.TryGetValue( "use", out var use ) && use != null && use.ToString() != "sig" ) {
 				result = null;
-				error = "invalid 'use' value in JSON web key: " + data[ "use" ];
+				error = "invalid 'use' value in JSON web key: " + use;
 				exception = null;
 				useEncKey = use.ToString() == "enc";
 				return false;
@@ -111,7 +116,10 @@ namespace D2L.Security.OAuth2.Keys {
 				return false;
 			}
 
-			string id = kid.ToString();
+			// !: object.ToString() is string? for the worst case, but we are
+			// assuming the claim values are sane types.
+			var id = kid.ToString()!;
+
 			DateTimeOffset? expiresAt = null;
 			if( data.TryGetValue( "exp", out var exp ) ) {
 				if( !long.TryParse( exp.ToString(), out long ts ) ) {
@@ -153,8 +161,8 @@ namespace D2L.Security.OAuth2.Keys {
 					result = new RsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
-						n: keyN.ToString(),
-						e: keyE.ToString()
+						n: keyN.ToString()!, // See note above for !
+						e: keyE.ToString()! // See note above for !
 					);
 
 					error = null;
@@ -189,11 +197,11 @@ namespace D2L.Security.OAuth2.Keys {
 					}
 
 					result = new EcDsaJsonWebKey(
-						id: id,
+						id: id!,
 						expiresAt: expiresAt,
-						curve: keyCrv.ToString(),
-						x: keyX.ToString(),
-						y: keyY.ToString()
+						curve: keyCrv.ToString()!, // See note above for !
+						x: keyX.ToString()!, // See note above for !
+						y: keyY.ToString()! // See note above for !
 					);
 
 					error = null;

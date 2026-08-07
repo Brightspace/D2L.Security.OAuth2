@@ -15,7 +15,7 @@ namespace D2L.Security.OAuth2.Keys {
 		private readonly IDateTimeProvider m_clock;
 		private readonly OAuth2Configuration m_config;
 
-		private D2LSecurityToken m_current = null;
+		private D2LSecurityToken? m_current = null;
 
 		internal KeyManagementService(
 			IPublicKeyDataProvider publicKeys,
@@ -27,6 +27,7 @@ namespace D2L.Security.OAuth2.Keys {
 			m_privateKeys = privateKeys;
 			m_clock = clock;
 			m_config = config;
+			config.CheckSanity();
 		}
 
 		// Constructor for use outside of this library.
@@ -35,18 +36,16 @@ namespace D2L.Security.OAuth2.Keys {
 		public KeyManagementService(
 			IPublicKeyDataProvider publicKeys,
 			IPrivateKeyDataProvider privateKeys,
-			OAuth2Configuration config = null
+			OAuth2Configuration? config = null
 		) : this(
 			publicKeys,
 			privateKeys,
 			new DateTimeProvider(),
 			config ?? new OAuth2Configuration()
-		) {
-			config.CheckSanity();
-		}
+		) {}
 
 		[GenerateSync]
-		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+		async Task<D2LSecurityToken?> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			var current = Volatile.Read( ref m_current );
 
 			var now = m_clock.UtcNow;
@@ -60,11 +59,7 @@ namespace D2L.Security.OAuth2.Keys {
 				current = Volatile.Read( ref m_current );
 			}
 
-			if( current == null ) {
-				return null;
-			}
-
-			return current.Ref();
+			return current?.Ref();
 		}
 
 		[GenerateSync]
@@ -171,11 +166,11 @@ namespace D2L.Security.OAuth2.Keys {
 			prev?.Dispose();
 		}
 
-		private D2LSecurityToken ChooseKey(
+		private D2LSecurityToken? ChooseKey(
 			IEnumerable<PrivateKeyData> keys,
 			DateTimeOffset now
 		) {
-			PrivateKeyData candidate = null;
+			PrivateKeyData? candidate = null;
 
 			foreach( var key in keys ) {
 				// Ignore unsupported key types

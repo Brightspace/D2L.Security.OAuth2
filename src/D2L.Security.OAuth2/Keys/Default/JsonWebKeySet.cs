@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.Json;
 using D2L.Security.OAuth2.Utilities;
@@ -14,6 +15,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 			try {
 				var data = JsonSerializer.Deserialize<Dictionary<string, object>>( json );
+
+				if( data == null ) {
+					throw new JsonWebKeyParseException( "invalid json web key set: could not deserialize json" );
+				}
 
 				if( !data.TryGetValue( "keys", out var keys ) ) {
 					throw new JsonWebKeyParseException( "invalid json web key set: missing keys array" );
@@ -55,7 +60,10 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			m_keys = ImmutableArray.Create( jsonWebKey );
 		}
 
-		public bool TryGetKey( string keyId, out JsonWebKey key ) {
+		public bool TryGetKey(
+			string keyId,
+			[NotNullWhen(true)] out JsonWebKey? key
+		) {
 			foreach( JsonWebKey currentKey in m_keys ) {
 				if( currentKey.Id.KeyIdEquals( keyId ) ) {
 					key = currentKey;

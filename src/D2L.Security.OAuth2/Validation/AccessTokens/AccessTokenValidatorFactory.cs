@@ -40,7 +40,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 		public static IAccessTokenValidator CreateRemoteValidator(
 			HttpClient httpClient,
 			Uri jwksEndpoint,
-			Uri jwkEndpoint = null
+			Uri? jwkEndpoint = null
 		) {
 			var jwksProvider = new JwksProvider(
 				httpClient,

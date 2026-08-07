@@ -20,8 +20,8 @@ namespace D2L.Security.OAuth2.Provisioning {
 			HttpClient httpClient,
 			Uri authEndpoint,
 			TimeSpan tokenRefreshGracePeriod,
-			IAccessTokenProvider inner = null,
-			ICache cache = null
+			IAccessTokenProvider? inner = null,
+			ICache? cache = null
 		) {
 			if( inner != null && cache == null ) {
 				throw new InvalidOperationException( "If you provide an inner you need to also provide its cache" );

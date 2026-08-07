@@ -86,7 +86,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			}
 		}
 
-		internal AsymmetricSecurityKey GetKey() => m_key.Value.Item1;
+		// ! because the ThreadLocal includes a value factory
+		internal AsymmetricSecurityKey GetKey() => m_key.Value!.Item1;
 
 		public override int KeySize => GetKey().KeySize;
 

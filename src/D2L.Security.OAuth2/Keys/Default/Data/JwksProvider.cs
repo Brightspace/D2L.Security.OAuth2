@@ -11,12 +11,12 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 	internal sealed partial class JwksProvider : IJwksProvider {
 		private readonly ID2LHttpClient m_httpClient;
 		private readonly Uri m_jwksEndpoint;
-		private readonly Uri m_jwkEndpoint;
+		private readonly Uri? m_jwkEndpoint;
 
 		public JwksProvider(
 			HttpClient httpClient,
 			Uri jwksEndpoint,
-			Uri jwkEndpoint
+			Uri? jwkEndpoint
 		) {
 			m_httpClient = new D2LHttpClient( httpClient );
 			m_jwksEndpoint = jwksEndpoint;
@@ -86,8 +86,10 @@ namespace D2L.Security.OAuth2.Keys.Default.Data {
 			return new PublicKeyLookupFailureException( message, e );
 		}
 
-		private static Uri GetJwkEndpoint( Uri authEndpoint, string keyId ) {
-			if( authEndpoint == null ) { return null; }
+		private static Uri? GetJwkEndpoint( Uri? authEndpoint, string keyId ) {
+			if( authEndpoint == null ) {
+				return null;
+			}
 
 			return authEndpoint.RelativePathAsNonLeaf( HttpUtility.UrlEncode( keyId ) );
 		}

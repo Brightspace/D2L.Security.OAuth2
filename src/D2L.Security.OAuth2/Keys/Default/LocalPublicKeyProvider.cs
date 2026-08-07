@@ -46,12 +46,12 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		[GenerateSync]
 		async Task<D2LSecurityToken> IPublicKeyProvider.GetByIdAsync( string id ) {
-			D2LSecurityToken result = m_cache.Get( PUBLIC_KEY_SOURCE, id );
+			var result = m_cache.Get( PUBLIC_KEY_SOURCE, id );
 			if( result != null ) {
 				return result;
 			}
 
-			JsonWebKey jwk = await m_publicKeyDataProvider
+			var jwk = await m_publicKeyDataProvider
 				.GetByIdAsync( new Guid( id ) )
 				.ConfigureAwait( false );
 

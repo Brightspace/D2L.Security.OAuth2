@@ -16,20 +16,20 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[GenerateSync]
-		Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+		Task<D2LSecurityToken?> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			RSAParameters privateKey;
 			using( var csp = new RSACryptoServiceProvider( Constants.GENERATED_RSA_KEY_SIZE ) { PersistKeyInCsp = false } ) {
 				privateKey = csp.ExportParameters( includePrivateParameters: true );
 			}
 
-			D2LSecurityToken result = m_d2lSecurityTokenFactory.Create( () => {
+			var result = m_d2lSecurityTokenFactory.Create( () => {
 				var csp = new RSACryptoServiceProvider() { PersistKeyInCsp = false };
 				csp.ImportParameters( privateKey );
 				var key = new RsaSecurityKey( csp );
 				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, csp );
 			} );
 
-			return Task.FromResult( result );
+			return Task.FromResult<D2LSecurityToken?>( result );
 		}
 	}
 }

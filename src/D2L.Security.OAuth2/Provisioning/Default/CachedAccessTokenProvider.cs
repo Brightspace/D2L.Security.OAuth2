@@ -50,7 +50,7 @@ namespace D2L.Security.OAuth2.Provisioning.Default {
 
 			if( cacheResponse.Success ) {
 				SecurityToken securityToken = m_tokenHandler.ReadToken( cacheResponse.Value );
-				if( securityToken.ValidTo > DateTime.UtcNow.Add( m_tokenRefreshGracePeriod ) ) {
+				if( securityToken.ValidTo > DateTime.UtcNow.Add( m_tokenRefreshGracePeriod ) && cacheResponse.Value != null ) {
 					return new AccessToken( cacheResponse.Value );
 				}
 			}

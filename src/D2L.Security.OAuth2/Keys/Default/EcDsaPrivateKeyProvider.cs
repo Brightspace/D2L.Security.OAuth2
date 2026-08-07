@@ -19,17 +19,17 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		}
 
 		[GenerateSync]
-		Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
+		Task<D2LSecurityToken?> IPrivateKeyProvider.GetSigningCredentialsAsync() {
 			var ecdsa = ECDsa.Create( m_curve );
 			var parameters = ecdsa.ExportParameters( includePrivateParameters: true );
 
-			D2LSecurityToken result = m_d2lSecurityTokenFactory.Create( () => {
+			var result = m_d2lSecurityTokenFactory.Create( () => {
 				var ecDsa = ECDsa.Create( parameters );
 				var key = new ECDsaSecurityKey( ecDsa );
 				return new Tuple<AsymmetricSecurityKey, IDisposable>( key, ecDsa );
 			} );
 
-			return Task.FromResult( result );
+			return Task.FromResult<D2LSecurityToken?>( result );
 		}
 	}
 }

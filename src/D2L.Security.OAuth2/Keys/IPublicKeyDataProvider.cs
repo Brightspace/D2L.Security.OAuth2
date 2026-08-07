@@ -16,7 +16,7 @@ namespace D2L.Security.OAuth2.Keys {
 		/// <param name="id">The key id (kid)</param>
 		/// <returns>The <see cref="JsonWebKey"/> or null if the key doesn't exist or has expired</returns>
 		[GenerateSync]
-		Task<JsonWebKey> GetByIdAsync( Guid id );
+		Task<JsonWebKey?> GetByIdAsync( Guid id );
 
 		/// <summary>
 		/// Gets all the <see cref="JsonWebKey"/> instances
