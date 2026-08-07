@@ -5,7 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace D2L.Security.OAuth2.Keys {
@@ -15,7 +14,21 @@ namespace D2L.Security.OAuth2.Keys {
 		private readonly IDateTimeProvider m_clock;
 		private readonly OAuth2Configuration m_config;
 
+		private readonly object m_keyRefreshLock = new object();
 		private D2LSecurityToken m_current = null;
+
+		private D2LSecurityToken GetCurrentToken() {
+			lock( m_keyRefreshLock ) {
+				return m_current?.Ref();
+			}
+		}
+
+		private void SetCurrentToken( D2LSecurityToken token ) {
+			lock( m_keyRefreshLock ) {
+				m_current?.Dispose();
+				m_current = token;
+			}
+		}
 
 		internal KeyManagementService(
 			IPublicKeyDataProvider publicKeys,
@@ -47,7 +60,7 @@ namespace D2L.Security.OAuth2.Keys {
 
 		[GenerateSync]
 		async Task<D2LSecurityToken> IPrivateKeyProvider.GetSigningCredentialsAsync() {
-			var current = Volatile.Read( ref m_current );
+			using var current = GetCurrentToken();
 
 			var now = m_clock.UtcNow;
 
@@ -57,14 +70,11 @@ namespace D2L.Security.OAuth2.Keys {
 				await RefreshKeyAsync( now )
 					.ConfigureAwait( false );
 
-				current = Volatile.Read( ref m_current );
+				using var refreshed = GetCurrentToken();
+				return refreshed?.Ref();
 			}
 
-			if( current == null ) {
-				return null;
-			}
-
-			return current.Ref();
+			return current?.Ref();
 		}
 
 		[GenerateSync]
@@ -74,7 +84,7 @@ namespace D2L.Security.OAuth2.Keys {
 			await RefreshKeyAsync( now )
 				.ConfigureAwait( false );
 
-			var current = Volatile.Read( ref m_current );
+			using var current = GetCurrentToken();
 
 			if( current == null || now > current.ValidTo ) {
 				// If the key is expired or doesn't exist, retry quickly.
@@ -166,9 +176,7 @@ namespace D2L.Security.OAuth2.Keys {
 				return;
 			}
 
-			var prev = Interlocked.Exchange( ref m_current, best );
-
-			prev?.Dispose();
+			SetCurrentToken( best );
 		}
 
 		private D2LSecurityToken ChooseKey(
@@ -241,7 +249,8 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		public void Dispose() {
-			m_current?.Dispose();
+			// release the current token
+			SetCurrentToken( null );
 		}
 	}
 }
