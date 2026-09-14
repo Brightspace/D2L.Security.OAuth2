@@ -1,8 +1,15 @@
 ﻿using System.Security.Cryptography;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.TestFramework.Properties;
 
 namespace D2L.Security.OAuth2.TestFramework {
 	internal static class TestStaticKeyProvider {
+
+		[Statics.Audited(
+			owner: "Owen Smith",
+			auditedDate: "2026-09-14",
+			rationale: "Static test key"
+		)]
 		private static readonly RSAParameters m_parameters;
 		private const string m_testKeyId = "fa7c07a8-42c8-4c57-9af2-cce10c271033";
 

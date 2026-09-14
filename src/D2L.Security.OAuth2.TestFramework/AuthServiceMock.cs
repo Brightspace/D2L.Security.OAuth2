@@ -4,13 +4,14 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Threading.Tasks;
+using D2L.CodeStyle.Annotations;
 using D2L.Security.OAuth2.Keys;
 using D2L.Security.OAuth2.Keys.Default;
 using D2L.Security.OAuth2.Keys.Development;
 using RichardSzalay.MockHttp;
 
 namespace D2L.Security.OAuth2.TestFramework {
-	public sealed class AuthServiceMock : IDisposable {
+	public sealed partial class AuthServiceMock : IDisposable {
 		private readonly MockHttpMessageHandler m_server;
 
 		private readonly ISanePublicKeyDataProvider m_publicKeyDataProvider;
@@ -78,7 +79,8 @@ namespace D2L.Security.OAuth2.TestFramework {
 			m_tokenSigner = new TokenSigner( m_privateKeyProvider );
 		}
 
-		public async Task SetupJwks() {
+		[GenerateSync]
+		public async Task SetupJwksAsync() {
 			// Get a private key so public key is saved
 			await m_privateKeyProvider.GetSigningCredentialsAsync().ConfigureAwait( false );
 
@@ -108,7 +110,8 @@ namespace D2L.Security.OAuth2.TestFramework {
 		public Uri Host { get { return new Uri( "http://localhost" ); } }
 		public HttpMessageHandler MockHandler => m_server;
 
-		public async Task<string> SignTokenBackdoor( UnsignedToken token ) {
+		[GenerateSync]
+		public async Task<string> SignTokenBackdoorAsync( UnsignedToken token ) {
 			return await m_tokenSigner
 				.SignAsync( token )
 				.ConfigureAwait( false );

@@ -48,11 +48,11 @@ namespace D2L.Security.OAuth2.Benchmarks.FullStackValidation {
 
 			token = tokenSigner
 				.SignAsync( new UnsignedToken(
-					"some issuer",
-					"some audience",
-					new Dictionary<string, object>(),
-					DateTime.Now,
-					DateTime.Now + TimeSpan.FromDays( 1 )
+					issuer: "some issuer",
+					audience: "some audience",
+					claims: new Dictionary<string, object>(),
+					notBefore: DateTime.Now,
+					expiresAt: DateTime.Now + TimeSpan.FromDays( 1 )
 				) )
 				.ConfigureAwait( false )
 				.GetAwaiter()
