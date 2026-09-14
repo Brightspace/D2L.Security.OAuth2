@@ -36,8 +36,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					{ "scopes", "a:b:c a:b:d" },
 					{ "tenantid", "325cb46b-488d-4061-aa2c-eef5a12b6b7c" }
                 },
-                notBefore: new DateTime( 2019, 1, 1, 0, 0, 0, DateTimeKind.Utc ),
-                expiresAt: new DateTime( 2019, 1, 1, 1, 0, 30, DateTimeKind.Utc )
+                notBefore: new DateTime( year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc ),
+                expiresAt: new DateTime( year: 2019, month: 1, day: 1, hour: 1, minute: 0, second: 30, kind: DateTimeKind.Utc )
             );
 
             var signed = await m_tokenSigner.SignAsync( token );
@@ -62,11 +62,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
                 issuer: "issuer",
                 audience: "audience",
                 claims: claims,
-                notBefore: new DateTime( 2019, 1, 1, 0, 0, 0, DateTimeKind.Utc ),
-                expiresAt: new DateTime( 2019, 1, 1, 1, 0, 30, DateTimeKind.Utc )
+                notBefore: new DateTime( year: 2019, month: 1, day: 1, hour: 0, minute: 0, second: 0, kind: DateTimeKind.Utc ),
+                expiresAt: new DateTime( year: 2019, month: 1, day: 1, hour: 1, minute: 0, second: 30, kind: DateTimeKind.Utc )
             );
 
-            var signed = await m_tokenSigner.SignAsync( token );
+            var signed = await m_tokenSigner.SignAsync( token ).ConfigureAwait( false );
 
             Assert.AreEqual( SignedComplexToken, signed );
         }

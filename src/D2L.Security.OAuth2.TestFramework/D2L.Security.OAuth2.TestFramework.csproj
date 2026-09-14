@@ -11,12 +11,24 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="D2L.CodeStyle.Analyzers">
+			<PrivateAssets>All</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="D2L.CodeStyle.Annotations" />
 		<PackageReference Include="RichardSzalay.MockHttp" />
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
 		<Reference Include="System.Net.Http" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<CompilerVisibleProperty Include="SuppressSyncGenerator" />
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(TargetFramework)' != 'net472'">
+		<SuppressSyncGenerator>true</SuppressSyncGenerator>
+	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\D2L.Security.OAuth2\D2L.Security.OAuth2.csproj" />

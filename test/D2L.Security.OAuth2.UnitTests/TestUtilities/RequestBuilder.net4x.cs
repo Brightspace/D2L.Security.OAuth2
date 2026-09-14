@@ -30,11 +30,11 @@ namespace D2L.Security.OAuth2.TestUtilities {
 
 			const BindingFlags flags = BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance;
 
-			headerCollectionType.InvokeMember( "MakeReadWrite", flags, null, headers, null );
-			headerCollectionType.InvokeMember( "InvalidateCachedArrays", flags, null, headers, null );
+			headerCollectionType.InvokeMember( name: "MakeReadWrite", flags, null, headers, null );
+			headerCollectionType.InvokeMember( name: "InvalidateCachedArrays", flags, null, headers, null );
 			item.Add( headerValue );
-			headerCollectionType.InvokeMember( "BaseAdd", flags, null, headers, new object[] { headerName, item } );
-			headerCollectionType.InvokeMember( "MakeReadOnly", flags, null, headers, null );
+			headerCollectionType.InvokeMember( name: "BaseAdd", flags, null, headers, new object[] { headerName, item } );
+			headerCollectionType.InvokeMember( name: "MakeReadOnly", flags, null, headers, null );
 		}
 	}
 }

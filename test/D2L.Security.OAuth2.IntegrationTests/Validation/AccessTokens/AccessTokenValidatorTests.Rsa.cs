@@ -24,7 +24,7 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 					new Uri( m_authService.Host, ".well-known/jwks" )
 				);
 
-				m_authService.SetupJwks().Wait();
+				m_authService.SetupJwksAsync().Wait();
 			}
 
 			[OneTimeTearDown]
@@ -38,12 +38,12 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			public async Task ValidateAsync_GoodSignature_Succeeds() {
 				const string SUBJECT = "123";
 				string token = await m_authService
-					.SignTokenBackdoor( new UnsignedToken(
-						"fake issuer",
-						"fake audience",
-						new Dictionary<string, object> { { "sub", SUBJECT } },
-						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
-						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
+					.SignTokenBackdoorAsync( new UnsignedToken(
+						issuer: "fake issuer",
+						audience: "fake audience",
+						claims: new Dictionary<string, object> { { "sub", SUBJECT } },
+						notBefore: DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
+						expiresAt: DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
 					.ConfigureAwait( false );
 
 				IAccessToken accessToken = await m_accessTokenValidator
@@ -58,12 +58,12 @@ namespace D2L.Security.OAuth2.Validation.AccessTokens {
 			[Test]
 			public async Task ValidateAsync_BadSignature_Fails() {
 				string token = await m_authService
-					.SignTokenBackdoor( new UnsignedToken(
-						"fake issuer",
-						"fake audience",
-						new Dictionary<string, object>(),
-						DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
-						DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
+					.SignTokenBackdoorAsync( new UnsignedToken(
+						issuer: "fake issuer",
+						audience: "fake audience",
+						claims: new Dictionary<string, object>(),
+						notBefore: DateTime.UtcNow - TimeSpan.FromSeconds( 1 ),
+						expiresAt: DateTime.UtcNow + TimeSpan.FromHours( 1 ) ) )
 					.ConfigureAwait( false );
 
 				token += "abcd";
