@@ -109,6 +109,16 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		[Test]
+		public void ToJwkDto_EcKey_SerializesExpectedJson() {
+			string json =
+				@"{""kid"":""fae33c85-e421-40f5-bebb-8ec8ab778be4"",""kty"":""EC"",""use"":""sig"",""crv"":""P-256"",""x"":""AL09T4hmZ8kGWPSU8mJ-3g3I2kEVZOYhclTWDCNu-0qA"",""y"":""IDCL6vha_57X2KbTO5mkBibZIL7MTi4DGMEDUdM4gnI""}";
+
+			JsonWebKey key = JsonWebKey.FromJson( json );
+
+			Assert.AreEqual( json, JsonSerializer.Serialize( key.ToJwkDto() ) );
+		}
+
+		[Test]
 		public void TryParseJsonWebKey_InvalidEcX_ReturnsFalse() {
 			string example =
 				@"{""kid"":""" + Guid.NewGuid() + @""",""kty"":""EC"",""use"":""sig"",""crv"":""P-256"",""x"":""AAAAA"",""y"":""IDCL6vha_57X2KbTO5mkBibZIL7MTi4DGMEDUdM4gnI""}";

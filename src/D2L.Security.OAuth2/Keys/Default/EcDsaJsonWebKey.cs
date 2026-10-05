@@ -62,8 +62,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					kty = "EC",
 					use = "sig",
 					crv = m_curve,
-					x = m_x,
-					y = m_y,
+					x = Base64UrlEncoder.Encode( m_x ),
+					y = Base64UrlEncoder.Encode( m_y ),
 					exp = ExpiresAt.Value.ToUnixTimeSeconds()
 				};
 			}
@@ -73,8 +73,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				kty = "EC",
 				use = "sig",
 				crv = m_curve,
-				x = m_x,
-				y = m_y
+				x = Base64UrlEncoder.Encode( m_x ),
+				y = Base64UrlEncoder.Encode( m_y )
 			};
 		}
 
