@@ -35,11 +35,11 @@ namespace D2L.Security.OAuth2.Keys.Default {
 		public RsaJsonWebKey(
 			string id,
 			DateTimeOffset? expiresAt,
-			string n,
-			string e
+			byte[] n,
+			byte[] e
 		) : base( id, expiresAt ) {
-			m_parameters.Modulus = Base64UrlEncoder.DecodeBytes( n );
-			m_parameters.Exponent = Base64UrlEncoder.DecodeBytes( e );
+			m_parameters.Modulus = n;
+			m_parameters.Exponent = e;
 		}
 
 		/// <summary>

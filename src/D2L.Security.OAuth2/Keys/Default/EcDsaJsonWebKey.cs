@@ -12,8 +12,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private readonly ECParameters m_parameters;
 		private readonly string m_curve;
-		private readonly string m_x;
-		private readonly string m_y;
+		private readonly byte[] m_x;
+		private readonly byte[] m_y;
 
 		/// <summary>
 		/// Constructs a new <see cref="EcDsaJsonWebKey"/> instance
@@ -42,8 +42,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 			string id,
 			DateTimeOffset? expiresAt,
 			string curve,
-			string x,
-			string y
+			byte[] x,
+			byte[] y
 		) : base( id, expiresAt ) {
 			m_parameters = ECParametersHelper.FromJose( curve, x, y );
 			m_curve = curve;
@@ -62,8 +62,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 					kty = "EC",
 					use = "sig",
 					crv = m_curve,
-					x = m_x,
-					y = m_y,
+					x = Base64UrlEncoder.Encode( m_x ),
+					y = Base64UrlEncoder.Encode( m_y ),
 					exp = ExpiresAt.Value.ToUnixTimeSeconds()
 				};
 			}
@@ -73,8 +73,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 				kty = "EC",
 				use = "sig",
 				crv = m_curve,
-				x = m_x,
-				y = m_y
+				x = Base64UrlEncoder.Encode( m_x ),
+				y = Base64UrlEncoder.Encode( m_y )
 			};
 		}
 
