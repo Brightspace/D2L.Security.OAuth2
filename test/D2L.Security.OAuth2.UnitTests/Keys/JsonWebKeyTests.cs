@@ -109,6 +109,16 @@ namespace D2L.Security.OAuth2.Keys {
 		}
 
 		[Test]
+		public void ToJwkDto_RsaKey_SerializesExpectedJson() {
+			string json =
+				@"{""kid"":""fae33c85-e421-40f5-bebb-8ec8ab778be4"",""kty"":""RSA"",""use"":""sig"",""n"":""piXmF9_L0UO4K5APzHqiOYl_KtVXAgPlVHhUopPztaW_JRh2k9MDeupIA1cAF9S_r5qRBWcA1QaP0nlGalw3jm_fSHvtUYYhwUhF9X6I19VRmv_BX9Ne2budt5dafI9DbNs2Ltq0X_yfM1dUL81vaR0rz7jYaQ5bF2CRQHVCcIhWkik85PG5c1yK__As842WqogBpW8-zsEoB6s53FNpDG37_HsZAAngATmTY1At4O7jC6p-c0KVPDf25oLVMOWQubyVgCE9FlsVxprHWqsXenlnHEmhZfEbFB_5KB6hj2yV77jhvLRslNvyKflFBs6AGCiczNDzmoXH2GV3FAVLFQ"",""e"":""AQAB""}";
+
+			JsonWebKey key = JsonWebKey.FromJson( json );
+
+			Assert.AreEqual( json, JsonSerializer.Serialize( key.ToJwkDto() ) );
+		}
+
+		[Test]
 		public void ToJwkDto_EcKey_SerializesExpectedJson() {
 			string json =
 				@"{""kid"":""fae33c85-e421-40f5-bebb-8ec8ab778be4"",""kty"":""EC"",""use"":""sig"",""crv"":""P-256"",""x"":""AL09T4hmZ8kGWPSU8mJ-3g3I2kEVZOYhclTWDCNu-0qA"",""y"":""IDCL6vha_57X2KbTO5mkBibZIL7MTi4DGMEDUdM4gnI""}";
