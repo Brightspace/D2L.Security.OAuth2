@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text.Json;
 using D2L.Security.OAuth2.Keys.Default;
+using Microsoft.IdentityModel.Tokens;
 
 
 namespace D2L.Security.OAuth2.Keys {
@@ -150,11 +151,35 @@ namespace D2L.Security.OAuth2.Keys {
 						return false;
 					}
 
+					byte[] n;
+
+					try {
+						n = Base64UrlEncoder.DecodeBytes( keyN.ToString() );
+					} catch( FormatException ) {
+						result = null;
+						error = "RSA modulus (n) is not valid Base64Url data";
+						exception = null; // we don't want to flow any extra information out here
+						useEncKey = false;
+						return false;
+					}
+
+					byte[] e;
+
+					try {
+						e = Base64UrlEncoder.DecodeBytes( keyE.ToString() );
+					} catch( FormatException ) {
+						result = null;
+						error = "RSA exponent (e) is not valid Base64Url data";
+						exception = null; // we don't want to flow any extra information out here
+						useEncKey = false;
+						return false;
+					}
+
 					result = new RsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
-						n: keyN.ToString(),
-						e: keyE.ToString()
+						n: n,
+						e: e
 					);
 
 					error = null;
@@ -188,12 +213,36 @@ namespace D2L.Security.OAuth2.Keys {
 						return false;
 					}
 
+					byte[] x;
+
+					try {
+						x = Base64UrlEncoder.DecodeBytes( keyX.ToString() );
+					} catch( FormatException ) {
+						result = null;
+						error = "EC x coordinate (x) is not valid Base64Url data";
+						exception = null; // we don't want to flow any extra information out here
+						useEncKey = false;
+						return false;
+					}
+
+					byte[] y;
+
+					try {
+						y = Base64UrlEncoder.DecodeBytes( keyY.ToString() );
+					} catch( FormatException ) {
+						result = null;
+						error = "EC y coordinate (y) is not valid Base64Url data";
+						exception = null; // we don't want to flow any extra information out here
+						useEncKey = false;
+						return false;
+					}
+
 					result = new EcDsaJsonWebKey(
 						id: id,
 						expiresAt: expiresAt,
 						curve: keyCrv.ToString(),
-						x: keyX.ToString(),
-						y: keyY.ToString()
+						x: x,
+						y: y
 					);
 
 					error = null;

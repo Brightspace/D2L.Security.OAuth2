@@ -7,7 +7,7 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 		private static class ECParametersHelper {
 
-			public static ECParameters FromJose( string curve, string x, string y ) {
+			public static ECParameters FromJose( string curve, byte[] x, byte[] y ) {
 				return new ECParameters {
 					Curve = curve switch {
 						"P-256" => ECCurve.NamedCurves.nistP256,
@@ -16,13 +16,13 @@ namespace D2L.Security.OAuth2.Keys.Default {
 						_ => throw new Exception( $"Unknown curve: {curve}" ),
 					},
 					Q = new ECPoint {
-						X = Base64UrlEncoder.DecodeBytes( x ),
-						Y = Base64UrlEncoder.DecodeBytes( y ),
+						X = x,
+						Y = y,
 					},
 				};
 			}
 
-			public static ( string curve, string x, string y ) ToJose( ECParameters parameters ) {
+			public static ( string curve, byte[] x, byte[] y ) ToJose( ECParameters parameters ) {
 				if( !parameters.Curve.IsNamed ) {
 					throw new Exception( $"Expected named curve: { new { parameters.Curve.CurveType, parameters.Curve.A, parameters.Curve.B, parameters.Curve.G } }" );
 				}
@@ -42,8 +42,8 @@ namespace D2L.Security.OAuth2.Keys.Default {
 
 				return (
 					curve,
-					x: Base64UrlEncoder.Encode( parameters.Q.X ),
-					y: Base64UrlEncoder.Encode( parameters.Q.Y )
+					x: parameters.Q.X,
+					y: parameters.Q.Y
 				);
 			}
 
