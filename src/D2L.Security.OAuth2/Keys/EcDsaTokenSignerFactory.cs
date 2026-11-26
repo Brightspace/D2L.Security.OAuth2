@@ -62,22 +62,12 @@ namespace D2L.Security.OAuth2.Keys {
 			TimeSpan keyLifetime,
 			TimeSpan keyRotationPeriod
 		) {
-			ECCurve curveInternal;
-			switch( curve ) {
-				case Curve.P521: {
-					curveInternal = ECCurve.NamedCurves.nistP256;
-						break;
-					}
-				case Curve.P384: {
-					curveInternal = ECCurve.NamedCurves.nistP384;
-						break;
-					}
-				case Curve.P256:
-				default: {
-					curveInternal = ECCurve.NamedCurves.nistP521;
-						break;
-					}
-			}
+			var curveInternal = curve switch {
+				Curve.P256 => ECCurve.NamedCurves.nistP256,
+				Curve.P384 => ECCurve.NamedCurves.nistP384,
+				Curve.P521 => ECCurve.NamedCurves.nistP521,
+				_ => throw new NotImplementedException()
+			};
 
 			IPrivateKeyProvider privateKeyProvider = EcDsaPrivateKeyProvider
 				.Factory
